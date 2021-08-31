@@ -5,7 +5,7 @@ import { client } from './graphql/apollo';
 import { BrowserRouter } from 'react-router-dom';
 import Router from './Router';
 import { ThemeProvider } from 'styled-components';
-import { theme } from 'theme/theme';
+import { theme } from './theme/theme';
 
 function App() {
     return (
