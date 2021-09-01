@@ -9,8 +9,8 @@ function Router() {
     return (
         <>
             <Route path="/" component={Home} exact />
+            <Route path="/createArticle/" component={CreateArticle} exact />
             <Route path="/createArticle/:id" component={CreateArticle} />
-
         </>
     );
 }
