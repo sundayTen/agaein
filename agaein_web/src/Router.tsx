@@ -1,3 +1,4 @@
+import React from 'react';
 import ArticleList from 'pages/article/ArticleList';
 import CreateArticle from 'pages/article/CreateArticle';
 import Home from 'pages/Home/Home';
@@ -8,7 +9,8 @@ function Router() {
     return (
         <Switch>
             <Route path="/" component={Home} exact />
-            <Route path="/createArticle" component={CreateArticle} />
+            <Route path="/createArticle" component={CreateArticle} exact />
+            <Route path="/createArticle/:id" component={CreateArticle} />
             <Route path="/articles" component={ArticleList} />
         </Switch>
     );

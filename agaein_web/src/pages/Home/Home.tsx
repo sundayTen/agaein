@@ -1,8 +1,9 @@
 import Input from 'components/Input';
 import React, { ChangeEvent, useContext, useRef, useState } from 'react';
 import { ThemeContext } from 'styled-components';
+import { RouteComponentProps } from 'react-router-dom';
 
-const Home = () => {
+const Home = ({ history }: RouteComponentProps) => {
     const theme = useContext(ThemeContext);
     // TODO : DELETE - For Input Component Test
     const inputRef = useRef(null);
