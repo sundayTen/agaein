@@ -9,9 +9,9 @@ function Router() {
     return (
         <Switch>
             <Route path="/" component={Home} exact />
-            <Route path="/createArticle" component={CreateArticle} exact />
+            <Route path="/createArticle/" component={CreateArticle} exact />
             <Route path="/createArticle/:id" component={CreateArticle} />
-            <Route path="/articles" component={ArticleList} />
+            <Route path="/articles/" component={ArticleList} />
         </Switch>
     );
 }

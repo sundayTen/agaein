@@ -1,7 +1,7 @@
 import Input from 'components/Input';
 import React, { ChangeEvent, useContext, useRef, useState } from 'react';
 import { ThemeContext } from 'styled-components';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
 const Home = ({ history }: RouteComponentProps) => {
     const theme = useContext(ThemeContext);
@@ -17,6 +17,7 @@ const Home = ({ history }: RouteComponentProps) => {
         <div style={{ backgroundColor: theme.light.background }}>
             <h1>홈 페이지</h1>
             <Input ref={inputRef} value={inputValue} onChange={_setInputValue} />
+            <Link to="/createArticle/하하">ARTICLES</Link>
         </div>
     );
 };

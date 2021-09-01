@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef } from 'react';
 
 type InputProps = JSX.IntrinsicElements['input'];
 
