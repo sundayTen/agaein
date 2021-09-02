@@ -16,9 +16,6 @@ const NavBarContainer = styled.div`
 
 const NavBar = (props: NavBarProps) => {
     return (
-        // <div style={{ width: '100vw', background: '#aaaaaa' }}>
-        //     <h1>네비게이션 바</h1>
-        // </div>
         <NavBarContainer color={'#0038ff'}>
             <h1>이것은 NavBar입니다.</h1>
             <DarkModeButton />
