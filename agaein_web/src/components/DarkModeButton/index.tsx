@@ -18,7 +18,6 @@ const DarkModeButton = (props: DarkModeButtonProps) => {
     return (
         <>
             <DarkModeContainer onClick={() => setCurrentMode(currentMode === 'DARK' ? 'LIGHT' : 'DARK')}>
-                **Copy**
                 {currentMode === 'LIGHT' ? <SunIcon /> : <MoonIcon />}
             </DarkModeContainer>
         </>
