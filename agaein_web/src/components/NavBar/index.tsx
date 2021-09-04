@@ -1,30 +1,32 @@
-import Button from 'components/Button';
-import DarkModeButton from 'components/DarkModeButton';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import { MenuIcon, MoonIcon, SunIcon } from '@heroicons/react/solid';
+import { DarkMode, Manu, ManuBox, Nav, Title } from './style';
 
 interface NavBarProps {}
 
-const NavBarContainer = styled.div`
-    width: 100vw;
-    height: 80px;
-    color: ${(props) => props.color};
-    padding-vertical: 10px;
-    flex-direction: 'row';
-    margin: 5px;
-    display: flex;
-`;
-
 const NavBar = (props: NavBarProps) => {
+    const [menuToggle, setMenuToggle] = useState<boolean>(false);
+    const [darkToggle, setdarkToggle] = useState<boolean>(false);
     return (
-        // <div style={{ width: '100vw', background: '#aaaaaa' }}>
-        //     <h1>네비게이션 바</h1>
-        // </div>
-        <NavBarContainer color={'#0038ff'}>
-            <h1>이것은 NavBar입니다.</h1>
-            <DarkModeButton />
-            <Button />
-        </NavBarContainer>
+        <Nav>
+            <Manu>
+                <MenuIcon
+                    style={{ width: 40 }}
+                    onClick={() => (menuToggle ? setMenuToggle(false) : setMenuToggle(true))}
+                />
+            </Manu>
+            <ManuBox>
+                <Title>AGAEIN</Title>
+            </ManuBox>
+            <button style={{ width: 70 }}>로그인</button>
+            <DarkMode onClick={() => (darkToggle ? setdarkToggle(false) : setdarkToggle(true))}>
+                {darkToggle ? (
+                    <MoonIcon style={{ width: 30, height: 30 }} />
+                ) : (
+                    <SunIcon style={{ width: 30, height: 30 }} />
+                )}
+            </DarkMode>
+        </Nav>
     );
 };
-
 export default NavBar;

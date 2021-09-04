@@ -2,6 +2,7 @@ import Input from 'components/Input';
 import React, { ChangeEvent, useContext, useRef, useState } from 'react';
 import { ThemeContext } from 'styled-components';
 import { Link, RouteComponentProps } from 'react-router-dom';
+import NavBar from 'components/NavBar';
 
 const Home = ({ history }: RouteComponentProps) => {
     const theme = useContext(ThemeContext);
@@ -15,6 +16,7 @@ const Home = ({ history }: RouteComponentProps) => {
 
     return (
         <div style={{ backgroundColor: theme.light.background }}>
+            <NavBar />
             <h1>홈 페이지</h1>
             <Input ref={inputRef} value={inputValue} onChange={_setInputValue} />
             <Link to="createArticle">
