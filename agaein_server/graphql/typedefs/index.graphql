@@ -1,0 +1,13 @@
+# Custom Scalars
+scalar Date
+
+type Query {
+    # User
+    users: [User]!
+    user(id: ID!): User
+}
+
+type Mutation {
+    # User
+    signup(User: UserSignupInput!): String
+}
