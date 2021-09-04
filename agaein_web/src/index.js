@@ -12,10 +12,11 @@ import { theme } from 'theme/theme';
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
-            <ThemeProvider theme={theme}>
-                <App />
-            </ThemeProvider>
-            <ApolloProvider client={client}></ApolloProvider>
+            <ApolloProvider client={client}>
+                <ThemeProvider theme={theme}>
+                    <App />
+                </ThemeProvider>
+            </ApolloProvider>
         </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root'),
