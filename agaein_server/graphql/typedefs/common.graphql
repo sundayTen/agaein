@@ -1,5 +1,4 @@
-# Interface
 interface Timestamps {
-  createdAt: Date!
-  updatedAt: Date!
+    createdAt: Date!
+    updatedAt: Date!
 }
