@@ -1,0 +1,23 @@
+type User implements Timestamps {
+    id: ID!
+    info: UserInfo!
+
+    createdAt: Date!
+    updatedAt: Date!
+}
+
+type UserInfo {
+    name: String!
+    email: String!
+    password: String!
+    kakao_id: String
+    phone_number: String
+}
+
+input UserSignupInput {
+    name: String!
+    email: String!
+    password: String!
+    kakao_id: String
+    phone_number: String
+}
