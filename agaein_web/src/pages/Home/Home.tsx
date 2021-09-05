@@ -1,9 +1,11 @@
 import { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 import { RouteComponentProps } from 'react-router-dom';
+import { useQuery } from 'graphql/generated';
 
 const Home = ({ history }: RouteComponentProps) => {
     const theme = useContext(ThemeContext);
+    const {} = 
 
     return (
         <div style={{ backgroundColor: theme.light.background }}>
