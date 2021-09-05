@@ -12,82 +12,104 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-};
-
-export type Movie = {
-  __typename?: 'Movie';
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  score: Scalars['Int'];
+  /** Custom Scalars */
+  Date: any;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addMovies: Movie;
-  deleteMovie: Scalars['Boolean'];
+  /** User */
+  signup?: Maybe<Scalars['String']>;
 };
 
 
-export type MutationAddMoviesArgs = {
-  score: Scalars['Int'];
-  name: Scalars['String'];
-};
-
-
-export type MutationDeleteMovieArgs = {
-  id: Scalars['Int'];
+export type MutationSignupArgs = {
+  User: UserSignupInput;
 };
 
 export type Query = {
   __typename?: 'Query';
-  movies: Array<Maybe<Movie>>;
-  movie?: Maybe<Movie>;
+  /** User */
+  users: Array<Maybe<User>>;
+  user?: Maybe<User>;
 };
 
 
-export type QueryMovieArgs = {
-  id: Scalars['Int'];
+export type QueryUserArgs = {
+  id: Scalars['ID'];
 };
 
-export type TestQueryVariables = Exact<{ [key: string]: never; }>;
+export type Timestamps = {
+  createdAt: Scalars['Date'];
+  updatedAt: Scalars['Date'];
+};
+
+export type User = Timestamps & {
+  __typename?: 'User';
+  id: Scalars['ID'];
+  info: UserInfo;
+  createdAt: Scalars['Date'];
+  updatedAt: Scalars['Date'];
+};
+
+export type UserInfo = {
+  __typename?: 'UserInfo';
+  name: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+  kakao_id?: Maybe<Scalars['String']>;
+  phone_number?: Maybe<Scalars['String']>;
+};
+
+export type UserSignupInput = {
+  name: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+  kakao_id?: Maybe<Scalars['String']>;
+  phone_number?: Maybe<Scalars['String']>;
+};
+
+export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TestQuery = { __typename?: 'Query', movies: Array<Maybe<{ __typename?: 'Movie', id: number, name: string, score: number }>> };
+export type GetUsersQuery = { __typename?: 'Query', users: Array<Maybe<{ __typename?: 'User', id: string, info: { __typename?: 'UserInfo', name: string, email: string } }>> };
 
 
-export const TestDocument = gql`
-    query test {
-  movies {
+export const GetUsersDocument = gql`
+    query getUsers {
+  users {
     id
-    name
-    score
+    info {
+      name
+      email
+    }
   }
 }
     `;
 
 /**
- * __useTestQuery__
+ * __useGetUsersQuery__
  *
- * To run a query within a React component, call `useTestQuery` and pass it any options that fit your needs.
- * When your component renders, `useTestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useTestQuery({
+ * const { data, loading, error } = useGetUsersQuery({
  *   variables: {
  *   },
  * });
  */
-export function useTestQuery(baseOptions?: Apollo.QueryHookOptions<TestQuery, TestQueryVariables>) {
+export function useGetUsersQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<TestQuery, TestQueryVariables>(TestDocument, options);
+        return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
       }
-export function useTestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TestQuery, TestQueryVariables>) {
+export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<TestQuery, TestQueryVariables>(TestDocument, options);
+          return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
         }
-export type TestQueryHookResult = ReturnType<typeof useTestQuery>;
-export type TestLazyQueryHookResult = ReturnType<typeof useTestLazyQuery>;
-export type TestQueryResult = Apollo.QueryResult<TestQuery, TestQueryVariables>;
+export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
+export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
+export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;

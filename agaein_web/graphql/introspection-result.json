@@ -1,3 +1,7 @@
 {
-  "possibleTypes": {}
+  "possibleTypes": {
+    "Timestamps": [
+      "User"
+    ]
+  }
 }

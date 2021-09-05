@@ -1,7 +1,9 @@
-query test {
-    movies {
+query getUsers {
+    users {
         id
-        name
-        score
+        info {
+            name
+            email
+        }
     }
 }
