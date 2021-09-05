@@ -1,0 +1,7 @@
+query test {
+    movies {
+        id
+        name
+        score
+    }
+}

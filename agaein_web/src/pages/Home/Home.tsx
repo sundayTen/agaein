@@ -1,11 +1,12 @@
 import { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 import { RouteComponentProps } from 'react-router-dom';
-import { useQuery } from 'graphql/generated';
+import { useTestQuery } from 'graphql/generated';
 
 const Home = ({ history }: RouteComponentProps) => {
     const theme = useContext(ThemeContext);
-    const {} = 
+    const { data, loading, error } = useTestQuery();
+    console.log('🚀 ~ file: Home.tsx ~ line 9 ~ Home ~ data', error, loading, data);
 
     return (
         <div style={{ backgroundColor: theme.light.background }}>
