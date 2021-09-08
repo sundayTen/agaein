@@ -10,14 +10,11 @@ interface NavBarProps {}
 
 const NavBar = (props: NavBarProps) => {
     const [menuToggle, setMenuToggle] = useState<boolean>(false);
-    const [darkToggle, setdarkToggle] = useState<boolean>(false);
+    const [darkToggle, setDarkToggle] = useState<boolean>(false);
     return (
         <Nav>
             <Manu>
-                <MenuIcon
-                    style={{ width: 40 }}
-                    onClick={() => (menuToggle ? setMenuToggle(false) : setMenuToggle(true))}
-                />
+                <MenuIcon style={{ width: 40 }} onClick={() => setMenuToggle(menuToggle ? false : true)} />
             </Manu>
             <ManuBox>
                 <Title>AGAEIN</Title>
