@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from 'react';
 import { useContext, useState } from 'react';
 import { ThemeContext } from 'styled-components';
