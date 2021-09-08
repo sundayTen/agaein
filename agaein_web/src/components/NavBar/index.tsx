@@ -6,20 +6,20 @@ interface NavBarProps {}
 
 const NavBar = (props: NavBarProps) => {
     const [menuToggle, setMenuToggle] = useState<boolean>(false);
-    const [darkToggle, setdarkToggle] = useState<boolean>(false);
+    const [darkToggle, setDarkToggle] = useState<boolean>(false);
     return (
         <Nav>
             <Manu>
                 <MenuIcon
                     style={{ width: 40 }}
-                    onClick={() => (menuToggle ? setMenuToggle(false) : setMenuToggle(true))}
+                    onClick={() => (setMenuToggle(menuToggle ? false : true))}
                 />
             </Manu>
             <ManuBox>
                 <Title>AGAEIN</Title>
             </ManuBox>
             <button style={{ width: 70 }}>로그인</button>
-            <DarkMode onClick={() => (darkToggle ? setdarkToggle(false) : setdarkToggle(true))}>
+            <DarkMode onClick={() => (setDarkToggle(menuToggle ? false : true))}>
                 {darkToggle ? (
                     <MoonIcon style={{ width: 30, height: 30 }} />
                 ) : (
