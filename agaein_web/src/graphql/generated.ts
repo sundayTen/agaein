@@ -20,11 +20,17 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** User */
   signup?: Maybe<Scalars['String']>;
+  login?: Maybe<Scalars['String']>;
 };
 
 
 export type MutationSignupArgs = {
   User: UserSignupInput;
+};
+
+
+export type MutationLoginArgs = {
+  User: UserLoginInput;
 };
 
 export type Query = {
@@ -59,6 +65,11 @@ export type UserInfo = {
   password: Scalars['String'];
   kakao_id?: Maybe<Scalars['String']>;
   phone_number?: Maybe<Scalars['String']>;
+};
+
+export type UserLoginInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type UserSignupInput = {
