@@ -21,3 +21,8 @@ input UserSignupInput {
     kakao_id: String
     phone_number: String
 }
+
+input UserLoginInput {
+    email: String!
+    password: String!
+}

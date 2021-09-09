@@ -5,7 +5,7 @@ const app = express();
 
 apolloServer.applyMiddleware({
     app,
-    path: '/',
+    path: '/graphql',
 });
 
 export default app;

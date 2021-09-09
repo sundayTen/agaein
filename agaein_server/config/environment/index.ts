@@ -17,4 +17,7 @@ const dbConfig = {
     password: process.env.DB_PW,
 };
 
-export { port, env, dbConfig };
+const jwtSecretKey = <string>process.env.JWT_SECRET_KEY;
+const passwordHashKey = <string>process.env.PASSWORD_HASH_KEY;
+
+export { port, env, dbConfig, jwtSecretKey, passwordHashKey };
