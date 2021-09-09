@@ -3,19 +3,19 @@ schema: 'http://localhost:3005/graphql'
 documents:
     - 'src/graphql/queries/**/*.graphql'
 generates:
-    src/graphql/generated.ts:
+    src/graphql/generated/generated.ts:
         plugins:
             - 'typescript'
             - 'typescript-operations'
             - 'typescript-react-apollo'
         config:
             withHooks: true
-    src/graphql/introspection.json:
+    src/graphql/generated/introspection.json:
         plugins:
             - 'introspection'
         config:
             minify: true
-    graphql/introspection-result.json:
+    graphql/generated/introspection-result.json:
         plugins:
             - fragment-matcher
         config:
