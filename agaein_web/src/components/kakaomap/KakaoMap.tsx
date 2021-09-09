@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { TypeMetaFieldDef } from 'graphql';
 import { useEffect, useState } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
