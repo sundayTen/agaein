@@ -10,4 +10,5 @@ type Query {
 type Mutation {
     # User
     signup(User: UserSignupInput!): String
+    login(User: UserLoginInput!): String
 }

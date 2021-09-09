@@ -11,6 +11,8 @@ const schema = makeExecutableSchema({
 
 const apolloServer = new ApolloServer({
     schema,
+    context: ({ req, res }) => ({ req, res }),
+    debug: false,
 });
 
 export default apolloServer;
