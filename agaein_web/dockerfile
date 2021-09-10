@@ -1,6 +1,5 @@
 FROM node:14.17.5-alpine3.14 as build-stage
 WORKDIR /homepage
-
 COPY . .
 RUN yarn install
 RUN yarn build
