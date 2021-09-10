@@ -5,7 +5,6 @@ pipeline {
 		stage('git pull') {
 			agent any
 			steps {
-                options { skipDefaultCheckout(false) }
 				checkout scm
 			}
 		}
