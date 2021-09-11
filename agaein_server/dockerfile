@@ -1,0 +1,6 @@
+FROM node:14.17.5-alpine3.14
+COPY . . 
+RUN yarn install
+RUN yarn build
+EXPOSE 3005
+CMD ["yarn", "start"]
