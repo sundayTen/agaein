@@ -8,7 +8,6 @@ const httpLink = createHttpLink({
 });
 const authLink = setContext((_, { headers }) => {
     const token = cookies.get('token');
-    console.log('🚀 ~ file: apollo.ts ~ line 11 ~ authLink ~ token', token);
     return {
         headers: {
             ...headers,

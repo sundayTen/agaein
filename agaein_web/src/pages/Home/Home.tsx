@@ -1,18 +1,14 @@
 //@ts-nocheck
-import React from 'react';
 import { useContext, useState } from 'react';
 import { ThemeContext } from 'styled-components';
 import { RouteComponentProps } from 'react-router-dom';
 import KakaoMap from 'components/kakaomap/KakaoMap';
 import Input from 'components/Input';
-import { useGetUsersQuery } from 'graphql/generated/generated';
 
 const Home = ({ history }: RouteComponentProps) => {
     const theme = useContext(ThemeContext);
     const [search, setSearch] = useState('');
     const [inputValue, setInputValue] = useState('');
-    const test = useGetUsersQuery()
-    console.log("🚀 ~ file: Home.tsx ~ line 15 ~ Home ~ test", test)
 
     const onChange = (e) => {
         setInputValue(e.target.value);
