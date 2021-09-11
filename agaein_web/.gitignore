@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-/src/graphql/
 # testing
 /coverage
 
@@ -12,9 +11,10 @@
 /build
 
 # codegen introspection files
-introspection.json
-introspection-result.json
-generated.ts
+/src/graphql/generated
+; introspection.json
+; introspection-result.json
+; generated.ts
 
 # env files
 .env

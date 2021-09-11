@@ -1,7 +1,5 @@
 //@ts-nocheck
-import { TypeMetaFieldDef } from 'graphql';
 import { useEffect, useState } from 'react';
-import { RouteComponentProps, Link } from 'react-router-dom';
 declare global {
     interface Window {
         kakao: any;
@@ -9,13 +7,11 @@ declare global {
 }
 const { kakao } = window;
 
-const options = {
-    center: new kakao.maps.LatLng(33.450701, 126.570667),
-    level: 3,
-};
 const KakaoMap = (props) => {
     const [container, setContainer] = useState(null);
+    console.log('🚀 OutPut is -->  ~ KakaoMap ~ container', container);
     const [map, setMap] = useState(null);
+    console.log('🚀 OutPut is -->  ~ KakaoMap ~ map', map);
     const [markers, setMarkers] = useState([]);
     const [bounds, setBound] = useState(new kakao.maps.LatLngBounds());
 
@@ -28,6 +24,10 @@ const KakaoMap = (props) => {
         bounds.extend(position);
     };
 
+    const options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 3,
+    };
     const addressSearch = (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
             const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
@@ -64,6 +64,7 @@ const KakaoMap = (props) => {
             map.setBounds(bounds);
         });
     }, [markers]);
+
     return (
         <>
             <div id="map" style={{ width: 1900, height: 500 }} />
