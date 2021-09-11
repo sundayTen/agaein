@@ -9,9 +9,7 @@ const { kakao } = window;
 
 const KakaoMap = (props) => {
     const [container, setContainer] = useState(null);
-    console.log('🚀 OutPut is -->  ~ KakaoMap ~ container', container);
     const [map, setMap] = useState(null);
-    console.log('🚀 OutPut is -->  ~ KakaoMap ~ map', map);
     const [markers, setMarkers] = useState([]);
     const [bounds, setBound] = useState(new kakao.maps.LatLngBounds());
 

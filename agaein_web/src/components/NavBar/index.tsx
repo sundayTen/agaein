@@ -5,12 +5,27 @@ import { MenuIcon, MoonIcon, SunIcon } from '@heroicons/react/solid';
 import { DarkMode, Manu, ManuBox, Nav, Title } from './style';
 import KakaoLogin from 'react-kakao-login';
 import { KAKAO_LOGIN_KEY } from 'config/server';
+import Cookies from 'universal-cookie';
 
 interface NavBarProps {}
+
+interface KaKaoLoginResult {
+    response: LoginResponse;
+    profile?: UserProfile | undefined;
+}
 
 const NavBar = (props: NavBarProps) => {
     const [menuToggle, setMenuToggle] = useState<boolean>(false);
     const [darkToggle, setDarkToggle] = useState<boolean>(false);
+
+    const cookies = new Cookies();
+
+    const onLoginComplete = (result: KaKaoLoginResult) => {
+        cookies.set('token', result.response.access_token, {
+            path: '/',
+        });
+    };
+
     return (
         <Nav>
             <Manu>
@@ -22,9 +37,7 @@ const NavBar = (props: NavBarProps) => {
             <KakaoLogin
                 token={KAKAO_LOGIN_KEY}
                 buttonTitle="카카오 계정으로 로그인"
-                onSuccess={(result) => {
-                    console.log(result);
-                }}
+                onSuccess={onLoginComplete}
                 onFail={(result) => {
                     console.log(result);
                 }}
