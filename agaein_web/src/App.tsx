@@ -1,5 +1,5 @@
-import Router from './Router';
-import GlobalStyle from "./assets/styles/GlobalStyle";
+import Router from './router';
+import GlobalStyle from './assets/styles/GlobalStyle';
 import NavBar from 'components/NavBar';
 
 function App() {

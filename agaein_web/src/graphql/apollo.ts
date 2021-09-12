@@ -1,7 +1,21 @@
-import { SERVER_URL } from '../config/server';
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import Cookies from 'universal-cookie';
+import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
+const cookies = new Cookies();
+const httpLink = createHttpLink({
+    uri: 'http://localhost:3005/graphql',
+});
+const authLink = setContext((_, { headers }) => {
+    const token = cookies.get('token');
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : '',
+        },
+    };
+});
 export const client = new ApolloClient({
-    uri: SERVER_URL,
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
 });
