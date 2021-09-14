@@ -1,0 +1,17 @@
+type Comment implements Timestamps {
+    id: ID!
+    userId: ID!
+    articleId: ID!
+    info: CommentInfo!
+
+    createdAt: Date!
+    updatedAt: Date!
+}
+
+type CommentInfo {
+    content: String!
+}
+
+input CommentInput {
+    content: String!
+}
