@@ -17,3 +17,11 @@ query getUser($id: ID!) {
         }
     }
 }
+
+mutation signUp($User: UserSignupInput!) {
+    signup(User: $User)
+}
+
+mutation login($User: UserLoginInput!) {
+    login(User: $User)
+}

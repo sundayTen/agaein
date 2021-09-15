@@ -1,5 +1,4 @@
 import { useGetArticlesQuery } from 'graphql/generated/generated';
-import React from 'react';
 
 const ReviewList = () => {
     const { data, loading, error } = useGetArticlesQuery({
@@ -14,6 +13,7 @@ const ReviewList = () => {
 
     return (
         <div>
+            {/* h1대신 Carousel 컴포넌트가 와야 함. 테스트용 코드 */}
             {articles?.map((article) => (
                 <h1>{`Title : ${article?.title}, Content : ${article?.content}`}</h1>
             ))}
