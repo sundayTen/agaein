@@ -7,3 +7,13 @@ query getUsers {
         }
     }
 }
+
+query getUser($id: ID!) {
+    user(id: $id) {
+        id
+        info {
+            name
+            email
+        }
+    }
+}

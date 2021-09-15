@@ -1,0 +1,21 @@
+query getArticles($boardType: String!) {
+    Articles(boardType: $boardType) {
+        id
+        created_at
+        info {
+            title
+            content
+        }
+    }
+}
+
+query getArticle($boardType: String! id: ID!){
+  Article(boardType: $boardType, id: $id){
+    id
+    created_at
+    info{
+      title
+      content
+    }
+  }
+}

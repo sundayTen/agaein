@@ -1,0 +1,10 @@
+query getComments($boardType: String!) {
+    Comments(boardType: $boardType) {
+        id
+        userId
+        articleId
+        info {
+            content
+        }
+    }
+}

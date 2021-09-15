@@ -1,6 +1,8 @@
 {
   "possibleTypes": {
     "Timestamps": [
+      "Article",
+      "Comment",
       "User"
     ]
   }
