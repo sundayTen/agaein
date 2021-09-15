@@ -1,19 +1,19 @@
 import { port } from './config/environment';
 import {
     initUser,
-    initFindingPetArticle,
-    initFindingPetArticleComment,
-    initFindingOwnerArticle,
-    initFindingOwnerArticleComment,
+    initLookingForPetArticle,
+    initLookingForPetArticleComment,
+    initLookingForGuardianArticle,
+    initLookingForGuardianArticleComment,
 } from './graphql/database';
 import app from './app';
 
 const initDatabase = async () => {
     await initUser();
-    await initFindingPetArticle();
-    await initFindingPetArticleComment();
-    await initFindingOwnerArticle();
-    await initFindingOwnerArticleComment();
+    await initLookingForPetArticle();
+    await initLookingForPetArticleComment();
+    await initLookingForGuardianArticle();
+    await initLookingForGuardianArticleComment();
 };
 
 const start = async () => {

@@ -5,10 +5,20 @@ type Query {
     # User
     users: [User]!
     user(id: ID!): User
+    # Article
+    Articles(boardType: String!): [Article]!
+    Article(boardType: String!, id: ID!): Article
+    # Comment
+    Comments(boardType: String!): [Comment]!
+    
 }
 
 type Mutation {
     # User
     signup(User: UserSignupInput!): String
     login(User: UserLoginInput!): String
+    # Article
+    createArticle(boardType: String!, Article: ArticleInput!): Article!
+    # Comment
+    createComment(boardType: String!, articleId: ID!, Comment: CommentInput!): Comment!
 }

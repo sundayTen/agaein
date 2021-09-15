@@ -1,0 +1,18 @@
+type Article implements Timestamps {
+    id: ID!
+    userId: ID!
+    info: ArticleInfo!
+
+    createdAt: Date!
+    updatedAt: Date!
+}
+
+type ArticleInfo {
+    title: String!
+    content: String!
+}
+
+input ArticleInput {
+    title: String!
+    content: String!
+}
