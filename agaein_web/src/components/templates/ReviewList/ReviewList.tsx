@@ -8,8 +8,12 @@ const ReviewList = () => {
         },
     });
 
-    if (loading) return <></>;
+    console.log(error);
+    if (loading) {
+        return <></>;
+    }
     const articles = data?.Articles.map((article) => article?.info);
+    console.log('🚀 ~ file: ReviewList.tsx ~ line 13 ~ ReviewList ~ articles', articles);
 
     return (
         <div>

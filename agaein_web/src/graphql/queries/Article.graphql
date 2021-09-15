@@ -1,7 +1,6 @@
 query getArticles($boardType: String!) {
     Articles(boardType: $boardType) {
         id
-        createdAt
         info {
             title
             content
@@ -12,7 +11,6 @@ query getArticles($boardType: String!) {
 query getArticle($boardType: String!, $id: ID!) {
     Article(boardType: $boardType, id: $id) {
         id
-        createdAt
         info {
             title
             content
@@ -23,7 +21,6 @@ query getArticle($boardType: String!, $id: ID!) {
 mutation createArticle($boardType: String!, $Article: ArticleInput!) {
     createArticle(boardType: $boardType, Article: $Article) {
         id
-        createdAt
         info {
             title
             content
