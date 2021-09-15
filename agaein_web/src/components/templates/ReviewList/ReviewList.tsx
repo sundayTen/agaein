@@ -8,18 +8,20 @@ const ReviewList = () => {
         },
     });
 
-    console.log(error);
+    if (error) {
+        console.log(error);
+    }
+
     if (loading) {
         return <></>;
     }
     const articles = data?.Articles.map((article) => article?.info);
-    console.log('🚀 ~ file: ReviewList.tsx ~ line 13 ~ ReviewList ~ articles', articles);
 
     return (
         <div>
-            {/* h1대신 Carousel 컴포넌트가 와야 함. 테스트용 코드 */}
-            {articles?.map((article) => (
-                <h1>{`Title : ${article?.title}, Content : ${article?.content}`}</h1>
+            {/* h1대신 Carousel 컴포넌트가 와야 함. 테스트용 코드 // key는 index말고 id가 와야함*/}
+            {articles?.map((article, index) => (
+                <h1 key={index.toString()}>{`Title : ${article?.title}, Content : ${article?.content}`}</h1>
             ))}
         </div>
     );
