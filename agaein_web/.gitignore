@@ -12,6 +12,7 @@
 
 # codegen introspection files
 /src/graphql/generated
+/.vscode
 ; introspection.json
 ; introspection-result.json
 ; generated.ts

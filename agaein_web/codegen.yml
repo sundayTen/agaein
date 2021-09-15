@@ -15,7 +15,7 @@ generates:
             - 'introspection'
         config:
             minify: true
-    graphql/generated/introspection-result.json:
+    src/graphql/generated/introspection-result.json:
         plugins:
             - fragment-matcher
         config:
