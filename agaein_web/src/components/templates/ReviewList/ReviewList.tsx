@@ -1,4 +1,6 @@
+import ReviewItem from 'components/molcules/ReviewItem/ReviewItem';
 import { useGetArticlesQuery } from 'graphql/generated/generated';
+import { ListContainer, ListItem } from './ReviewList.style';
 
 const ReviewList = () => {
     const { data, loading, error } = useGetArticlesQuery({
@@ -18,12 +20,14 @@ const ReviewList = () => {
     const articles = data?.Articles.map((article) => article?.info);
 
     return (
-        <div>
+        <ListContainer>
             {/* h1대신 Carousel 컴포넌트가 와야 함. 테스트용 코드 // key는 index말고 id가 와야함*/}
             {articles?.map((article, index) => (
-                <h1 key={index.toString()}>{`Title : ${article?.title}, Content : ${article?.content}`}</h1>
+                <ListItem>
+                    <ReviewItem key={index.toString()} title={article?.title} description={article?.content} />
+                </ListItem>
             ))}
-        </div>
+        </ListContainer>
     );
 };
 
