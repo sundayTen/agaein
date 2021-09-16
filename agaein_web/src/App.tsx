@@ -1,5 +1,5 @@
 import GlobalStyle from './assets/styles/GlobalStyle';
-import NavBar from 'components/molcules/NavBar';
+import NavBar from 'components/molecules/NavBar';
 import Router from 'router';
 
 function App() {

@@ -1,4 +1,4 @@
-import ReviewItem from 'components/molcules/ReviewItem/ReviewItem';
+import ReviewItem from 'components/molecules/ReviewItem/ReviewItem';
 import { useGetArticlesQuery } from 'graphql/generated/generated';
 import { ListContainer, ListItem } from './ReviewList.style';
 
