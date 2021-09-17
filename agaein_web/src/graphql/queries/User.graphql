@@ -7,3 +7,21 @@ query getUsers {
         }
     }
 }
+
+query getUser($id: ID!) {
+    user(id: $id) {
+        id
+        info {
+            name
+            email
+        }
+    }
+}
+
+mutation signUp($User: UserSignupInput!) {
+    signup(User: $User)
+}
+
+mutation login($User: UserLoginInput!) {
+    login(User: $User)
+}

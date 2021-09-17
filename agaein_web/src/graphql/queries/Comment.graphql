@@ -1,0 +1,23 @@
+query getComments($boardType: String!) {
+    Comments(boardType: $boardType) {
+        id
+        userId
+        articleId
+        createdAt
+        info {
+            content
+        }
+    }
+}
+
+mutation createComment($boardType: String!, $articleId: ID!, $Comment: CommentInput!) {
+    createComment(boardType: $boardType, articleId: $articleId, Comment: $Comment) {
+        id
+        userId
+        articleId
+        createdAt
+        info {
+            content
+        }
+    }
+}

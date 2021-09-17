@@ -10,7 +10,7 @@ const theme: DefaultTheme = {
         error: '#B00020',
     },
     light: {
-        background: '#ffffaa',
+        background: '#fff',
         font: '#000',
         primary: '#2fb5b5',
         secondary: '#9B51E0',

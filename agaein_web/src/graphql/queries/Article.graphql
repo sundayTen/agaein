@@ -1,0 +1,29 @@
+query getArticles($boardType: String!) {
+    Articles(boardType: $boardType) {
+        id
+        info {
+            title
+            content
+        }
+    }
+}
+
+query getArticle($boardType: String!, $id: ID!) {
+    Article(boardType: $boardType, id: $id) {
+        id
+        info {
+            title
+            content
+        }
+    }
+}
+
+mutation createArticle($boardType: String!, $Article: ArticleInput!) {
+    createArticle(boardType: $boardType, Article: $Article) {
+        id
+        info {
+            title
+            content
+        }
+    }
+}
