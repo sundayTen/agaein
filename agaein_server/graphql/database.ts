@@ -1,4 +1,5 @@
 import { dbConfig } from '../config/environment';
+import { knexSnakeCaseMappers } from 'objection';
 
 // connection
 export const knex = require('knex')({
@@ -12,6 +13,7 @@ export const knex = require('knex')({
         charset: 'utf8',
     },
     pool: { min: 0, max: 100 },
+    ...knexSnakeCaseMappers(),
 });
 
 // ------------ database initializing -----------------
@@ -22,8 +24,8 @@ export function initUser() {
                 .createTable('user', function (table: any) {
                     table.increments();
                     table.json('info').defaultTo({}).notNullable();
-                    table.dateTime('created_at');
-                    table.dateTime('updated_at');
+                    table.dateTime('created_at').notNullable();
+                    table.dateTime('updated_at').notNullable();
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created user table');
@@ -49,8 +51,8 @@ export function initLookingForPetArticle() {
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
                     table.json('info').defaultTo({}).notNullable();
-                    table.dateTime('created_at');
-                    table.dateTime('updated_at');
+                    table.dateTime('created_at').notNullable();
+                    table.dateTime('updated_at').notNullable();
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created looking_for_pet_article table');
@@ -76,9 +78,8 @@ export function initLookingForGuardianArticle() {
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
                     table.json('info').defaultTo({}).notNullable();
-
-                    table.dateTime('created_at');
-                    table.dateTime('updated_at');
+                    table.dateTime('created_at').notNullable();
+                    table.dateTime('updated_at').notNullable();
                 })
                 .then(() => {
                     console.log('[DataBase Initialized] created looking_for_guardian_article table');
@@ -111,8 +112,8 @@ export function initLookingForPetArticleComment() {
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
                     table.json('info').defaultTo({}).notNullable();
-                    table.dateTime('created_at');
-                    table.dateTime('updated_at');
+                    table.dateTime('created_at').notNullable();
+                    table.dateTime('updated_at').notNullable();
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created looking_for_pet_article_comment table');
@@ -145,8 +146,8 @@ export function initLookingForGuardianArticleComment() {
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
                     table.json('info').defaultTo({}).notNullable();
-                    table.dateTime('created_at');
-                    table.dateTime('updated_at');
+                    table.dateTime('created_at').notNullable();
+                    table.dateTime('updated_at').notNullable();
                 })
                 .then(() => {
                     console.log('[DataBase Initialized] created looking_for_guardian_article_comment table');
