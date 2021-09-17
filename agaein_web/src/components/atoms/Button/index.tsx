@@ -1,19 +1,18 @@
-import React from 'react';
-import styled from 'styled-components';
+import { StyledButton } from './Button.style';
 
-interface ButtonProps {}
-
-const StyledButton = styled.button`
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border: 1px solid lightgray;
-    color: gray;
-`;
+interface ButtonProps {
+    color: string;
+    label: string;
+    onClick: () => void;
+}
 
 const Button = (props: ButtonProps) => {
-    return <StyledButton>버튼</StyledButton>;
+    const { label, onClick, color } = props;
+    return (
+        <StyledButton onClick={onClick} color={color}>
+            {label}
+        </StyledButton>
+    );
 };
 
 export default Button;

@@ -7,7 +7,7 @@ export const ReviewItemContainer = styled.div`
     width: 150px;
     height: 200px;
     border-width: 2px;
-    border: 2px solid black;
+    border: 2px solid #bfc4ca;
     border-radius: 10px;
     cursor: pointer;
 `;
@@ -22,4 +22,19 @@ export const Description = styled.p`
 export const Avatar = styled.img`
     width: 150px;
     height: 100px;
+`;
+
+export const ReviewerContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 10px 5px 10px;
+`;
+
+export const ReviewerName = styled.p`
+    font-size: 12px;
+    color: #5f6871;
+`;
+export const CommentCount = styled.p`
+    font-size: 12px;
+    color: #5f6871;
 `;

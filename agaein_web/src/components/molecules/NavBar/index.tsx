@@ -45,7 +45,7 @@ const NavBar = (props: NavBarProps) => {
                 useLoginForm={true}
                 style={{
                     cursor: 'pointer',
-                    backgroundColor: 'yellow',
+                    backgroundColor: '#f7e600',
                     paddingRight: 20,
                     paddingLeft: 20,
                     width: 200,
@@ -53,6 +53,7 @@ const NavBar = (props: NavBarProps) => {
                     fontSize: 16,
                     fontWeight: 'bold',
                     borderRadius: 10,
+                    borderColor: '#bfc4ca',
                 }}
             />
             <DarkMode onClick={() => (darkToggle ? setdarkToggle(false) : setdarkToggle(true))}>
