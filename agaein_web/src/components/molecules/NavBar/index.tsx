@@ -17,51 +17,44 @@ interface KaKaoLoginResult {
 const NavBar = (props: NavBarProps) => {
     const [menuToggle, setMenuToggle] = useState<boolean>(false);
     const [darkToggle, setDarkToggle] = useState<boolean>(false);
-
+    const [login, setLogin] = useState(false);
     const cookies = new Cookies();
 
     const onLoginComplete = (result: KaKaoLoginResult) => {
         cookies.set('token', result.response.access_token, {
             path: '/',
         });
+        setLogin(true);
     };
 
     return (
         <Nav>
             <Manu>
-                <MenuIcon style={{ width: 40 }} onClick={() => setMenuToggle(menuToggle ? false : true)} />
-            </Manu>
-            <ManuBox>
                 <Title>AGAEIN</Title>
-            </ManuBox>
-            <KakaoLogin
-                token={KAKAO_LOGIN_KEY}
-                buttonTitle="카카오 계정으로 로그인"
-                onSuccess={onLoginComplete}
-                onFail={(result) => {
-                    console.log(result);
-                }}
-                getProfile={true}
-                useLoginForm={true}
-                style={{
-                    cursor: 'pointer',
-                    backgroundColor: 'yellow',
-                    paddingRight: 20,
-                    paddingLeft: 20,
-                    width: 200,
-                    height: 50,
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    borderRadius: 10,
-                }}
-            />
-            <DarkMode onClick={() => (darkToggle ? setdarkToggle(false) : setdarkToggle(true))}>
-                {darkToggle ? (
-                    <MoonIcon style={{ width: 30, height: 30 }} />
-                ) : (
-                    <SunIcon style={{ width: 30, height: 30 }} />
-                )}
-            </DarkMode>
+            </Manu>
+            {login ? (
+                <Title style={{ marginLeft: 'auto' }}>환영합니다</Title>
+            ) : (
+                <KakaoLogin
+                    token={KAKAO_LOGIN_KEY}
+                    onSuccess={onLoginComplete}
+                    onFail={(result) => {
+                        console.log(result);
+                    }}
+                    getProfile={true}
+                    useLoginForm={true}
+                    style={{
+                        marginLeft: 'auto',
+                        cursor: 'pointer',
+                        backgroundColor: 'yellow',
+                        width: 220,
+                        height: 50,
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        borderRadius: 10,
+                    }}
+                />
+            )}
         </Nav>
     );
 };
