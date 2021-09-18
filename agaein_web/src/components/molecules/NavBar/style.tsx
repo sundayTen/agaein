@@ -17,6 +17,9 @@ export const Manu = styled.div`
 
 export const Title = styled.h1`
     text-align: center;
+    color: #5F6871;
+    font-size: 24px;
+    line-height: 28px;
 `;
 
 export const ManuBox = styled.div`
