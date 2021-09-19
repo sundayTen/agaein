@@ -1,13 +1,14 @@
 import GlobalStyle from './assets/styles/GlobalStyle';
-import NavBar from 'components/molecules/NavBar';
+import AppLayout from 'components/organism/AppLayout/AppLayout';
 import Router from 'router';
 
 function App() {
     return (
         <div style={{ width: '100vw' }}>
             <GlobalStyle />
-            <NavBar />
-            <Router />
+            <AppLayout>
+                <Router />
+            </AppLayout>
         </div>
     );
 }
