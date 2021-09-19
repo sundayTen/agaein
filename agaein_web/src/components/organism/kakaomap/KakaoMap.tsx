@@ -1,56 +1,81 @@
-//@ts-nocheck
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 declare global {
     interface Window {
         kakao: any;
     }
 }
+interface kakaoMapProps {
+    search: string;
+}
 const { kakao } = window;
 
-const KakaoMap = (props) => {
-    const [container, setContainer] = useState(null);
-    const [map, setMap] = useState(null);
-    const [markers, setMarkers] = useState([]);
-    const [bounds, setBound] = useState(new kakao.maps.LatLngBounds());
+const options = {
+    center: new kakao.maps.LatLng(33.450701, 126.570667),
+    level: 3,
+};
 
-    const addMarker = (position) => {
+const KakaoMap = (props: kakaoMapProps) => {
+    const ref = useRef(null);
+    const geocoder = new kakao.maps.services.Geocoder();
+    const mapRef = useRef(null);
+    const [map, setMap] = useState<any>(null);
+    const [markers, setMarkers] = useState<Array<any>>([]);
+    const [bounds, setBound] = useState(new kakao.maps.LatLngBounds());
+    //const [customOverlays, setCustomOverlays] = useState(null);
+
+    const addMarker = (position: any) => {
         // 마커를 생성합니다
         const marker = new kakao.maps.Marker({
             position: position,
         });
+        const customOverlay = new kakao.maps.CustomOverlay({
+            position: position,
+            content: ref.current,
+            yAnchor: 1.02,
+            xAnchor: 0.3,
+        });
+        console.log(marker);
+        kakao.maps.event.addListener(marker, 'click', clickMarker(customOverlay, position));
         setMarkers([...markers, marker]);
         bounds.extend(position);
     };
 
-    const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 3,
+    const clickAddMarker = (position: any) => {
+        const coords = position.latLng;
+        addMarker(coords);
     };
-    const addressSearch = (result, status) => {
+
+    const clickMarker = (customOverlay: any, position: any) => {
+        return function () {
+            customOverlay.setMap(map);
+            map.panTo(position);
+        };
+    };
+
+    const addressSearch = (result: any, status: any) => {
         if (status === kakao.maps.services.Status.OK) {
             const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            console.log(coords);
             addMarker(coords);
-
-            const infowindow = new kakao.maps.InfoWindow({
-                content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>',
-            });
-            //infowindow.open(map, markers);
         }
     };
 
     useEffect(() => {
-        setContainer(document.getElementById('map'));
+        setMap(new kakao.maps.Map(mapRef.current, options));
     }, []);
 
     useEffect(() => {
-        if (container !== null) {
-            setMap(new kakao.maps.Map(container, options));
+        if (map !== null) {
+            kakao.maps.event.addListener(map, 'click', clickAddMarker);
+
+            return () => {
+                kakao.maps.event.removeListener(map, 'click', clickAddMarker);
+                //kakao.maps.event.removeListener(marker, 'click', clickMarker);
+            };
         }
-    }, [container]);
+    }, [map]);
 
     useEffect(() => {
-        const geocoder = new kakao.maps.services.Geocoder();
-
         if (props.search !== '') {
             geocoder.addressSearch(props.search, addressSearch);
         }
@@ -65,9 +90,9 @@ const KakaoMap = (props) => {
 
     return (
         <>
-            <div id="map" style={{ width: 1900, height: 500 }} />
+            <div ref={mapRef} style={{ width: 1900, height: 500 }} />
         </>
-    );
+    )
 };
 
 export default KakaoMap;
