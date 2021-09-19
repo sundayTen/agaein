@@ -21,7 +21,7 @@ input,
 textarea,
 select,
 button {
-    font-family: Dotum, '돋움', Helvetica, 'Apple SD Gothic Neo', sans-serif;
+    font-family: Noto Sans KR, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -37,6 +37,11 @@ table {
 
 em {
     font-style: normal;
+}
+
+button {
+    border: 0;
+    background-color: transparent;
 }
 
 a {
