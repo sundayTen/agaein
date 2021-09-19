@@ -9,6 +9,7 @@ export const Nav = styled.nav`
     background-color: white;
     border-bottom: 1px solid rgba(44, 44, 44, 0.233);
     box-shadow: 0px 2px 3px rgba(44, 44, 44, 0.137);
+    justify-content: space-between;
 `;
 
 export const Manu = styled.div`
@@ -17,7 +18,7 @@ export const Manu = styled.div`
 
 export const Title = styled.h1`
     text-align: center;
-    color: #5F6871;
+    color: #5f6871;
     font-size: 24px;
     line-height: 28px;
 `;

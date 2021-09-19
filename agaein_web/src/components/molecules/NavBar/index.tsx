@@ -36,7 +36,7 @@ const NavBar = (props: NavBarProps) => {
                 </Title>
             </Manu>
             {login ? (
-                <Title style={{ marginLeft: 'auto' }}>환영합니다</Title>
+                <Title>환영합니다</Title>
             ) : (
                 <KakaoLogin
                     token={KAKAO_LOGIN_KEY}
@@ -47,15 +47,12 @@ const NavBar = (props: NavBarProps) => {
                     getProfile={true}
                     useLoginForm={true}
                     style={{
-                        fontFamily: 'Noto Sans KR',
-                        marginLeft: 'auto',
                         cursor: 'pointer',
                         width: '72px',
                         height: '40px',
                         fontSize: '16px',
                         lineHeight: '23px',
                         border: 0,
-                        background: 'transparent',
                         color: '#5F6871',
                     }}
                 >

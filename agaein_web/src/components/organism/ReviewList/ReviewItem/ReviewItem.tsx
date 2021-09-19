@@ -5,6 +5,7 @@ import {
     Description,
     ReviewerContainer,
     ReviewerName,
+    ReviewInfoContainer,
     ReviewItemContainer,
     Title,
 } from './ReviewItem.style';
@@ -21,8 +22,10 @@ const ReviewItem = (props: ReviewItemProps) => {
         <>
             <ReviewItemContainer>
                 <Avatar src={penguin} />
-                <Title>{title}</Title>
-                <Description>{description}</Description>
+                <ReviewInfoContainer>
+                    <Title>{title}</Title>
+                    <Description>{description}</Description>
+                </ReviewInfoContainer>
             </ReviewItemContainer>
             <ReviewerContainer>
                 <ReviewerName>이름</ReviewerName>

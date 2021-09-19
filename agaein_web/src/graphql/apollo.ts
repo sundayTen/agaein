@@ -4,7 +4,7 @@ import { setContext } from '@apollo/client/link/context';
 
 const cookies = new Cookies();
 const httpLink = createHttpLink({
-    uri: 'http://localhost:3005/graphql',
+    uri: 'https://www.agaein.com/graphql',
 });
 const authLink = setContext((_, { headers }) => {
     const token = cookies.get('token');

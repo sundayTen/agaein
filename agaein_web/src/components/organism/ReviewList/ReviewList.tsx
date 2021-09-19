@@ -1,6 +1,7 @@
-import ReviewItem from 'components/molecules/ReviewItem/ReviewItem';
+import ReviewItem from 'components/organism/ReviewList/ReviewItem/ReviewItem';
 import { useGetArticlesQuery } from 'graphql/generated/generated';
 import { ListContainer, ListItem } from './ReviewList.style';
+import ReviewListHeader from './ReviewListHeader';
 
 const ReviewList = () => {
     const { data, loading, error } = useGetArticlesQuery({
@@ -17,16 +18,20 @@ const ReviewList = () => {
     if (loading) {
         return <></>;
     }
+
     const articles = data?.Articles.map((article) => article?.info);
 
     return (
-        <ListContainer>
-            {articles?.map((article, index) => (
-                <ListItem>
-                    <ReviewItem key={index.toString()} title={article?.title} description={article?.content} />
-                </ListItem>
-            ))}
-        </ListContainer>
+        <>
+            <ReviewListHeader />
+            <ListContainer>
+                {articles?.map((article, index) => (
+                    <ListItem>
+                        <ReviewItem key={index.toString()} title={article?.title} description={article?.content} />
+                    </ListItem>
+                ))}
+            </ListContainer>
+        </>
     );
 };
 

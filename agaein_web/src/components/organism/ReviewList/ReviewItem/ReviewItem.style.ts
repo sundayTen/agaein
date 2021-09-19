@@ -2,26 +2,27 @@ import styled from 'styled-components';
 
 export const ReviewItemContainer = styled.div`
     background-color: #fff;
-    padding: 10px 10px 10px 10px;
     margin: 10px 10px 10px 10px;
-    width: 150px;
-    height: 200px;
+    width: 290px;
+    height: 280px;
     border-width: 2px;
     border: 2px solid #bfc4ca;
     border-radius: 10px;
     cursor: pointer;
+    overflow: hidden;
 `;
 
 export const Title = styled.p`
     font-size: 14px;
+    margin-bottom: 10px;
 `;
 export const Description = styled.p`
     font-size: 12px;
     color: #bfc4ca;
 `;
 export const Avatar = styled.img`
-    width: 150px;
-    height: 100px;
+    width: 100%;
+    height: 160px;
 `;
 
 export const ReviewerContainer = styled.div`
@@ -37,4 +38,8 @@ export const ReviewerName = styled.p`
 export const CommentCount = styled.p`
     font-size: 12px;
     color: #5f6871;
+`;
+
+export const ReviewInfoContainer = styled.div`
+    margin: 10px 10px 10px 10px;
 `;

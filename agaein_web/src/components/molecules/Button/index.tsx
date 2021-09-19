@@ -1,13 +1,13 @@
 import { StyledButton } from './Button.style';
 
 interface ButtonProps {
-    color: string;
     label: string;
+    color?: string;
     onClick: () => void;
 }
 
 const Button = (props: ButtonProps) => {
-    const { label, onClick, color } = props;
+    const { label, color, onClick } = props;
     return (
         <StyledButton onClick={onClick} color={color}>
             {label}
