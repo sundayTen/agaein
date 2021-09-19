@@ -25,7 +25,7 @@ export const ListContainer = styled.ul`
 `;
 
 export const ListItem = styled.li`
-    width: calc(100% / 6);
+    width: 220px;
     padding: 10px 20px;
     box-sizing: border-box;
 `;
