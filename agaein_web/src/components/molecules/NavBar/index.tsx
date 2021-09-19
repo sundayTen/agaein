@@ -30,14 +30,14 @@ const NavBar = (props: NavBarProps) => {
     return (
         <Nav>
             <Manu>
-                <Title><img src="https://img.icons8.com/ios/50/000000/github--v1.png" style={{width: 28, height: 28}}/>Agaein</Title>
+                <Title>
+                    <img src="https://img.icons8.com/ios/50/000000/github--v1.png" style={{ width: 28, height: 28 }} />
+                    Agaein
+                </Title>
             </Manu>
-            {login ?
-            (
-                <Title style={{ marginLeft: 'auto' }}>환영합니다</Title>
-            )
-                :
-            (
+            {login ? (
+                <Title>환영합니다</Title>
+            ) : (
                 <KakaoLogin
                     token={KAKAO_LOGIN_KEY}
                     onSuccess={onLoginComplete}
@@ -46,20 +46,17 @@ const NavBar = (props: NavBarProps) => {
                     }}
                     getProfile={true}
                     useLoginForm={true}
-                        style={{
-                        fontFamily: 'Noto Sans KR',
-                        marginLeft: 'auto',
+                    style={{
                         cursor: 'pointer',
                         width: '72px',
                         height: '40px',
                         fontSize: '16px',
                         lineHeight: '23px',
                         border: 0,
-                        background: 'transparent',
-                        color: '#5F6871'
+                        color: '#5F6871',
                     }}
-                    >
-                        로그인
+                >
+                    로그인
                 </KakaoLogin>
             )}
         </Nav>
