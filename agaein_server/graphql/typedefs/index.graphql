@@ -6,11 +6,10 @@ type Query {
     users: [User]!
     user(id: ID!): User
     # Article
-    Articles(boardType: String!): [Article]!
-    Article(boardType: String!, id: ID!): Article
+    Articles(boardType: BOARD_TYPE!): [Article]!
+    Article(boardType: BOARD_TYPE!, id: ID!): Article
     # Comment
-    Comments(boardType: String!): [Comment]!
-    
+    Comments(boardType: BOARD_TYPE!): [Comment]!
 }
 
 type Mutation {
@@ -18,7 +17,7 @@ type Mutation {
     signup(User: UserSignupInput!): String
     login(User: UserLoginInput!): String
     # Article
-    createArticle(boardType: String!, Article: ArticleInput!): Article!
+    createArticle(boardType: BOARD_TYPE!, Article: ArticleInput!): Article!
     # Comment
-    createComment(boardType: String!, articleId: ID!, Comment: CommentInput!): Comment!
+    createComment(boardType: BOARD_TYPE!, articleId: ID!, Comment: CommentInput!): Comment!
 }

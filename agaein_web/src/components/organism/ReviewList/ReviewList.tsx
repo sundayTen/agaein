@@ -1,5 +1,6 @@
 import ReviewItem from 'components/organism/ReviewList/ReviewItem/ReviewItem';
-import { useGetArticlesQuery } from 'graphql/generated/generated';
+import { client } from 'graphql/apollo';
+import { Board_Type, GetArticlesDocument, useGetArticlesQuery } from 'graphql/generated/generated';
 import { ListContainer, ListItem } from './ReviewList.style';
 import ReviewListHeader from './ReviewListHeader';
 
@@ -7,7 +8,16 @@ const ReviewList = () => {
     const { data, loading, error } = useGetArticlesQuery({
         fetchPolicy: 'cache-and-network',
         variables: {
-            boardType: 'LFG',
+            boardType: Board_Type.Lfg,
+        },
+        onCompleted: (data) => {
+            const cached = client.readQuery({
+                query: GetArticlesDocument,
+                variables: {
+                    Board_Type: Board_Type.Lfg,
+                },
+            });
+            console.log(cached);
         },
     });
 

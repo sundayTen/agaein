@@ -2,9 +2,13 @@ type Article implements Timestamps {
     id: ID!
     userId: ID!
     info: ArticleInfo!
-
     createdAt: Date!
     updatedAt: Date!
+}
+
+enum BOARD_TYPE {
+    LFP
+    LFG
 }
 
 type ArticleInfo {
