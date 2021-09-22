@@ -2,6 +2,7 @@ import { knex } from '../../database';
 
 const articleQueries = {
     Articles: async (_: any, args: any) => {
+        // ? 여기선 Enum으로 정의된 Constant를 사용 못하나?
         if (args.boardType === 'LFP') {
             const articles = await knex('looking_for_pet_article');
             return articles;

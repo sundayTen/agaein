@@ -5,7 +5,9 @@ type Article implements Timestamps {
     createdAt: Date!
     updatedAt: Date!
 }
-
+"""
+게시글 타입 : LFP or LFG or ??
+"""
 enum BOARD_TYPE {
     LFP
     LFG

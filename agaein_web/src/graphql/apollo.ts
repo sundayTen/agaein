@@ -28,7 +28,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-    link: from([httpLink, authLink, errorLink]),
+    name: 'agaein',
+    version: '0.0.1',
+    link: from([authLink, errorLink, httpLink]),
     cache: new InMemoryCache({
         addTypename: true, // __typename 필드를 자동으로 붙혀주는지 여부 - default : true. false로 바꾸면
         resultCaching: true,

@@ -1,0 +1,4 @@
+fragment ArticleIds on Article {
+    id
+    userId
+}
