@@ -10,20 +10,18 @@ const PostList = (props: PostListProps) => {
 
     return (
         <>
-        <ListHeader>
-            <HeaderTitle>{title}</HeaderTitle>
-            <ButtonViewAll type="button">
-                전체보기 &gt;
-            </ButtonViewAll>
-        </ListHeader>
-        <ListContainer>
-            <ListItem>
-                <PostItemBox />
-            </ListItem>
-            <ListItem>
-                <PostItemBox />
-            </ListItem>
-        </ListContainer>
+            <ListHeader>
+                <HeaderTitle>{title}</HeaderTitle>
+                <ButtonViewAll type="button">전체보기 &gt;</ButtonViewAll>
+            </ListHeader>
+            <ListContainer>
+                <ListItem>
+                    <PostItemBox />
+                </ListItem>
+                <ListItem>
+                    <PostItemBox />
+                </ListItem>
+            </ListContainer>
         </>
     );
 };

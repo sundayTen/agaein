@@ -9,14 +9,14 @@ export const ListHeader = styled.div`
 export const HeaderTitle = styled.strong`
     font-size: 28px;
     line-height: 34px;
-    color: #5F6871;
+    color: #5f6871;
 `;
 
 export const ButtonViewAll = styled.button`
     font-size: 18px;
-    color: #5F6871;
+    color: #5f6871;
+    cursor: pointer;
 `;
-
 
 export const ListContainer = styled.ul`
     display: flex;

@@ -4,12 +4,12 @@ import Router from 'router';
 
 function App() {
     return (
-        <div style={{ width: '100vw' }}>
+        <>
             <GlobalStyle />
             <AppLayout>
                 <Router />
             </AppLayout>
-        </div>
+        </>
     );
 }
 
