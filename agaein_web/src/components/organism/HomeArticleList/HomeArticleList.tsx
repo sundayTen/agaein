@@ -30,6 +30,7 @@ const HomeArticleList = (boardType: Board_Type) => {
                 <HeaderTitle>{getTitle(boardType)}</HeaderTitle>
                 <ButtonViewAll type="button">전체보기 &gt;</ButtonViewAll>
             </ListHeader>
+            // TODO : articles가 없으면 Empty Component (등록된 게시글이 없어요! 가 보이도록 하기)
             {articles?.map((article) => {
                 return <PostItem item={article} />;
             })}

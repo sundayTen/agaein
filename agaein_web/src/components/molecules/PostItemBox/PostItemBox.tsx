@@ -1,7 +1,15 @@
 import { ItemBox, ItemLink, Thumb, Img, InfoList, InfoItem, InfoCategory, InfoText } from './PostItemBox.style';
 import penguin from 'assets/image/penguin.png';
+import { Article } from 'graphql/generated/generated';
 
-const PostItem = () => {
+interface PostItemProps {
+    item: Article;
+    onClick?: () => void;
+}
+
+const PostItem = (props: PostItemProps) => {
+    const { item } = props;
+    const { id, info } = item;
     return (
         <ItemBox>
             <ItemLink href="">
