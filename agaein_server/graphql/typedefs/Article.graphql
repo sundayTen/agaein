@@ -11,6 +11,7 @@ type Article implements Timestamps {
 enum BOARD_TYPE {
     LFP
     LFG
+    REVIEW
 }
 
 type ArticleInfo {
