@@ -8,8 +8,6 @@ interface PostItemProps {
 }
 
 const PostItem = (props: PostItemProps) => {
-    const { item } = props;
-    const { id, info } = item;
     return (
         <ItemBox>
             <ItemLink href="">
