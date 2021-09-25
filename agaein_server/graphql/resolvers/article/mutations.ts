@@ -13,12 +13,12 @@ const articleMutations = {
         };
 
         try {
-            if (args.boardType === "LFP") {
+            if (args.boardType === 'LFP') {
                 const articles = await knex('looking_for_pet_article').insert(info).returning('*');
                 const article = articles[0];
                 return article;
             }
-            if (args.boardType === "LFG") {
+            if (args.boardType === 'LFG') {
                 const articles = await knex('looking_for_guardian_article').insert(info).returning('*');
                 const article = articles[0];
                 return article;
@@ -26,6 +26,22 @@ const articleMutations = {
         } catch {
             throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
         }
+    },
+    singleUpload: async (_: any, args: any) => {
+        console.log(args);
+        const { createReadStream, filename, mimetype, encoding } = await args.file;
+        console.log(filename);
+
+        const stream = createReadStream();
+
+        // This is purely for demonstration purposes and will overwrite the
+        // local-file-output.txt in the current working directory on EACH upload.
+        const out = require('fs').createWriteStream(filename);
+        await stream.pipe(out);
+        await stream.on("close", () => {
+            console.log("done")
+        });
+        return { filename, mimetype, encoding };
     },
 };
 

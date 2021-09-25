@@ -1,5 +1,12 @@
 # Custom Scalars
 scalar Date
+scalar Upload
+
+type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+}
 
 type Query {
     # User
@@ -20,4 +27,6 @@ type Mutation {
     createArticle(boardType: BOARD_TYPE!, Article: ArticleInput!): Article!
     # Comment
     createComment(boardType: BOARD_TYPE!, articleId: ID!, Comment: CommentInput!): Comment!
+    # 실험
+    singleUpload(file: Upload!): File!
 }
