@@ -13,6 +13,7 @@ const apolloServer = new ApolloServer({
     schema,
     context: ({ req, res }) => ({ req, res }),
     debug: false,
+    uploads: false,
 });
 
 export default apolloServer;
