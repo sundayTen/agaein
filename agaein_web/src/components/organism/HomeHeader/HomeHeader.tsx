@@ -1,48 +1,9 @@
 import Button from 'components/molecules/Button';
-import {
-    ArticleIdsFragmentDoc,
-    Board_Type,
-    GetArticlesDocument,
-    useCreateArticleMutation,
-} from 'graphql/generated/generated';
-import { useEffect } from 'react';
 import { HeaderFirstFont, HeaderSecondFont, HomeHeaderButtonGroup, HomeHeaderContainer } from './HomeHeader.style';
 
 const HomeHeader = () => {
-    const [createArticle, { client }] = useCreateArticleMutation();
-
     const onClickCreate = () => {
-        createArticle({
-            variables: {
-                boardType: Board_Type.Lfg,
-                Article: {
-                    title: '타이틀 테스트',
-                    content: '컨텐츠 테스트',
-                },
-            },
-            update: (_, { data }) => {
-                try {
-                    const prevData = client.readQuery({
-                        query: GetArticlesDocument,
-                        variables: {
-                            boardType: Board_Type.Lfg,
-                        },
-                    });
-                    client.writeQuery({
-                        query: GetArticlesDocument,
-                        variables: {
-                            boardType: Board_Type.Lfg,
-                        },
-                        data: {
-                            Articles: [...prevData.Articles, data?.createArticle],
-                        },
-                        broadcast: true,
-                    });
-                } catch (error) {
-                    console.log(error);
-                }
-            },
-        });
+        console.log('Create BUtton Clicked');
     };
     const onClickSearch = () => {
         console.log('Search Button Clicked');
