@@ -1,6 +1,6 @@
-query getArticles($boardType: String!) {
+query getArticles($boardType: BOARD_TYPE!) {
     Articles(boardType: $boardType) {
-        id
+        ...ArticleIds
         info {
             title
             content
@@ -8,9 +8,9 @@ query getArticles($boardType: String!) {
     }
 }
 
-query getArticle($boardType: String!, $id: ID!) {
+query getArticle($boardType: BOARD_TYPE!, $id: ID!) {
     Article(boardType: $boardType, id: $id) {
-        id
+        ...ArticleIds
         info {
             title
             content
@@ -18,9 +18,9 @@ query getArticle($boardType: String!, $id: ID!) {
     }
 }
 
-mutation createArticle($boardType: String!, $Article: ArticleInput!) {
+mutation createArticle($boardType: BOARD_TYPE!, $Article: ArticleInput!) {
     createArticle(boardType: $boardType, Article: $Article) {
-        id
+        ...ArticleIds
         info {
             title
             content

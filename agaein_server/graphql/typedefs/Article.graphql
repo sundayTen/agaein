@@ -2,9 +2,16 @@ type Article implements Timestamps {
     id: ID!
     userId: ID!
     info: ArticleInfo!
-
     createdAt: Date!
     updatedAt: Date!
+}
+"""
+게시글 타입 : LFP or LFG or ??
+"""
+enum BOARD_TYPE {
+    LFP
+    LFG
+    REVIEW
 }
 
 type ArticleInfo {
