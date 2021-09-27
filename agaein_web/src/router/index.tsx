@@ -1,5 +1,5 @@
 import ArticleList from 'components/pages/article/ArticleList';
-import CreateArticle from 'components/pages/article/CreateArticle';
+import CreateArticle from 'components/pages/article/CreateArticle/CreateArticle';
 import { Route, Switch } from 'react-router-dom';
 import Home from 'components/pages/home/Home';
 
