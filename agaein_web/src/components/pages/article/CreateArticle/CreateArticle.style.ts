@@ -9,6 +9,7 @@ export const BigButton = styled.div`
     border-radius: 20px;
     border: 1px solid #bfc4ca;
     cursor: pointer;
+    background-color: ${(props) => props.color};
 `;
 
 export const NextButton = styled.div`
@@ -24,7 +25,7 @@ export const NextButton = styled.div`
     margin-top: 60px;
 `;
 
-export const ButtonFont = styled.p`
+export const ButtonFont = styled.span`
     font-size: 24px;
     font-weight: 400;
     line-height: 35px;
