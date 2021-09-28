@@ -1,7 +1,7 @@
 import PostItem from 'components/molecules/PostItemBox/PostItemBox';
 import ReviewItem from 'components/molecules/ReviewItem';
 import { Article, Board_Type, useGetArticlesQuery } from 'graphql/generated/generated';
-import { ButtonViewAll, HeaderTitle, ListContainer, ListHeader, ListItem } from './HomeArticleList.style';
+import { ArticleList, ButtonViewAll, HeaderTitle, ListContainer, ListHeader, ListItem } from './HomeArticleList.style';
 
 interface HomeArticleListProps {
     boardType: Board_Type;
@@ -17,9 +17,9 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
     const getTitle = (boardType: Board_Type) => {
         switch (boardType) {
             case Board_Type.Lfg:
-                return '찾아주세요';
+                return '실종동물 찾습니다';
             case Board_Type.Lfp:
-                return '찾았어요';
+                return '주인을 찾습니다';
             case Board_Type.Review:
                 return '찾은 후기';
             default:
@@ -36,7 +36,7 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
     }
 
     return (
-        <>
+        <ArticleList>
             <ListHeader>
                 <HeaderTitle>{getTitle(boardType)}</HeaderTitle>
                 <ButtonViewAll type="button">전체보기 &gt;</ButtonViewAll>
@@ -50,7 +50,7 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
                     );
                 })}
             </ListContainer>
-        </>
+        </ArticleList>
     );
 };
 

@@ -1,26 +1,27 @@
 import styled from 'styled-components';
 
 export const Nav = styled.nav`
-    width: 100%;
-    height: 75px;
     display: flex;
     align-items: center;
-    top: 0;
-    background-color: white;
+    justify-content: space-between;
+    height: 75px;
+    padding: 0 40px;
     border-bottom: 1px solid rgba(44, 44, 44, 0.233);
     box-shadow: 0px 2px 3px rgba(44, 44, 44, 0.137);
-    justify-content: space-between;
-`;
-
-export const Manu = styled.div`
-    margin: 15px;
+    
 `;
 
 export const Title = styled.h1`
-    text-align: center;
     color: #5f6871;
     font-size: 24px;
     line-height: 28px;
+`;
+
+export const AgaeinIconImg = styled.img`
+    width: 28px;
+    height: 28px;
+    margin-right: 6px;
+    vertical-align: -7px;
 `;
 
 export const ManuBox = styled.div`

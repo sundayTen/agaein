@@ -1,18 +1,16 @@
 import styled from 'styled-components';
 
 export const HomeHeaderContainer = styled.div`
-    width: 488px;
     text-align: center;
-    margin: 0 auto;
     padding-top: 120px;
-    justify-content: space-between;
 `;
 
 export const HomeHeaderButtonGroup = styled.div`
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
     margin-top: 30px;
+
+    button + button {
+        margin-left: 20px;
+    }
 `;
 
 export const HeaderFirstFont = styled.p`
@@ -20,6 +18,7 @@ export const HeaderFirstFont = styled.p`
     color: #5f6871;
 `;
 export const HeaderSecondFont = styled.p`
+    padding-top: 4px;
     font-size: 36px;
     font-weight: 600;
     color: #5f6871;
