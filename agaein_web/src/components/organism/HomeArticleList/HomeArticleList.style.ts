@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 
+export const ArticleList = styled.div`
+    margin-top: 140px;
+`
+
 export const ListHeader = styled.div`
     display: flex;
     justify-content: space-between;
-    margin-top: 140px;
 `;
 
 export const HeaderTitle = styled.strong`
@@ -21,11 +24,10 @@ export const ButtonViewAll = styled.button`
 export const ListContainer = styled.ul`
     display: flex;
     flex-wrap: wrap;
-    margin: 20px -20px;
+    margin: 20px -20px 0;
 `;
 
 export const ListItem = styled.li`
-    width: calc(100% / 6);
-    padding: 10px 20px;
-    box-sizing: border-box;
+    width: 180px;
+    padding: 0 20px;
 `;
