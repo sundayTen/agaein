@@ -6,15 +6,15 @@ const theme: DefaultTheme = {
         font: '#fff',
         primary: '#ffffaa',
         secondary: '#ffddaa',
-        disable: '#aaaaaa',
+        disable: '#aaa',
         error: '#B00020',
     },
     light: {
         background: '#fff',
         font: '#000',
-        primary: '#2fb5b5',
+        primary: '#F4900E',
         secondary: '#9B51E0',
-        disable: '#aaaaaa',
+        disable: '#aaa',
         error: '#B00020',
     },
 };

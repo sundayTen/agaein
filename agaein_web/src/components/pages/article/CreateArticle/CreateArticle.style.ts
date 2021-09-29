@@ -1,15 +1,18 @@
 import styled from 'styled-components';
 
-export const BigButton = styled.div`
+interface BigButtonProps {
+    active: boolean;
+}
+
+export const BigButton = styled.div<BigButtonProps>`
     display: flex;
     width: 400px;
     height: 180px;
     justify-content: center;
     align-items: center;
     border-radius: 20px;
-    border: 1px solid #bfc4ca;
+    border: ${(props) => (props.active ? '1px solid ' + props.theme.light.primary : '1px solid #bfc4ca')};
     cursor: pointer;
-    background-color: ${(props) => props.color};
 `;
 
 export const NextButton = styled.div`
@@ -25,13 +28,13 @@ export const NextButton = styled.div`
     margin-top: 60px;
 `;
 
-export const ButtonFont = styled.span`
+export const ButtonFont = styled.span<BigButtonProps>`
     font-size: 24px;
     font-weight: 400;
     line-height: 35px;
     letter-spacing: 0em;
     text-align: center;
-    color: #5f6871;
+    color: ${(props) => (props.active ? props.theme.light.primary : '#5f6871')};
 `;
 
 export const CreateArticleContainer = styled.div`
@@ -39,6 +42,7 @@ export const CreateArticleContainer = styled.div`
     margin: 0 auto;
     padding-top: 100px;
     text-align: center;
+    margin-bottom: 176px;
 `;
 
 export const CreateArticleButtonGroup = styled.div`
@@ -53,6 +57,7 @@ export const CreateArticleTitle = styled.p`
     font-weight: 600;
     color: #5f6871;
     margin-bottom: 20px;
+    margin-top: 100px;
 `;
 export const CreateArticleDesc = styled.p`
     font-size: 22px;
