@@ -1,33 +1,28 @@
-import Input from 'components/molecules/Input';
 import Modal from 'components/molecules/Modal';
 import { useEffect, useState } from 'react';
 import KakaoMap from '../kakaomap/KakaoMap';
 interface MapModalProps {
     open: boolean;
-    close: Function;
-    address: Function;
+    close: (value: boolean) => void;
+    address: (value: String) => void;
 }
 const MapModal = ({ open, close, address }: MapModalProps) => {
     const [searchValue, setSearchValue] = useState('');
-    const [addressValue, setAddressValue] = useState('');
     const [save, setSave] = useState(false);
     const [search, setSearch] = useState('');
-    const onChange = (e: any) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value);
     };
 
-    const mapSearch = (e: any) => {
+    const mapSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSearch(searchValue);
         setSearchValue('');
     };
-
     useEffect(() => {
         setSave(false);
-        if (addressValue !== '') {
-            address(addressValue);
-        }
-    }, [addressValue]);
+    }, [save]);
+
     return (
         <Modal open={open} close={close}>
             <form className="inputForm" onSubmit={mapSearch}>
@@ -36,8 +31,13 @@ const MapModal = ({ open, close, address }: MapModalProps) => {
                     검색
                 </button>
             </form>
-            <KakaoMap search={search} addressValue={setAddressValue} save={save} />
-            <button style={{ background: '#00ffff', float: 'right' }} onClick={() => setSave(true)}>
+            <KakaoMap search={search} address={address} save={save} />
+            <button
+                style={{ background: '#00ffff', float: 'right' }}
+                onClick={() => {
+                    setSave(true);
+                }}
+            >
                 선택 완료
             </button>
         </Modal>

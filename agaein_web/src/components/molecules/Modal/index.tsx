@@ -5,7 +5,7 @@ import { XIcon } from '@heroicons/react/solid';
 interface ModalProps {
     children: React.ReactNode;
     open: boolean;
-    close: Function;
+    close: (value: boolean) => void;
 }
 
 const Modal = ({ open, children, close }: ModalProps) => {

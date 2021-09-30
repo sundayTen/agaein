@@ -6,7 +6,7 @@ declare global {
 }
 interface kakaoMapProps {
     search: string;
-    addressValue: Function;
+    address: (value: String) => void;
     save: boolean;
 }
 const { kakao } = window;
@@ -16,23 +16,20 @@ let options = {
     level: 3,
 };
 
-const KakaoMap = ({ search, addressValue, save }: kakaoMapProps) => {
+const KakaoMap = ({ search, address, save }: kakaoMapProps) => {
     //const ref = useRef(null);
     const geocoder = new kakao.maps.services.Geocoder();
     const mapRef = useRef(null);
     const marker = new kakao.maps.Marker();
     const [map, setMap] = useState<any>(null);
     const infowindow = new kakao.maps.InfoWindow({ zindex: 1 });
-    const [address, setAddress] = useState('');
+    const [addressValue, setAddressValue] = useState('');
     // const [markers, setMarkers] = useState<Array<any>>([]);
     // const [bounds, setBound] = useState(new kakao.maps.LatLngBounds());
     //const [customOverlays, setCustomOverlays] = useState(null);
-    useEffect(() => {
-        if (save === true) {
-            console.log(address);
-            addressValue(address);
-        }
-    }, [save]);
+    if (save === true) {
+        address(addressValue);
+    }
 
     const coordinateConversion = (result: any, status: any) => {
         if (status === kakao.maps.services.Status.OK) {
@@ -46,7 +43,7 @@ const KakaoMap = ({ search, addressValue, save }: kakaoMapProps) => {
                 : '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
             infowindow.setContent(detailAddr);
             infowindow.open(map, marker);
-            setAddress(result[0].address.address_name);
+            setAddressValue(result[0].address.address_name);
         }
     };
 
