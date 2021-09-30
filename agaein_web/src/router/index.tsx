@@ -1,5 +1,4 @@
 import { Route, Switch } from 'react-router-dom';
-
 import Home from 'components/pages/home/Home';
 import ArticleList from 'components/pages/article/ArticleList';
 import CreateArticleStep1 from 'components/pages/createArticle/Step1';

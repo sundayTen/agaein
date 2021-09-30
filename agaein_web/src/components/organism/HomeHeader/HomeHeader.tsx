@@ -1,9 +1,11 @@
 import Button from 'components/molecules/Button';
+import { useHistory } from 'react-router';
 import { HeaderFirstFont, HeaderSecondFont, HomeHeaderButtonGroup, HomeHeaderContainer } from './HomeHeader.style';
 
 const HomeHeader = () => {
+    const history = useHistory();
     const onClickCreate = () => {
-        console.log('Create BUtton Clicked');
+        history.push('/createArticle');
     };
     const onClickSearch = () => {
         console.log('Search Button Clicked');
