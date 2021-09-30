@@ -8,14 +8,16 @@ const theme: DefaultTheme = {
         secondary: '#ffddaa',
         disable: '#aaa',
         error: '#B00020',
+        placeholder: '#BFC4CA',
     },
     light: {
         background: '#fff',
         font: '#000',
-        primary: '#F4900E',
+        primary: '#52C564',
         secondary: '#9B51E0',
         disable: '#aaa',
         error: '#B00020',
+        placeholder: '#BFC4CA',
     },
 };
 
