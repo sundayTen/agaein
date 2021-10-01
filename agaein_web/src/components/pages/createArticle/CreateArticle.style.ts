@@ -83,6 +83,10 @@ export const BigButton = styled.div<BigButtonProps>`
     border-radius: 20px;
     border: ${(props) => (props.active ? '1px solid ' + props.theme.light.primary : '1px solid #bfc4ca')};
     cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
 `;
 
 export const NextButton = styled.div`
