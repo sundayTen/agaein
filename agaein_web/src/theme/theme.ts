@@ -6,16 +6,18 @@ const theme: DefaultTheme = {
         font: '#fff',
         primary: '#ffffaa',
         secondary: '#ffddaa',
-        disable: '#aaaaaa',
+        disable: '#aaa',
         error: '#B00020',
+        placeholder: '#BFC4CA',
     },
     light: {
         background: '#fff',
         font: '#000',
-        primary: '#2fb5b5',
+        primary: '#52C564',
         secondary: '#9B51E0',
-        disable: '#aaaaaa',
+        disable: '#aaa',
         error: '#B00020',
+        placeholder: '#BFC4CA',
     },
 };
 

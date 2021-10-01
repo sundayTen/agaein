@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { RouteComponentProps } from 'react-router-dom';
 import HomeHeader from 'components/organism/HomeHeader/HomeHeader';
 import HomeArticleList from 'components/organism/HomeArticleList';

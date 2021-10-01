@@ -1,12 +1,24 @@
-import { Title , FormWrapper, Fieldset, FormRow, Label, CheckboxWrapper, Checkbox, ButtonWrapper } from './CreateArticle.style';
-import Input from 'components/molecules/Input'
-import Button from 'components/molecules/Button'
+import {
+    Title,
+    FormWrapper,
+    Fieldset,
+    FormRow,
+    Label,
+    CheckboxWrapper,
+    Checkbox,
+    ButtonWrapper,
+} from './CreateArticle.style';
+import Input from 'components/molecules/Input';
+import Button from 'components/molecules/Button';
+import StepIndicator from 'components/molecules/StepIndicator';
+import { CreateArticleStep2Params } from 'router/params';
+import { RouteComponentProps } from 'react-router-dom';
 
-
-const Step2 = () => {
+const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>) => {
+    console.log(match.params.type);
     return (
         <>
-            {/* STEP BAR */}
+            <StepIndicator active={2} styles={{ marginTop: 100 }} />
             <Title>상세하게 작성될수록 발견될 확률이 올라가요!</Title>
             <FormWrapper>
                 <Fieldset>
@@ -66,9 +78,7 @@ const Step2 = () => {
                     </FormRow>
                     <FormRow>
                         <Label>실종일*</Label>
-                        <div>
-                            {/* 캘린더 */}
-                        </div>
+                        <div>{/* 캘린더 */}</div>
                     </FormRow>
                     <FormRow>
                         <Label>동물 이름</Label>
@@ -149,7 +159,12 @@ const Step2 = () => {
                 <a href="#">
                     <span className="blind">이전</span>
                 </a>
-                <Button label="등록" onClick={() => {}} />
+                <Button
+                    label="등록"
+                    onClick={() => {
+                        history.push('/createArticle/step3');
+                    }}
+                />
             </ButtonWrapper>
         </>
     );

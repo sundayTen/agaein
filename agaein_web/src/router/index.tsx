@@ -1,5 +1,4 @@
 import { Route, Switch } from 'react-router-dom';
-
 import Home from 'components/pages/home/Home';
 import ArticleList from 'components/pages/article/ArticleList';
 import CreateArticleStep1 from 'components/pages/createArticle/Step1';
@@ -13,7 +12,9 @@ function Router() {
             <Route path="/" component={Home} exact />
             <Route path="/articles/" component={ArticleList} />
             <Route path="/createArticle/step1" component={CreateArticleStep1} />
-            <Route path="/createArticle/step2" component={CreateArticleStep2} />
+            {/* 이건 사용될 일 없음 (나중에 제거해도 됨) */}
+            <Route path="/createArticle/step2" exact />
+            <Route path="/createArticle/step2/:type" component={CreateArticleStep2} />
             <Route path="/createArticle/step3" component={CreateArticleStep3} />
         </Switch>
     );

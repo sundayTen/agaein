@@ -31,10 +31,6 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
 
     const articles = data?.Articles.map((article) => article);
 
-    if (articles?.length === 0) {
-        return <p>등록된 게시글이 없습니다</p>;
-    }
-
     return (
         <ArticleList>
             <ListHeader>
@@ -42,13 +38,22 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
                 <ButtonViewAll type="button">전체보기 &gt;</ButtonViewAll>
             </ListHeader>
             <ListContainer>
-                {articles?.map((article) => {
-                    return (
-                        <ListItem key={article?.id}>
-                            {boardType === Board_Type.Review ? <ReviewItem /> : <PostItem item={article as Article} />}
-                        </ListItem>
-                    );
-                })}
+                {articles?.length === 0 ? (
+                    // TODO : 디자인 요청해서 컴포넌트로 만들어야 할 듯
+                    <p>등록된 게시글이 없습니다</p>
+                ) : (
+                    articles?.map((article) => {
+                        return (
+                            <ListItem key={article?.id}>
+                                {boardType === Board_Type.Review ? (
+                                    <ReviewItem />
+                                ) : (
+                                    <PostItem item={article as Article} />
+                                )}
+                            </ListItem>
+                        );
+                    })
+                )}
             </ListContainer>
         </ArticleList>
     );

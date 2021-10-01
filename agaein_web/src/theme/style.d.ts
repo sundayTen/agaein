@@ -8,6 +8,7 @@ declare module 'styled-components' {
             disable: string;
             error: string;
             font: string;
+            placeholder: string;
         };
         light: {
             background: string;
@@ -16,6 +17,7 @@ declare module 'styled-components' {
             disable: string;
             error: string;
             font: string;
+            placeholder: string;
         };
     }
 }

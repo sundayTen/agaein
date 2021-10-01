@@ -6,6 +6,7 @@ import { onError } from '@apollo/client/link/error';
 const cookies = new Cookies();
 const httpLink = createHttpLink({
     uri: 'https://www.agaein.com/graphql',
+    // uri: 'http://localhost:3005/graphql',
 });
 const authLink = setContext((_, { headers }) => {
     const token = cookies.get('token');
@@ -31,7 +32,7 @@ export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     version: '0.0.1',
     link: from([authLink, errorLink, httpLink]),
     cache: new InMemoryCache({
-        addTypename: true, // __typename 필드를 자동으로 붙혀주는지 여부 - default : true. false로 바꾸면
+        addTypename: true,
         resultCaching: true,
     }),
 });
