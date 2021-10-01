@@ -2,14 +2,15 @@ import { StyledButton } from './Button.style';
 
 interface ButtonProps {
     label: string;
-    color?: string;
+    status?: 'PAINTED' | 'BORDER' | 'DISABLED';
+    type?: 'NORMAL' | 'BIG' | 'SMALL';
     onClick: () => void;
 }
 
 const Button = (props: ButtonProps) => {
-    const { label, color, onClick } = props;
+    const { label, status = 'BORDER', type = 'NORMAL', onClick } = props;
     return (
-        <StyledButton onClick={onClick} color={color}>
+        <StyledButton disabled={status === 'DISABLED'} buttonType={type} status={status} onClick={onClick}>
             {label}
         </StyledButton>
     );

@@ -62,3 +62,18 @@ img {
     margin: -1px;
     overflow: hidden;
 }
+
+@font-face {
+    font-family: Ssurround;
+    src: url('./assets/font/Ssurround.woff');
+}
+@font-face {
+    font-family: SsurroundAir;
+    src: url('./assets/font/SsurroundAir.woff');
+}
+@font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

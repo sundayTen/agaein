@@ -1,3 +1,4 @@
+import Button from 'components/molecules/Button';
 import StepIndicator from 'components/molecules/StepIndicator';
 import { Board_Type } from 'graphql/generated/generated';
 import { useState } from 'react';
@@ -10,7 +11,6 @@ import {
     CreateArticleContainer,
     CreateArticleDesc,
     CreateArticleTitle,
-    NextButton,
 } from './CreateArticle.style';
 
 const CreateArticle = ({ history }: RouteComponentProps<CreateArticleStep1Params>) => {
@@ -39,7 +39,7 @@ const CreateArticle = ({ history }: RouteComponentProps<CreateArticleStep1Params
                     <ButtonFont active={selectedBtnIndex === 1}>발견 했어요</ButtonFont>
                 </BigButton>
             </CreateArticleButtonGroup>
-            <NextButton onClick={onClickNext}>다음으로</NextButton>
+            <Button status={selectedBtnIndex < 0 ? 'DISABLED' : 'PAINTED'} label="다음으로" onClick={onClickNext} />
         </CreateArticleContainer>
     );
 };

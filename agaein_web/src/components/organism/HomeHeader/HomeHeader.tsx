@@ -16,8 +16,8 @@ const HomeHeader = () => {
             <HeaderFirstFont>다시 내 곁으로 돌아올 수 있게</HeaderFirstFont>
             <HeaderSecondFont>잃어버린 동물 함께 찾아드려요</HeaderSecondFont>
             <HomeHeaderButtonGroup>
-                <Button color="#eee" label="게시글 작성" onClick={onClickCreate} />
-                <Button color="white" label="실종동물 검색" onClick={onClickSearch} />
+                <Button status={'PAINTED'} label="게시글 작성" onClick={onClickCreate} />
+                <Button label="실종동물 검색" onClick={onClickSearch} />
             </HomeHeaderButtonGroup>
         </HomeHeaderContainer>
     );
