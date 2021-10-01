@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 interface StyledButtonProps {
-    buttonType?: 'NORMAL' | 'BIG' | 'SMALL';
-    status?: 'PAINTED' | 'BORDER' | 'DISABLED';
+    buttonType: 'NORMAL' | 'BIG' | 'SMALL';
+    status: 'PAINTED' | 'BORDER' | 'DISABLED';
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
