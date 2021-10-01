@@ -5,7 +5,7 @@ import { HeaderFirstFont, HeaderSecondFont, HomeHeaderButtonGroup, HomeHeaderCon
 const HomeHeader = () => {
     const history = useHistory();
     const onClickCreate = () => {
-        history.push('/createArticle');
+        history.push('/createArticle/step1');
     };
     const onClickSearch = () => {
         console.log('Search Button Clicked');

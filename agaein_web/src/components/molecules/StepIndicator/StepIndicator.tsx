@@ -3,12 +3,13 @@ import { Edge, StepIndicatorContainer } from './StepIndicator.style';
 
 interface StepIndicatorProps {
     active: number;
+    styles?: React.CSSProperties;
 }
 
 export const StepIndicator = (props: StepIndicatorProps) => {
-    const { active } = props;
+    const { active, styles } = props;
     return (
-        <StepIndicatorContainer>
+        <StepIndicatorContainer style={styles}>
             <Circle active={1 === active} index={1} />
             <Edge />
             <Circle active={2 === active} index={2} />
