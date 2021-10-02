@@ -14,18 +14,16 @@ import StepIndicator from 'components/molecules/StepIndicator';
 import { CreateArticleStep2Params } from 'router/params';
 import { RouteComponentProps } from 'react-router-dom';
 import MapModal from 'components/organism/mapModal/MapModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>) => {
-    type dateType = Date | null;
-    const [openModal, setOpenModal] = useState(false);
-    const [address, setAddress] = useState('');
-    const [startDate, setStartDate] = useState(new Date());
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [address, setAddress] = useState<string>('');
+    const [startDate, setStartDate] = useState<Date>(new Date());
     console.log(match.params.type);
-
-    const modalClose = () => {
+    const closeModal = () => {
         setOpenModal(false);
     };
     return (
@@ -191,7 +189,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                     }}
                 />
             </ButtonWrapper>
-            <MapModal open={openModal} close={modalClose} setAddress={setAddress} />
+            <MapModal open={openModal} close={closeModal} setAddress={setAddress} />
         </>
     );
 };

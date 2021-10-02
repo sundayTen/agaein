@@ -10,30 +10,31 @@ interface MapModalProps {
 const MapModal = ({ open, close, setAddress }: MapModalProps) => {
     const [searchValue, setSearchValue] = useState('');
     const [save, setSave] = useState(false);
-    const [search, setSearch] = useState('');
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchValue(e.target.value);
-    };
+    const [search, setSearch] = useState<string | undefined>(undefined);
 
     const mapSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSearch(searchValue);
         setSearchValue('');
     };
+
     useEffect(() => {
-        setSave(false);
         close();
     }, [save]);
-
     return (
         <Modal open={open} close={close}>
             <form className="inputForm" onSubmit={mapSearch}>
-                <Input style={{ width: 200 }} placeholder="지역을 입력하세요" onChange={onChange} value={searchValue} />
+                <Input
+                    style={{ width: 200 }}
+                    placeholder="지역을 입력하세요"
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    value={searchValue}
+                />
                 <button style={{ background: '#00ffff' }} type="submit">
                     검색
                 </button>
             </form>
-            <KakaoMap search={search} setAddress={setAddress} save={save} />
+            <KakaoMap search={search} setAddress={setAddress} save={save} onSave={setSave} />
             <button
                 style={{ background: '#00ffff', float: 'right' }}
                 onClick={() => {

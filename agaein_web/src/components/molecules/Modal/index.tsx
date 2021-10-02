@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import { ModalInner, ModalOverlay, ModalWrapper } from './Modal.style';
-import { XIcon } from '@heroicons/react/solid';
-
+import { CloseIcon, ModalInner, ModalOverlay, ModalWrapper } from './Modal.style';
 interface ModalProps {
     children: React.ReactNode;
     open: boolean;
@@ -10,7 +8,7 @@ interface ModalProps {
 
 const Modal = ({ open, children, close }: ModalProps) => {
     useEffect(() => {
-        if (open === true) {
+        if (open) {
             document.body.style.cssText = `
           position: fixed;
           top: -${window.scrollY}px;
@@ -24,21 +22,18 @@ const Modal = ({ open, children, close }: ModalProps) => {
         }
     }, [open]);
 
-    const modelClose = (e: React.MouseEvent<HTMLElement>) => {
+    const closeModal = (e: React.MouseEvent<HTMLElement>) => {
         if (e.target === e.currentTarget) {
             close();
         }
     };
-    if (open === true) {
+    if (open) {
         return (
             <>
                 <ModalOverlay open={open} />
-                <ModalWrapper onClick={modelClose} open={open}>
+                <ModalWrapper onClick={closeModal} open={open}>
                     <ModalInner>
-                        <XIcon
-                            style={{ width: 20, float: 'right', marginTop: -25, marginRight: -5, cursor: 'pointer' }}
-                            onClick={() => close()}
-                        />
+                        <CloseIcon onClick={() => close()} />
                         {children}
                     </ModalInner>
                 </ModalWrapper>

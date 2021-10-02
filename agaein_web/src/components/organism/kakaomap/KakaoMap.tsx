@@ -5,9 +5,10 @@ declare global {
     }
 }
 interface kakaoMapProps {
-    search: string;
+    search: string | undefined;
     setAddress: (value: string) => void;
     save: boolean;
+    onSave: (value: boolean) => void;
 }
 const { kakao } = window;
 
@@ -16,7 +17,7 @@ let options = {
     level: 3,
 };
 
-const KakaoMap = ({ search, setAddress, save }: kakaoMapProps) => {
+const KakaoMap = ({ search, setAddress, save, onSave }: kakaoMapProps) => {
     //const ref = useRef(null);
     const geocoder = new kakao.maps.services.Geocoder();
     const mapRef = useRef(null);
@@ -27,22 +28,28 @@ const KakaoMap = ({ search, setAddress, save }: kakaoMapProps) => {
     // const [markers, setMarkers] = useState<Array<any>>([]);
     // const [bounds, setBound] = useState(new kakao.maps.LatLngBounds());
     //const [customOverlays, setCustomOverlays] = useState(null);
-    if (save === true) {
+    if (save) {
         setAddress(addressValue);
+        onSave(false);
     }
 
     const coordinateConversion = (result: any, status: any) => {
         if (status === kakao.maps.services.Status.OK) {
-            const detailAddr = !!result[0].road_address
+            const address = result[0].address;
+            const roadAddress = result[0].road_address;
+
+            const detailAddr = !!roadAddress
                 ? '<div>도로명 주소 : ' +
-                  result[0].road_address.address_name +
+                  roadAddress.address_name +
                   '</div>' +
                   '<div>지번 주소 : ' +
-                  result[0].address.address_name +
+                  address.address_name +
                   '</div>'
-                : '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+                : '<div>지번 주소 : ' + address.address_name + '</div>';
+
             infowindow.setContent(detailAddr);
             infowindow.open(map, marker);
+
             setAddressValue(result[0].address.address_name);
         }
     };
@@ -106,9 +113,10 @@ const KakaoMap = ({ search, setAddress, save }: kakaoMapProps) => {
     }, [map]);
 
     useEffect(() => {
-        if (search !== '') {
-            geocoder.addressSearch(search, addressSearch);
+        if (search === '' || search === undefined || search === null) {
+            return;
         }
+        geocoder.addressSearch(search, addressSearch);
     }, [search]);
 
     // useEffect(() => {

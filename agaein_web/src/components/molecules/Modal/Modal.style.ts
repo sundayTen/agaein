@@ -1,9 +1,16 @@
-import styled from "styled-components";
+import { XIcon } from '@heroicons/react/solid';
+import styled from 'styled-components';
 
 type styledProps = {
     open: boolean;
-}
-
+};
+export const CloseIcon = styled(XIcon)`
+    width: 20px;
+    float: right;
+    margin-top: -25px;
+    margin-right: -5px;
+    cursor: pointer;
+`;
 export const ModalOverlay = styled.div<styledProps>`
     box-sizing: border-box;
     display: block;
@@ -32,7 +39,7 @@ export const ModalWrapper = styled.div<styledProps>`
 
 export const ModalInner = styled.div`
     box-sizing: border-box;
-    display:inline-block;
+    display: inline-block;
     position: relative;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
     background-color: #fff;
