@@ -35,23 +35,23 @@ const colorStyles = css`
     ${(props: StyledButtonProps) =>
         props.status === 'PAINTED' &&
         css`
-            background-color: props.theme.light.primary;
-            color: 'white';
+            background-color: ${(props) => props.theme.light.primary};
+            color: white;
         `}
 
     ${(props) =>
         props.status === 'BORDER' &&
         css`
-            border: '1px solid' + props.theme.light.primary
-            background-color: 'white';
-            color: props.theme.light.primary;
+            border: 1px solid ${(props) => props.theme.light.primary};
+            background-color: white;
+            color: ${(props) => props.theme.light.primary}; ;
         `}
 
     ${(props) =>
         props.status === 'DISABLED' &&
         css`
-            background-color: ? props.theme.light.disable;
-            color: 'white';
+            background-color: ? ${(props) => props.theme.light.disable};
+            color: white;
             cursor: default;
         `}
 `;
