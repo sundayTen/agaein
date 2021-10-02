@@ -27,6 +27,7 @@ export const InfoList = styled.ul`
 export const InfoItem = styled.li`
     display: table-row;
     padding: 2px 12px;
+    margin-bottom: 6px;
 `;
 
 export const InfoCategory = styled.em`

@@ -16,16 +16,16 @@ const PostItem = (props: PostItemProps) => {
                 </Thumb>
                 <InfoList>
                     <InfoItem>
-                        <InfoCategory>지역</InfoCategory>
-                        <InfoText>경기도 성남시</InfoText>
+                        <InfoCategory>품종</InfoCategory>
+                        <InfoText>개 | 웰시코기</InfoText>
                     </InfoItem>
                     <InfoItem>
                         <InfoCategory>실종일</InfoCategory>
                         <InfoText>2021-09-21</InfoText>
                     </InfoItem>
                     <InfoItem>
-                        <InfoCategory>견종</InfoCategory>
-                        <InfoText>믹스견</InfoText>
+                        <InfoCategory>지역</InfoCategory>
+                        <InfoText>서울 송파</InfoText>
                     </InfoItem>
                 </InfoList>
             </ItemLink>

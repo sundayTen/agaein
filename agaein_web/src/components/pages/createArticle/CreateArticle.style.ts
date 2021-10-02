@@ -89,24 +89,6 @@ export const BigButton = styled.div<BigButtonProps>`
     }
 `;
 
-interface NextButtonProps {
-    disabled: boolean;
-}
-
-export const NextButton = styled.div<NextButtonProps>`
-    display: flex;
-    width: 240px;
-    height: 64px;
-    background-color: ${(props) => (props.disabled ? '#eee' : props.theme.light.primary)};
-    border-radius: 20px;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    margin: 0 auto;
-    margin-top: 60px;
-    user-select: none;
-`;
-
 export const ButtonFont = styled.span<BigButtonProps>`
     font-size: 24px;
     font-weight: 400;
