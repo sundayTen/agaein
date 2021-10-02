@@ -5,6 +5,14 @@ import {
     initLookingForPetArticleComment,
     initLookingForGuardianArticle,
     initLookingForGuardianArticleComment,
+    initArticle,
+    initComment,
+    initNestedComment,
+    initBreed,
+    initImage,
+    initLFG,
+    initLFP,
+    initReview,
 } from './graphql/database';
 import app from './app';
 
@@ -14,6 +22,14 @@ const initDatabase = async () => {
     await initLookingForPetArticleComment();
     await initLookingForGuardianArticle();
     await initLookingForGuardianArticleComment();
+    await initArticle();
+    await initComment();
+    await initNestedComment();
+    await initBreed();
+    await initImage();
+    await initLFG();
+    await initLFP();
+    await initReview();
 };
 
 const start = async () => {
