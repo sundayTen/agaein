@@ -1,3 +1,4 @@
+import Button from 'components/molecules/Button';
 import StepIndicator from 'components/molecules/StepIndicator';
 import { Board_Type } from 'graphql/generated/generated';
 import { useState } from 'react';
@@ -10,7 +11,6 @@ import {
     CreateArticleContainer,
     CreateArticleDesc,
     CreateArticleTitle,
-    NextButton,
 } from './CreateArticle.style';
 
 const CreateArticle = ({ history }: RouteComponentProps<CreateArticleStep1Params>) => {
@@ -25,6 +25,12 @@ const CreateArticle = ({ history }: RouteComponentProps<CreateArticleStep1Params
     const onClickNext = () => {
         history.push(`/createArticle/step2/${getBoardType()}`);
     };
+    const isButtonDisabled = () => {
+        return selectedBtnIndex < 0;
+    };
+    const buttonStatus = () => {
+        return isButtonDisabled() ? 'DISABLED' : 'PAINTED';
+    };
 
     return (
         <CreateArticleContainer>
@@ -32,6 +38,7 @@ const CreateArticle = ({ history }: RouteComponentProps<CreateArticleStep1Params
             <CreateArticleTitle>어떤 서비스를 이용하실 건가요?</CreateArticleTitle>
             <CreateArticleDesc>카테고리를 선택하여 게시글을 작성할 수 있습니다</CreateArticleDesc>
             <CreateArticleButtonGroup>
+                {/* TODO : Button 컴포넌트로 대체 */}
                 <BigButton onClick={() => onClickSelector(0)} active={selectedBtnIndex === 0}>
                     <ButtonFont active={selectedBtnIndex === 0}>찾고 있어요</ButtonFont>
                 </BigButton>
@@ -39,7 +46,7 @@ const CreateArticle = ({ history }: RouteComponentProps<CreateArticleStep1Params
                     <ButtonFont active={selectedBtnIndex === 1}>발견 했어요</ButtonFont>
                 </BigButton>
             </CreateArticleButtonGroup>
-            <NextButton onClick={onClickNext}>다음으로</NextButton>
+            <Button status={buttonStatus()} label="다음으로" onClick={onClickNext} />
         </CreateArticleContainer>
     );
 };

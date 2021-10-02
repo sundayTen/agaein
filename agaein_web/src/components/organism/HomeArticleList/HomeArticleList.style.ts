@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ArticleList = styled.div`
     margin-top: 140px;
-`
+`;
 
 export const ListHeader = styled.div`
     display: flex;
@@ -12,13 +12,14 @@ export const ListHeader = styled.div`
 export const HeaderTitle = styled.strong`
     font-size: 28px;
     line-height: 34px;
-    color: #5f6871;
+    font-family: Ssurround;
 `;
 
 export const ButtonViewAll = styled.button`
     font-size: 18px;
     color: #5f6871;
     cursor: pointer;
+    font-family: SsurroundAir;
 `;
 
 export const ListContainer = styled.ul`

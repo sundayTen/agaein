@@ -7,7 +7,6 @@ export const HomeHeaderContainer = styled.div`
 
 export const HomeHeaderButtonGroup = styled.div`
     margin-top: 30px;
-
     button + button {
         margin-left: 20px;
     }
@@ -15,11 +14,11 @@ export const HomeHeaderButtonGroup = styled.div`
 
 export const HeaderFirstFont = styled.p`
     font-size: 22px;
-    color: #5f6871;
+    font-family: SsurroundAir;
 `;
 export const HeaderSecondFont = styled.p`
     padding-top: 4px;
     font-size: 36px;
     font-weight: 600;
-    color: #5f6871;
+    font-family: Ssurround;
 `;

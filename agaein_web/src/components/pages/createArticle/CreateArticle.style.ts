@@ -89,19 +89,6 @@ export const BigButton = styled.div<BigButtonProps>`
     }
 `;
 
-export const NextButton = styled.div`
-    display: flex;
-    width: 240px;
-    height: 64px;
-    background-color: #eee;
-    border-radius: 20px;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    margin: 0 auto;
-    margin-top: 60px;
-`;
-
 export const ButtonFont = styled.span<BigButtonProps>`
     font-size: 24px;
     font-weight: 400;
@@ -124,6 +111,7 @@ export const CreateArticleButtonGroup = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-top: 30px;
+    margin-bottom: 100px;
 `;
 
 export const CreateArticleTitle = styled.p`
@@ -132,6 +120,7 @@ export const CreateArticleTitle = styled.p`
     color: #5f6871;
     margin-bottom: 20px;
     margin-top: 100px;
+    font-family: 'Ssuround';
 `;
 export const CreateArticleDesc = styled.p`
     font-size: 22px;

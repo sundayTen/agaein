@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ItemBox = styled.div`
     border-radius: 20px;
-    border: 1px solid #BFC4CA;
+    border: 1px solid #bfc4ca;
     overflow: hidden;
 `;
 
@@ -27,17 +27,19 @@ export const InfoList = styled.ul`
 export const InfoItem = styled.li`
     display: table-row;
     padding: 2px 12px;
+    margin-bottom: 6px;
 `;
 
 export const InfoCategory = styled.em`
     display: table-cell;
     padding: 0 10px;
     font-size: 12px;
-    color: #5F6871;
+    font-weight: 600;
+    color: ${(props) => props.theme.light.primary};
+    font-family: NanumSquareRound;
 `;
 
 export const InfoText = styled.span`
     display: table-cell;
     font-size: 12px;
-    color: #BFC4CA;
 `;
