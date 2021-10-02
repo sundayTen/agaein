@@ -1,12 +1,13 @@
+import Input from 'components/molecules/Input';
 import Modal from 'components/molecules/Modal';
 import { useEffect, useState } from 'react';
 import KakaoMap from '../kakaomap/KakaoMap';
 interface MapModalProps {
     open: boolean;
-    close: (value: boolean) => void;
-    address: (value: String) => void;
+    close: () => void;
+    setAddress: (value: string) => void;
 }
-const MapModal = ({ open, close, address }: MapModalProps) => {
+const MapModal = ({ open, close, setAddress }: MapModalProps) => {
     const [searchValue, setSearchValue] = useState('');
     const [save, setSave] = useState(false);
     const [search, setSearch] = useState('');
@@ -21,17 +22,18 @@ const MapModal = ({ open, close, address }: MapModalProps) => {
     };
     useEffect(() => {
         setSave(false);
+        close();
     }, [save]);
 
     return (
         <Modal open={open} close={close}>
             <form className="inputForm" onSubmit={mapSearch}>
-                <input placeholder="검색어를 입력하세요" onChange={onChange} value={searchValue} />
+                <Input style={{ width: 200 }} placeholder="지역을 입력하세요" onChange={onChange} value={searchValue} />
                 <button style={{ background: '#00ffff' }} type="submit">
                     검색
                 </button>
             </form>
-            <KakaoMap search={search} address={address} save={save} />
+            <KakaoMap search={search} setAddress={setAddress} save={save} />
             <button
                 style={{ background: '#00ffff', float: 'right' }}
                 onClick={() => {

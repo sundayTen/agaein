@@ -5,7 +5,7 @@ import { XIcon } from '@heroicons/react/solid';
 interface ModalProps {
     children: React.ReactNode;
     open: boolean;
-    close: (value: boolean) => void;
+    close: () => void;
 }
 
 const Modal = ({ open, children, close }: ModalProps) => {
@@ -26,7 +26,7 @@ const Modal = ({ open, children, close }: ModalProps) => {
 
     const modelClose = (e: React.MouseEvent<HTMLElement>) => {
         if (e.target === e.currentTarget) {
-            close(false);
+            close();
         }
     };
     if (open === true) {
@@ -37,7 +37,7 @@ const Modal = ({ open, children, close }: ModalProps) => {
                     <ModalInner>
                         <XIcon
                             style={{ width: 20, float: 'right', marginTop: -25, marginRight: -5, cursor: 'pointer' }}
-                            onClick={() => close(false)}
+                            onClick={() => close()}
                         />
                         {children}
                     </ModalInner>

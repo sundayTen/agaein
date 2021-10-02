@@ -6,7 +6,7 @@ declare global {
 }
 interface kakaoMapProps {
     search: string;
-    address: (value: String) => void;
+    setAddress: (value: string) => void;
     save: boolean;
 }
 const { kakao } = window;
@@ -16,7 +16,7 @@ let options = {
     level: 3,
 };
 
-const KakaoMap = ({ search, address, save }: kakaoMapProps) => {
+const KakaoMap = ({ search, setAddress, save }: kakaoMapProps) => {
     //const ref = useRef(null);
     const geocoder = new kakao.maps.services.Geocoder();
     const mapRef = useRef(null);
@@ -28,7 +28,7 @@ const KakaoMap = ({ search, address, save }: kakaoMapProps) => {
     // const [bounds, setBound] = useState(new kakao.maps.LatLngBounds());
     //const [customOverlays, setCustomOverlays] = useState(null);
     if (save === true) {
-        address(addressValue);
+        setAddress(addressValue);
     }
 
     const coordinateConversion = (result: any, status: any) => {
