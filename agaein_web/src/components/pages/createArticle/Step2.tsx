@@ -13,9 +13,19 @@ import Button from 'components/molecules/Button';
 import StepIndicator from 'components/molecules/StepIndicator';
 import { CreateArticleStep2Params } from 'router/params';
 import { RouteComponentProps } from 'react-router-dom';
+import MapModal from 'components/organism/mapModal/MapModal';
+import { useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>) => {
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [address, setAddress] = useState<string>('');
+    const [startDate, setStartDate] = useState<Date>(new Date());
     console.log(match.params.type);
+    const closeModal = () => {
+        setOpenModal(false);
+    };
     return (
         <>
             <StepIndicator active={2} styles={{ marginTop: 100 }} />
@@ -67,9 +77,16 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                         <div>
                             <div>
                                 <label>
-                                    <Input type="text" placeholder="지역명" disabled />
+                                    <Input
+                                        type="text"
+                                        placeholder="지역명"
+                                        onClick={() => {
+                                            setOpenModal(true);
+                                        }}
+                                        value={address}
+                                        readOnly
+                                    />
                                 </label>
-                                <button type="button">검색</button>
                             </div>
                             <label>
                                 <Input type="text" placeholder="세부 장소" />
@@ -78,7 +95,13 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                     </FormRow>
                     <FormRow>
                         <Label>실종일*</Label>
-                        <div>{/* 캘린더 */}</div>
+                        <div>
+                            <DatePicker
+                                dateFormat="yyyy/MM/dd"
+                                selected={startDate}
+                                onChange={(date: Date) => setStartDate(date)}
+                            />
+                        </div>
                     </FormRow>
                     <FormRow>
                         <Label>동물 이름</Label>
@@ -166,6 +189,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                     }}
                 />
             </ButtonWrapper>
+            <MapModal open={openModal} close={closeModal} setAddress={setAddress} />
         </>
     );
 };
