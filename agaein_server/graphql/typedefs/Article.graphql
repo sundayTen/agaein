@@ -1,25 +1,59 @@
-type Article implements Timestamps {
-    id: ID!
-    userId: ID!
-    info: ArticleInfo!
-    createdAt: Date!
-    updatedAt: Date!
-}
-"""
-게시글 타입 : LFP or LFG or ??
-"""
 enum BOARD_TYPE {
     LFP
     LFG
     REVIEW
 }
 
-type ArticleInfo {
-    title: String!
-    content: String!
+type Location {
+    # 더 넣을 것 생각
+    a: String
 }
 
-input ArticleInput {
+type LFG {
+    breed: String!
+    name: String!
+    feature: String!
+    gender: String!
+    location: Location!
+    foundDate: Date!
+}
+
+type LFP {
+    breed: String!
+    name: String!
+    feature: String!
+    gender: String!
+    gratuity: Int!
+    location: Location!
+    foundDate: Date!
+}
+
+type REVIEW {
+    # 더 넣을 것 생각
+    a: String
+}
+
+union ArticleDetail = LFG | LFP | REVIEW
+
+type Article {
+    id: Int!
     title: String!
     content: String!
+    images: [String]!
+    articleDetail: ArticleDetail!
+    comments: [Comment]
+    author: User!
+    createdAt: Date!
+    updatedAt: Date!
 }
+
+# input ArticleInput {
+# 	title: String!
+# 	content: String!
+# 	# images: [Upload]
+# 	articleDetail: ArticleDetail!
+# 	comments: [Comment]!
+# 	author: User!
+# 	createdAt: Date!
+# 	updatedAt: Date!
+# }

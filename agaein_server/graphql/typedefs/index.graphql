@@ -15,8 +15,6 @@ type Query {
     # Article
     Articles(boardType: BOARD_TYPE!): [Article]!
     Article(boardType: BOARD_TYPE!, id: ID!): Article
-    # Comment
-    Comments(boardType: BOARD_TYPE!): [Comment]!
 }
 
 type Mutation {
@@ -24,9 +22,20 @@ type Mutation {
     signup(User: UserSignupInput!): String
     login(User: UserLoginInput!): String
     # Article
-    createArticle(boardType: BOARD_TYPE!, Article: ArticleInput!): Article!
-    # Comment
-    createComment(boardType: BOARD_TYPE!, articleId: ID!, Comment: CommentInput!): Comment!
-    # 실험
-    singleUpload(file: Upload!): File!
+    createArticle(
+        boardType: BOARD_TYPE!
+        title: String!
+        content: String!
+        file: Upload
+        breedId: ID
+        name: String
+        feature: String
+        gender: String
+        location: String
+        foundDate: Date
+        lostDate: Date
+        gratuity: Int
+    ): Article!
+    createComment(articleId: ID!, content: String!): Comment!
+    createNestedComment(commentId: ID!, content: String!): NestedComment!
 }
