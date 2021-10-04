@@ -45,7 +45,7 @@ export function FormAddress(props: FormAddressProps) {
                         <Input type="text" placeholder="지역명" value={address} disabled />
                         <Button
                             label="검색"
-                            type="SMALL"
+                            size="SMALL"
                             onClick={() => {
                                 setOpenModal(true);
                             }}

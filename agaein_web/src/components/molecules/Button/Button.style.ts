@@ -1,13 +1,13 @@
 import styled, { css } from 'styled-components';
 
 interface StyledButtonProps {
-    buttonType: 'NORMAL' | 'BIG' | 'SMALL';
-    status: 'PAINTED' | 'BORDER' | 'DISABLED';
+    size: 'LARGE' | 'MEDIUM' | 'SMALL';
+    buttonStyle: 'PAINTED' | 'BORDER';
 }
 
 const sizeStyles = css`
     ${(props: StyledButtonProps) =>
-        props.buttonType === 'BIG' &&
+        props.size === 'LARGE' &&
         css`
             width: 149px;
             height: 64px;
@@ -15,7 +15,7 @@ const sizeStyles = css`
         `}
 
     ${(props) =>
-        props.buttonType === 'NORMAL' &&
+        props.size === 'MEDIUM' &&
         css`
             width: 102px;
             height: 40px;
@@ -23,7 +23,7 @@ const sizeStyles = css`
         `}
 
     ${(props) =>
-        props.buttonType === 'SMALL' &&
+        props.size === 'SMALL' &&
         css`
             width: 82px;
             height: 32px;
@@ -33,28 +33,22 @@ const sizeStyles = css`
 
 const colorStyles = css`
     ${(props: StyledButtonProps) =>
-        props.status === 'PAINTED' &&
+        props.buttonStyle === 'PAINTED' &&
         css`
             background-color: ${(props) => props.theme.light.primary};
             color: white;
         `}
 
     ${(props) =>
-        props.status === 'BORDER' &&
+        props.buttonStyle === 'BORDER' &&
         css`
             border: 1px solid ${(props) => props.theme.light.primary};
             background-color: white;
             color: ${(props) => props.theme.light.primary}; ;
         `}
-
-    ${(props) =>
-        props.status === 'DISABLED' &&
-        css`
-            background-color: ? ${(props) => props.theme.light.disable};
-            color: white;
-            cursor: default;
-        `}
 `;
+
+const hoverStyle = css``;
 
 export const StyledButton = styled.button<StyledButtonProps>`
     padding: 5px 10px;
@@ -67,4 +61,17 @@ export const StyledButton = styled.button<StyledButtonProps>`
     ${sizeStyles}
 
     ${colorStyles}
+
+    &:hover {
+        background-color: #f1ad58;
+    }
+
+    &:active {
+        background-color: '#DA9237';
+    }
+
+    &:disabled {
+        background-color: '#F8D6AB';
+        cursor: default;
+    }
 `;
