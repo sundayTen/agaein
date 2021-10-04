@@ -25,6 +25,9 @@ const CreateArticle = ({ history }: RouteComponentProps<CreateArticleStep1Params
     const onClickNext = () => {
         history.push(`/createArticle/step2/${getBoardType()}`);
     };
+    const isButtonDisabled = () => {
+        return selectedBtnIndex < 0;
+    };
 
     return (
         <CreateArticleContainer>
@@ -40,7 +43,7 @@ const CreateArticle = ({ history }: RouteComponentProps<CreateArticleStep1Params
                     <ButtonFont active={selectedBtnIndex === 1}>발견 했어요</ButtonFont>
                 </BigButton>
             </CreateArticleButtonGroup>
-            <Button buttonStyle="PAINTED" label="다음으로" onClick={onClickNext} disabled={!selectedBtnIndex} />
+            <Button buttonStyle="PAINTED" label="다음으로" onClick={onClickNext} disabled={isButtonDisabled()} />
         </CreateArticleContainer>
     );
 };
