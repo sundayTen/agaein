@@ -48,8 +48,6 @@ const colorStyles = css`
         `}
 `;
 
-const hoverStyle = css``;
-
 export const StyledButton = styled.button<StyledButtonProps>`
     padding: 5px 10px;
     border-radius: 4px;
@@ -62,16 +60,17 @@ export const StyledButton = styled.button<StyledButtonProps>`
 
     ${colorStyles}
 
+    //TODO: theme 수정하고 theme 에서 가져오기
     &:hover {
         background-color: #f1ad58;
     }
 
     &:active {
-        background-color: '#DA9237';
+        background-color: #da9237;
     }
 
     &:disabled {
-        background-color: '#F8D6AB';
+        background-color: #f8d6ab;
         cursor: default;
     }
 `;

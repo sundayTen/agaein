@@ -29,11 +29,11 @@ const DetailAddress = styled.div`
 interface FormAddressProps {}
 
 export function FormAddress(props: FormAddressProps) {
-    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const [address, setAddress] = useState<string>('');
 
     const closeModal = () => {
-        setOpenModal(false);
+        setIsOpenModal(false);
     };
 
     return (
@@ -47,7 +47,7 @@ export function FormAddress(props: FormAddressProps) {
                             label="검색"
                             size="SMALL"
                             onClick={() => {
-                                setOpenModal(true);
+                                setIsOpenModal(true);
                             }}
                         />
                     </MainAddress>
@@ -56,7 +56,7 @@ export function FormAddress(props: FormAddressProps) {
                     </DetailAddress>
                 </Form>
             </FormRow>
-            <MapModal open={openModal} close={closeModal} setAddress={setAddress} />
+            <MapModal open={isOpenModal} close={closeModal} setAddress={setAddress} />
         </>
     );
 }
