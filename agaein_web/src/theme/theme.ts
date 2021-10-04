@@ -13,7 +13,7 @@ const theme: DefaultTheme = {
     light: {
         background: '#fff',
         font: '#000',
-        primary: '#52C564',
+        primary: '#EFA03D',
         secondary: '#9B51E0',
         disable: '#aaa',
         error: '#B00020',

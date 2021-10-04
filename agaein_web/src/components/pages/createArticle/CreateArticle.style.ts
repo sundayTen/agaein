@@ -14,49 +14,40 @@ export const FormWrapper = styled.div`
 `;
 
 export const Fieldset = styled.div`
-    strong {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        font-size: 20px;
-        line-height: 29px;
-        color: #5f6871;
-
-        span {
-            font-size: 12px;
-            line-height: 17px;
-        }
-    }
-
     & + & {
         margin-top: 60px;
     }
 `;
 
-export const FormRow = styled.div`
+export const FieldsetTitle = styled.strong`
     display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    font-size: 20px;
+    line-height: 29px;
+    color: #5f6871;
 
-    & + & {
-        margin-top: 20px;
+    span {
+        font-size: 12px;
+        font-weight: 300;
+        line-height: 17px;
     }
 `;
 
-export const Label = styled.div`
+export const FormRow = styled.div`
+    display: flex;
+    margin-top: 20px;
+`;
+
+export const FormLabel = styled.div`
     flex-shrink: 0;
     width: 110px;
+    margin-top: 8px;
     font-size: 16px;
     line-height: 23px;
-    color: #5f6871;
-`;
-
-export const CheckboxWrapper = styled.div`
-    margin-top: 80px;
-    text-align: center;
-`;
-
-export const Checkbox = styled.label`
-    font-size: 18px;
-    line-height: 26px;
+    font-weight: 500;
     color: #5f6871;
 `;
 
@@ -67,6 +58,14 @@ export const ButtonWrapper = styled.div`
     button {
         margin-left: 20px;
     }
+`;
+
+export const BackButton = styled.button`
+    width: 64px;
+    height: 64px;
+    border: 2px solid #bfc4ca;
+    border-radius: 10px;
+    color: #5f6871;
 `;
 
 // * Step 1

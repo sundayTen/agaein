@@ -5,7 +5,7 @@ const Label = styled.label`
     display: block;
 `;
 
-const StyledInput = styled.input`
+const StyledTextarea = styled.textarea`
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
@@ -15,6 +15,7 @@ const StyledInput = styled.input`
     font-size: 14px;
     line-height: 20px;
     color: #000;
+    resize: none;
 
     &::placeholder {
         font-weight: 300;
@@ -27,22 +28,14 @@ const StyledInput = styled.input`
     }
 `;
 
-type InputProps = JSX.IntrinsicElements['input'];
+type TextareaProps = JSX.IntrinsicElements['textarea'];
 
-const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-    // useImperativeHandle(ref, () => ({
-    //     reallyFocus: () => {
-    //         ref.current.focus();
-    //         console.log('Being focused!');
-    //     },
-    // }));
-
-    // color나 세부 design이 정해지면 아래 스타일 수정 or Styled-Component로 변경
+const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>((props, ref) => {
     return (
         <Label>
-            <StyledInput {...props} ref={ref} />
+            <StyledTextarea {...props} ref={ref} />
         </Label>
     );
 });
 
-export default Input;
+export default Textarea;

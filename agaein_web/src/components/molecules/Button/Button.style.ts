@@ -1,25 +1,76 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface StyledButtonProps {
-    buttonType: 'NORMAL' | 'BIG' | 'SMALL';
-    status: 'PAINTED' | 'BORDER' | 'DISABLED';
+    size: 'LARGE' | 'MEDIUM' | 'SMALL';
+    buttonStyle: 'PAINTED' | 'BORDER';
 }
+
+const sizeStyles = css`
+    ${(props: StyledButtonProps) =>
+        props.size === 'LARGE' &&
+        css`
+            width: 149px;
+            height: 64px;
+            font-size: 20px;
+        `}
+
+    ${(props) =>
+        props.size === 'MEDIUM' &&
+        css`
+            width: 102px;
+            height: 40px;
+            font-size: 16px;
+        `}
+
+    ${(props) =>
+        props.size === 'SMALL' &&
+        css`
+            width: 82px;
+            height: 32px;
+            font-size: 14px;
+        `}
+`;
+
+const colorStyles = css`
+    ${(props: StyledButtonProps) =>
+        props.buttonStyle === 'PAINTED' &&
+        css`
+            background-color: ${(props) => props.theme.light.primary};
+            color: white;
+        `}
+
+    ${(props) =>
+        props.buttonStyle === 'BORDER' &&
+        css`
+            border: 1px solid ${(props) => props.theme.light.primary};
+            background-color: white;
+            color: ${(props) => props.theme.light.primary}; ;
+        `}
+`;
 
 export const StyledButton = styled.button<StyledButtonProps>`
     padding: 5px 10px;
-    border-radius: 29px;
+    border-radius: 4px;
     font-size: 20px;
     line-height: 24px;
     font-weight: 700;
     user-select: none;
-    width: ${(props) => (props.buttonType === 'BIG' ? '400px' : props.buttonType === 'SMALL' ? '140px' : '200px')};
-    height: ${(props) => (props.buttonType === 'BIG' ? '180px' : props.buttonType === 'SMALL' ? '40px' : '52px')};
-    border: ${(props) => (props.status === 'BORDER' ? '1px solid' + props.theme.light.primary : undefined)};
-    background-color: ${(props) =>
-        props.status === 'PAINTED'
-            ? props.theme.light.primary
-            : props.status === 'DISABLED'
-            ? props.theme.light.disable
-            : 'white'};
-    color: ${(props) => (props.status === 'BORDER' ? props.theme.light.primary : 'white')};
+
+    ${sizeStyles}
+
+    ${colorStyles}
+
+    //TODO: theme 수정하고 theme 에서 가져오기
+    &:hover {
+        background-color: #f1ad58;
+    }
+
+    &:active {
+        background-color: #da9237;
+    }
+
+    &:disabled {
+        background-color: #f8d6ab;
+        cursor: default;
+    }
 `;
