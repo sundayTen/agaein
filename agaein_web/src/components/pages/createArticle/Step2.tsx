@@ -14,10 +14,20 @@ import Button from 'components/molecules/Button';
 import StepIndicator from 'components/molecules/StepIndicator';
 import { CreateArticleStep2Params } from 'router/params';
 import { RouteComponentProps, Link } from 'react-router-dom';
+import MapModal from 'components/organism/mapModal/MapModal';
+import { useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 //TODO: 찾는 글, 발견한 글 분기 처리
 const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>) => {
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [address, setAddress] = useState<string>('');
+    const [startDate, setStartDate] = useState<Date>(new Date());
     console.log(match.params.type);
+    const closeModal = () => {
+        setOpenModal(false);
+    };
     return (
         <>
             <StepIndicator active={2} styles={{ marginTop: 100 }} />
@@ -58,6 +68,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                     }}
                 />
             </ButtonWrapper>
+            <MapModal open={openModal} close={closeModal} setAddress={setAddress} />
         </>
     );
 };
