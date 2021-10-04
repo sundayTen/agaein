@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FormRow, FormLabel } from '../../pages/createArticle/CreateArticle.style';
 import styled from 'styled-components';
 import Input from 'components/molecules/Input';
 import Button from 'components/molecules/Button';
+import MapModal from 'components/organism/mapModal/MapModal';
 
 const Form = styled.div`
     flex: 1;
@@ -28,18 +29,34 @@ const DetailAddress = styled.div`
 interface FormAddressProps {}
 
 export function FormAddress(props: FormAddressProps) {
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [address, setAddress] = useState<string>('');
+
+    const closeModal = () => {
+        setOpenModal(false);
+    };
+
     return (
-        <FormRow>
-            <FormLabel>실종지역*</FormLabel>
-            <Form>
-                <MainAddress>
-                    <Input type="text" placeholder="지역명" disabled />
-                    <Button label="검색" type="SMALL" onClick={() => {}} />
-                </MainAddress>
-                <DetailAddress>
-                    <Input type="text" placeholder="세부 장소" />
-                </DetailAddress>
-            </Form>
-        </FormRow>
+        <>
+            <FormRow>
+                <FormLabel>실종지역*</FormLabel>
+                <Form>
+                    <MainAddress>
+                        <Input type="text" placeholder="지역명" value={address} disabled />
+                        <Button
+                            label="검색"
+                            type="SMALL"
+                            onClick={() => {
+                                setOpenModal(true);
+                            }}
+                        />
+                    </MainAddress>
+                    <DetailAddress>
+                        <Input type="text" placeholder="세부 장소" />
+                    </DetailAddress>
+                </Form>
+            </FormRow>
+            <MapModal open={openModal} close={closeModal} setAddress={setAddress} />
+        </>
     );
 }
