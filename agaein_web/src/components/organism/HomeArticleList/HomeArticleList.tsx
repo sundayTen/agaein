@@ -1,7 +1,8 @@
+import Font from 'components/molecules/Font';
 import PostItem from 'components/molecules/PostItemBox/PostItemBox';
 import ReviewItem from 'components/molecules/ReviewItem';
 import { Article, Board_Type, useGetArticlesQuery } from 'graphql/generated/generated';
-import { ArticleList, ButtonViewAll, HeaderTitle, ListContainer, ListHeader, ListItem } from './HomeArticleList.style';
+import { ArticleList, ButtonViewAll, ListContainer, ListHeader, ListItem } from './HomeArticleList.style';
 interface HomeArticleListProps {
     boardType: Board_Type;
 }
@@ -39,7 +40,7 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
     return (
         <ArticleList>
             <ListHeader>
-                <HeaderTitle>{getTitle(boardType)}</HeaderTitle>
+                <Font label={getTitle(boardType)} fontType="h3" fontWeight="bold" />
                 <ButtonViewAll type="button">전체보기 &gt;</ButtonViewAll>
             </ListHeader>
             <ListContainer>
