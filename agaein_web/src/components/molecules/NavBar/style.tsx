@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Nav = styled.nav`
+export const Nav = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -8,7 +8,9 @@ export const Nav = styled.nav`
     padding: 0 40px;
     border-bottom: 1px solid rgba(44, 44, 44, 0.233);
     box-shadow: 0px 2px 3px rgba(44, 44, 44, 0.137);
-    
+    background-color: ${(props) => props.theme.light.background};
+    position: sticky;
+    top: 0;
 `;
 
 export const Title = styled.h1`
