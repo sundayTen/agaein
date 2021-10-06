@@ -105,6 +105,11 @@ export const CreateArticleContainer = styled.div`
     margin-bottom: 176px;
 `;
 
+export const CreateArticleHeaders = styled.div`
+    padding: 80px 0px;
+    text-align: center;
+`;
+
 export const CreateArticleButtonGroup = styled.div`
     display: flex;
     justify-content: space-between;

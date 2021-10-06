@@ -16,7 +16,10 @@ legend {
     padding: 0;
 }
 
-body,
+body {
+    background-color: #f5f3ee;
+}
+,
 input,
 textarea,
 select,

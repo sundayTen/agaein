@@ -9,12 +9,6 @@ export const ListHeader = styled.div`
     justify-content: space-between;
 `;
 
-export const HeaderTitle = styled.strong`
-    font-size: 28px;
-    line-height: 34px;
-    font-family: Ssurround;
-`;
-
 export const ButtonViewAll = styled.button`
     font-size: 18px;
     color: #5f6871;
