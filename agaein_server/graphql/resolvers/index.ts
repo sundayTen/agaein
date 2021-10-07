@@ -1,19 +1,24 @@
 import { GraphQLUpload } from 'graphql-upload';
 import { userQueries, userMutations } from './user';
 import { articleQueries, articleMutations } from './article';
-import { commentQueries, commentMutations } from './comment';
 
 const resolvers = {
     Upload: GraphQLUpload,
+    ArticleDetail: {
+        __resolveType(_: any, args: any) {
+            if (args.gratuity) {
+                return 'LFP';
+            }
+            return 'LFG';
+        },
+    },
     Query: {
         ...userQueries,
         ...articleQueries,
-        ...commentQueries,
     },
     Mutation: {
         ...userMutations,
         ...articleMutations,
-        ...commentMutations,
     },
 };
 

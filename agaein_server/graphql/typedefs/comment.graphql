@@ -2,14 +2,19 @@ type Comment implements Timestamps {
     id: ID!
     userId: ID!
     articleId: ID!
-    info: CommentInfo!
-
+    content: String!
+    nestedComments: [NestedComment]!
     createdAt: Date!
     updatedAt: Date!
 }
 
-type CommentInfo {
+type NestedComment implements Timestamps {
+    id: ID!
+    userId: ID!
+    commentId: ID!
     content: String!
+    createdAt: Date!
+    updatedAt: Date!
 }
 
 input CommentInput {

@@ -1,10 +1,5 @@
 import { port } from './config/environment';
 import {
-    initUser,
-    initLookingForPetArticle,
-    initLookingForPetArticleComment,
-    initLookingForGuardianArticle,
-    initLookingForGuardianArticleComment,
     initArticle,
     initComment,
     initNestedComment,
@@ -17,11 +12,6 @@ import {
 import app from './app';
 
 const initDatabase = async () => {
-    await initUser();
-    await initLookingForPetArticle();
-    await initLookingForPetArticleComment();
-    await initLookingForGuardianArticle();
-    await initLookingForGuardianArticleComment();
     await initArticle();
     await initComment();
     await initNestedComment();
