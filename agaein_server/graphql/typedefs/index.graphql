@@ -27,14 +27,7 @@ type Mutation {
         title: String!
         content: String!
         file: Upload
-        breedId: ID
-        name: String
-        feature: String
-        gender: String
-        location: String
-        foundDate: Date
-        lostDate: Date
-        gratuity: Int
+        articleDetail: articleDetail!
     ): Article!
     createComment(articleId: ID!, content: String!): Comment!
     createNestedComment(commentId: ID!, content: String!): NestedComment!

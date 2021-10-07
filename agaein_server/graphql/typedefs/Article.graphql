@@ -47,13 +47,13 @@ type Article {
     updatedAt: Date!
 }
 
-# input ArticleInput {
-# 	title: String!
-# 	content: String!
-# 	# images: [Upload]
-# 	articleDetail: ArticleDetail!
-# 	comments: [Comment]!
-# 	author: User!
-# 	createdAt: Date!
-# 	updatedAt: Date!
-# }
+input articleDetail {
+	breedId: ID
+    name: String
+    feature: String
+    gender: String
+    location: String
+    foundDate: Date
+    lostDate: Date
+    gratuity: Int
+}

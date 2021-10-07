@@ -3,85 +3,84 @@ import { knex } from '../../database';
 
 const articleMutations = {
     createArticle: async (_: any, args: any, context: any) => {
-        // @TODO 위치 맨 뒤로 바꾸기 현재는 하나의 이미지만 가능
-        const { createReadStream, filename } = await args.file;
+        const { boardType, title, content, articleDetail } = args;
+        const { breedId, name, feature, gender, location, foundDate, lostDate, gratuity } = articleDetail;
 
-        const stream = createReadStream();
-
-        const out = require('fs').createWriteStream(filename);
-        await stream.pipe(out);
-        await stream.on('close', () => {
-            console.log(`store ${filename}`);
-        });
+        // @TODO validation 확인해야 됨.
 
         const now = new Date();
         const articleForm = {
             // 임시로 18 넣음
-            user_id: 18,
-            title: args.title,
-            content: args.content,
-            created_at: now,
-            updated_at: now,
+            userId: 18,
+            title: title,
+            content: content,
+            createdAt: now,
+            updatedAt: now,
         };
 
         const article: any = {
             // 유저 데이터 넣어야 함.
             user: {},
-            title: args.title,
-            content: args.content,
+            title: title,
+            content: content,
             comments: [],
-            created_at: now,
-            updated_at: now,
+            createdAt: now,
+            updatedAt: now,
         };
 
-        try {
-            const articles = await knex('article').insert(articleForm).returning('*');
-            article.id = articles[0].id;
-        } catch {
-            console.error('createArticle - article에서 에러발생');
-            console.trace();
+        // @TODO 위치 맨 뒤로 바꾸기 현재는 하나의 이미지만 가능
+        // const { createReadStream, filename } = await args.file;
 
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
-        }
+        // const stream = createReadStream();
 
-        const articleDetailForm: any = {
-            LFG: {
-                article_id: article.id,
-                breed_id: args.breedId,
-                name: args.name,
-                feature: args.feature,
-                gender: args.gender,
-                location: args.location,
-                foundDate: args.foundDate,
-            },
-            LFP: {
-                article_id: article.id,
-                breed_id: args.breedId,
-                name: args.name,
-                feature: args.feature,
-                gender: args.gender,
-                location: args.location,
-                lostDate: args.lostDate,
-                gratuity: args.gratuity,
-            },
-            REVIEW: {},
-        };
+        // const out = require('fs').createWriteStream(filename);
+        // await stream.pipe(out);
+        // await stream.on('close', () => {
+        //     console.log(`store ${filename}`);
+        // });
 
-        // @TODO validation 확인해야 됨.
-
-        try {
-            const articleDetail = await knex(args.boardType).insert(articleDetailForm[args.boardType]).returning('*');
-            articleDetailForm[args.boardType].id = articleDetail[0].id;
-        } catch {
-            console.error('createArticle - Detail에서 에러발생');
-            console.trace();
-
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
-        }
-
-        article.articleDetail = articleDetailForm[args.boardType];
-
-        return article;
+        return await knex.transaction((trx: any) => {
+            return knex('article')
+                .transacting(trx)
+                .insert(articleForm)
+                .returning('id')
+                .then((articleId: any) => {
+                    article.id = articleId[0];
+                    const articleDetailForm: any = {
+                        LFG: {
+                            articleId: article.id,
+                            breedId: breedId,
+                            name: name,
+                            feature: feature,
+                            gender: gender,
+                            location: location,
+                            foundDate: foundDate,
+                        },
+                        LFP: {
+                            articleId: article.id,
+                            breedId: breedId,
+                            name: name,
+                            feature: feature,
+                            gender: gender,
+                            location: location,
+                            lostDate: lostDate,
+                            gratuity: gratuity,
+                        },
+                        REVIEW: {},
+                    };
+                    return knex(boardType).transacting(trx).insert(articleDetailForm[boardType]).returning('id').then((articleDetailId: any) => {
+                        articleDetailForm[boardType].id = articleDetailId[0];
+                        article.articleDetail = articleDetailForm[boardType];
+                    })
+                }).then(() => {
+                    return article;
+                }).catch(() => {
+                    console.error('createArticle에서 에러발생');
+                    console.trace();
+    
+                    throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+                });
+        });
     },
     createComment: async (_: any, args: any) => {
         const now = new Date();
