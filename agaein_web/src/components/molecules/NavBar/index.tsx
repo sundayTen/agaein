@@ -5,6 +5,7 @@ import { Nav, Title, AgaeinIconImg } from './style';
 import KakaoLogin from 'react-kakao-login';
 import { KAKAO_LOGIN_KEY } from 'config/server';
 import Cookies from 'universal-cookie';
+import { Link } from 'react-router-dom';
 
 interface NavBarProps {}
 
@@ -26,13 +27,12 @@ const NavBar = (props: NavBarProps) => {
 
     return (
         <Nav>
-            <Title>
-                <AgaeinIconImg
-                    alt=""
-                    src="https://img.icons8.com/ios/50/000000/github--v1.png"
-                />
-                Agaein
-            </Title>
+            <Link to="/">
+                <Title>
+                    <AgaeinIconImg alt="" src="https://img.icons8.com/ios/50/000000/github--v1.png" />
+                    Agaein
+                </Title>
+            </Link>
             {login ? (
                 <Title>환영합니다</Title>
             ) : (

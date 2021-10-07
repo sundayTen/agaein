@@ -73,55 +73,35 @@ interface BigButtonProps {
     active: boolean;
 }
 
-export const BigButton = styled.div<BigButtonProps>`
-    display: flex;
+export const BigButton = styled.button<BigButtonProps>`
     width: 400px;
     height: 180px;
     justify-content: center;
     align-items: center;
     border-radius: 20px;
-    border: ${(props) => (props.active ? '1px solid ' + props.theme.light.primary : '1px solid #bfc4ca')};
+    border: ${(props) => (props.active ? '1px solid ' + props.theme.light.primary : '1px solid #EEEBE3')};
     cursor: pointer;
-
+    background-color: white;
     &:hover {
         opacity: 0.8;
     }
 `;
 
-export const ButtonFont = styled.span<BigButtonProps>`
-    font-size: 24px;
-    font-weight: 400;
-    line-height: 35px;
-    letter-spacing: 0em;
-    text-align: center;
-    color: ${(props) => (props.active ? props.theme.light.primary : '#5f6871')};
-`;
-
-export const CreateArticleContainer = styled.div`
-    width: 840px;
-    margin: 0 auto;
+export const Step1Container = styled.div`
     padding-top: 100px;
     text-align: center;
     margin-bottom: 176px;
 `;
 
-export const CreateArticleButtonGroup = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 30px;
-    margin-bottom: 100px;
+export const Step1Headers = styled.div`
+    padding: 80px 0px;
+    text-align: center;
 `;
 
-export const CreateArticleTitle = styled.p`
-    font-size: 36px;
-    font-weight: 600;
-    color: #5f6871;
-    margin-bottom: 20px;
-    margin-top: 100px;
-    font-family: 'Ssuround';
-`;
-export const CreateArticleDesc = styled.p`
-    font-size: 22px;
-    color: #5f6871;
+export const Step1ButtonGroup = styled.div`
+    margin-top: 30px;
+    margin-bottom: 100px;
+    button + button {
+        margin-left: 20px;
+    }
 `;

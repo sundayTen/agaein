@@ -17,7 +17,7 @@ const sizeStyles = css`
     ${(props) =>
         props.size === 'MEDIUM' &&
         css`
-            width: 102px;
+            min-width: 102px;
             height: 40px;
             font-size: 16px;
         `}

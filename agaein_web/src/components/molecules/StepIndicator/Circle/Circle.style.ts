@@ -1,20 +1,49 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { StepStatus } from './Circle';
 
 interface CircleContainerProps {
-    active: boolean;
+    status: StepStatus;
 }
 
+const colorStyles = css`
+    ${(props: CircleContainerProps) =>
+        props.status === 'YET' &&
+        css`
+            color: white;
+            background-color: ${(props) => props.theme.light.primary};
+            opacity: 0.5;
+        `}
+
+    ${(props) =>
+        props.status === 'ACTIVE' &&
+        css`
+            border: ${(props) => '2px solid' + props.theme.light.primary};
+            color: ${(props) => props.theme.light.primary};
+        `}
+        ${(props) =>
+        props.status === 'DONE' &&
+        css`
+            color: white;
+            background-color: ${(props) => props.theme.light.primary};
+        `}
+`;
+
 export const CircleContainer = styled.div<CircleContainerProps>`
-    width: 52px;
-    height: 52px;
+    width: 24px;
+    height: 24px;
     border-radius: 50px;
-    background-color: ${(props) => (props.active ? props.theme.light.primary : 'white')};
-    color: ${(props) => (props.active ? 'white' : props.theme.light.disable)};
-    border: ${(props) => (props.active ? undefined : '1px solid #bfc4ca')};
+
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 18px;
     font-weight: 500;
     user-select: none;
+    ${colorStyles}
+`;
+
+export const StepFont = styled.span`
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 14px;
 `;

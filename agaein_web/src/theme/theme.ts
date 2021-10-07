@@ -1,23 +1,28 @@
 import { DefaultTheme } from 'styled-components';
 
 const theme: DefaultTheme = {
-    dark: {
-        background: '#000055',
-        font: '#fff',
-        primary: '#ffffaa',
-        secondary: '#ffddaa',
-        disable: '#aaa',
-        error: '#B00020',
-        placeholder: '#BFC4CA',
-    },
+    // dark: {
+    //     background: '#000055',
+    //     font: '#fff',
+    //     primary: '#ffffaa',
+    //     positive: '#15CCE5',
+    //     disable: '#aaa',
+    //     negative: '#EA3E4F',
+    //     placeholder: '#BFC4CA',
+    // },
     light: {
-        background: '#fff',
-        font: '#000',
+        background: '#F5F3EE',
         primary: '#EFA03D',
-        secondary: '#9B51E0',
+        positive: '#15CCE5',
         disable: '#aaa',
-        error: '#B00020',
+        negative: '#EA3E4F',
         placeholder: '#BFC4CA',
+        white: '#fff',
+        black: '#25282B',
+        lightGrey1: '#FAFAFA',
+        lightGrey2: '#ECEDED',
+        DarkGrey1: '#C0C1C2',
+        DarkGrey2: '#444649',
     },
 };
 
