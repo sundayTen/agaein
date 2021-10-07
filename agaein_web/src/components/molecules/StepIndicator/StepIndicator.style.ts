@@ -11,7 +11,7 @@ export const StepIndicatorContainer = styled.div`
 `;
 
 export const FontContainer = styled.div`
-    width: 420px;
+    width: 410px;
     display: flex;
     flex-direction: horizontal;
     justify-content: space-between;

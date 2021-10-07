@@ -77,6 +77,20 @@ const weightStyles = css`
             font-family: SsurroundAir;
         `}
 `;
+
+const fontStyles = css`
+    ${(props: FontProps) =>
+        props.fontWeight === 'bold' &&
+        css`
+            font-family: Ssurround;
+        `}
+    ${(props: FontProps) =>
+        props.fontWeight === 'normal' &&
+        css`
+            font-family: SsurroundAir;
+        `}
+`;
+
 const colorStyles = css`
     ${(props: FontProps) =>
         props.status === 'ACTIVE' &&
@@ -95,8 +109,12 @@ const colorStyles = css`
             opacity: 0.5;
         `}
 `;
+
 export const StyledFont = styled.span`
     ${sizeStyles}
     ${weightStyles}
     ${colorStyles}
+    
+    font-family: ${(props) =>
+        props.type === 'label' || props.type === 'body' || props.type === 'tag' ? 'NanumSquareRound' : fontStyles}
 `;

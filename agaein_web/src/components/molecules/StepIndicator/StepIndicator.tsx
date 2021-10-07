@@ -1,4 +1,5 @@
 import Font from '../Font';
+import { FontStatus } from '../Font/Font';
 import Circle, { StepStatus } from './Circle/Circle';
 import { Edge, FontContainer, StepIndicatorContainer } from './StepIndicator.style';
 
@@ -8,8 +9,8 @@ interface StepIndicatorProps {
 }
 
 export const StepIndicator = (props: StepIndicatorProps) => {
+    const { active, styles } = props;
     const getStatus = (index: number): StepStatus => {
-        // ? index : 내 상태 active : 현재 상태
         if (active === index) {
             return 'ACTIVE';
         }
@@ -18,7 +19,13 @@ export const StepIndicator = (props: StepIndicatorProps) => {
         }
         return 'YET';
     };
-    const { active, styles } = props;
+
+    const getFontStatus = (index: number): FontStatus => {
+        if (getStatus(index) === 'YET') {
+            return 'DISABLED';
+        }
+        return 'ACTIVE';
+    };
     return (
         <>
             <StepIndicatorContainer style={styles}>
@@ -29,9 +36,9 @@ export const StepIndicator = (props: StepIndicatorProps) => {
                 <Circle status={getStatus(3)} index={3} />
             </StepIndicatorContainer>
             <FontContainer>
-                <Font label="분류 선택" fontType="tag" />
-                <Font label="게시글 작성" fontType="tag" />
-                <Font label="작성 완료" fontType="tag" />
+                <Font label="분류 선택" fontType="tag" status={getFontStatus(1)} />
+                <Font label="게시글 작성" fontType="tag" status={getFontStatus(2)} />
+                <Font label="작성 완료" fontType="tag" status={getFontStatus(3)} />
             </FontContainer>
         </>
     );

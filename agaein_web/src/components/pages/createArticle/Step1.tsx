@@ -7,7 +7,6 @@ import { RouteComponentProps } from 'react-router-dom';
 import { CreateArticleStep1Params } from 'router/params';
 import {
     BigButton,
-    ButtonFont,
     CreateArticleButtonGroup,
     CreateArticleContainer,
     CreateArticleHeaders,
