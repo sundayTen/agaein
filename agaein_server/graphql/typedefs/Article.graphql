@@ -47,8 +47,8 @@ type Article {
     updatedAt: Date!
 }
 
-input articleDetail {
-	breedId: ID
+input articleDetailInput {
+    breedId: ID
     name: String
     feature: String
     gender: String

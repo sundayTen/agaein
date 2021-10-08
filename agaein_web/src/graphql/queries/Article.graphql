@@ -1,29 +1,48 @@
 query getArticles($boardType: BOARD_TYPE!) {
     Articles(boardType: $boardType) {
-        ...ArticleIds
-        info {
-            title
-            content
+        ...ArticleCommon
+        articleDetail {
+            ... on LFG {
+                ...LFGDetail
+            }
+
+            ... on LFP {
+                ...LFPDetail
+            }
+
+            ... on REVIEW {
+                ...ReviewDetail
+            }
         }
     }
 }
 
 query getArticle($boardType: BOARD_TYPE!, $id: ID!) {
     Article(boardType: $boardType, id: $id) {
-        ...ArticleIds
-        info {
-            title
-            content
+        ...ArticleCommon
+        articleDetail {
+            ... on LFG {
+                ...LFGDetail
+            }
+
+            ... on LFP {
+                ...LFPDetail
+            }
+
+            ... on REVIEW {
+                ...ReviewDetail
+            }
         }
     }
 }
 
-mutation createArticle($boardType: BOARD_TYPE!, $Article: ArticleInput!) {
-    createArticle(boardType: $boardType, Article: $Article) {
-        ...ArticleIds
-        info {
-            title
-            content
-        }
+mutation createArticle(
+    $boardType: BOARD_TYPE!
+    $title: String!
+    $content: String!
+    $articleDetail: articleDetailInput!
+) {
+    createArticle(boardType: $boardType, title: $title, content: $content, articleDetail: $articleDetail) {
+        ...ArticleCommon
     }
 }
