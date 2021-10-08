@@ -2,7 +2,6 @@ fragment ArticleCommon on Article {
     id
     title
     content
-    images
     comments {
         ...CommentDetail
     }
