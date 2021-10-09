@@ -49,35 +49,42 @@ const articleMutations = {
                     const articleDetailForm: any = {
                         LFG: {
                             articleId: article.id,
-                            breedId: breedId,
-                            name: name,
-                            feature: feature,
-                            gender: gender,
-                            location: location,
-                            foundDate: foundDate,
+                            breedId,
+                            name,
+                            feature,
+                            gender,
+                            location,
+                            foundDate,
                         },
                         LFP: {
                             articleId: article.id,
-                            breedId: breedId,
-                            name: name,
-                            feature: feature,
-                            gender: gender,
-                            location: location,
-                            lostDate: lostDate,
-                            gratuity: gratuity,
+                            breedId,
+                            name,
+                            feature,
+                            gender,
+                            location,
+                            lostDate,
+                            gratuity,
                         },
                         REVIEW: {},
                     };
-                    return knex(boardType).transacting(trx).insert(articleDetailForm[boardType]).returning('id').then((articleDetailId: any) => {
-                        articleDetailForm[boardType].id = articleDetailId[0];
-                        article.articleDetail = articleDetailForm[boardType];
-                    })
-                }).then(() => {
+                    console.log(articleDetailForm[boardType]);
+                    return knex(boardType)
+                        .transacting(trx)
+                        .insert(articleDetailForm[boardType])
+                        .returning('id')
+                        .then((articleDetailId: any) => {
+                            articleDetailForm[boardType].id = articleDetailId[0];
+                            article.articleDetail = articleDetailForm[boardType];
+                        });
+                })
+                .then(() => {
                     return article;
-                }).catch(() => {
+                })
+                .catch(() => {
                     console.error('createArticle에서 에러발생');
                     console.trace();
-    
+
                     throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
                 });
         });

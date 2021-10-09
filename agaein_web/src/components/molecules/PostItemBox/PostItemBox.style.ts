@@ -4,6 +4,9 @@ export const ItemBox = styled.div`
     border-radius: 20px;
     border: 1px solid #bfc4ca;
     overflow: hidden;
+    &:hover {
+        border: ${(props) => '1px solid ' + props.theme.light.primary};
+    }
 `;
 
 export const ItemLink = styled.a`

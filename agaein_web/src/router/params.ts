@@ -9,3 +9,6 @@ export interface CreateArticleStep2Params {
 export interface ArticleListParams {
     id: string;
 }
+export interface ArticleDetailParams {
+    id: string;
+}

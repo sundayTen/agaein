@@ -27,7 +27,7 @@ type Mutation {
         title: String!
         content: String!
         file: Upload
-        articleDetail: articleDetail!
+        articleDetail: articleDetailInput!
     ): Article!
     createComment(articleId: ID!, content: String!): Comment!
     createNestedComment(commentId: ID!, content: String!): NestedComment!

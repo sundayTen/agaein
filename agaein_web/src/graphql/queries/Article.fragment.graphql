@@ -1,4 +1,34 @@
-fragment ArticleIds on Article {
+fragment ArticleCommon on Article {
     id
-    userId
+    title
+    content
+    comments {
+        ...CommentDetail
+    }
+    createdAt
+    updatedAt
+}
+
+fragment LFGDetail on LFG {
+    breed
+    name
+    feature
+    gender
+}
+fragment LFPDetail on LFP {
+    breed
+    name
+    feature
+    gender
+    gratuity
+}
+fragment ReviewDetail on REVIEW {
+    a
+}
+
+fragment CommentDetail on Comment {
+    articleId
+    content
+    createdAt
+    updatedAt
 }
