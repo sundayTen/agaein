@@ -12,8 +12,8 @@ const articleMutations = {
         const articleForm = {
             // 임시로 18 넣음
             userId: 18,
-            title: title,
-            content: content,
+            title,
+            content,
             createdAt: now,
             updatedAt: now,
         };
@@ -21,8 +21,8 @@ const articleMutations = {
         const article: any = {
             // 유저 데이터 넣어야 함.
             user: {},
-            title: title,
-            content: content,
+            title,
+            content,
             comments: [],
             createdAt: now,
             updatedAt: now,
