@@ -17,13 +17,7 @@ const Step3 = ({ history, match }: RouteComponentProps<ArticleListParams>) => {
                     fontType="h3"
                     fontWeight="normal"
                 />
-                <Button
-                    size="LARGE"
-                    label="작성글 보기"
-                    onClick={() => {
-                        history.push('/articles/');
-                    }}
-                />
+                <Button size="LARGE" label="작성글 보기" onClick={() => {}} />
             </Step1Headers>
         </div>
     );

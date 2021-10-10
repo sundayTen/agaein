@@ -1,6 +1,6 @@
 import Font from 'components/molecules/Font';
 import PostItem from 'components/molecules/PostItemBox/PostItemBox';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import {
     ArticleListDiv,
     ButtonContainer,
@@ -32,9 +32,11 @@ const ArticleList = ({ match, history }: RouteComponentProps) => {
                         );
                     })}
                 </ListContainer>
-                <ButtonContainer>
-                    <PostingButton label="게시글 작성" onClick={() => history.push('/createArticle/step1')} />
+
+                <ButtonContainer to={'/createArticle/step1'}>
+                    <PostingButton label="게시글 작성" onClick={() => {}} />
                 </ButtonContainer>
+
                 <Pagination />
             </ArticleListDiv>
         </div>

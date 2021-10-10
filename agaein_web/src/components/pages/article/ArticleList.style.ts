@@ -1,5 +1,6 @@
 import Button from 'components/molecules/Button';
 import { StyledButton } from 'components/molecules/Button/Button.style';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const ArticleListDiv = styled.div`
@@ -28,7 +29,7 @@ export const ListItem = styled.li`
     width: 180px;
     padding: 0 20px;
 `;
-export const ButtonContainer = styled.div`
+export const ButtonContainer = styled(Link)`
     display: flex;
 `;
 export const PostingButton = styled(Button)`

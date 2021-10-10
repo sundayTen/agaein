@@ -17,32 +17,32 @@ export const SearchInputIcon = styled(SearchIcon)`
 export const SearchInput = styled.input`
     width: 400px;
     height: 48px;
-    border: 1px solid #bfc4ca;
+    border: ${(props) => '1px solid  ' + props.theme.light.DarkGrey1};
     border-radius: 4px 0px 0px 4px;
 `;
 
 export const AreaInput = styled.input`
     width: 239px;
     height: 48px;
-    border: 1px solid #bfc4ca;
+    border: ${(props) => '1px solid  ' + props.theme.light.DarkGrey1}; ;
 `;
 
 export const DateInput = styled.input`
     width: 241px;
     height: 48px;
-    border: 1px solid #bfc4ca;
+    border: ${(props) => '1px solid  ' + props.theme.light.DarkGrey1}; ;
 `;
 
 export const KindSelect = styled.select`
     width: 240px;
     height: 52px;
-    border: 1px solid #bfc4ca;
+    border: ${(props) => '1px solid  ' + props.theme.light.DarkGrey1}; ;
 `;
 
 export const SearchButton = styled.button`
     width: 140px;
     height: 51px;
-    border: 1px solid #bfc4ca;
+    border: ${(props) => '1px solid  ' + props.theme.light.DarkGrey1};
     border-radius: 0px 4px 4px 0px;
     background: #bfc4ca;
 `;

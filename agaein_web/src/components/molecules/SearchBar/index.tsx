@@ -17,7 +17,7 @@ const SearchBar = (props: SearchBarProps) => {
             {/* <SearchInputIcon /> */}
             <SearchInput />
             <AreaInput />
-            <DateInput dateFormat="yyyy/MM/dd" selected={startDate} onChange={(date: Date) => setStartDate(date)} />
+            <DateInput />
             <KindSelect />
             <SearchButton>검색</SearchButton>
         </SearchBarDiv>
