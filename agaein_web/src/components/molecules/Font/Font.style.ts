@@ -26,12 +26,6 @@ const sizeStyles = css`
             font-size: 24px;
             line-height: 28px;
         `}
-        ${(props: FontProps) =>
-        props.type === 'h3' &&
-        css`
-            font-size: 24px;
-            line-height: 28px;
-        `}
             ${(props: FontProps) =>
         props.type === 'h4' &&
         css`
