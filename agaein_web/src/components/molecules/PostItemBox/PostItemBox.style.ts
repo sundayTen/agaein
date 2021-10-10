@@ -7,6 +7,7 @@ export const ItemBox = styled.div`
     &:hover {
         border: ${(props) => '1px solid ' + props.theme.light.primary};
     }
+    margin-bottom: 20px;
 `;
 
 export const ItemLink = styled.a`
