@@ -23,7 +23,6 @@ declare module 'styled-components' {
             lightGrey2: string;
             DarkGrey1: string;
             DarkGrey2: string;
-            placeholder: string;
         };
     }
 }

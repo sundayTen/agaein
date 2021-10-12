@@ -18,7 +18,7 @@ const StyledInput = styled.input`
 
     &::placeholder {
         font-weight: 300;
-        color: #bfc4ca;
+        color: ${(props) => props.theme.light.DarkGrey1};
     }
 
     &:focus {

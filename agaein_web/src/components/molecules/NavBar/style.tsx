@@ -9,6 +9,7 @@ export const Nav = styled.header`
     border-bottom: 1px solid rgba(44, 44, 44, 0.233);
     box-shadow: 0px 2px 3px rgba(44, 44, 44, 0.137);
     background-color: ${(props) => props.theme.light.background};
+    z-index: 1000;
     position: sticky;
     top: 0;
 `;

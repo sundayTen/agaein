@@ -2,12 +2,14 @@ import Font from 'components/molecules/Font';
 import PostItem from 'components/molecules/PostItemBox/PostItemBox';
 import ReviewItem from 'components/molecules/ReviewItem';
 import { Article, Board_Type, useGetArticlesQuery } from 'graphql/generated/generated';
-import { ArticleList, ButtonViewAll, ListContainer, ListHeader, ListItem } from './HomeArticleList.style';
+import { useBookmark } from 'hooks/useBookmark';
+import { ArticleList, ButtonViewAll, ListContainer, ListHeader, ListItem, TitleBox } from './HomeArticleList.style';
 interface HomeArticleListProps {
     boardType: Board_Type;
 }
 
 const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
+    const { isBookmarked, setBookmark } = useBookmark();
     const { data, loading, error } = useGetArticlesQuery({
         variables: {
             boardType,
@@ -35,12 +37,16 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
     if (loading) return <p>Loading</p>;
     if (error) return <p>{`Error : ${error}`}</p>;
 
-    const articles = data?.Articles.map((article) => article) as Article[];
+    const [firstChunk, secondChunk] = getTitle(boardType).split(' ');
+    const articles = data?.Articles.map((article) => article).slice(0, 6) as Article[];
 
     return (
         <ArticleList>
             <ListHeader>
-                <Font label={getTitle(boardType)} fontType="h3" fontWeight="bold" />
+                <TitleBox>
+                    <Font label={firstChunk} fontType="h3" fontWeight="bold" status="ACTIVE" htmlElement="span" />
+                    <Font label={secondChunk} fontType="h3" fontWeight="bold" htmlElement="span" />
+                </TitleBox>
                 <ButtonViewAll type="button">전체보기 &gt;</ButtonViewAll>
             </ListHeader>
             <ListContainer>
@@ -54,7 +60,11 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
                                 {boardType === Board_Type.Review ? (
                                     <ReviewItem />
                                 ) : (
-                                    <PostItem item={article as Article} />
+                                    <PostItem
+                                        item={article as Article}
+                                        bookmarked={isBookmarked(article.id)}
+                                        setBookmark={() => setBookmark(article.id)}
+                                    />
                                 )}
                             </ListItem>
                         );

@@ -63,7 +63,7 @@ export const ButtonWrapper = styled.div`
 export const BackButton = styled.button`
     width: 64px;
     height: 64px;
-    border: 2px solid #bfc4ca;
+    border: ${(props) => '2px solid ' + props.theme.light.DarkGrey1};
     border-radius: 10px;
     color: #5f6871;
 `;

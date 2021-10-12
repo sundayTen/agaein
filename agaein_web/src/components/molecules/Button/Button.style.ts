@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 interface StyledButtonProps {
-    size: 'LARGE' | 'MEDIUM' | 'SMALL';
+    size: 'LARGE' | 'MEDIUM' | 'SMALL' | 'XLARGE';
     buttonStyle: 'PAINTED' | 'BORDER';
 }
 
@@ -9,17 +9,25 @@ const sizeStyles = css`
     ${(props: StyledButtonProps) =>
         props.size === 'LARGE' &&
         css`
-            width: 149px;
-            height: 64px;
+            height: 52px;
+            font-size: 18px;
+            padding: 16px 44px;
+        `}
+
+    ${(props) =>
+        props.size === 'XLARGE' &&
+        css`
+            height: 58px;
             font-size: 20px;
+            padding: 18px 50px;
         `}
 
     ${(props) =>
         props.size === 'MEDIUM' &&
         css`
-            min-width: 102px;
             height: 40px;
             font-size: 16px;
+            padding: 11px 35px;
         `}
 
     ${(props) =>
@@ -36,6 +44,7 @@ const colorStyles = css`
         props.buttonStyle === 'PAINTED' &&
         css`
             background-color: ${(props) => props.theme.light.primary};
+            border: 1px solid ${(props) => props.theme.light.primary};
             color: white;
         `}
 
@@ -57,12 +66,13 @@ export const StyledButton = styled.button<StyledButtonProps>`
     user-select: none;
 
     ${sizeStyles}
-
     ${colorStyles}
 
     //TODO: theme 수정하고 theme 에서 가져오기
     &:hover {
-        background-color: #f1ad58;
+        background-color: white;
+        color: ${(props) => props.theme.light.primary};
+        border: 1px solid white;
     }
 
     &:active {

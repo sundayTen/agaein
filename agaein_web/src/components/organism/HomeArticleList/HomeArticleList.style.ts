@@ -9,6 +9,13 @@ export const ListHeader = styled.div`
     justify-content: space-between;
 `;
 
+export const TitleBox = styled.div`
+    display: flex;
+    span + span {
+        margin-left: 10px;
+    }
+`;
+
 export const ButtonViewAll = styled.button`
     font-size: 18px;
     color: #5f6871;

@@ -105,10 +105,11 @@ const colorStyles = css`
 `;
 
 export const StyledFont = styled.span`
+    color: ${(props) => props.theme.light.black};
     ${sizeStyles}
     ${weightStyles}
-    ${colorStyles}
-    
-    font-family: ${(props) =>
+${colorStyles}
+
+font-family: ${(props) =>
         props.type === 'label' || props.type === 'body' || props.type === 'tag' ? 'NanumSquareRound' : fontStyles}
 `;

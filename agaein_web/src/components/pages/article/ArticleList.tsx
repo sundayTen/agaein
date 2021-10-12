@@ -13,9 +13,11 @@ import { testDate } from './testData';
 import { Article } from 'graphql/generated/generated';
 import SearchBar from 'components/molecules/SearchBar';
 import Pagination from 'components/molecules/Pagination';
+import { useBookmark } from 'hooks/useBookmark';
 
 const ArticleList = ({ match, history }: RouteComponentProps) => {
     const articles = testDate.data?.Articles.map((article) => article) as Article[];
+    const { isBookmarked, setBookmark } = useBookmark();
     return (
         <div>
             <ArticleListDiv>
@@ -27,7 +29,11 @@ const ArticleList = ({ match, history }: RouteComponentProps) => {
                     {articles?.map((article: Article) => {
                         return (
                             <ListItem key={article?.id}>
-                                <PostItem item={article} />
+                                <PostItem
+                                    item={article}
+                                    bookmarked={isBookmarked(article.id)}
+                                    setBookmark={() => setBookmark(article.id)}
+                                />
                             </ListItem>
                         );
                     })}

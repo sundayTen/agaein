@@ -19,19 +19,19 @@ const PhotoLabel = styled.label`
     text-align: center;
     width: 140px;
     height: 160px;
-    border: 1px solid #bfc4ca;
+    border: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
     border-radius: 10px;
     cursor: pointer;
 `;
 
 const PhotoIcon = styled.span`
     font-size: 25px;
-    color: #bfc4ca;
+    color: ${(props) => props.theme.light.DarkGrey1};
 `;
 
 const PhotoText = styled.span`
     font-size: 14px;
-    color: #bfc4ca;
+    color: ${(props) => props.theme.light.DarkGrey1};
 `;
 
 const PhotoGuide = styled.p`
