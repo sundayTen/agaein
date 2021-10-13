@@ -105,3 +105,8 @@ export const Step1ButtonGroup = styled.div`
         margin-left: 20px;
     }
 `;
+export const UtilButtonGroup = styled.div`
+    button + button {
+        margin-left: 20px;
+    }
+`;

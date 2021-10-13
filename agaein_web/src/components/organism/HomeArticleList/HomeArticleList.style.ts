@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ArticleList = styled.div`
-    margin-top: 140px;
+    margin-bottom: 80px;
 `;
 
 export const ListHeader = styled.div`

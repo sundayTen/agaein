@@ -69,6 +69,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
     ${colorStyles}
 
     //TODO: theme 수정하고 theme 에서 가져오기
+    
     &:hover {
         background-color: white;
         color: ${(props) => props.theme.light.primary};
