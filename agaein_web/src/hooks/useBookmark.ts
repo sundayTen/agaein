@@ -3,7 +3,6 @@ import Cookies from 'universal-cookie';
 
 const useBookmark = () => {
     const [bookmarks, setBookmarks] = useState<number[]>([]);
-    console.log('🚀 OutPut is -->  ~ useBookmark ~ bookmarks', bookmarks);
     const cookies = new Cookies();
 
     useEffect(() => {
@@ -16,12 +15,6 @@ const useBookmark = () => {
             return bookmarks.filter((bookmark) => bookmark !== article_id);
         }
         return [article_id, ...bookmarks];
-    };
-
-    const getBookmarks = (): number[] => {
-        const allBookmarks = cookies.get('bookmark') || [];
-        setBookmark(allBookmarks);
-        return allBookmarks;
     };
 
     const setBookmark = (article_id: number) => {
