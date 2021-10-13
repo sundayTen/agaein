@@ -2,7 +2,7 @@ import Font from 'components/molecules/Font';
 import PostItem from 'components/molecules/PostItemBox/PostItemBox';
 import ReviewItem from 'components/molecules/ReviewItem';
 import { Article, Board_Type, useGetArticlesQuery } from 'graphql/generated/generated';
-import { useBookmark } from 'hooks/useBookmark';
+import useBookmark from 'hooks/useBookmark';
 import { ArticleList, ButtonViewAll, ListContainer, ListHeader, ListItem, TitleBox } from './HomeArticleList.style';
 interface HomeArticleListProps {
     boardType: Board_Type;

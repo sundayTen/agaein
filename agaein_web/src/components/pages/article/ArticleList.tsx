@@ -13,7 +13,7 @@ import { testDate } from './testData';
 import { Article } from 'graphql/generated/generated';
 import SearchBar from 'components/molecules/SearchBar';
 import Pagination from 'components/molecules/Pagination';
-import { useBookmark } from 'hooks/useBookmark';
+import useBookmark from 'hooks/useBookmark';
 
 const ArticleList = ({ match, history }: RouteComponentProps) => {
     const articles = testDate.data?.Articles.map((article) => article) as Article[];
