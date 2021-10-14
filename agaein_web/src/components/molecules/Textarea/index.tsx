@@ -9,7 +9,7 @@ const StyledTextarea = styled.textarea`
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
-    border: 1px solid #bfc4ca;
+    border: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
     border-radius: 4px;
     font-weight: 500;
     font-size: 14px;
@@ -19,7 +19,7 @@ const StyledTextarea = styled.textarea`
 
     &::placeholder {
         font-weight: 300;
-        color: #bfc4ca;
+        color: ${(props) => props.theme.light.DarkGrey1};
     }
 
     &:focus {

@@ -63,7 +63,7 @@ export const ButtonWrapper = styled.div`
 export const BackButton = styled.button`
     width: 64px;
     height: 64px;
-    border: 2px solid #bfc4ca;
+    border: ${(props) => '2px solid ' + props.theme.light.DarkGrey1};
     border-radius: 10px;
     color: #5f6871;
 `;
@@ -101,6 +101,11 @@ export const Step1Headers = styled.div`
 export const Step1ButtonGroup = styled.div`
     margin-top: 30px;
     margin-bottom: 100px;
+    button + button {
+        margin-left: 20px;
+    }
+`;
+export const UtilButtonGroup = styled.div`
     button + button {
         margin-left: 20px;
     }

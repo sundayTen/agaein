@@ -1,12 +1,19 @@
 import styled from 'styled-components';
 
 export const ArticleList = styled.div`
-    margin-top: 140px;
+    margin-bottom: 80px;
 `;
 
 export const ListHeader = styled.div`
     display: flex;
     justify-content: space-between;
+`;
+
+export const TitleBox = styled.div`
+    display: flex;
+    span + span {
+        margin-left: 10px;
+    }
 `;
 
 export const ButtonViewAll = styled.button`

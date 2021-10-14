@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const HomeHeaderContainer = styled.div`
     text-align: center;
-    padding-top: 120px;
+    padding: 120px 0;
 `;
 
 export const HomeHeaderButtonGroup = styled.div`

@@ -16,4 +16,8 @@ export const BookMarkInActive = styled(OutlineBookMark)`
     cursor: pointer;
 `;
 
-export const BookMarkContainer = styled.button``;
+export const BookMarkContainer = styled.button`
+    position: absolute;
+    top: 5px;
+    right: 5px;
+`;

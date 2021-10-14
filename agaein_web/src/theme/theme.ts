@@ -8,7 +8,6 @@ const theme: DefaultTheme = {
     //     positive: '#15CCE5',
     //     disable: '#aaa',
     //     negative: '#EA3E4F',
-    //     placeholder: '#BFC4CA',
     // },
     light: {
         background: '#F5F3EE',
@@ -16,12 +15,11 @@ const theme: DefaultTheme = {
         positive: '#15CCE5',
         disable: '#aaa',
         negative: '#EA3E4F',
-        placeholder: '#BFC4CA',
         white: '#fff',
-        black: '#25282B',
+        black: '#333',
         lightGrey1: '#FAFAFA',
         lightGrey2: '#ECEDED',
-        DarkGrey1: '#C0C1C2',
+        DarkGrey1: '#C4C4C4',
         DarkGrey2: '#444649',
     },
 };

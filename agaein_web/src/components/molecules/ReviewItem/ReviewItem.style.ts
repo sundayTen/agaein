@@ -18,7 +18,7 @@ export const Title = styled.p`
 `;
 export const Description = styled.p`
     font-size: 12px;
-    color: #bfc4ca;
+    color: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
 `;
 export const Avatar = styled.img`
     width: 100%;

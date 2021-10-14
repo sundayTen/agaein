@@ -9,7 +9,14 @@ const BookMark = (props: BookMarkProps) => {
     const { active, onClick } = props;
 
     return (
-        <BookMarkContainer onClick={onClick}>{active ? <BookMarkActive /> : <BookMarkInActive />}</BookMarkContainer>
+        <BookMarkContainer
+            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                onClick();
+                e.preventDefault();
+            }}
+        >
+            {active ? <BookMarkActive /> : <BookMarkInActive />}
+        </BookMarkContainer>
     );
 };
 

@@ -3,7 +3,7 @@ import { StyledButton } from './Button.style';
 interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
     label: string;
     buttonStyle?: 'PAINTED' | 'BORDER';
-    size?: 'LARGE' | 'MEDIUM' | 'SMALL';
+    size?: 'LARGE' | 'MEDIUM' | 'SMALL' | 'XLARGE';
     disabled?: boolean;
     onClick: () => void;
 }
