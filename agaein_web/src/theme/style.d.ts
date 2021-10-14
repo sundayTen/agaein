@@ -16,6 +16,7 @@ declare module 'styled-components' {
             primary: string;
             disable: string;
             positive: string;
+            secondary: string;
             negative: string;
             white: string;
             black: string;
