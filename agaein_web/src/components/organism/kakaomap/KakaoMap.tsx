@@ -5,10 +5,14 @@ declare global {
     }
 }
 interface kakaoMapProps {
-    search: string | undefined;
-    setAddress: (value: string) => void;
-    save: boolean;
-    onSave: (value: boolean) => void;
+    search?: string | undefined;
+    setAddress?: (value: string) => void;
+    save?: boolean;
+    onSave?: (value: boolean) => void;
+    size?: {
+        width: number;
+        height: number;
+    };
 }
 const { kakao } = window;
 
@@ -17,7 +21,14 @@ let options = {
     level: 3,
 };
 
-const KakaoMap = ({ search, setAddress, save, onSave }: kakaoMapProps) => {
+const KakaoMap = (props: kakaoMapProps) => {
+    const {
+        search = undefined,
+        setAddress = () => {},
+        save = false,
+        onSave = () => {},
+        size = { width: 500, height: 500 },
+    } = props;
     //const ref = useRef(null);
     const geocoder = new kakao.maps.services.Geocoder();
     const mapRef = useRef(null);
@@ -128,7 +139,7 @@ const KakaoMap = ({ search, setAddress, save, onSave }: kakaoMapProps) => {
 
     return (
         <>
-            <div ref={mapRef} style={{ width: 500, height: 500 }} />
+            <div ref={mapRef} style={{ ...size, borderRadius: 5 }} />
         </>
     );
 };

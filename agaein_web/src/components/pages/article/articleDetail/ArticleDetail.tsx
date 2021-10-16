@@ -2,63 +2,75 @@ import Chip from 'components/molecules/Chip';
 import Font from 'components/molecules/Font';
 import moment from 'moment';
 import ImageCarousel from 'components/molecules/ImageCarousel/ImageCarousel';
-import { Article, Board_Type, Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
+import { Article, Board_Type, Lfg, useGetArticleQuery } from 'graphql/generated/generated';
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
 import {
+    ArticleDetailContainer,
     ArticleDetailContentContainer,
-    ArticleDetailDetailContainer,
-    ArticleDetailTitleContainer,
-    titleStyles,
+    ArticleInfoContainer,
+    ArticleMapContainer,
+    HorizontalContainer,
 } from './ArticleDetail.style';
 import Comment from 'components/organism/Comment';
+import KakaoMap from 'components/organism/kakaomap/KakaoMap';
+import Button from 'components/molecules/Button';
 
-const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
+const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
             boardType: Board_Type.Lfg,
         },
     });
-    // ? util함수로 빼서 쓰는게 좋을듯?
-    const getBoardName = (boardType: Board_Type) => {
-        switch (boardType) {
-            case Board_Type.Lfg:
-                return '찾고 있어요';
-            case Board_Type.Lfp:
-                return '발견 했어요';
-            case Board_Type.Review:
-                return '찾은 후기';
-            default:
-                return '';
-        }
-    };
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
-    const { title, content, createdAt } = data?.Article as Article;
+    const { title, content, createdAt, articleDetail } = data?.Article as Article;
+    const { breed, feature, gender, name } = articleDetail as Lfg;
 
     return (
         <>
-            <ArticleDetailTitleContainer>
-                <Chip label="진행중" />
-                <Font
-                    label={getBoardName(Board_Type.Lfg)}
-                    fontType="h4"
-                    fontWeight="bold"
-                    htmlElement="span"
-                    style={titleStyles}
-                />
-                <Font label={title} fontType="h4" htmlElement="span" />
-            </ArticleDetailTitleContainer>
-            <ArticleDetailDetailContainer>이곳에 게시글 상세정보가 들어감</ArticleDetailDetailContainer>
-            <ImageCarousel />
-            <ArticleDetailContentContainer>
-                <Font label={content} fontType="label" style={{ marginBottom: 20 }} />
-                <Font label={moment(createdAt).format('YY.MM.DD HH:mm:ss')} fontType="tag" />
-            </ArticleDetailContentContainer>
+            <HorizontalContainer>
+                <ImageCarousel images={imgDummy} />
+                <ArticleDetailContainer>
+                    <Chip label="진행중" />
+                    <Chip label="사례금 200,000원" />
+                    <ArticleDetailContentContainer>
+                        <Font
+                            label={`서울 송파구에서 강아지(${breed})를 찾고있어요`}
+                            fontType="h4"
+                            fontWeight="bold"
+                            htmlElement="span"
+                        />
+                        <Font
+                            label={`실종일 
+                            2021년 10월 13일 · 이름 ${name} · 나이 6.2살 · 성별 ${gender}`}
+                            fontType="body"
+                            style={{ marginTop: 5, marginBottom: 30 }}
+                        />
+                        <Font label={feature} fontType="label" />
+                    </ArticleDetailContentContainer>
+                    <ArticleInfoContainer>
+                        <Font label={moment(createdAt).format('YY.MM.DD HH:mm:ss')} fontType="tag" />
+                        <Font label={` 북마크 5 · 댓글 8 · 조회수 162`} fontType="tag" />
+                    </ArticleInfoContainer>
+                    <ArticleMapContainer>
+                        <Font label="실종장소" fontType="subhead" style={{ marginBottom: 10 }} />
+                        <KakaoMap size={{ width: 480, height: 260 }} />
+                        <Button label="발견 신고 하기" onClick={() => {}} style={{ width: '100%', marginTop: 20 }} />
+                    </ArticleMapContainer>
+                </ArticleDetailContainer>
+            </HorizontalContainer>
             <Comment comments={[]} />
         </>
     );
 };
 
 export default ArticleDetail;
+
+const imgDummy = [
+    'https://cdn.mkhealth.co.kr/news/photo/202102/52163_52859_5928.jpg',
+    'https://health.chosun.com/site/data/img_dir/2021/07/26/2021072601445_0.jpg',
+    'https://images.mypetlife.co.kr/content/uploads/2019/09/09153001/dog-panting-1024x683.jpg',
+];

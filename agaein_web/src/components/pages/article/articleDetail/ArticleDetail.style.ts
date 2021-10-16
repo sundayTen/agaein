@@ -1,11 +1,19 @@
 import styled from 'styled-components';
 
-export const ArticleDetailTitleContainer = styled.div`
-    width: 620px;
-    padding-top: 120px;
+export const HorizontalContainer = styled.div`
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+    padding-top: 30px;
+`;
+
+export const ArticleDetailContainer = styled.div`
+    width: 540px;
+    background-color: white;
+    border-radius: 4px;
+    padding: 30px;
     margin: 0 auto;
 `;
-export const titleStyles = { marginLeft: 10, marginRight: 10 };
 export const ArticleDetailDetailContainer = styled.div`
     background-color: ${(props) => props.theme.light.primary};
     width: 620px;
@@ -20,4 +28,14 @@ export const ArticleDetailDetailContainer = styled.div`
 export const ArticleDetailContentContainer = styled.div`
     margin: 20px auto;
     width: 620px;
+`;
+export const ArticleInfoContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+export const ArticleMapContainer = styled.div`
+    border-top: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
+    padding: 30px;
+    margin: 30px 0;
 `;
