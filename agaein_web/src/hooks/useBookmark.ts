@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import Cookies from 'universal-cookie';
+import useLocalStorage from './useLocalStorage';
 
 const useBookmark = () => {
+    const [storedValue, setValue] = useLocalStorage('bookmark', [1]);
     const [bookmarks, setBookmarks] = useState<number[]>([]);
-    const cookies = new Cookies();
 
     useEffect(() => {
-        setBookmarks(cookies.get('bookmark') || []);
+        setBookmarks(storedValue || []);
     }, []);
 
     const getTargetBookmarks = (article_id: number) => {
@@ -19,7 +19,7 @@ const useBookmark = () => {
 
     const setBookmark = (article_id: number) => {
         const target = getTargetBookmarks(article_id);
-        cookies.set('bookmark', target);
+        setValue(target);
         setBookmarks(target);
     };
 

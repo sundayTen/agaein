@@ -25,6 +25,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                 boardType: match.params.type,
                 title: 'Create Test In Web',
                 content: 'Content',
+                files: [],
                 articleDetail: {
                     breedId: '4',
                     feature: '머리가 커요',

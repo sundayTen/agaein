@@ -2,7 +2,8 @@ import { ApolloError } from 'apollo-server-errors';
 import { knex } from '../../database';
 
 const articleQueries = {
-    articles: async (_: any, args: any) => {
+    articles: async (_: any, args: any, context: any) => {
+        console.log(context.req.headers);
         try {
             const rawArticles = await knex(args.boardType)
                 .join('article', `${args.boardType}.article_id`, 'article.id')

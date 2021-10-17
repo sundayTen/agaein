@@ -1,0 +1,7 @@
+query getBreeds {
+    breeds {
+        id
+        type
+        breed
+    }
+}

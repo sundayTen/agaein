@@ -1,6 +1,5 @@
 import Chip from 'components/molecules/Chip';
 import Font from 'components/molecules/Font';
-import moment from 'moment';
 import ImageCarousel from 'components/molecules/ImageCarousel/ImageCarousel';
 import { Article, Board_Type, Lfg, useGetArticleQuery } from 'graphql/generated/generated';
 import { RouteComponentProps } from 'react-router';
@@ -11,12 +10,17 @@ import {
     ArticleInfoContainer,
     ArticleMapContainer,
     HorizontalContainer,
+    TitleAndBookMarkContainer,
 } from './ArticleDetail.style';
 import Comment from 'components/organism/Comment';
 import KakaoMap from 'components/organism/kakaomap/KakaoMap';
 import Button from 'components/molecules/Button';
+import { convertDate } from 'utils/date';
+import BookMark from 'components/molecules/BookMark';
+import useBookmark from 'hooks/useBookmark';
 
 const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
+    const { isBookmarked, setBookmark } = useBookmark();
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
@@ -26,7 +30,7 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
-    const { title, content, createdAt, articleDetail } = data?.Article as Article;
+    const { id, title, content, createdAt, articleDetail } = data?.article as Article;
     const { breed, feature, gender, name } = articleDetail as Lfg;
 
     return (
@@ -37,12 +41,15 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
                     <Chip label="진행중" />
                     <Chip label="사례금 200,000원" />
                     <ArticleDetailContentContainer>
-                        <Font
-                            label={`서울 송파구에서 강아지(${breed})를 찾고있어요`}
-                            fontType="h4"
-                            fontWeight="bold"
-                            htmlElement="span"
-                        />
+                        <TitleAndBookMarkContainer>
+                            <Font
+                                label={`서울 송파구에서 강아지(${breed})를 찾고있어요`}
+                                fontType="h4"
+                                fontWeight="bold"
+                                htmlElement="span"
+                            />
+                            <BookMark active={isBookmarked(id)} onClick={() => setBookmark(id)} />
+                        </TitleAndBookMarkContainer>
                         <Font
                             label={`실종일 
                             2021년 10월 13일 · 이름 ${name} · 나이 6.2살 · 성별 ${gender}`}
@@ -52,7 +59,7 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
                         <Font label={feature} fontType="label" />
                     </ArticleDetailContentContainer>
                     <ArticleInfoContainer>
-                        <Font label={moment(createdAt).format('YY.MM.DD HH:mm:ss')} fontType="tag" />
+                        <Font label={convertDate(createdAt)} fontType="tag" />
                         <Font label={` 북마크 5 · 댓글 8 · 조회수 162`} fontType="tag" />
                     </ArticleInfoContainer>
                     <ArticleMapContainer>

@@ -8,13 +8,16 @@ import { ApolloProvider } from '@apollo/client';
 import { client } from 'graphql/apollo';
 import { ThemeProvider } from 'styled-components';
 import { theme } from 'theme/theme';
+import { UserProvider } from 'contexts/userContext';
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <ApolloProvider client={client}>
                 <ThemeProvider theme={theme}>
-                    <App />
+                    <UserProvider>
+                        <App />
+                    </UserProvider>
                 </ThemeProvider>
             </ApolloProvider>
         </BrowserRouter>

@@ -10,6 +10,7 @@ const BookMark = (props: BookMarkProps) => {
 
     return (
         <BookMarkContainer
+            aria-label="Bookmark"
             onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                 onClick();
                 e.preventDefault();
