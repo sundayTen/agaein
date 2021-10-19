@@ -3,27 +3,26 @@ import { FormRow, FormLabel } from '../../pages/createArticle/CreateArticle.styl
 import styled from 'styled-components';
 import Input from 'components/molecules/Input';
 
-import DatePicker from 'react-datepicker';
+import DatePicker, { CalendarContainer, registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { getMonth, getYear } from 'date-fns';
+import ko from 'date-fns/esm/locale/ko';
+import CustomDatePicker from 'components/molecules/CustomDatePicker/CustomDatePicker';
 
 const Form = styled.div`
     flex: 1;
 `;
-
+const testContainer = styled(CalendarContainer)`
+    background: #ffffff;
+`;
 interface FormDateProps {}
 
 export function FormDate(props: FormDateProps) {
-    const [startDate, setStartDate] = useState<Date>(new Date());
-
     return (
         <FormRow>
             <FormLabel>실종일*</FormLabel>
             <Form>
-              <DatePicker
-                dateFormat="yyyy/MM/dd"
-                selected={startDate}
-                onChange={(date: Date) => setStartDate(date)}
-              />
+                <CustomDatePicker />
             </Form>
         </FormRow>
     );

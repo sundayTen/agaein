@@ -30,7 +30,7 @@ const RadioLabel = styled.label`
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        background-color: #c4c4c4;
+        background-color: ${(props) => props.theme.light.DarkGrey1};
     }
 
     & + & {

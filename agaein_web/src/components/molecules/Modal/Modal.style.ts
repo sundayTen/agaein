@@ -4,11 +4,34 @@ import styled from 'styled-components';
 type styledProps = {
     open: boolean;
 };
+
+export const TitleContainer = styled.div`
+    padding-bottom: 19px;
+    margin: 0 -24px;
+    border-bottom: 0.4px solid ${(props) => props.theme.light.DarkGrey1};
+`;
+
+export const ButtonContainer = styled.div`
+    text-align: center;
+`;
+
+export const ChildrenContainer = styled.div`
+    margin: 20px 0;
+`;
+
+export const Title = styled.span`
+    margin: 0 24px;
+    font-family: NanumSquareRound;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 24px;
+`;
+
 export const CloseIcon = styled(XIcon)`
+    margin: 0 24px;
     width: 20px;
     float: right;
-    margin-top: -25px;
-    margin-right: -5px;
     cursor: pointer;
 `;
 export const ModalOverlay = styled.div<styledProps>`
@@ -47,6 +70,6 @@ export const ModalInner = styled.div`
     top: 50%;
     transform: translateY(-50%);
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 21px 24px;
     text-align: left;
 `;
