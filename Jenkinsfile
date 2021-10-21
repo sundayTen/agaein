@@ -25,7 +25,7 @@ pipeline {
 
 				sh 'docker run -d --name server \
 				-v /etc/localtime:/etc/localtime:ro \
-				-v /root/assets/image:/var/jenkins_home/workspace/agaein/agaein_server/build/image \
+				-v /root/assets/image:/build/image \
 				--network agaeinnet server:latest'
 			}
 		}
