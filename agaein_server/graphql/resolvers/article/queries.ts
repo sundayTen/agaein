@@ -2,7 +2,7 @@ import { ApolloError } from 'apollo-server-errors';
 import { knex } from '../../database';
 
 const articleQueries = {
-    Articles: async (_: any, args: any) => {
+    articles: async (_: any, args: any) => {
         try {
             const rawArticles = await knex(args.boardType)
                 .join('article', `${args.boardType}.article_id`, 'article.id')
@@ -49,7 +49,7 @@ const articleQueries = {
             throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
         }
     },
-    Article: async (_: any, args: any) => {
+    article: async (_: any, args: any) => {
         try {
             const rawArticle = await knex(args.boardType)
                 .join('article', `${args.boardType}.article_id`, 'article.id')

@@ -10,8 +10,8 @@ const articleMutations = {
 
         const now = new Date();
         const articleForm = {
-            // 임시로 18 넣음
-            userId: 18,
+            // 임시로 1 넣음
+            userId: 1,
             title,
             content,
             createdAt: now,
@@ -24,23 +24,13 @@ const articleMutations = {
             title,
             content,
             comments: [],
+            images: [],
             createdAt: now,
             updatedAt: now,
         };
 
-        // @TODO 위치 맨 뒤로 바꾸기 현재는 하나의 이미지만 가능
-        // const { createReadStream, filename } = await args.file;
-
-        // const stream = createReadStream();
-
-        // const out = require('fs').createWriteStream(filename);
-        // await stream.pipe(out);
-        // await stream.on('close', () => {
-        //     console.log(`store ${filename}`);
-        // });
-
-        return await knex.transaction((trx: any) => {
-            return knex('article')
+        return await knex.transaction(async (trx: any) => {
+            return await knex('article')
                 .transacting(trx)
                 .insert(articleForm)
                 .returning('id')
@@ -68,7 +58,9 @@ const articleMutations = {
                         },
                         REVIEW: {},
                     };
-                    console.log(articleDetailForm[boardType]);
+
+                    console.log(boardType);
+
                     return knex(boardType)
                         .transacting(trx)
                         .insert(articleDetailForm[boardType])
@@ -76,6 +68,31 @@ const articleMutations = {
                         .then((articleDetailId: any) => {
                             articleDetailForm[boardType].id = articleDetailId[0];
                             article.articleDetail = articleDetailForm[boardType];
+                            console.log('check');
+
+                            args.files.forEach(async (file: any) => {
+                                const { createReadStream, filename } = await file;
+                                const stream = createReadStream();
+
+                                const imageForm = {
+                                    articleId: article.id,
+                                    url: 'https://www.agaein.com/file/image/' + filename,
+                                };
+
+                                knex('image')
+                                    .transacting(trx)
+                                    .insert(imageForm)
+                                    .returning('*')
+                                    .then((image: any) => {
+                                        article.images.push(image[0]);
+                                    });
+
+                                const out = require('fs').createWriteStream('image/' + filename);
+                                await stream.pipe(out);
+                                await stream.on('close', () => {
+                                    console.log(`store ${filename}`);
+                                });
+                            });
                         });
                 })
                 .then(() => {

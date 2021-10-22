@@ -1,72 +1,41 @@
 import { ApolloError } from 'apollo-server-errors';
-import crypto from 'crypto';
-import { passwordHashKey } from '../../../config/environment';
-import { isValidatedSignup, isValidatedLogin } from '../../../common/validation/user';
+import { isValidatedLogin } from '../../../common/validation/user';
 import { getAccessToken, getRefreshToken } from '../../../common/auth/jwtToken';
 import { knex } from '../../database';
 
 const userMutations = {
-    signup: async (_: any, args: any, context: any) => {
-        if (!isValidatedSignup(args.User)) {
-            throw new ApolloError('isNotValidated', 'BAD_USER_INPUT');
-        }
-
-        const user = await knex('user').whereRaw('info->>? = ?', ['email', args.User.email]).first();
-
-        if (user) {
-            throw new ApolloError('Already Existed Email', 'BAD_USER_INPUT');
-        }
-
-        args.User.password = crypto.createHmac('sha256', passwordHashKey).update(args.User.password).digest('hex');
-
-        const now = new Date();
-        const info = {
-            info: JSON.stringify(args.User),
-            created_at: now,
-            updated_at: now,
-        };
-
-        try {
-            const userIds = await knex('user').insert(info).returning('id');
-            const userId = userIds[0];
-
-            context.res.cookie('accessToken', getAccessToken(userId, args.User.email), {
-                maxAge: 24 * 60 * 60 * 1000,
-                httpOnly: true,
-            });
-            context.res.cookie('refreshToken', getRefreshToken(userId, args.User.email), {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-            });
-            return 'success';
-        } catch {
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
-        }
-    },
-
     login: async (_: any, args: any, context: any) => {
-        if (!isValidatedLogin(args.User)) {
+        if (context.req.headers.accesstoken === undefined) {
+            throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
+        }
+
+        if (!isValidatedLogin(args.kakaoId)) {
             throw new ApolloError('isNotValidated', 'BAD_USER_INPUT');
         }
 
-        args.User.password = crypto.createHmac('sha256', passwordHashKey).update(args.User.password).digest('hex');
+        let user = await knex('user').where('kakao_id', args.kakaoId).first();
 
-        const user = await knex('user')
-            .whereRaw('info->>? = ? AND info->>? = ?', ['email', args.User.email, 'password', args.User.password])
-            .first();
-        if (!user) {
-            throw new ApolloError('Invaild Account Or Password', 'UNAUTHENTICATED');
+        if (user === undefined) {
+            const now = new Date();
+            const userForm = {
+                kakao_id: args.kakaoId,
+                created_at: now,
+                updated_at: now,
+            };
+
+            user = await knex('user').insert(userForm).returning('*');
+            user = user[0]
         }
 
-        context.res.cookie('accessToken', getAccessToken(user.id, args.User.email), {
+        context.res.cookie('accessToken', getAccessToken(user.id, user.email), {
             maxAge: 24 * 60 * 60 * 1000,
             httpOnly: true,
         });
-        context.res.cookie('refreshToken', getRefreshToken(user.id, args.User.email), {
+        context.res.cookie('refreshToken', getRefreshToken(user.id, user.email), {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
         });
-        return 'success';
+        return user;
     },
 };
 

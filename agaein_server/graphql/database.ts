@@ -17,6 +17,29 @@ export const knex = require('knex')({
 });
 
 // ------------ database initializing -----------------
+export function initUser() {
+    knex.schema.hasTable('user').then(function (exists: boolean) {
+        if (!exists) {
+            knex.schema
+                .createTable('user', function (table: any) {
+                    table.increments();
+                    table.string('nickname');
+                    table.string('email');
+                    table.string('kakao_id').notNullable();
+                    table.string('phone_number');
+                    table.dateTime('created_at').notNullable();
+                    table.dateTime('updated_at').notNullable();
+                })
+                .then(function () {
+                    console.log('[DataBase Initialized] created user table');
+                })
+                .catch((error: String) => {
+                    console.error(error);
+                });
+        }
+    });
+}
+
 export function initArticle() {
     knex.schema.hasTable('article').then(function (exists: boolean) {
         if (!exists) {
@@ -119,6 +142,7 @@ export function initBreed() {
             knex.schema
                 .createTable('breed', function (table: any) {
                     table.increments();
+                    table.string('type').notNullable();
                     table.string('breed').notNullable();
                 })
                 .then(function () {
