@@ -66,12 +66,8 @@ export function isValidatedSignup(user: any) {
     return true;
 }
 
-export function isValidatedLogin(user: any) {
-    if (!isValidatedEmail(user.email)) {
-        return false;
-    }
-
-    if (!isValidatedPassword(user.password)) {
+export function isValidatedLogin(kakaoId: String) {
+    if (kakaoId.length < 6) {
         return false;
     }
 

@@ -12,23 +12,27 @@ type Query {
     # User
     users: [User]!
     user(id: ID!): User
+    me: User!
     # Article
-    Articles(boardType: BOARD_TYPE!): [Article]!
-    Article(boardType: BOARD_TYPE!, id: ID!): Article
+    articles(boardType: BOARD_TYPE!): [Article]!
+    article(boardType: BOARD_TYPE!, id: ID!): Article
+    # Breed
+    breeds: [Breed]!
 }
 
 type Mutation {
     # User
-    signup(User: UserSignupInput!): String
-    login(User: UserLoginInput!): String
+    login(kakaoId: String!): User!
     # Article
     createArticle(
         boardType: BOARD_TYPE!
         title: String!
         content: String!
-        file: Upload
+        files: [Upload]!
         articleDetail: articleDetailInput!
     ): Article!
     createComment(articleId: ID!, content: String!): Comment!
     createNestedComment(commentId: ID!, content: String!): NestedComment!
+    # Breed
+    createBreed(type: String!, breed: String!): Breed!
 }

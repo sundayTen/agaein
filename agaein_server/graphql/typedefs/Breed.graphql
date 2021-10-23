@@ -1,0 +1,5 @@
+type Breed {
+    id: Int!
+    type: String!
+    breed: String!
+}
