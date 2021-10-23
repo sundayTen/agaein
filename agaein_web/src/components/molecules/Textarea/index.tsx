@@ -6,7 +6,9 @@ const Label = styled.label`
 `;
 
 const StyledTextarea = styled.textarea`
+    vertical-align: top;
     width: 100%;
+    height: 100px;
     padding: 10px;
     box-sizing: border-box;
     border: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
