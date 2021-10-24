@@ -15,15 +15,23 @@ const StyledInput = styled.input`
     font-size: 14px;
     line-height: 20px;
     color: #000;
+    caret-color: ${(props) => props.theme.light.primary};
 
     &::placeholder {
         font-weight: 300;
         color: ${(props) => props.theme.light.DarkGrey1};
     }
 
+    &:hover,
+    &:active,
     &:focus {
         outline: 0;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-color: ${(props) => props.theme.light.primary};
+    }
+
+    &:disabled {
+        border-color: ${(props) => props.theme.light.DarkGrey1};
+        background-color: ${(props) => props.theme.light.lightGrey2};
     }
 `;
 

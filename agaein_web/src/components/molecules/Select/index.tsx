@@ -23,6 +23,10 @@ const StyledSelect = styled.div`
         css`
             border-color: ${(props) => props.theme.light.primary};
         `}
+
+    &:hover {
+        border-color: ${(props) => props.theme.light.primary};
+    }
 `;
 
 const SelectIcon = styled.i`
