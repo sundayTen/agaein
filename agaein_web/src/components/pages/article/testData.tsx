@@ -14,7 +14,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -31,7 +31,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -48,7 +48,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -65,7 +65,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -82,7 +82,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -99,7 +99,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -116,7 +116,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -133,7 +133,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -150,7 +150,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -167,7 +167,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -184,7 +184,7 @@ export const testDate = {
                     foundDate: '2021-10-03T01:47:09.549Z',
                     feature: '개냥이',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -201,7 +201,7 @@ export const testDate = {
                     foundDate: '2021-10-03T01:47:09.549Z',
                     feature: '개냥이',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -218,7 +218,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -235,7 +235,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -252,7 +252,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -269,7 +269,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -286,7 +286,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -303,7 +303,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -320,7 +320,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -337,7 +337,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -354,7 +354,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -371,7 +371,7 @@ export const testDate = {
                     foundDate: '2020-12-11T15:00:00.000Z',
                     feature: '123',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -388,7 +388,7 @@ export const testDate = {
                     foundDate: '2021-10-03T01:47:09.549Z',
                     feature: '개냥이',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },
@@ -405,7 +405,7 @@ export const testDate = {
                     foundDate: '2021-10-03T01:47:09.549Z',
                     feature: '개냥이',
                     location: {
-                        a: null,
+                        //a: null,
                     },
                 },
             },

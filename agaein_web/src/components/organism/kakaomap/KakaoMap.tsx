@@ -8,7 +8,6 @@ interface kakaoMapProps {
     search?: string | undefined;
     setAddress?: (value: string) => void;
     save?: boolean;
-    onSave?: (value: boolean) => void;
     size?: {
         width: number;
         height: number;
@@ -22,27 +21,22 @@ let options = {
 };
 
 const KakaoMap = (props: kakaoMapProps) => {
-    const {
-        search = undefined,
-        setAddress = () => {},
-        save = false,
-        onSave = () => {},
-        size = { width: 500, height: 500 },
-    } = props;
+    const { search = undefined, setAddress = () => {}, save = false, size = { width: 500, height: 500 } } = props;
     //const ref = useRef(null);
     const geocoder = new kakao.maps.services.Geocoder();
     const mapRef = useRef(null);
-    const marker = new kakao.maps.Marker();
+    const [marker, setMarker] = useState(new kakao.maps.Marker());
     const [map, setMap] = useState<any>(null);
-    const infowindow = new kakao.maps.InfoWindow({ zindex: 1 });
+    const [infowindow, setInfowindow] = useState(new kakao.maps.InfoWindow({ zindex: 1 }));
     const [addressValue, setAddressValue] = useState('');
     // const [markers, setMarkers] = useState<Array<any>>([]);
     // const [bounds, setBound] = useState(new kakao.maps.LatLngBounds());
     //const [customOverlays, setCustomOverlays] = useState(null);
-    if (save) {
-        setAddress(addressValue);
-        onSave(false);
-    }
+    useEffect(() => {
+        if (save) {
+            setAddress(addressValue);
+        }
+    }, [save]);
 
     const coordinateConversion = (result: any, status: any) => {
         if (status === kakao.maps.services.Status.OK) {
@@ -104,7 +98,7 @@ const KakaoMap = (props: kakaoMapProps) => {
             const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
             map?.panTo(coords);
             options.center = coords;
-            //addMarker(coords);
+            addMarker(coords);
         }
     };
 

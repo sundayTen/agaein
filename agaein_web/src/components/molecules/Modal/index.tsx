@@ -1,12 +1,25 @@
 import React, { useEffect } from 'react';
-import { CloseIcon, ModalInner, ModalOverlay, ModalWrapper } from './Modal.style';
+import Button from '../Button';
+import {
+    ButtonContainer,
+    CloseIcon,
+    ModalInner,
+    ModalOverlay,
+    ModalWrapper,
+    Title,
+    TitleContainer,
+    ChildrenContainer,
+} from './Modal.style';
 interface ModalProps {
     children: React.ReactNode;
     open: boolean;
     close: () => void;
+    title: string;
+    btnName?: string;
+    onBtn: (value: boolean) => void;
 }
 
-const Modal = ({ open, children, close }: ModalProps) => {
+const Modal = ({ open, children, close, title, btnName = '선택', onBtn }: ModalProps) => {
     useEffect(() => {
         if (open) {
             document.body.style.cssText = `
@@ -31,10 +44,23 @@ const Modal = ({ open, children, close }: ModalProps) => {
         return (
             <>
                 <ModalOverlay open={open} />
-                <ModalWrapper onClick={closeModal} open={open}>
+                <ModalWrapper onMouseDown={closeModal} open={open}>
                     <ModalInner>
-                        <CloseIcon onClick={() => close()} />
-                        {children}
+                        <TitleContainer>
+                            <Title>{title}</Title>
+                            <CloseIcon onClick={() => close()} />
+                        </TitleContainer>
+                        <ChildrenContainer>{children}</ChildrenContainer>
+                        <ButtonContainer>
+                            <Button
+                                buttonStyle="PAINTED"
+                                size="MEDIUM"
+                                label={btnName}
+                                onClick={() => {
+                                    onBtn(true);
+                                }}
+                            />
+                        </ButtonContainer>
                     </ModalInner>
                 </ModalWrapper>
             </>
