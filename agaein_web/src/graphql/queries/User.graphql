@@ -1,0 +1,19 @@
+fragment UserFragment on User {
+    id
+    nickname
+    email
+    kakaoId
+    phoneNumber
+}
+
+mutation login($kakaoId: String!) {
+    login(kakaoId: $kakaoId) {
+        ...UserFragment
+    }
+}
+
+query me {
+    me {
+        ...UserFragment
+    }
+}

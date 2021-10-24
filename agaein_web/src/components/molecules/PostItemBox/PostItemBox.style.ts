@@ -54,3 +54,9 @@ export const ContentTag = styled.div`
     background-color: ${(props) => props.theme.light.lightGrey2};
     display: inline-block;
 `;
+
+export const BookMarkBox = styled.div`
+    position: absolute;
+    top: 5px;
+    right: 5px;
+`;

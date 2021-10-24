@@ -38,7 +38,7 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
     if (error) return <p>{`Error : ${error}`}</p>;
 
     const [firstChunk, secondChunk] = getTitle(boardType).split(' ');
-    const articles = data?.Articles.map((article) => article).slice(0, 6) as Article[];
+    const articles = data?.articles.map((article) => article).slice(0, 6) as Article[];
 
     return (
         <ArticleList>

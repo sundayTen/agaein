@@ -1,0 +1,14 @@
+fragment CommentFragment on Comment {
+    id
+    content
+    nestedComments {
+        id
+        content
+    }
+}
+# nested Comment 고치고 추가
+mutation createComment($articleId: ID!, $content: String!) {
+    createComment(articleId: $articleId, content: $content) {
+        ...CommentFragment
+    }
+}

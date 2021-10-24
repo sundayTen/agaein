@@ -14,6 +14,11 @@ export const ArticleDetailContainer = styled.div`
     padding: 30px;
     margin: 0 auto;
 `;
+
+export const TitleAndBookMarkContainer = styled.div`
+    display: inline-block;
+`;
+
 export const ArticleDetailDetailContainer = styled.div`
     background-color: ${(props) => props.theme.light.primary};
     width: 620px;

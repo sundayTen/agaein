@@ -1,3 +1,4 @@
+import KakaoLogin from 'react-kakao-login';
 import styled from 'styled-components';
 
 export const Nav = styled.header`
@@ -14,10 +15,8 @@ export const Nav = styled.header`
     top: 0;
 `;
 
-export const Title = styled.h1`
-    color: #5f6871;
-    font-size: 24px;
-    line-height: 28px;
+export const Title = styled.div`
+    display: flex;
 `;
 
 export const AgaeinIconImg = styled.img`
@@ -41,4 +40,10 @@ export const DarkMode = styled.button`
     cursor: pointer;
     border-radius: 100%;
     text-align: center;
+`;
+
+export const StyledKakaoLogin = styled.div`
+    background-color: #fee500;
+    border-radius: 6px;
+    padding: 9px 14px;
 `;

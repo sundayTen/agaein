@@ -3,21 +3,15 @@ import { BookmarkIcon as OutlineBookMark } from '@heroicons/react/outline';
 import styled from 'styled-components';
 
 export const BookMarkActive = styled(SolidBookMark)`
-    color: ${(props) => props.theme.light.primary};
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
+    color: ${(props) => props.theme.light.sub1};
+    width: 18px;
+    height: 18px;
 `;
 
 export const BookMarkInActive = styled(OutlineBookMark)`
     color: white;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
+    width: 18px;
+    height: 18px;
 `;
 
-export const BookMarkContainer = styled.button`
-    position: absolute;
-    top: 5px;
-    right: 5px;
-`;
+export const BookMarkContainer = styled.button``;

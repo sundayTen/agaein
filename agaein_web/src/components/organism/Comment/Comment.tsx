@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import Button from 'components/molecules/Button';
 import Font from 'components/molecules/Font';
 import Textarea from 'components/molecules/Textarea';
 import { Comment as CommentType } from 'graphql/generated/generated';
-import { useState } from 'react';
 import { CommentHeader, CommentContainer, CommentInputContainer } from './Comment.style';
 import CommentItem from './CommentItem';
 
@@ -21,9 +21,6 @@ const Comment = (props: CommentProps) => {
                 <Font label={`댓글 ${comments?.length}`} fontType="h4" fontWeight="bold" />
             </CommentHeader>
             <CommentContainer>
-                {comments?.map((comment) => (
-                    <CommentItem comment={comment} />
-                ))}
                 <CommentInputContainer>
                     <Textarea
                         value={commentInput}
@@ -38,6 +35,10 @@ const Comment = (props: CommentProps) => {
                         style={{ float: 'right', marginTop: 10 }}
                     />
                 </CommentInputContainer>
+                {[1, 2, 3, 4].map((comment) => (
+                    // TODO key는 Comment의 id로 변경
+                    <CommentItem key={comment.toString()} />
+                ))}
             </CommentContainer>
         </>
     );
