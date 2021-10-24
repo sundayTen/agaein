@@ -1,9 +1,20 @@
-import { ItemBox, Thumb, Img, InfoList, InfoItem, InfoCategory, InfoText, ContentTag } from './PostItemBox.style';
+import {
+    ItemBox,
+    Thumb,
+    Img,
+    InfoList,
+    InfoItem,
+    InfoCategory,
+    InfoText,
+    ContentTag,
+    BookMarkBox,
+} from './PostItemBox.style';
 import penguin from 'assets/image/penguin.png';
 import { Link } from 'react-router-dom';
-import { Article } from 'graphql/generated/generated';
+import { Article, Lfg } from 'graphql/generated/generated';
 import Font from '../Font';
 import BookMark from '../BookMark';
+import moment from 'moment';
 
 interface PostItemProps {
     item: Article;
@@ -13,24 +24,27 @@ interface PostItemProps {
 
 const PostItem = (props: PostItemProps) => {
     const { item, bookmarked = false, setBookmark = () => {} } = props;
-    const { id } = item;
+    const { id, articleDetail, createdAt } = item;
+    const { breed, gender } = articleDetail as Lfg;
 
     return (
         <>
             <Link to={`/articleDetail/${id}`}>
                 <ItemBox>
-                    <BookMark active={bookmarked} onClick={setBookmark} />
+                    <BookMarkBox>
+                        <BookMark active={bookmarked} onClick={setBookmark} />
+                    </BookMarkBox>
                     <Thumb>
                         <Img src={penguin} alt="실종 동물" />
                     </Thumb>
                     <InfoList>
                         <InfoItem>
                             <InfoCategory>품종</InfoCategory>
-                            <InfoText>시고르자브종</InfoText>
+                            <InfoText>{breed}</InfoText>
                         </InfoItem>
                         <InfoItem>
                             <InfoCategory>실종일</InfoCategory>
-                            <InfoText>2021-09-10</InfoText>
+                            <InfoText>{moment(createdAt).format('YYYY-MM-DD')}</InfoText>
                         </InfoItem>
                         <InfoItem>
                             <InfoCategory>지역</InfoCategory>
@@ -38,7 +52,7 @@ const PostItem = (props: PostItemProps) => {
                         </InfoItem>
                     </InfoList>
                     <ContentTag>
-                        <Font label="암컷" fontType="tag" />
+                        <Font label={gender} fontType="tag" />
                     </ContentTag>
                     <ContentTag>
                         <Font label="9개월" fontType="tag" />
