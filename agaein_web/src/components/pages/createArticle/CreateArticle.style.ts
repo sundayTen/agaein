@@ -1,73 +1,5 @@
 import styled from 'styled-components';
 
-export const Title = styled.div`
-    margin-top: 80px;
-    font-size: 24px;
-    line-height: 35px;
-    color: #5f6871;
-    text-align: center;
-`;
-
-export const FormWrapper = styled.div`
-    width: 400px;
-    margin: 80px auto 0;
-`;
-
-export const Fieldset = styled.div`
-    & + & {
-        margin-top: 60px;
-    }
-`;
-
-export const FieldsetTitle = styled.strong`
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    font-size: 20px;
-    line-height: 29px;
-    color: #5f6871;
-
-    span {
-        font-size: 12px;
-        font-weight: 300;
-        line-height: 17px;
-    }
-`;
-
-export const FormRow = styled.div`
-    display: flex;
-    margin-top: 20px;
-`;
-
-export const FormLabel = styled.div`
-    flex-shrink: 0;
-    width: 110px;
-    margin-top: 8px;
-    font-size: 16px;
-    line-height: 23px;
-    font-weight: 500;
-    color: #5f6871;
-`;
-
-export const ButtonWrapper = styled.div`
-    margin: 60px 0 160px;
-    text-align: center;
-
-    button {
-        margin-left: 20px;
-    }
-`;
-
-export const BackButton = styled.button`
-    width: 64px;
-    height: 64px;
-    border: ${(props) => '2px solid ' + props.theme.light.DarkGrey1};
-    border-radius: 10px;
-    color: #5f6871;
-`;
-
 // * Step 1
 interface BigButtonProps {
     active: boolean;
@@ -107,6 +39,103 @@ export const Step1ButtonGroup = styled.div`
 `;
 export const UtilButtonGroup = styled.div`
     button + button {
+        margin-left: 20px;
+    }
+`;
+
+// * Step 2
+export const Title = styled.h2`
+    margin-top: 60px;
+    font-family: Ssurround, sans-serif;
+    font-size: 34px;
+    line-height: 40px;
+    letter-spacing: -0.02em;
+    color: #333;
+    text-align: center;
+`;
+
+export const SubTitle = styled.div`
+    margin-top: 12px;
+    font-family: SsurroundAir, sans-serif;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #505050;
+`;
+
+export const FormWrapper = styled.div`
+    width: 920px;
+    margin: 40px auto 0;
+    padding: 40px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid #f6f6f6;
+    border-radius: 10px;
+
+    & + & {
+        margin-top: 30px;
+    }
+`;
+
+export const FormTitle = styled.strong`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 13px;
+    border-bottom: 1px solid #c4c4c4;
+    font-size: 16px;
+    line-height: 24px;
+    color: #333;
+`;
+
+export const RequiredIcon = styled.i`
+    display: inline-block;
+    vertical-align: 3px;
+    width: 4px;
+    height: 4px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background-color: #ef5f3d;
+`;
+
+export const RequiredGuide = styled.span`
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: -0.02em;
+    color: #505050;
+
+    ${RequiredIcon} {
+        vertical-align: middle;
+        margin: 0 6px 0 0;
+    }
+`;
+
+export const FormRow = styled.div`
+    display: flex;
+    margin-top: 30px;
+`;
+
+export const FormLabel = styled.div`
+    flex-shrink: 0;
+    width: 130px;
+    margin-top: 12px;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    color: #333;
+`;
+
+export const Form = styled.div`
+    width: 460px;
+`;
+
+export const ButtonWrapper = styled.div`
+    margin: 60px 0 160px;
+    text-align: center;
+
+    button {
         margin-left: 20px;
     }
 `;
