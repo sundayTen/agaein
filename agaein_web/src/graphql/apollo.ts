@@ -7,7 +7,6 @@ import { onError } from '@apollo/client/link/error';
 const cookies = new Cookies();
 const httpLink = createHttpLink({
     uri: 'https://www.agaein.com/graphql',
-    credentials: 'include',
 });
 const authLink = setContext((_, { headers }) => {
     const accessToken = cookies.get('accessToken') || '';
