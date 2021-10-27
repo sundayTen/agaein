@@ -40,6 +40,37 @@ export function initUser() {
     });
 }
 
+export function initBookmark() {
+    knex.schema.hasTable('bookmark').then(function (exists: boolean) {
+        if (!exists) {
+            knex.schema
+                .createTable('bookmark', function (table: any) {
+                    table.increments();
+                    table
+                        .integer('user_id')
+                        .notNullable()
+                        .references('id')
+                        .inTable('user')
+                        .onUpdate('CASCADE')
+                        .onDelete('CASCADE');
+                    table
+                        .integer('article_id')
+                        .notNullable()
+                        .references('id')
+                        .inTable('article')
+                        .onUpdate('CASCADE')
+                        .onDelete('CASCADE');
+                })
+                .then(function () {
+                    console.log('[DataBase Initialized] created bookmark table');
+                })
+                .catch((error: String) => {
+                    console.error(error);
+                });
+        }
+    });
+}
+
 export function initArticle() {
     knex.schema.hasTable('article').then(function (exists: boolean) {
         if (!exists) {
@@ -53,7 +84,8 @@ export function initArticle() {
                         .inTable('user')
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
-                    table.string('title').notNullable();
+                    table.integer('view').notNullable();
+                    table.string('type').notNullable();
                     table.text('content').notNullable();
                     table.dateTime('created_at').notNullable();
                     table.dateTime('updated_at').notNullable();
@@ -88,36 +120,8 @@ export function initComment() {
                         .inTable('article')
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
-                    table.text('content').notNullable();
-                    table.dateTime('created_at').notNullable();
-                    table.dateTime('updated_at').notNullable();
-                })
-                .then(function () {
-                    console.log('[DataBase Initialized] created comment table');
-                })
-                .catch((error: String) => {
-                    console.error(error);
-                });
-        }
-    });
-}
-
-export function initNestedComment() {
-    knex.schema.hasTable('nested_comment').then(function (exists: boolean) {
-        if (!exists) {
-            knex.schema
-                .createTable('nested_comment', function (table: any) {
-                    table.increments();
-                    table
-                        .integer('user_id')
-                        .notNullable()
-                        .references('id')
-                        .inTable('user')
-                        .onUpdate('CASCADE')
-                        .onDelete('CASCADE');
                     table
                         .integer('comment_id')
-                        .notNullable()
                         .references('id')
                         .inTable('comment')
                         .onUpdate('CASCADE')
@@ -127,7 +131,7 @@ export function initNestedComment() {
                     table.dateTime('updated_at').notNullable();
                 })
                 .then(function () {
-                    console.log('[DataBase Initialized] created nested_comment table');
+                    console.log('[DataBase Initialized] created comment table');
                 })
                 .catch((error: String) => {
                     console.error(error);

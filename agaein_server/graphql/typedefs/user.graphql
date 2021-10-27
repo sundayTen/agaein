@@ -7,3 +7,15 @@ type User implements Timestamps {
     createdAt: Date!
     updatedAt: Date!
 }
+
+type Login {
+    id: ID!
+    nickname: String
+    email: String
+    kakaoId: String!
+    phoneNumber: String
+    accessToken: String!
+    refreshToken: String!
+    createdAt: Date!
+    updatedAt: Date!
+}

@@ -5,9 +5,11 @@ import { knex } from '../../database';
 
 const userMutations = {
     login: async (_: any, args: any, context: any) => {
-        console.log('🚀 ~ file: mutations.ts ~ line 8 ~ login: ~ context', context.req.headers);
         // TODO : getToken 함수로 조건문 캡술화
-        if (context.req.headers.authorization.split(' ')[1] === undefined) {
+        if (
+            context.req.headers.authorization === undefined ||
+            context.req.headers.authorization.split(' ')[1] === undefined
+        ) {
             throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
         }
 
@@ -28,14 +30,9 @@ const userMutations = {
             user = user[0];
         }
 
-        context.res.cookie('accessToken', getAccessToken(user.id, user.kakaoId), {
-            maxAge: 24 * 60 * 60 * 1000,
-            httpOnly: true,
-        });
-        context.res.cookie('refreshToken', getRefreshToken(user.id, user.kakaoId), {
-            maxAge: 30 * 24 * 60 * 60 * 1000,
-            httpOnly: true,
-        });
+        user.accessToken = getAccessToken(user.id, user.kakaoId);
+        user.refreshToken = getRefreshToken(user.id, user.kakaoId);
+
         return user;
     },
 };

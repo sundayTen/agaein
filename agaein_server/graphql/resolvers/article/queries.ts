@@ -2,8 +2,7 @@ import { ApolloError } from 'apollo-server-errors';
 import { knex } from '../../database';
 
 const articleQueries = {
-    articles: async (_: any, args: any, context: any) => {
-        console.log(context.req.headers);
+    articles: async (_: any, args: any) => {
         try {
             const rawArticles = await knex(args.boardType)
                 .join('article', `${args.boardType}.article_id`, 'article.id')
@@ -27,10 +26,11 @@ const articleQueries = {
             });
 
             const articles: any[] = [];
-            rawArticles.forEach((rawArticle: any, idx: number) => {
+            rawArticles.forEach((rawArticle: any) => {
                 articles.push({
                     id: rawArticle.articleId,
-                    title: rawArticle.title,
+                    type: rawArticle.type,
+                    view: rawArticle.view,
                     content: rawArticle.content,
                     images: images[rawArticle.articleId] || [],
                     author: {
@@ -52,17 +52,24 @@ const articleQueries = {
     },
     article: async (_: any, args: any) => {
         try {
-            const rawArticle = await knex(args.boardType)
-                .join('article', `${args.boardType}.article_id`, 'article.id')
+            const articleBoardType = await knex('article').where(`id`, args.id).select('type').first();
+
+            const rawArticle = await knex(articleBoardType.type)
+                .join('article', `${articleBoardType.type}.article_id`, 'article.id')
                 .join('user', `article.user_id`, 'user.id')
-                .join('breed', `${args.boardType}.breed_id`, 'breed.id')
-                .where(`${args.boardType}.article_id`, args.id)
-                .select('*', 'article.created_at as article_created_at', 'article.updated_at as article_updated_at')
+                .join('breed', `${articleBoardType.type}.breed_id`, 'breed.id')
+                .where(`article.id`, args.id)
+                .select(
+                    '*',
+                    'article.created_at as article_created_at',
+                    'article.updated_at as article_updated_at',
+                    'article.type as article_type',
+                )
                 .first();
 
-            const images = await knex(args.boardType)
-                .join('image', `${args.boardType}.article_id`, 'image.article_id')
-                .where(`${args.boardType}.article_id`, args.id);
+            const images = await knex(articleBoardType.type)
+                .join('image', `${articleBoardType.type}.article_id`, 'image.article_id')
+                .where(`${articleBoardType.type}.article_id`, args.id);
 
             const rawComments = await knex('comment')
                 .join('user', 'comment.user_id', 'user.id')
@@ -74,29 +81,9 @@ const articleQueries = {
                     'comment.id as id',
                 );
 
-            const rawNestedComments = await knex('comment')
-                .join('nested_comment', 'comment.id', 'nested_comment.comment_id')
-                .join('user', `nested_comment.user_id`, 'user.id')
-                .where('comment.article_id', args.id)
-                .select(
-                    '*',
-                    'nested_comment.created_at as created_at',
-                    'nested_comment.updated_at as updated_at',
-                    'nested_comment.id as id',
-                );
-
-            const nestedComments: any = {};
-            rawNestedComments.forEach((rawNestedComment: any) => {
-                if (nestedComments[rawNestedComment.commentId]) {
-                    nestedComments[rawNestedComment.commentId].push(rawNestedComment);
-                } else {
-                    nestedComments[rawNestedComment.commentId] = [rawNestedComment];
-                }
-            });
-
             const article: any = {
                 id: rawArticle.articleId,
-                title: rawArticle.title,
+                type: articleBoardType.type,
                 content: rawArticle.content,
                 images: images.filter(function (image: any) {
                     return image.url;
@@ -105,15 +92,17 @@ const articleQueries = {
                     info: rawArticle.info,
                 },
                 articleDetail: rawArticle,
-                comments: [],
+                comments: rawComments,
+                view: rawArticle.view + 1,
                 createdAt: rawArticle.articleCreatedAt,
                 updatedAt: rawArticle.articleUpdatedAt,
             };
 
-            rawComments.forEach((rawComment: any) => {
-                rawComment.nestedComments = nestedComments[rawComment.id] || [];
-                article.comments.push(rawComment);
-            });
+            await knex('article')
+                .where('id', rawArticle.articleId)
+                .update({
+                    view: rawArticle.view + 1,
+                });
 
             return article;
         } catch {

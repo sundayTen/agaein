@@ -5,11 +5,13 @@ enum BOARD_TYPE {
 }
 
 type Location {
-    # 더 넣을 것 생각
-    a: String
+    lat: Float!
+    lng: Float!
+    address: String!
 }
 
 type LFG {
+    type: BREED_TYPE!
     breed: String!
     name: String!
     feature: String!
@@ -19,6 +21,7 @@ type LFG {
 }
 
 type LFP {
+    type: BREED_TYPE!
     breed: String!
     name: String!
     feature: String!
@@ -30,16 +33,17 @@ type LFP {
 
 type REVIEW {
     # 더 넣을 것 생각
-    a: String
+    title: String
 }
 
 union ArticleDetail = LFG | LFP | REVIEW
 
 type Article {
     id: Int!
-    title: String!
     content: String!
     images: [String]!
+    view: Int!
+    type: BOARD_TYPE!
     articleDetail: ArticleDetail!
     comments: [Comment]
     author: User!
