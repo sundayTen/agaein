@@ -127,6 +127,7 @@ export function initComment() {
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
                     table.text('content').notNullable();
+                    table.string('password');
                     table.dateTime('created_at').notNullable();
                     table.dateTime('updated_at').notNullable();
                 })
@@ -201,6 +202,9 @@ export function initLFG() {
                     table.string('name').notNullable();
                     table.string('feature').notNullable();
                     table.string('gender').notNullable();
+                    table.string('password');
+                    table.boolean('alarm').defaultTo(false).notNullable();
+                    table.integer('age').notNullable();
                     table.json('location').defaultTo({}).notNullable();
                     table.dateTime('found_date').notNullable();
                 })
@@ -232,6 +236,9 @@ export function initLFP() {
                     table.string('feature').notNullable();
                     table.string('gender').notNullable();
                     table.integer('gratuity').notNullable();
+                    table.string('password');
+                    table.boolean('alarm').defaultTo(false).notNullable();
+                    table.integer('age').notNullable();
                     table.json('location').defaultTo({}).notNullable();
                     table.dateTime('lost_date').notNullable();
                 })

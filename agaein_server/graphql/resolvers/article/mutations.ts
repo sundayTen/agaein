@@ -5,7 +5,7 @@ import { knex } from '../../database';
 const articleMutations = {
     createArticle: async (_: any, args: any, context: any) => {
         const { boardType, content, articleDetail } = args;
-        const { breedId, name, feature, gender, location, foundDate, lostDate, gratuity } = articleDetail;
+        const { breedId, name, feature, gender, location, foundDate, lostDate, gratuity, alarm, password, age } = articleDetail;
 
         // @TODO validation 확인해야 됨.
 
@@ -55,6 +55,9 @@ const articleMutations = {
                             gender,
                             location,
                             foundDate,
+                            alarm,
+                            password,
+                            age,
                         },
                         LFP: {
                             articleId: article.id,
@@ -65,6 +68,9 @@ const articleMutations = {
                             location,
                             lostDate,
                             gratuity,
+                            alarm,
+                            password,
+                            age,
                         },
                         REVIEW: {},
                     };
@@ -120,6 +126,7 @@ const articleMutations = {
             articleId: args.articleId,
             commentId: args.commentId,
             content: args.content,
+            password: args.password,
             createdAt: now,
             updatedAt: now,
         };

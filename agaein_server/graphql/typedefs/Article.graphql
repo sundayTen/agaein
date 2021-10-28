@@ -16,6 +16,9 @@ type LFG {
     name: String!
     feature: String!
     gender: String!
+    age: Int!
+    password: String
+    alarm: Boolean!
     location: Location!
     foundDate: Date!
 }
@@ -27,6 +30,9 @@ type LFP {
     feature: String!
     gender: String!
     gratuity: Int!
+    age: Int!
+    password: String
+    alarm: Boolean!
     location: Location!
     foundDate: Date!
 }
@@ -58,6 +64,9 @@ input articleDetailInput {
     gender: String
     location: String
     foundDate: Date
+    age: Int
+    password: String
+    alarm: Boolean
     lostDate: Date
     gratuity: Int
 }
