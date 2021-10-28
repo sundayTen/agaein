@@ -2,7 +2,7 @@ import { ApolloError } from 'apollo-server-errors';
 import { knex } from '../../database';
 
 const breedMutations = {
-    createBreed: async (_: any, args: any, context: any) => {
+    createBreed: async (_: any, args: any) => {
         const breedForm = {
             type: args.type,
             breed: args.breed,

@@ -10,29 +10,26 @@ type File {
 
 type Query {
     # User
-    users: [User]!
     user(id: ID!): User
     me: User!
     # Article
     articles(boardType: BOARD_TYPE!): [Article]!
-    article(boardType: BOARD_TYPE!, id: ID!): Article
+    article(id: ID!): Article
     # Breed
-    breeds: [Breed]!
+    breeds(type: BREED_TYPE!): [Breed]!
 }
 
 type Mutation {
     # User
-    login(kakaoId: String!): User!
+    login(kakaoId: String!): Login!
     # Article
     createArticle(
         boardType: BOARD_TYPE!
-        title: String!
         content: String!
         files: [Upload]!
         articleDetail: articleDetailInput!
     ): Article!
-    createComment(articleId: ID!, content: String!): Comment!
-    createNestedComment(commentId: ID!, content: String!): NestedComment!
+    createComment(articleId: ID!, commentId: ID, content: String!, password: String): Comment!
     # Breed
-    createBreed(type: String!, breed: String!): Breed!
+    createBreed(type: BREED_TYPE!, breed: String!): Breed!
 }

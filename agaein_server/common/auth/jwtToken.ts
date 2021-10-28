@@ -1,30 +1,42 @@
+import { ApolloError } from 'apollo-server-errors';
 import { jwtSecretKey } from '../../config/environment';
 import jwt from 'jsonwebtoken';
 
-export function getAccessToken(user_id: number, email: string) {
+export function getAccessToken(userId: number, kakaoId: string) {
     return jwt.sign(
         {
-            id: user_id,
-            email: email,
+            userId: userId,
+            kakaoId: kakaoId,
         },
         jwtSecretKey,
         {
             algorithm: 'HS256',
-            expiresIn: '1d',
+            expiresIn: '7d',
         },
     );
 }
 
-export function getRefreshToken(user_id: number, email: string) {
+export function getRefreshToken(userId: number, kakaoId: string) {
     return jwt.sign(
         {
-            id: user_id,
-            email: email,
+            userId: userId,
+            kakaoId: kakaoId,
         },
         jwtSecretKey,
         {
             algorithm: 'HS256',
-            expiresIn: '30d',
+            expiresIn: '28d',
         },
     );
+}
+
+export function readAccessToken(token: string) {
+    const jwtToken = jwt.verify(token, jwtSecretKey);
+
+    const now = +new Date();
+    if (now / 1000 > (<any>jwtToken).exp) {
+        throw new ApolloError('Token is Expired', 'UNAUTHENTICATED');
+    }
+
+    return jwtToken;
 }

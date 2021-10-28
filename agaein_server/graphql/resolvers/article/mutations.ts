@@ -1,18 +1,19 @@
 import { ApolloError } from 'apollo-server-errors';
+import { readAccessToken } from '../../../common/auth/jwtToken';
 import { knex } from '../../database';
 
 const articleMutations = {
     createArticle: async (_: any, args: any, context: any) => {
-        const { boardType, title, content, articleDetail } = args;
-        const { breedId, name, feature, gender, location, foundDate, lostDate, gratuity } = articleDetail;
+        const { boardType, content, articleDetail } = args;
+        const { breedId, name, feature, gender, location, foundDate, lostDate, gratuity, alarm, password, age } = articleDetail;
 
         // @TODO validation 확인해야 됨.
 
         const now = new Date();
         const articleForm = {
-            // 임시로 1 넣음
             userId: 1,
-            title,
+            view: 0,
+            type: boardType,
             content,
             createdAt: now,
             updatedAt: now,
@@ -21,13 +22,22 @@ const articleMutations = {
         const article: any = {
             // 유저 데이터 넣어야 함.
             user: {},
-            title,
+            view: 0,
             content,
+            type: boardType,
             comments: [],
             images: [],
             createdAt: now,
             updatedAt: now,
         };
+
+        if (context.req.headers.accesstoken) {
+            const jwtToken = readAccessToken(context.req.headers.accesstoken);
+            articleForm.userId = (<any>jwtToken).userId;
+        }
+
+        const user = await knex('user').where('id', articleForm.userId).first();
+        article.user = user;
 
         return await knex.transaction(async (trx: any) => {
             return await knex('article')
@@ -45,6 +55,9 @@ const articleMutations = {
                             gender,
                             location,
                             foundDate,
+                            alarm,
+                            password,
+                            age,
                         },
                         LFP: {
                             articleId: article.id,
@@ -55,11 +68,12 @@ const articleMutations = {
                             location,
                             lostDate,
                             gratuity,
+                            alarm,
+                            password,
+                            age,
                         },
                         REVIEW: {},
                     };
-
-                    console.log(boardType);
 
                     return knex(boardType)
                         .transacting(trx)
@@ -68,7 +82,6 @@ const articleMutations = {
                         .then((articleDetailId: any) => {
                             articleDetailForm[boardType].id = articleDetailId[0];
                             article.articleDetail = articleDetailForm[boardType];
-                            console.log('check');
 
                             args.files.forEach(async (file: any) => {
                                 const { createReadStream, filename } = await file;
@@ -106,41 +119,32 @@ const articleMutations = {
                 });
         });
     },
-    createComment: async (_: any, args: any) => {
+    createComment: async (_: any, args: any, context: any) => {
         const now = new Date();
         const commentForm = {
-            // 임시로 18 넣음
-            user_id: 18,
-            article_id: args.articleId,
+            userId: 1,
+            articleId: args.articleId,
+            commentId: args.commentId,
             content: args.content,
-            created_at: now,
-            updated_at: now,
+            password: args.password,
+            createdAt: now,
+            updatedAt: now,
         };
+
+        if (args.commentId) {
+            const comment = await knex('comment').where('id', args.commentId).first();
+            if (comment.commentId) {
+                throw new ApolloError('Comment Depth Error', 'INTERNAL_SERVER_ERROR');
+            }
+        }
+
+        if (context.req.headers.accesstoken) {
+            const jwtToken = readAccessToken(context.req.headers.accesstoken);
+            commentForm.userId = (<any>jwtToken).userId;
+        }
 
         try {
             const comments = await knex('comment').insert(commentForm).returning('*');
-            const comment = comments[0];
-            return comment;
-        } catch {
-            console.error('createComment에서 에러발생');
-            console.trace();
-
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
-        }
-    },
-    createNestedComment: async (_: any, args: any) => {
-        const now = new Date();
-        const commentForm = {
-            // 임시로 18 넣음
-            user_id: 18,
-            comment_id: args.commentId,
-            content: args.content,
-            created_at: now,
-            updated_at: now,
-        };
-
-        try {
-            const comments = await knex('nested_comment').insert(commentForm).returning('*');
             const comment = comments[0];
             return comment;
         } catch {

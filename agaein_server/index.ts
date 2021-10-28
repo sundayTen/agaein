@@ -3,12 +3,12 @@ import {
     initUser,
     initArticle,
     initComment,
-    initNestedComment,
     initBreed,
     initImage,
     initLFG,
     initLFP,
     initReview,
+    initBookmark,
 } from './graphql/database';
 import app from './app';
 
@@ -16,12 +16,12 @@ const initDatabase = async () => {
     await initUser();
     await initArticle();
     await initComment();
-    await initNestedComment();
     await initBreed();
     await initImage();
     await initLFG();
     await initLFP();
     await initReview();
+    await initBookmark();
 };
 
 const start = async () => {

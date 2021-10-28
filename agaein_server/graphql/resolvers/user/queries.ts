@@ -1,24 +1,31 @@
+import { ApolloError } from 'apollo-server-errors';
 import { knex } from '../../database';
+import { readAccessToken } from '../../../common/auth/jwtToken';
 
 const userQueries = {
-    users: async (_: any) => knex('user'),
     user: async (_: any, args: any) => {
         try {
             const user = await knex('user').where('id', args.id).first();
             return user;
         } catch {
-            console.error();
+            console.error("user에서 에러발생");
+            console.trace();
+
+            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
         }
     },
-    me: async (_: any, context: any) => {
-        console.log(context.req.headers)
-        return
-        // try {
-        //     const user = await knex('user').where('id', args.id).first();
-        //     return user;
-        // } catch {
-        //     console.error();
-        // }
+    me: async (_: any, args: any, context: any) => {
+        const jwtToken = readAccessToken(context.req.headers.accesstoken);
+        const userId = (<any>jwtToken).userId;
+        try {
+            const user = await knex('user').where('id', userId).first();
+            return user;
+        } catch {
+            console.error("me에서 에러발생");
+            console.trace();
+
+            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+        }
     },
 };
 

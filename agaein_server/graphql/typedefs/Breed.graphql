@@ -1,3 +1,8 @@
+enum BREED_TYPE {
+    CAT
+    DOG
+}
+
 type Breed {
     id: Int!
     type: String!
