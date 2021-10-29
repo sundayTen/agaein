@@ -29,7 +29,10 @@ type Mutation {
         files: [Upload]!
         articleDetail: articleDetailInput!
     ): Article!
+    deleteArticle(id: ID!, password: String): ID!
     createComment(articleId: ID!, commentId: ID, content: String!, password: String): Comment!
+    deleteComment(id: ID!, password: String): ID!
     # Breed
     createBreed(type: BREED_TYPE!, breed: String!): Breed!
+    deleteBreed(id:ID!): ID!
 }
