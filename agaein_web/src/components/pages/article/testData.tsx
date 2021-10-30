@@ -1,6 +1,6 @@
 export const testDate = {
     data: {
-        Articles: [
+        articles: [
             {
                 __typename: 'Article',
                 id: 29,

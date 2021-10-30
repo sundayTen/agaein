@@ -9,6 +9,7 @@ const Home = ({ history }: RouteComponentProps) => {
             <HomeHeader />
             <HomeArticleList boardType={Board_Type.Lfg} />
             <HomeArticleList boardType={Board_Type.Lfp} />
+            <HomeArticleList boardType={Board_Type.Review} />
         </div>
     );
 };

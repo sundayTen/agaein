@@ -1,34 +1,49 @@
 fragment ArticleCommon on Article {
     id
-    title
-    content
     comments {
-        ...CommentDetail
+        ...CommentFragment
     }
     createdAt
     updatedAt
+    images
+    type
+    view
+    author {
+        ...UserFragment
+    }
 }
 
 fragment LFGDetail on LFG {
+    type
     breed
     name
     feature
     gender
+    age
+    password
+    foundDate
+    alarm
+    location {
+        lat
+        lng
+        address
+    }
 }
 fragment LFPDetail on LFP {
+    type
     breed
     name
     feature
     gender
     gratuity
+    alarm
+    lostDate
+    location {
+        lat
+        lng
+        address
+    }
 }
 fragment ReviewDetail on REVIEW {
-    a
-}
-
-fragment CommentDetail on Comment {
-    articleId
-    content
-    createdAt
-    updatedAt
+    title
 }
