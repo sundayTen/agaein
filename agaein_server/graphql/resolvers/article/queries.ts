@@ -24,21 +24,36 @@ const articleQueries = {
                     images[rawImage.articleId] = [rawImage.url];
                 }
             });
-
+            console.log(rawArticles);
             const articles: any[] = [];
             rawArticles.forEach((rawArticle: any) => {
+                const {
+                    id,
+                    articleId,
+                    view,
+                    content,
+                    userId,
+                    kakaoId,
+                    email,
+                    phoneNumber,
+                    articleCreatedAt,
+                    articleUpdatedAt,
+                } = rawArticle;
                 articles.push({
-                    id: rawArticle.articleId,
-                    type: rawArticle.type,
-                    view: rawArticle.view,
-                    content: rawArticle.content,
-                    images: images[rawArticle.articleId] || [],
+                    id,
+                    type: args.boardType,
+                    view,
+                    content,
+                    images: images[articleId] || [],
                     author: {
-                        info: rawArticle.info,
+                        id: userId,
+                        kakaoId,
+                        email,
+                        phoneNumber,
                     },
                     articleDetail: rawArticle,
-                    createdAt: rawArticle.articleCreatedAt,
-                    updatedAt: rawArticle.articleUpdatedAt,
+                    createdAt: articleCreatedAt,
+                    updatedAt: articleUpdatedAt,
                 });
             });
 
@@ -80,7 +95,6 @@ const articleQueries = {
                     'comment.updated_at as updated_at',
                     'comment.id as id',
                 );
-
             const article: any = {
                 id: rawArticle.articleId,
                 type: articleBoardType.type,

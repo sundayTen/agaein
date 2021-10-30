@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { CreateArticleStep1Params } from 'router/params';
 import { BigButton, Step1ButtonGroup, Step1Container, Step1Headers, UtilButtonGroup } from './CreateArticle.style';
 
-const CreateArticle = ({ history }: RouteComponentProps<CreateArticleStep1Params>) => {
+const Step1 = ({ history }: RouteComponentProps<CreateArticleStep1Params>) => {
     const [selectedBtnIndex, setSelectedBtnIndex] = useState(-1);
 
     const getBoardType = () => {
@@ -54,4 +54,4 @@ const CreateArticle = ({ history }: RouteComponentProps<CreateArticleStep1Params
     );
 };
 
-export default CreateArticle;
+export default Step1;

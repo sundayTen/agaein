@@ -1,11 +1,11 @@
+import { useApolloClient } from '@apollo/client';
 import { useLoginMutation, useMeLazyQuery, User } from 'graphql/generated/generated';
 import { createContext, useCallback, useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
-
 interface UserContextProps {
     user: User;
     isLoggedIn: boolean;
-    login: (accessToken: string, email: string) => void;
+    login: (kakaoAccessToken: string, kakaoId: string) => void;
     signOut: () => void;
 }
 
@@ -23,12 +23,18 @@ const NON_MEMBER: User = {
 } as User;
 
 export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
+    const client = useApolloClient();
     const [user, setUser] = useState<User>(NON_MEMBER);
+    console.log('🚀 ~ file: userContext.tsx ~ line 28 ~ user', user);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loginMutation] = useLoginMutation();
     const [fetchMe] = useMeLazyQuery({
         onCompleted: (data) => {
+            setIsLoggedIn(true);
             setUser(data.me as User);
+        },
+        onError: (error) => {
+            console.warn(error);
         },
     });
     const cookies = new Cookies();
@@ -47,12 +53,16 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
     const setRefreshToken = (refreshToken: string) => {
         cookies.set('refreshToken', refreshToken);
     };
+    const resetToken = () => {
+        cookies.remove('accessToken');
+        cookies.remove('refreshToken');
+    };
 
-    const login = async (accessToken: string, email: string) => {
-        setAccessToken(accessToken);
+    const login = async (kakaoAccessToken: string, kakaoId: string) => {
+        setAccessToken(kakaoAccessToken);
         const loginData = await loginMutation({
             variables: {
-                kakaoId: email,
+                kakaoId,
             },
         });
         const { errors, data } = loginData;
@@ -61,19 +71,26 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
             console.warn('Login Error Occur');
             return;
         }
+        if (!data) {
+            return;
+        }
+        const { accessToken, refreshToken, ...userData } = data.login;
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
+        setUser(userData as User);
         setIsLoggedIn(true);
-        setUser(data?.login as User);
     };
 
     const signOut = () => {
-        setAccessToken('');
-        setRefreshToken('');
+        client.resetStore();
+        resetToken();
         setIsLoggedIn(false);
         setUser(NON_MEMBER);
     };
 
     const initializeUserContext = useCallback(async () => {
         const accessToken = getAccessToken();
+        console.log('🚀 ~ file: userContext.tsx ~ line 99 ~ initializeUserContext ~ accessToken', accessToken);
         if (accessToken) {
             fetchMe();
         }

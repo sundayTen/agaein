@@ -17,8 +17,8 @@ query getArticles($boardType: BOARD_TYPE!) {
     }
 }
 
-query getArticle($boardType: BOARD_TYPE!, $id: ID!) {
-    article(boardType: $boardType, id: $id) {
+query getArticle($id: ID!) {
+    article(id: $id) {
         ...ArticleCommon
         articleDetail {
             ... on LFG {
@@ -38,18 +38,11 @@ query getArticle($boardType: BOARD_TYPE!, $id: ID!) {
 
 mutation createArticle(
     $boardType: BOARD_TYPE!
-    $title: String!
     $content: String!
     $files: [Upload]!
     $articleDetail: articleDetailInput!
 ) {
-    createArticle(
-        boardType: $boardType
-        title: $title
-        content: $content
-        files: $files
-        articleDetail: $articleDetail
-    ) {
+    createArticle(boardType: $boardType, content: $content, files: $files, articleDetail: $articleDetail) {
         ...ArticleCommon
     }
 }

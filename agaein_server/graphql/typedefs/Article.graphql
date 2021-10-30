@@ -34,7 +34,7 @@ type LFP {
     password: String
     alarm: Boolean!
     location: Location!
-    foundDate: Date!
+    lostDate: Date!
 }
 
 type REVIEW {

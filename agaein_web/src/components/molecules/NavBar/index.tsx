@@ -15,16 +15,15 @@ interface KaKaoLoginResult {
 }
 
 const NavBar = () => {
-    const { isLoggedIn, login } = useContext(UserContext);
+    const { isLoggedIn, login, signOut } = useContext(UserContext);
 
     const onLoginComplete = (result: KaKaoLoginResult) => {
-        login(result.response.access_token, result.profile.kakao_account.email);
+        login(result.response.access_token, String(result.profile.id));
     };
 
     const onLoginFailed = (result: KaKaoError) => {
         console.error(result);
     };
-
     return (
         <Nav>
             <Link to="/">
@@ -34,7 +33,7 @@ const NavBar = () => {
                 </Title>
             </Link>
             {isLoggedIn ? (
-                <Button label="로그아웃" size="SMALL" />
+                <Button label="로그아웃" size="SMALL" onClick={signOut} />
             ) : (
                 <KakaoLogin
                     token={KAKAO_LOGIN_KEY}
