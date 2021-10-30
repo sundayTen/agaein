@@ -69,4 +69,5 @@ input articleDetailInput {
     alarm: Boolean
     lostDate: Date
     gratuity: Int
+    title: String
 }

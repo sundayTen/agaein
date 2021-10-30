@@ -5,7 +5,8 @@ import { knex } from '../../database';
 const articleMutations = {
     createArticle: async (_: any, args: any, context: any) => {
         const { boardType, content, articleDetail } = args;
-        const { breedId, name, feature, gender, location, foundDate, lostDate, gratuity, alarm, password, age } = articleDetail;
+        const { breedId, name, feature, gender, location, foundDate, lostDate, gratuity, alarm, password, age, title } =
+            articleDetail;
 
         // @TODO validation 확인해야 됨.
 
@@ -31,8 +32,12 @@ const articleMutations = {
             updatedAt: now,
         };
 
-        if (context.req.headers.accesstoken) {
-            const jwtToken = readAccessToken(context.req.headers.accesstoken);
+        if (
+            args.password === undefined &&
+            context.req.headers.authorization &&
+            context.req.headers.authorization.split(' ')[1]
+        ) {
+            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
             articleForm.userId = (<any>jwtToken).userId;
         }
 
@@ -72,7 +77,9 @@ const articleMutations = {
                             password,
                             age,
                         },
-                        REVIEW: {},
+                        REVIEW: {
+                            title,
+                        },
                     };
 
                     return knex(boardType)
@@ -138,8 +145,12 @@ const articleMutations = {
             }
         }
 
-        if (context.req.headers.accesstoken) {
-            const jwtToken = readAccessToken(context.req.headers.accesstoken);
+        if (
+            args.password === undefined &&
+            context.req.headers.authorization &&
+            context.req.headers.authorization.split(' ')[1]
+        ) {
+            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
             commentForm.userId = (<any>jwtToken).userId;
         }
 
@@ -153,6 +164,51 @@ const articleMutations = {
 
             throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
         }
+    },
+    deleteArticle: async (_: any, args: any, context: any) => {
+        const article = await knex('article').where('id', args.id).first();
+
+        if (article === undefined) {
+            throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
+        }
+
+        if (args.password) {
+            const password = await knex(article.type).where('articleId', args.id).select('password').first();
+            if (args.password !== password.password) {
+                throw new ApolloError('Wrong Password', 'UNAUTHENTICATED');
+            }
+        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
+            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
+            if (article.userId !== (<any>jwtToken).userId) {
+                throw new ApolloError('Unautorized Token', 'UNAUTHENTICATED');
+            }
+        }
+
+        await knex('article').where('id', args.id).del();
+
+        return args.id;
+    },
+    deleteComment: async (_: any, args: any, context: any) => {
+        const comment = await knex('comment').where('id', args.id).first();
+
+        if (comment === undefined) {
+            throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
+        }
+
+        if (args.password) {
+            if (args.password !== comment.password) {
+                throw new ApolloError('Wrong Password', 'UNAUTHENTICATED');
+            }
+        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
+            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
+            if (comment.userId !== (<any>jwtToken).userId) {
+                throw new ApolloError('Unautorized Token', 'UNAUTHENTICATED');
+            }
+        }
+
+        await knex('comment').where('id', args.id).del();
+
+        return args.id;
     },
 };
 
