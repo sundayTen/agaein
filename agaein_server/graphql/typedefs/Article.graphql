@@ -8,6 +8,7 @@ type Location {
     lat: Float!
     lng: Float!
     address: String!
+    detail: String
 }
 
 type LFG {
@@ -34,19 +35,19 @@ type LFP {
     password: String
     alarm: Boolean!
     location: Location!
-    foundDate: Date!
+    lostDate: Date!
 }
 
 type REVIEW {
     # 더 넣을 것 생각
     title: String
+    content: String
 }
 
 union ArticleDetail = LFG | LFP | REVIEW
 
 type Article {
     id: Int!
-    content: String!
     images: [String]!
     view: Int!
     type: BOARD_TYPE!
@@ -57,12 +58,19 @@ type Article {
     updatedAt: Date!
 }
 
+input LocationInput {
+    lat: Float!
+    lng: Float!
+    address: String!
+    detail: String
+}
+
 input articleDetailInput {
     breedId: ID
     name: String
     feature: String
     gender: String
-    location: String
+    location: LocationInput
     foundDate: Date
     age: Int
     password: String

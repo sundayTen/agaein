@@ -86,7 +86,6 @@ export function initArticle() {
                         .onDelete('CASCADE');
                     table.integer('view').notNullable();
                     table.string('type').notNullable();
-                    table.text('content').notNullable();
                     table.dateTime('created_at').notNullable();
                     table.dateTime('updated_at').notNullable();
                 })
@@ -266,6 +265,7 @@ export function initReview() {
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
                     table.string('title');
+                    table.text('content');
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created review table');
