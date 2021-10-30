@@ -33,7 +33,11 @@ const articleQueries = {
                     view: rawArticle.view,
                     images: images[rawArticle.articleId] || [],
                     author: {
-                        info: rawArticle.info,
+                        id: rawArticle.userId,
+                        nickname: rawArticle.nickname,
+                        email: rawArticle.email,
+                        kakaoId: rawArticle.kakaoId,
+                        phoneNumber: rawArticle.phoneNumber,
                     },
                     articleDetail: rawArticle,
                     createdAt: rawArticle.articleCreatedAt,
@@ -87,7 +91,11 @@ const articleQueries = {
                     return image.url;
                 }),
                 author: {
-                    info: rawArticle.info,
+                    id: rawArticle.userId,
+                    nickname: rawArticle.nickname,
+                    email: rawArticle.email,
+                    kakaoId: rawArticle.kakaoId,
+                    phoneNumber: rawArticle.phoneNumber,
                 },
                 articleDetail: rawArticle,
                 comments: rawComments,
