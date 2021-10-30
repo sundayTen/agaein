@@ -199,14 +199,14 @@ export function initLFG() {
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
                     table.integer('breed_id').notNullable().references('id').inTable('breed').onUpdate('CASCADE');
-                    table.string('name').notNullable();
-                    table.string('feature').notNullable();
-                    table.string('gender').notNullable();
+                    table.string('name');
+                    table.string('feature');
+                    table.string('gender');
                     table.string('password');
-                    table.boolean('alarm').defaultTo(false).notNullable();
-                    table.integer('age').notNullable();
-                    table.json('location').defaultTo({}).notNullable();
-                    table.dateTime('found_date').notNullable();
+                    table.boolean('alarm').defaultTo(false);
+                    table.integer('age');
+                    table.json('location').defaultTo({});
+                    table.dateTime('found_date');
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created lfg table');
@@ -232,15 +232,15 @@ export function initLFP() {
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
                     table.integer('breed_id').notNullable().references('id').inTable('breed').onUpdate('CASCADE');
-                    table.string('name').notNullable();
-                    table.string('feature').notNullable();
-                    table.string('gender').notNullable();
-                    table.integer('gratuity').notNullable();
+                    table.string('name');
+                    table.string('feature');
+                    table.string('gender');
+                    table.integer('gratuity');
                     table.string('password');
-                    table.boolean('alarm').defaultTo(false).notNullable();
-                    table.integer('age').notNullable();
-                    table.json('location').defaultTo({}).notNullable();
-                    table.dateTime('lost_date').notNullable();
+                    table.boolean('alarm').defaultTo(false);
+                    table.integer('age');
+                    table.json('location').defaultTo({});
+                    table.dateTime('lost_date');
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created lfp table');
@@ -265,6 +265,7 @@ export function initReview() {
                         .inTable('article')
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
+                    table.string('title');
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created review table');

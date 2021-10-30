@@ -15,7 +15,10 @@ const userQueries = {
         }
     },
     me: async (_: any, args: any, context: any) => {
-        const jwtToken = readAccessToken(context.req.headers.accesstoken);
+        if (context.req.headers.authorization === undefined) {
+            throw new ApolloError('Token is not Existed', 'UNAUTHENTICATED');
+        }
+        const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
         const userId = (<any>jwtToken).userId;
         try {
             const user = await knex('user').where('id', userId).first();
