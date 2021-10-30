@@ -31,10 +31,13 @@ const articleQueries = {
                     id: rawArticle.articleId,
                     type: rawArticle.type,
                     view: rawArticle.view,
-                    content: rawArticle.content,
                     images: images[rawArticle.articleId] || [],
                     author: {
-                        info: rawArticle.info,
+                        id: rawArticle.userId,
+                        nickname: rawArticle.nickname,
+                        email: rawArticle.email,
+                        kakaoId: rawArticle.kakaoId,
+                        phoneNumber: rawArticle.phoneNumber,
                     },
                     articleDetail: rawArticle,
                     createdAt: rawArticle.articleCreatedAt,
@@ -84,12 +87,15 @@ const articleQueries = {
             const article: any = {
                 id: rawArticle.articleId,
                 type: articleBoardType.type,
-                content: rawArticle.content,
                 images: images.filter(function (image: any) {
                     return image.url;
                 }),
                 author: {
-                    info: rawArticle.info,
+                    id: rawArticle.userId,
+                    nickname: rawArticle.nickname,
+                    email: rawArticle.email,
+                    kakaoId: rawArticle.kakaoId,
+                    phoneNumber: rawArticle.phoneNumber,
                 },
                 articleDetail: rawArticle,
                 comments: rawComments,

@@ -4,9 +4,22 @@ import { knex } from '../../database';
 
 const articleMutations = {
     createArticle: async (_: any, args: any, context: any) => {
-        const { boardType, content, articleDetail } = args;
-        const { breedId, name, feature, gender, location, foundDate, lostDate, gratuity, alarm, password, age, title } =
-            articleDetail;
+        const { boardType, articleDetail } = args;
+        const {
+            breedId,
+            name,
+            feature,
+            gender,
+            location,
+            foundDate,
+            lostDate,
+            gratuity,
+            alarm,
+            password,
+            age,
+            title,
+            content,
+        } = articleDetail;
 
         // @TODO validation 확인해야 됨.
 
@@ -15,7 +28,6 @@ const articleMutations = {
             userId: 1,
             view: 0,
             type: boardType,
-            content,
             createdAt: now,
             updatedAt: now,
         };
@@ -24,7 +36,6 @@ const articleMutations = {
             // 유저 데이터 넣어야 함.
             user: {},
             view: 0,
-            content,
             type: boardType,
             comments: [],
             images: [],
@@ -79,6 +90,7 @@ const articleMutations = {
                         },
                         REVIEW: {
                             title,
+                            content,
                         },
                     };
 
