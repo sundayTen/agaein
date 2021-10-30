@@ -36,6 +36,7 @@ const articleQueries = {
                     kakaoId,
                     email,
                     phoneNumber,
+                    nickname,
                     articleCreatedAt,
                     articleUpdatedAt,
                 } = rawArticle;
@@ -50,6 +51,7 @@ const articleQueries = {
                         kakaoId,
                         email,
                         phoneNumber,
+                        nickname,
                     },
                     articleDetail: rawArticle,
                     createdAt: articleCreatedAt,
