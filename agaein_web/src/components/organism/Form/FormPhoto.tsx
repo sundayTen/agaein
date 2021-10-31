@@ -1,5 +1,5 @@
 //@ts-nocheck
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormLabel, RequiredIcon } from '../../pages/createArticle/CreateArticle.style';
 import styled from 'styled-components';
 import { CloudUploadIcon } from '@heroicons/react/solid';
@@ -32,17 +32,21 @@ const PhotoLabel = styled.label`
     border: 1px dashed #c4c4c4;
     border-radius: 4px;
     cursor: pointer;
+    color: #c4c4c4;
+
+    &:hover {
+        border: 1px solid ${(props) => props.theme.light.primary};
+        color: ${(props) => props.theme.light.primary};
+    }
 `;
 
 const PhotoIcon = styled.span`
     width: 32px;
     height: 32px;
-    color: #c4c4c4;
 `;
 
 const PhotoText = styled.span`
     font-size: 14px;
-    color: #c4c4c4;
 `;
 
 const PhotoList = styled.div`
@@ -93,10 +97,16 @@ const CloseButton = styled.button`
     }
 `;
 
-interface FormPhotoProps {}
+interface FormPhotoProps {
+    type: string;
+}
 
-export function FormPhoto({ name, value, onChange }: FormPhotoProps) {
+export function FormPhoto({ type, onChange }: FormPhotoProps) {
     const [photoList, setPhotoList] = useState([]);
+
+    useEffect(() => {
+        onChange(photoList);
+    });
 
     function uploadImage(e) {
         e.stopPropagation();
@@ -118,19 +128,16 @@ export function FormPhoto({ name, value, onChange }: FormPhotoProps) {
             };
             reader.readAsDataURL(file);
         }
-
-        onChange(photoList, name);
     }
 
     function removeImage(removeIndex) {
         setPhotoList(photoList.filter((value, index) => index !== removeIndex));
-        onChange(photoList, name);
     }
 
     return (
         <FormRow>
             <FormLabel>
-                실종동물 사진
+                {type === 'LFP' ? '실종' : '발견'}동물 사진
                 <RequiredIcon />
             </FormLabel>
             <FormGuide>사진은 최대 5장 등록할 수 있고, 첫번째 사진이 대표 이미지로 등록됩니다.</FormGuide>

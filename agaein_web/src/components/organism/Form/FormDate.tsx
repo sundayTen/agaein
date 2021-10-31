@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { FormRow, FormLabel, Form, RequiredIcon } from '../../pages/createArticle/CreateArticle.style';
-import styled from 'styled-components';
-import Input from 'components/molecules/Input';
 
 import DatePicker, { CalendarContainer, registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -9,17 +7,25 @@ import { getMonth, getYear } from 'date-fns';
 import ko from 'date-fns/esm/locale/ko';
 import CustomDatePicker from 'components/molecules/CustomDatePicker/CustomDatePicker';
 
-interface FormDateProps {}
+interface FormDateProps {
+    name: string;
+    type: string;
+    onChange?: (value: any, name: string) => void;
+}
 
-export function FormDate(props: FormDateProps) {
+export function FormDate({ name, type, onChange }: FormDateProps) {
+    function inputChangeHandler(value: Date) {
+        onChange?.(value, name);
+    }
+
     return (
         <FormRow>
             <FormLabel>
-                실종일
+                {type === 'LFP' ? '실종' : '발견'}일
                 <RequiredIcon />
             </FormLabel>
             <Form>
-                <CustomDatePicker />
+                <CustomDatePicker onChange={inputChangeHandler} />
             </Form>
         </FormRow>
     );
