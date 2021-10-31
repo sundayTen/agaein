@@ -1,7 +1,7 @@
 import Chip from 'components/molecules/Chip';
 import Font from 'components/molecules/Font';
 import ImageCarousel from 'components/molecules/ImageCarousel/ImageCarousel';
-import { Article, Board_Type, Lfg, useGetArticleQuery } from 'graphql/generated/generated';
+import { Article, Lfg, useGetArticleQuery } from 'graphql/generated/generated';
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
 import {
@@ -24,13 +24,12 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
-            boardType: Board_Type.Lfg,
         },
     });
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
-    const { id, title, content, createdAt, articleDetail } = data?.article as Article;
+    const { id, createdAt, articleDetail } = data?.article as Article;
     const { breed, feature, gender, name } = articleDetail as Lfg;
 
     return (
@@ -77,7 +76,7 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
 export default ArticleDetail;
 
 const imgDummy = [
-    'https://cdn.mkhealth.co.kr/news/photo/202102/52163_52859_5928.jpg',
     'https://health.chosun.com/site/data/img_dir/2021/07/26/2021072601445_0.jpg',
+    'https://cdn.mkhealth.co.kr/news/photo/202102/52163_52859_5928.jpg',
     'https://images.mypetlife.co.kr/content/uploads/2019/09/09153001/dog-panting-1024x683.jpg',
 ];

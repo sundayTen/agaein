@@ -1,5 +1,5 @@
-query getBreeds {
-    breeds {
+query getBreeds($type: BREED_TYPE!) {
+    breeds(type: $type) {
         id
         type
         breed

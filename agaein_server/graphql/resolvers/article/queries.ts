@@ -24,24 +24,37 @@ const articleQueries = {
                     images[rawImage.articleId] = [rawImage.url];
                 }
             });
-
             const articles: any[] = [];
             rawArticles.forEach((rawArticle: any) => {
+                const {
+                    id,
+                    articleId,
+                    view,
+                    content,
+                    userId,
+                    kakaoId,
+                    email,
+                    phoneNumber,
+                    nickname,
+                    articleCreatedAt,
+                    articleUpdatedAt,
+                } = rawArticle;
                 articles.push({
-                    id: rawArticle.articleId,
-                    type: rawArticle.type,
-                    view: rawArticle.view,
-                    images: images[rawArticle.articleId] || [],
+                    id: articleId,
+                    type: args.boardType,
+                    view,
+                    content,
+                    images: images[articleId] || [],
                     author: {
-                        id: rawArticle.userId,
-                        nickname: rawArticle.nickname,
-                        email: rawArticle.email,
-                        kakaoId: rawArticle.kakaoId,
-                        phoneNumber: rawArticle.phoneNumber,
+                        id: userId,
+                        kakaoId,
+                        email,
+                        phoneNumber,
+                        nickname,
                     },
                     articleDetail: rawArticle,
-                    createdAt: rawArticle.articleCreatedAt,
-                    updatedAt: rawArticle.articleUpdatedAt,
+                    createdAt: articleCreatedAt,
+                    updatedAt: articleUpdatedAt,
                 });
             });
 
@@ -83,7 +96,6 @@ const articleQueries = {
                     'comment.updated_at as updated_at',
                     'comment.id as id',
                 );
-
             const article: any = {
                 id: rawArticle.articleId,
                 type: articleBoardType.type,

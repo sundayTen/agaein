@@ -8,7 +8,13 @@ fragment UserFragment on User {
 
 mutation login($kakaoId: String!) {
     login(kakaoId: $kakaoId) {
-        ...UserFragment
+        accessToken
+        refreshToken
+        id
+        nickname
+        email
+        kakaoId
+        phoneNumber
     }
 }
 

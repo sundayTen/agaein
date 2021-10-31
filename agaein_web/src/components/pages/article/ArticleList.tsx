@@ -1,6 +1,6 @@
 import Font from 'components/molecules/Font';
 import PostItem from 'components/molecules/PostItemBox/PostItemBox';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import {
     ArticleListDiv,
     ButtonContainer,
@@ -9,28 +9,37 @@ import {
     ListItem,
     PostingButton,
 } from './ArticleList.style';
-import { testDate } from './testData';
-import { Article } from 'graphql/generated/generated';
 import SearchBar from 'components/molecules/SearchBar';
 import Pagination from 'components/molecules/Pagination';
 import useBookmark from 'hooks/useBookmark';
+import { Article, Board_Type, useGetArticlesQuery } from 'graphql/generated/generated';
+import { Fragment } from 'react';
 
-const ArticleList = ({ match, history }: RouteComponentProps) => {
-    const articles = testDate.data?.Articles.map((article) => article) as Article[];
+const ArticleList = (props: RouteComponentProps) => {
+    const { data, loading, error } = useGetArticlesQuery({
+        variables: {
+            boardType: Board_Type.Lfg,
+        },
+    });
     const { isBookmarked, setBookmark } = useBookmark();
+    if (loading) return <></>;
+    if (error) {
+        return <></>;
+    }
     return (
-        <div>
+        <Fragment>
             <ArticleListDiv>
                 <ListHeader>
                     <Font label={'실종견 리스트'} fontType="h3" fontWeight="bold" />
                 </ListHeader>
                 <SearchBar />
                 <ListContainer>
-                    {articles?.map((article: Article) => {
+                    {data?.articles?.map((article) => {
+                        if (article === null) return <></>;
                         return (
                             <ListItem key={article?.id}>
                                 <PostItem
-                                    item={article}
+                                    item={article as Article}
                                     bookmarked={isBookmarked(article.id)}
                                     setBookmark={() => setBookmark(article.id)}
                                 />
@@ -45,7 +54,7 @@ const ArticleList = ({ match, history }: RouteComponentProps) => {
 
                 <Pagination />
             </ArticleListDiv>
-        </div>
+        </Fragment>
     );
 };
 
