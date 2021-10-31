@@ -25,7 +25,6 @@ type Mutation {
     # Article
     createArticle(
         boardType: BOARD_TYPE!
-        content: String!
         files: [Upload]!
         articleDetail: articleDetailInput!
     ): Article!
