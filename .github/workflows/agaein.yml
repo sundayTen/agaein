@@ -33,3 +33,9 @@ jobs:
         run: docker run -d --name ${{ env.CONTAINER }} -p ${{ env.PORT }}:${{ env.PORT }} -v /etc/localtime:/etc/localtime:ro -v /home/actions/assets/image:/build/image --restart always ${{ env.IMAGE }}
       - name: remove Docker <none> image
         run: if [ "$(docker images -f dangling=true -q)" != "" ]; then docker rmi $(docker images -f dangling=true -q); fi
+      - name: build Web
+        run: |
+          cd /home/actions/${{ env.REPOSITORY }}/agaein_web
+          yarn install
+          yarn codegen
+          yarn build
