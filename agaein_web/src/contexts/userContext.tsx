@@ -16,16 +16,13 @@ type UserProviderProps = {
 };
 
 const NON_MEMBER: User = {
-    id: '1',
-    kakaoId: 'non-member',
-    email: 'non-member@agaein.com',
-    nickname: 'anyone',
-} as User;
+    id: 1,
+    kakaoId: 'anonymous',
+} as unknown as User;
 
 export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
     const client = useApolloClient();
     const [user, setUser] = useState<User>(NON_MEMBER);
-    console.log('🚀 ~ file: userContext.tsx ~ line 28 ~ user', user);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loginMutation] = useLoginMutation();
     const [fetchMe] = useMeLazyQuery({
@@ -90,7 +87,6 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
 
     const initializeUserContext = useCallback(async () => {
         const accessToken = getAccessToken();
-        console.log('🚀 ~ file: userContext.tsx ~ line 99 ~ initializeUserContext ~ accessToken', accessToken);
         if (accessToken) {
             fetchMe();
         }
