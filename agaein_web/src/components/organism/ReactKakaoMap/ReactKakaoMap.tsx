@@ -1,5 +1,5 @@
 import { ReactElement, useState, useEffect } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 interface ReactKakaoMapProps {
     search?: string | undefined;
     setAddress?: (value: string) => void;
@@ -16,6 +16,7 @@ interface ReactKakaoMapProps {
     };
     foundPosition?: [
         {
+            click: boolean;
             lat: number;
             lng: number;
             address: string;
@@ -45,6 +46,7 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
     const [markerInfo, setMarkerInfo] = useState<ReactElement>();
     const [addressValue, setAddressValue] = useState('');
     const [mapCenter, setMapCenter] = useState({ lat: 37.51491382139469, lng: 127.10195359701143 });
+    const [infoPosition, setInfoPosition] = useState(false);
     const [map, setMap] = useState<kakao.maps.Map>();
     const geocoder = new kakao.maps.services.Geocoder();
 
@@ -83,15 +85,18 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
 
             const address = result[0].address;
             const roadAddress = result[0].road_address;
-
+            setInfoPosition(!!roadAddress);
             const detailAddr = !!roadAddress ? (
                 <>
-                    <div style={{ backgroundColor: '#fff' }}>도로명 주소 : {roadAddress.address_name}</div>
-                    <div style={{ backgroundColor: '#fff' }}>지번 주소 : {address.address_name}</div>
+                    <div>도로명 주소 : {roadAddress.address_name}</div>
+                    <div>지번 주소 : {address.address_name}</div>
                 </>
             ) : (
-                <div style={{ backgroundColor: '#fff' }}>지번 주소 : {address.address_name}</div>
+                <>
+                    <div>지번 주소 : {address.address_name}</div>
+                </>
             );
+
             setMarkerInfo(detailAddr);
             setAddressValue(address.address_name);
         }
@@ -102,32 +107,37 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
         geocoder.addressSearch(search, addMarker);
     }, [search]);
 
+    const mapClick = (_t: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => {
+        geocoder.coord2Address(mouseEvent.latLng?.getLng(), mouseEvent.latLng?.getLat(), addMarker);
+        setPosition({
+            lat: mouseEvent.latLng?.getLat() ?? -1,
+            lng: mouseEvent.latLng?.getLng() ?? -1,
+        });
+    };
+
     return (
-        <Map
-            center={mapCenter}
-            style={{ ...size, borderRadius }}
-            onClick={(_t, mouseEvent) => {
-                console.log(position);
-                geocoder.coord2Address(mouseEvent.latLng?.getLng(), mouseEvent.latLng?.getLat(), addMarker);
-                setPosition({
-                    lat: mouseEvent.latLng?.getLat() ?? -1,
-                    lng: mouseEvent.latLng?.getLng() ?? -1,
-                });
-            }}
-            onCreate={setMap}
-        >
-            {markerInfo && <MapMarker position={position}>{markerInfo}</MapMarker>}
-            {missPosition && <MapMarker position={missPosition}>{missPosition.address}</MapMarker>}
-            {foundPosition.map((item) => {
-                const position = { lat: item.lat, lng: item.lng };
-                const address = item.address;
-                return (
-                    <MapMarker key={position.lat} position={position} image={testImg}>
-                        {address}
-                    </MapMarker>
-                );
-            })}
-        </Map>
+        <div>
+            <Map center={mapCenter} style={{ ...size, borderRadius }} onClick={mapClick} onCreate={setMap}>
+                {markerInfo && (
+                    <>
+                        <MapMarker position={position} infoWindowOptions={{ className: 'test' }}>
+                            {markerInfo}
+                        </MapMarker>
+                        {/* <CustomOverlayMap position={position}>{markerInfo}</CustomOverlayMap> */}
+                    </>
+                )}
+                {missPosition && <MapMarker position={missPosition}>{missPosition.address}</MapMarker>}
+                {foundPosition.map((item) => {
+                    const position = { lat: item.lat, lng: item.lng };
+                    const address = item.address;
+                    return (
+                        <MapMarker key={position.lat} position={position} image={testImg}>
+                            {address}
+                        </MapMarker>
+                    );
+                })}
+            </Map>
+        </div>
     );
 };
 export default ReactKaKaoMap;

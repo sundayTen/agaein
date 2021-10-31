@@ -16,7 +16,7 @@ interface ModalProps {
     close: () => void;
     title: string;
     btnName?: string;
-    onBtn: (value: boolean) => void;
+    onBtn?: (value: boolean) => void;
 }
 
 const Modal = ({ open, children, close, title, btnName = '선택', onBtn }: ModalProps) => {
@@ -52,14 +52,16 @@ const Modal = ({ open, children, close, title, btnName = '선택', onBtn }: Moda
                         </TitleContainer>
                         <ChildrenContainer>{children}</ChildrenContainer>
                         <ButtonContainer>
-                            <Button
-                                buttonStyle="PAINTED"
-                                size="MEDIUM"
-                                label={btnName}
-                                onClick={() => {
-                                    onBtn(true);
-                                }}
-                            />
+                            {onBtn ? (
+                                <Button
+                                    buttonStyle="PAINTED"
+                                    size="MEDIUM"
+                                    label={btnName}
+                                    onClick={() => {
+                                        onBtn(true);
+                                    }}
+                                />
+                            ) : null}
                         </ButtonContainer>
                     </ModalInner>
                 </ModalWrapper>
