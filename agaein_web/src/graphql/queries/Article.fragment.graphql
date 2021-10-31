@@ -42,8 +42,10 @@ fragment LFPDetail on LFP {
         lat
         lng
         address
+        detail
     }
 }
 fragment ReviewDetail on REVIEW {
     title
+    content
 }
