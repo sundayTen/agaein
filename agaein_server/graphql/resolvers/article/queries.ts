@@ -24,7 +24,6 @@ const articleQueries = {
                     images[rawImage.articleId] = [rawImage.url];
                 }
             });
-            console.log(rawArticles);
             const articles: any[] = [];
             rawArticles.forEach((rawArticle: any) => {
                 const {
@@ -41,7 +40,7 @@ const articleQueries = {
                     articleUpdatedAt,
                 } = rawArticle;
                 articles.push({
-                    id,
+                    id: articleId,
                     type: args.boardType,
                     view,
                     content,
