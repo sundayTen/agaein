@@ -18,15 +18,14 @@ export function FormPassword({ name, value, onChange }: FormPasswordProps) {
     function inputChangeHandler(value: string, type: string) {
         setPassword((prev) => ({ ...prev, [type]: value }));
 
-        //TODO: 같을 때 change 하면 안될거 같음. 더 생각해보기
-        if (password.password1 === password.password2) {
-            onChange?.(name, password.password1);
+        //TODO: 비밀번호 체크 조건 변경
+        if (type === 'password2' && password.password1 !== password.password2) {
+            console.log('비밀번호가 같지 않습니다');
             return;
         }
 
-        //TODO: 비밀번호 같지 않은 경우 에러띄우기
-        if (type === 'password2') {
-            console.log('비밀번호가 같지 않습니다');
+        if (password.password1.length === 4 && password.password1 === password.password2) {
+            onChange?.(name, password.password1);
         }
     }
 

@@ -30,12 +30,23 @@ export function FormBreed({ name, value, onChange }: FormBreedProps) {
         breed: '골든리트리버',
     });
 
-    function selectHandler(name, value) {
+    const setBreedOptions = (name, value) => {
         setAnimalType({
             ...animalType,
             [name]: value,
         });
-    }
+
+        //TODO: options 불러오기, type = value
+    };
+
+    const setBreedId = (name, value) => {
+        setAnimalType({
+            ...animalType,
+            [name]: value,
+        });
+
+        //TODO: id 넘기기
+    };
 
     return (
         <FormRow>
@@ -48,7 +59,7 @@ export function FormBreed({ name, value, onChange }: FormBreedProps) {
                     <Select
                         name="animal"
                         defaultValue={animalType.animal}
-                        onChange={selectHandler}
+                        onChange={setBreedOptions}
                         options={tempAnimalOptions}
                     />
                 </SelectWrapper>
@@ -56,7 +67,7 @@ export function FormBreed({ name, value, onChange }: FormBreedProps) {
                     <Select
                         name="breed"
                         defaultValue={animalType.breed}
-                        onChange={selectHandler}
+                        onChange={setBreedId}
                         options={tempBreedOptions}
                     />
                 </SelectWrapper>

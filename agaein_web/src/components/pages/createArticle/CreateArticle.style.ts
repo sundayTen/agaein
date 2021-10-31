@@ -135,7 +135,7 @@ export const ButtonWrapper = styled.div`
     margin: 60px 0 160px;
     text-align: center;
 
-    button {
+    button + button {
         margin-left: 20px;
     }
 `;

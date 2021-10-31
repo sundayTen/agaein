@@ -25,6 +25,9 @@ declare module 'styled-components' {
             lightGrey2: string;
             DarkGrey1: string;
             DarkGrey2: string;
+            primary100: string;
+            primary400: string;
+            primary800: string;
         };
     }
 }

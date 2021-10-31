@@ -31,7 +31,10 @@ export function FormAge({ name, onChange }: FormAgeProps) {
 
     function inputChangeHandler(value: string, date: string) {
         setAge((prev) => ({ ...prev, [date]: value }));
-        onChange?.(age, name);
+        //TODO: 개월수 계산
+        // const monthAge = age.yaer * 12 + age.month;
+        const monthAge = 4;
+        onChange?.(monthAge, name);
     }
 
     return (

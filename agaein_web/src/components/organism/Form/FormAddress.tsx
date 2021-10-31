@@ -22,9 +22,11 @@ const DetailAddress = styled.div`
     margin-top: 10px;
 `;
 
-interface FormAddressProps {}
+interface FormAddressProps {
+    type: string;
+}
 
-export function FormAddress(props: FormAddressProps) {
+export function FormAddress({ type }: FormAddressProps) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const [address, setAddress] = useState<string>('');
 
@@ -35,12 +37,12 @@ export function FormAddress(props: FormAddressProps) {
         <>
             <FormRow>
                 <FormLabel>
-                    실종지역
+                    {type === 'LFP' ? '실종' : '발견'}지역
                     <RequiredIcon />
                 </FormLabel>
                 <Form>
                     <MainAddress>
-                        <Input type="text" placeholder="지역명" value={address} disabled />
+                        <Input type="text" placeholder="지역명" value={address} />
                         <Button
                             label="장소찾기"
                             size="SMALL"

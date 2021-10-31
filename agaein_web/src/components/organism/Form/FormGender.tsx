@@ -25,18 +25,33 @@ const RadioLabel = styled.label`
     cursor: pointer;
 
     input:checked + ${RadioIcon} {
-        border: none;
+        border-color: ${(props) => props.theme.light.primary};
         background-color: ${(props) => props.theme.light.primary};
 
         &:after {
             content: '';
             position: absolute;
-            top: 5px;
-            left: 5px;
+            top: 4px;
+            left: 4px;
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background-color: #fff;
+            background-color: ${(props) => props.theme.light.white} !important;
+        }
+    }
+
+    &:hover input + ${RadioIcon} {
+        border-color: ${(props) => props.theme.light.primary};
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: ${(props) => props.theme.light.primary100};
         }
     }
 
@@ -66,7 +81,7 @@ export function FormGender({ name, value, onChange }: FormGenderProps) {
                         checked={value === 'male'}
                     />
                     <RadioIcon />
-                    남자
+                    수컷
                 </RadioLabel>
                 <RadioLabel>
                     <input
@@ -78,7 +93,7 @@ export function FormGender({ name, value, onChange }: FormGenderProps) {
                         checked={value === 'femail'}
                     />
                     <RadioIcon />
-                    여자
+                    암컷
                 </RadioLabel>
                 <RadioLabel>
                     <input

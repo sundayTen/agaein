@@ -12,6 +12,9 @@ const theme: DefaultTheme = {
     light: {
         background: '#F5F3EE',
         primary: '#EFA03D',
+        primary100: '#F8D6AB',
+        primary400: '#F1AD58',
+        primary800: '#DA9237',
         sub2: '#34735A',
         sub1: '#FFDC4C',
         positive: '#15CCE5',

@@ -7,33 +7,33 @@ interface StyledButtonProps {
 
 const sizeStyles = css`
     ${(props: StyledButtonProps) =>
-        props.size === 'LARGE' &&
+        props.size === 'XLARGE' &&
         css`
-            height: 52px;
-            font-size: 18px;
-            padding: 16px 44px;
+            min-width: 140px;
+            height: 58px;
+            font-size: 20px;
         `}
 
     ${(props) =>
-        props.size === 'XLARGE' &&
+        props.size === 'LARGE' &&
         css`
-            height: 58px;
-            font-size: 20px;
-            padding: 18px 50px;
+            min-width: 120px;
+            height: 52px;
+            font-size: 18px;
         `}
 
     ${(props) =>
         props.size === 'MEDIUM' &&
         css`
+            min-width: 100px;
             height: 40px;
             font-size: 16px;
-            padding: 11px 35px;
         `}
 
     ${(props) =>
         props.size === 'SMALL' &&
         css`
-            width: 82px;
+            min-width: 80px;
             height: 32px;
             font-size: 14px;
         `}
@@ -45,20 +45,47 @@ const colorStyles = css`
         css`
             background-color: ${(props) => props.theme.light.primary};
             border: 1px solid ${(props) => props.theme.light.primary};
-            color: white;
+            color: ${(props) => props.theme.light.white};
+
+            &:hover {
+                background-color: ${(props) => props.theme.light.white};
+                color: ${(props) => props.theme.light.primary};
+                border: 1px solid ${(props) => props.theme.light.white};
+            }
+
+            &:disabled {
+                border: 0;
+                background-color: ${(props) => props.theme.light.primary100};
+                color: ${(props) => props.theme.light.white};
+                cursor: default;
+            }
         `}
 
     ${(props) =>
         props.buttonStyle === 'BORDER' &&
         css`
             border: 1px solid ${(props) => props.theme.light.primary};
-            background-color: white;
-            color: ${(props) => props.theme.light.primary}; ;
+            background-color: transparent;
+            color: ${(props) => props.theme.light.primary};
+
+            &:hover {
+                background-color: ${(props) => props.theme.light.white};
+                color: ${(props) => props.theme.light.primary};
+                border: 1px solid ${(props) => props.theme.light.white};
+            }
+
+            &:disabled {
+                background-color: transparent;
+                border-color: ${(props) => props.theme.light.primary100};
+                color: ${(props) => props.theme.light.primary100};
+                cursor: default;
+            }
         `}
 `;
 
 export const StyledButton = styled.button<StyledButtonProps>`
-    padding: 5px 10px;
+    font-family: NanumSquareRound, sans-serif;
+    padding: 0 10px;
     border-radius: 4px;
     font-size: 20px;
     line-height: 24px;
@@ -67,21 +94,4 @@ export const StyledButton = styled.button<StyledButtonProps>`
 
     ${sizeStyles}
     ${colorStyles}
-
-    //TODO: theme 수정하고 theme 에서 가져오기
-    
-    &:hover {
-        background-color: white;
-        color: ${(props) => props.theme.light.primary};
-        border: 1px solid white;
-    }
-
-    &:active {
-        background-color: #da9237;
-    }
-
-    &:disabled {
-        background-color: #f8d6ab;
-        cursor: default;
-    }
 `;
