@@ -15,7 +15,7 @@ const imgDummy = [
     'https://images.mypetlife.co.kr/content/uploads/2019/09/09153001/dog-panting-1024x683.jpg',
 ];
 const WitnessModal = ({ open, close, setAddress }: WitnessModalProps) => {
-    const [witnessToggle, setWitnessToggle] = useState('');
+    const [witnessToggle, setWitnessToggle] = useState<'지도' | '사진'>('지도');
     return (
         <Modal open={open} close={close} title="발견 리스트">
             <MapToggleButton label="지도보기" onClick={() => setWitnessToggle('지도')} />

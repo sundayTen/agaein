@@ -107,20 +107,17 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
         geocoder.addressSearch(search, addMarker);
     }, [search]);
 
+    const mapClick = (_t: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => {
+        geocoder.coord2Address(mouseEvent.latLng?.getLng(), mouseEvent.latLng?.getLat(), addMarker);
+        setPosition({
+            lat: mouseEvent.latLng?.getLat() ?? -1,
+            lng: mouseEvent.latLng?.getLng() ?? -1,
+        });
+    };
+
     return (
         <div>
-            <Map
-                center={mapCenter}
-                style={{ ...size, borderRadius }}
-                onClick={(_t, mouseEvent) => {
-                    geocoder.coord2Address(mouseEvent.latLng?.getLng(), mouseEvent.latLng?.getLat(), addMarker);
-                    setPosition({
-                        lat: mouseEvent.latLng?.getLat() ?? -1,
-                        lng: mouseEvent.latLng?.getLng() ?? -1,
-                    });
-                }}
-                onCreate={setMap}
-            >
+            <Map center={mapCenter} style={{ ...size, borderRadius }} onClick={mapClick} onCreate={setMap}>
                 {markerInfo && (
                     <>
                         <MapMarker position={position} infoWindowOptions={{ className: 'test' }}>

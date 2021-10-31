@@ -95,11 +95,11 @@ const WitnessList = ({
                                             상세한 위치, 특징, 특이 사항 등등..
                                             <br />
                                             <br />
-                                            <span style={{ fontWeight: 'bold' }}>
+                                            <b>
                                                 {item.hp && <span>연락처 : {item.hp} &nbsp;&nbsp;</span>}
                                                 <SmallPhoto img={!!item.img} />
                                                 {item.img?.length}
-                                            </span>
+                                            </b>
                                         </Contents>
                                     </div>
                                 </td>
