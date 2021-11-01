@@ -6,11 +6,8 @@ import { articleQueries, articleMutations } from './article';
 const resolvers = {
     Upload: GraphQLUpload,
     ArticleDetail: {
-        __resolveType(_: any, args: any) {
-            if (args.gratuity) {
-                return 'LFP';
-            }
-            return 'LFG';
+        __resolveType(obj: any) {
+            return obj.articleType;
         },
     },
     Query: {

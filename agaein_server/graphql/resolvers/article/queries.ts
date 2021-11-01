@@ -4,11 +4,27 @@ import { knex } from '../../database';
 const articleQueries = {
     articles: async (_: any, args: any) => {
         try {
-            const rawArticles = await knex(args.boardType)
-                .join('article', `${args.boardType}.article_id`, 'article.id')
-                .join('user', 'article.user_id', 'user.id')
-                .join('breed', `${args.boardType}.breed_id`, 'breed.id')
-                .select('*', 'article.created_at as article_created_at', 'article.updated_at as article_updated_at');
+            let rawArticles: any[] = [];
+            if (args.boardType === 'REVIEW') {
+                rawArticles = await knex(args.boardType)
+                    .join('article', `${args.boardType}.article_id`, 'article.id')
+                    .join('user', 'article.user_id', 'user.id')
+                    .select(
+                        '*',
+                        'article.created_at as article_created_at',
+                        'article.updated_at as article_updated_at',
+                    );
+            } else {
+                rawArticles = await knex(args.boardType)
+                    .join('article', `${args.boardType}.article_id`, 'article.id')
+                    .join('user', 'article.user_id', 'user.id')
+                    .join('breed', `${args.boardType}.breed_id`, 'breed.id')
+                    .select(
+                        '*',
+                        'article.created_at as article_created_at',
+                        'article.updated_at as article_updated_at',
+                    );
+            }
 
             const rawImages = await knex(args.boardType).join(
                 'image',
@@ -24,13 +40,13 @@ const articleQueries = {
                     images[rawImage.articleId] = [rawImage.url];
                 }
             });
+
             const articles: any[] = [];
             rawArticles.forEach((rawArticle: any) => {
                 const {
-                    id,
                     articleId,
+                    breedId,
                     view,
-                    content,
                     userId,
                     kakaoId,
                     email,
@@ -38,12 +54,13 @@ const articleQueries = {
                     nickname,
                     articleCreatedAt,
                     articleUpdatedAt,
+                    ...articleDetail
                 } = rawArticle;
+
                 articles.push({
                     id: articleId,
                     type: args.boardType,
                     view,
-                    content,
                     images: images[articleId] || [],
                     author: {
                         id: userId,
@@ -52,12 +69,11 @@ const articleQueries = {
                         phoneNumber,
                         nickname,
                     },
-                    articleDetail: rawArticle,
+                    articleDetail: { ...articleDetail, articleType: args.boardType },
                     createdAt: articleCreatedAt,
                     updatedAt: articleUpdatedAt,
                 });
             });
-
             return articles;
         } catch {
             console.error('Articles에서 에러발생');
