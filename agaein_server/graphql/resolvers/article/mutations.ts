@@ -89,11 +89,11 @@ const articleMutations = {
                             age,
                         },
                         REVIEW: {
+                            articleId: article.id,
                             title,
                             content,
                         },
                     };
-
                     return knex(boardType)
                         .transacting(trx)
                         .insert(articleDetailForm[boardType])

@@ -1,19 +1,33 @@
-fragment ArticleCommon on Article {
+fragment ArticleFragment on Article {
     id
-    comments {
-        ...CommentFragment
-    }
     createdAt
     updatedAt
     images
     type
     view
+    comments {
+        ...CommentFragment
+    }
     author {
         ...UserFragment
+    }
+    articleDetail {
+        ... on LFG {
+            ...LFGDetail
+        }
+
+        ... on LFP {
+            ...LFPDetail
+        }
+
+        ... on REVIEW {
+            ...ReviewDetail
+        }
     }
 }
 
 fragment LFGDetail on LFG {
+    id
     type
     breed
     name
@@ -30,6 +44,7 @@ fragment LFGDetail on LFG {
     }
 }
 fragment LFPDetail on LFP {
+    id
     type
     breed
     name
@@ -46,6 +61,7 @@ fragment LFPDetail on LFP {
     }
 }
 fragment ReviewDetail on REVIEW {
+    id
     title
     content
 }
