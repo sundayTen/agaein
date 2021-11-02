@@ -1,4 +1,5 @@
-import KakaoLogin from 'react-kakao-login';
+import { ChevronDownIcon } from '@heroicons/react/solid';
+
 import styled from 'styled-components';
 
 export const Nav = styled.header`
@@ -46,4 +47,15 @@ export const StyledKakaoLogin = styled.div`
     background-color: #fee500;
     border-radius: 6px;
     padding: 9px 14px;
+`;
+
+export const UserTag = styled.button`
+    display: flex;
+    minwidth: 80px;
+    justify-content: center;
+    align-items: center;
+`;
+export const ChevronDown = styled(ChevronDownIcon)`
+    width: 24px;
+    height: 24px;
 `;

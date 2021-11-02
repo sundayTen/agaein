@@ -2,11 +2,14 @@ fragment CommentFragment on Comment {
     id
     content
     password
+    commentId
     author {
         nickname
         email
         phoneNumber
+        kakaoId
     }
+    createdAt
 }
 mutation createComment($articleId: ID!, $content: String!, $commentId: ID, $password: String) {
     createComment(articleId: $articleId, content: $content, commentId: $commentId, password: $password) {

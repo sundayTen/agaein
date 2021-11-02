@@ -6,7 +6,8 @@ import { onError } from '@apollo/client/link/error';
 // TODO : context를 통해 쿠키를 가져오고 싶은데, Hook Rule에 걸림. 방법이 없을까?
 const cookies = new Cookies();
 const httpLink = createHttpLink({
-    uri: 'https://www.agaein.com/graphql',
+    // uri: 'https://www.agaein.com/graphql',
+    uri: 'http://localhost:3005/graphql',
 });
 const authLink = setContext((_, { headers }) => {
     const accessToken = cookies.get('accessToken') || '';
@@ -21,7 +22,7 @@ const authLink = setContext((_, { headers }) => {
 const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path }) =>
-            console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
+            console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
         );
 
     if (networkError) console.log(`[Network error]: ${networkError}`);

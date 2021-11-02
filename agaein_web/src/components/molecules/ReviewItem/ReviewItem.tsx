@@ -1,37 +1,26 @@
 import penguin from 'assets/image/penguin.png';
-import {
-    Avatar,
-    CommentCount,
-    Description,
-    ReviewerContainer,
-    ReviewerName,
-    ReviewInfoContainer,
-    ReviewItemContainer,
-    Title,
-} from './ReviewItem.style';
+import { Article, Review } from 'graphql/generated/generated';
+import { Fragment } from 'react';
+import { Avatar, Description, ReviewInfoContainer, ReviewItemContainer, Title } from './ReviewItem.style';
 
 interface ReviewItemProps {
-    title?: string;
-    description?: string;
+    item: Article;
 }
 
 const ReviewItem = (props: ReviewItemProps) => {
-    const { title, description } = props;
-
+    const { item } = props;
+    const { articleDetail } = item;
+    const { title, content } = articleDetail as Review;
     return (
-        <>
+        <Fragment>
             <ReviewItemContainer>
                 <Avatar src={penguin} />
                 <ReviewInfoContainer>
                     <Title>{title}</Title>
-                    <Description>{description}</Description>
+                    <Description>{content}</Description>
                 </ReviewInfoContainer>
             </ReviewItemContainer>
-            <ReviewerContainer>
-                <ReviewerName>이름</ReviewerName>
-                <CommentCount>댓글 30개</CommentCount>
-            </ReviewerContainer>
-        </>
+        </Fragment>
     );
 };
 

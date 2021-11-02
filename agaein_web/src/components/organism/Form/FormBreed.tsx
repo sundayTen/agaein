@@ -61,7 +61,7 @@ export function FormBreed({ name, value, onChange }: FormBreedProps) {
                         defaultValue={animalType.animal}
                         onChange={setBreedOptions}
                         options={tempAnimalOptions}
-                    />
+                    ></Select>
                 </SelectWrapper>
                 <SelectWrapper>
                     <Select

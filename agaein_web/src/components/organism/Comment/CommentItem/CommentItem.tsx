@@ -1,23 +1,27 @@
 import Font from 'components/molecules/Font';
-import { Comment } from 'graphql/generated/generated';
 import useHover from 'hooks/useHover';
-import { useRef } from 'react';
+import { Comment } from 'graphql/generated/generated';
+import { Fragment, useRef } from 'react';
 import { convertDate } from 'utils/date';
 import {
     AuthorTag,
     CommentItemContainer,
     CommentItemToolBox,
     CommentItemWriterContainer,
+    CommentSelectContainer,
     DotIcon,
     DotIconButton,
 } from './CommentItem.style';
 
 interface CommentItemProps {
-    comment?: Comment;
+    comment: Comment;
+    isAuthors: boolean;
 }
 
 const CommentItem = (props: CommentItemProps) => {
-    const { comment } = props;
+    const { comment, isAuthors } = props;
+    const { content, commentId, author, createdAt } = comment;
+    const { nickname } = author;
     const commentItemRef = useRef(null);
     const isHover = useHover(commentItemRef);
     const showMenuTooltip = () => {
@@ -25,29 +29,31 @@ const CommentItem = (props: CommentItemProps) => {
     };
 
     return (
-        <>
-            <CommentItemContainer isChildren={false} ref={commentItemRef}>
+        <Fragment>
+            <CommentItemContainer isChildren={!!commentId} ref={commentItemRef}>
                 <CommentItemToolBox>
                     <CommentItemWriterContainer>
-                        {false && <AuthorTag>작성자</AuthorTag>}
+                        {isAuthors && <AuthorTag>작성자</AuthorTag>}
                         <Font
-                            label="익명"
-                            fontType="body"
+                            label={nickname ?? '비회원'}
+                            fontType="subhead"
                             fontWeight="bold"
                             htmlElement="span"
-                            style={{ marginRight: 10, marginLeft: 10 }}
+                            style={{ marginRight: 10 }}
                         />
-                        <Font label={convertDate('2021-10-10T09:19:07.915Z')} fontType="body" htmlElement="span" />
+                        <Font label={convertDate(createdAt)} fontType="body" htmlElement="span" />
                     </CommentItemWriterContainer>
                     {isHover && (
-                        <DotIconButton onClick={showMenuTooltip}>
-                            <DotIcon />
-                        </DotIconButton>
+                        <CommentSelectContainer>
+                            <DotIconButton onClick={showMenuTooltip}>
+                                <DotIcon />
+                            </DotIconButton>
+                        </CommentSelectContainer>
                     )}
                 </CommentItemToolBox>
-                <Font label="꼭 찾으셨으면 좋겠네요... ㅠ" fontType="subhead" />
+                <Font label={content} fontType="subhead" />
             </CommentItemContainer>
-        </>
+        </Fragment>
     );
 };
 
