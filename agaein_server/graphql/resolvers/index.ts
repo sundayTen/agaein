@@ -1,6 +1,7 @@
 import { GraphQLUpload } from 'graphql-upload';
 import { userQueries, userMutations } from './user';
 import { breedQueries, breedMutations } from './breed';
+import { bookmarkQueries, bookmarkMutations } from './bookmark';
 import { articleQueries, articleMutations } from './article';
 
 const resolvers = {
@@ -14,11 +15,13 @@ const resolvers = {
         ...userQueries,
         ...articleQueries,
         ...breedQueries,
+        ...bookmarkQueries,
     },
     Mutation: {
         ...userMutations,
         ...articleMutations,
         ...breedMutations,
+        ...bookmarkMutations,
     },
 };
 
