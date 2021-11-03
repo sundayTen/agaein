@@ -4,7 +4,7 @@ enum BREED_TYPE {
 }
 
 type Breed {
-    id: Int!
+    id: ID!
     type: String!
     breed: String!
 }

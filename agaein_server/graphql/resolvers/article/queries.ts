@@ -13,6 +13,9 @@ const articleQueries = {
                         '*',
                         'article.created_at as article_created_at',
                         'article.updated_at as article_updated_at',
+                        'article.id as article_id',
+                        'user.id as user_id',
+                        `${args.boardType}.id as id`,
                     );
             } else {
                 rawArticles = await knex(args.boardType)
@@ -23,6 +26,10 @@ const articleQueries = {
                         '*',
                         'article.created_at as article_created_at',
                         'article.updated_at as article_updated_at',
+                        'article.id as article_id',
+                        'user.id as user_id',
+                        'breed.id as breed_id',
+                        `${args.boardType}.id as id`,
                     );
             }
 
@@ -86,18 +93,40 @@ const articleQueries = {
         try {
             const articleBoardType = await knex('article').where(`id`, args.id).select('type').first();
 
-            const rawArticle = await knex(articleBoardType.type)
-                .join('article', `${articleBoardType.type}.article_id`, 'article.id')
-                .join('user', `article.user_id`, 'user.id')
-                .join('breed', `${articleBoardType.type}.breed_id`, 'breed.id')
-                .where(`article.id`, args.id)
-                .select(
-                    '*',
-                    'article.created_at as article_created_at',
-                    'article.updated_at as article_updated_at',
-                    'article.type as article_type',
-                )
-                .first();
+            let rawArticle: any;
+            if (articleBoardType.type === 'REVIEW') {
+                rawArticle = await knex(articleBoardType.type)
+                    .join('article', `${articleBoardType.type}.article_id`, 'article.id')
+                    .join('user', `article.user_id`, 'user.id')
+                    .where(`article.id`, args.id)
+                    .select(
+                        '*',
+                        'article.created_at as article_created_at',
+                        'article.updated_at as article_updated_at',
+                        'article.type as article_type',
+                        'article.id as article_id',
+                        'user.id as user_id',
+                        `${articleBoardType.type}.id as id`,
+                    )
+                    .first();
+            } else {
+                rawArticle = await knex(articleBoardType.type)
+                    .join('article', `${articleBoardType.type}.article_id`, 'article.id')
+                    .join('user', `article.user_id`, 'user.id')
+                    .join('breed', `${articleBoardType.type}.breed_id`, 'breed.id')
+                    .where(`article.id`, args.id)
+                    .select(
+                        '*',
+                        'article.created_at as article_created_at',
+                        'article.updated_at as article_updated_at',
+                        'article.type as article_type',
+                        'article.id as article_id',
+                        'user.id as user_id',
+                        'breed.id as breed_id',
+                        `${articleBoardType.type}.id as id`,
+                    )
+                    .first();
+            }
 
             const images = await knex(articleBoardType.type)
                 .join('image', `${articleBoardType.type}.article_id`, 'image.article_id')
