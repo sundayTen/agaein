@@ -1,10 +1,9 @@
 type Comment implements Timestamps {
     id: ID!
-    userId: ID!
-    articleId: ID!
+    author: User!
     commentId: ID
     content: String!
-    password: String!
+    password: String
     createdAt: Date!
     updatedAt: Date!
 }
