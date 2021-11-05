@@ -8,7 +8,7 @@ type styledProps = {
 export const TitleContainer = styled.div`
     padding-bottom: 19px;
     margin: 0 -24px;
-    border-bottom: 0.4px solid ${(props) => props.theme.light.DarkGrey1};
+    border-bottom: 0.4px solid ${(props) => props.theme.light.lightGrey2};
 `;
 
 export const ButtonContainer = styled.div`
@@ -17,6 +17,13 @@ export const ButtonContainer = styled.div`
 
 export const ChildrenContainer = styled.div`
     margin: 20px 0;
+`;
+
+export const MainContainer = styled.div`
+    margin: 0 -24px;
+    padding 0 24px;
+    max-height: 720px;
+    overflow: auto;
 `;
 
 export const Title = styled.span`
@@ -50,11 +57,11 @@ export const ModalWrapper = styled.div<styledProps>`
     box-sizing: border-box;
     display: block;
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
     z-index: 1000;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     overflow: auto;
     text-align: center;
     outline: 0;

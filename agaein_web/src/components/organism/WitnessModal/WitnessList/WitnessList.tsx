@@ -97,7 +97,7 @@ const WitnessList = ({
                                             <br />
                                             <b>
                                                 {item.hp && <span>연락처 : {item.hp} &nbsp;&nbsp;</span>}
-                                                <SmallPhoto img={!!item.img} />
+                                                {item.img && <SmallPhoto img={!!item.img} />}
                                                 {item.img?.length}
                                             </b>
                                         </Contents>
