@@ -4,7 +4,7 @@ import apolloServer from './graphql';
 
 const app = express();
 
-app.use(graphqlUploadExpress());
+app.use(graphqlUploadExpress({ maxFileSize: 20000000, maxFiles: 10 }));
 
 apolloServer.applyMiddleware({
     app,
