@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FormRow, FormLabel, Form } from '../../pages/createArticle/CreateArticle.style';
+import React, { useEffect, useState } from 'react';
+import { FormRow, FormLabel, Form, RequiredIcon } from '../../pages/createArticle/CreateArticle.style';
 import styled from 'styled-components';
 import Input from 'components/molecules/Input';
 
@@ -15,11 +15,8 @@ export function FormPassword({ name, value, onChange }: FormPasswordProps) {
         password2: '',
     });
 
-    function inputChangeHandler(value: string, type: string) {
-        setPassword((prev) => ({ ...prev, [type]: value }));
-
-        //TODO: 비밀번호 체크 조건 변경
-        if (type === 'password2' && password.password1 !== password.password2) {
+    useEffect(() => {
+        if (password.password1 !== password.password2) {
             console.log('비밀번호가 같지 않습니다');
             return;
         }
@@ -27,12 +24,19 @@ export function FormPassword({ name, value, onChange }: FormPasswordProps) {
         if (password.password1.length === 4 && password.password1 === password.password2) {
             onChange?.(name, password.password1);
         }
+    }, [password]);
+
+    function inputChangeHandler(value: string, type: string) {
+        setPassword((prev) => ({ ...prev, [type]: value }));
     }
 
     return (
         <>
             <FormRow>
-                <FormLabel>비밀번호</FormLabel>
+                <FormLabel>
+                    비밀번호
+                    <RequiredIcon />
+                </FormLabel>
                 <Form>
                     <Input
                         type="password"
@@ -44,7 +48,10 @@ export function FormPassword({ name, value, onChange }: FormPasswordProps) {
                 </Form>
             </FormRow>
             <FormRow>
-                <FormLabel>비밀번호 확인</FormLabel>
+                <FormLabel>
+                    비밀번호 확인
+                    <RequiredIcon />
+                </FormLabel>
                 <Form>
                     <Input
                         type="password"

@@ -23,13 +23,13 @@ const InputWrapper = styled.div`
 interface FormGratuityProps {
     name: string;
     value?: string;
-    onChange?: (value: string, name: string) => void;
+    onChange?: (value: any, name: string) => void;
 }
 
 export function FormGratuity({ name, value, onChange }: FormGratuityProps) {
     function inputChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
-        const onlyNumber = value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        const onlyNumber = Number(value.replace(/[^0-9]/g, ''));
         onChange?.(onlyNumber, name);
     }
 

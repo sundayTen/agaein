@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 interface StyledButtonProps {
     size: 'LARGE' | 'MEDIUM' | 'SMALL' | 'XLARGE';
-    buttonStyle: 'PAINTED' | 'BORDER';
+    buttonStyle: 'PAINTED' | 'BORDER' | 'BLACK';
 }
 
 const sizeStyles = css`
@@ -78,6 +78,22 @@ const colorStyles = css`
                 background-color: transparent;
                 border-color: ${(props) => props.theme.light.primary100};
                 color: ${(props) => props.theme.light.primary100};
+                cursor: default;
+            }
+        `}
+
+    ${(props) =>
+        props.buttonStyle === 'BLACK' &&
+        css`
+            background-color: ${(props) => props.theme.light.DarkGrey2};
+            color: ${(props) => props.theme.light.white};
+
+            &:hover {
+                background-color: ${(props) => props.theme.light.black};
+            }
+
+            &:disabled {
+                background-color: ${(props) => props.theme.light.lightGrey2};
                 cursor: default;
             }
         `}

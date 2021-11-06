@@ -103,6 +103,7 @@ interface FormPhotoProps {
 
 export function FormPhoto({ type, onChange }: FormPhotoProps) {
     const [photoList, setPhotoList] = useState([]);
+    const [previewList, setPreviewList] = useState([]);
 
     useEffect(() => {
         onChange(photoList);
@@ -112,26 +113,26 @@ export function FormPhoto({ type, onChange }: FormPhotoProps) {
         e.stopPropagation();
         const fileArray = e.target.files;
 
-        if (fileArray.length > 5 || photoList.length + fileArray.length > 5) {
+        if (fileArray.length > 5 || previewList.length + fileArray.length > 5) {
             alert('사진은 최대 5장 등록 가능합니다.');
             return;
         }
 
-        let fileURLs = [];
-
         for (let i = 0; i < fileArray.length; i++) {
             const file = fileArray[i];
             let reader = new FileReader();
+            let fileURLs = [];
             reader.onload = () => {
                 fileURLs[i] = reader.result;
-                setPhotoList((photoList) => [...photoList, fileURLs[i]]);
+                setPreviewList((previewList) => [...previewList, fileURLs[i]]);
+                setPhotoList((photoList) => [...photoList, file]);
             };
             reader.readAsDataURL(file);
         }
     }
 
     function removeImage(removeIndex) {
-        setPhotoList(photoList.filter((value, index) => index !== removeIndex));
+        setPreviewList(previewList.filter((value, index) => index !== removeIndex));
     }
 
     return (
@@ -156,7 +157,7 @@ export function FormPhoto({ type, onChange }: FormPhotoProps) {
                     <PhotoText>사진 업로드</PhotoText>
                 </PhotoLabel>
                 <PhotoList>
-                    {photoList.map((photoURL, index) => (
+                    {previewList.map((photoURL, index) => (
                         <PhotoItem key={index}>
                             <PhotoWrap>
                                 <img src={photoURL} alt="실종동물" />

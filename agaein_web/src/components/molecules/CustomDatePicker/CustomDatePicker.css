@@ -2,11 +2,17 @@
     font-family: NanumSquareRound, sans-serif;
     width: 100%;
     border: 0;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     line-height: 24px;
     letter-spacing: -0.02em;
     color: #333;
+    cursor: pointer;
+    text-rendering: geometricPrecision;
+}
+
+.react-datepicker-popper[data-placement^='bottom'] {
+    padding-top: 20px;
 }
 
 .react-datepicker__input-container input::placeholder {

@@ -89,8 +89,8 @@ const Select = ({ name, defaultValue, onChange, options }: SelectProps) => {
         setIsShowSelectList(!isShowSelectList);
     }
 
-    function clickSelectItem(name, option) {
-        onChange?.(name, option);
+    function clickSelectItem(id) {
+        onChange(id);
         setIsShowSelectList(!isShowSelectList);
     }
 
@@ -104,10 +104,10 @@ const Select = ({ name, defaultValue, onChange, options }: SelectProps) => {
             </StyledSelect>
             {isShowSelectList && (
                 <SelectList>
-                    {options.map((option, index) => {
+                    {options.map((option) => {
                         return (
-                            <SelectItem key={index} onClick={() => clickSelectItem(name, option)}>
-                                {option}
+                            <SelectItem key={option.id} onClick={() => clickSelectItem(option.id)}>
+                                {option.name || option.breed}
                             </SelectItem>
                         );
                     })}

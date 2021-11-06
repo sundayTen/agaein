@@ -14,7 +14,7 @@ export function FormName({ name, value, onChange }: FormNameProps) {
 
     return (
         <FormRow>
-            <FormLabel>동물 이름</FormLabel>
+            <FormLabel>이름</FormLabel>
             <Form>
                 <Input
                     type="text"

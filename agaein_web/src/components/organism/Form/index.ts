@@ -9,3 +9,4 @@ export * from './FormEtc';
 export * from './FormGratuity';
 export * from './FormPassword';
 export * from './FormCheckbox';
+export * from './FormEmail';

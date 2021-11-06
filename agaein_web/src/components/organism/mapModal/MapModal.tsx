@@ -6,7 +6,7 @@ import ReactKaKaoMap from '../ReactKakaoMap/ReactKakaoMap';
 interface MapModalProps {
     open: boolean;
     close: () => void;
-    setAddress: (value: string) => void;
+    setAddress: (value: object) => void;
 }
 const MapModal = ({ open, close, setAddress }: MapModalProps) => {
     const [searchValue, setSearchValue] = useState('');
@@ -26,6 +26,7 @@ const MapModal = ({ open, close, setAddress }: MapModalProps) => {
     useEffect(() => {
         if (save) close();
     }, [save]);
+    
     return (
         <Modal open={open} close={close} title="장소 찾기" btnName="선택" onBtn={setSave}>
             <form className="inputForm" onSubmit={mapSearch}>

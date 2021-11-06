@@ -14,6 +14,8 @@ interface FormDateProps {
 }
 
 export function FormDate({ name, type, onChange }: FormDateProps) {
+    const LableType = type === 'LFP' ? '실종' : '발견';
+
     function inputChangeHandler(value: Date) {
         onChange?.(value, name);
     }
@@ -21,7 +23,7 @@ export function FormDate({ name, type, onChange }: FormDateProps) {
     return (
         <FormRow>
             <FormLabel>
-                {type === 'LFP' ? '실종' : '발견'}일
+                {LableType}일
                 <RequiredIcon />
             </FormLabel>
             <Form>

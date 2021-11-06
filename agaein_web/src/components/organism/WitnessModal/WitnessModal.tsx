@@ -7,7 +7,7 @@ import WitnessImageCarousel from './WitnessImageCarousel';
 interface WitnessModalProps {
     open: boolean;
     close: () => void;
-    setAddress: (value: string) => void;
+    setAddress: (value: object) => void;
 }
 const imgDummy = [
     'https://cdn.mkhealth.co.kr/news/photo/202102/52163_52859_5928.jpg',

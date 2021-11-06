@@ -2,7 +2,7 @@ import { ReactElement, useState, useEffect } from 'react';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 interface ReactKakaoMapProps {
     search?: string | undefined;
-    setAddress?: (value: string) => void;
+    setAddress?: (value: object) => void;
     save?: boolean;
     size?: {
         width: number;
@@ -66,7 +66,12 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
 
     useEffect(() => {
         if (save) {
-            setAddress(addressValue);
+            const address = {
+                lat: mapCenter.lat,
+                lng: mapCenter.lng,
+                address: addressValue,
+            };
+            setAddress(address);
         }
     }, [save]);
 
