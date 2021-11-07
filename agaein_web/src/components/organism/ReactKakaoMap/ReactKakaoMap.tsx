@@ -7,7 +7,7 @@ import Default from 'assets/image/Default.png';
 import { Category, Img, MapContainer, Text, InfoWindow } from './ReactKakaoMap.style';
 interface ReactKakaoMapProps {
     search?: string | undefined;
-    setAddress?: (value: string) => void;
+    setAddress?: (value: any) => void;
     isCategory?: boolean;
     noClick?: boolean;
     size?: {
@@ -91,12 +91,7 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
     };
     useEffect(() => {
         let clickList = false;
-        foundPosition.map((item: {
-            click: boolean;
-            lat: number;
-            lng: number;
-            address: string;
-        }) => {
+        foundPosition.map((item: { click: boolean; lat: number; lng: number; address: string }) => {
             if (item.click) {
                 clickList = true;
                 return setMapCenter({
@@ -137,7 +132,11 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
             const address = result[0].address;
             const roadAddress = result[0].road_address;
 
-            setAddress(address.address_name);
+            setAddress({
+                lat: position.lat,
+                lng: position.lng,
+                address: address.address_name,
+            });
         }
     };
 
@@ -184,37 +183,42 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
                         </CustomOverlayMap>
                     </>
                 )}
-                {foundPosition.map((item: {
-                    click: boolean;
-                    lat: number;
-                    lng: number;
-                    address: string;
-                }, idx: number) => {
-                    const position = { lat: item.lat, lng: item.lng };
-                    const address = item.address;
-                    return (
-                        <>
-                            <MapMarker
-                                key={idx}
-                                position={position}
-                                image={item.click ? activeImg : defaultImg}
-                                onMouseOver={(e) => {
-                                    setInfo(idx);
-                                }}
-                                onMouseOut={() => setInfo(-1)}
-                            />
-                            <CustomOverlayMap position={position}>
-                                {idx === info && (
-                                    <InfoWindow type="withess" roadAddress={false}>
-                                        <div>
-                                            <b>지번 주소</b> : {address}
-                                        </div>
-                                    </InfoWindow>
-                                )}
-                            </CustomOverlayMap>
-                        </>
-                    );
-                })}
+                {foundPosition.map(
+                    (
+                        item: {
+                            click: boolean;
+                            lat: number;
+                            lng: number;
+                            address: string;
+                        },
+                        idx: number,
+                    ) => {
+                        const position = { lat: item.lat, lng: item.lng };
+                        const address = item.address;
+                        return (
+                            <>
+                                <MapMarker
+                                    key={idx}
+                                    position={position}
+                                    image={item.click ? activeImg : defaultImg}
+                                    onMouseOver={(e) => {
+                                        setInfo(idx);
+                                    }}
+                                    onMouseOut={() => setInfo(-1)}
+                                />
+                                <CustomOverlayMap position={position}>
+                                    {idx === info && (
+                                        <InfoWindow type="withess" roadAddress={false}>
+                                            <div>
+                                                <b>지번 주소</b> : {address}
+                                            </div>
+                                        </InfoWindow>
+                                    )}
+                                </CustomOverlayMap>
+                            </>
+                        );
+                    },
+                )}
             </Map>
             {isCategory && (
                 <Category>

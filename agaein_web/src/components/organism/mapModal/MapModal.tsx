@@ -7,12 +7,12 @@ import { AddressInput, InputForm, Search } from './MapModal.style';
 interface MapModalProps {
     open: boolean;
     close: () => void;
-    setAddress: (value: string) => void;
+    setAddress: (value: object) => void;
 }
 const MapModal = ({ open, close, setAddress }: MapModalProps) => {
     const [searchValue, setSearchValue] = useState('');
     const [search, setSearch] = useState<string | undefined>(undefined);
-    const [addressValue, setAddressValue] = useState('');
+    const [addressValue, setAddressValue] = useState({});
 
     const mapSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -21,6 +21,7 @@ const MapModal = ({ open, close, setAddress }: MapModalProps) => {
     };
 
     const saveAddress = () => {
+        setAddressValue(addressValue);
         setAddress(addressValue);
     };
 
