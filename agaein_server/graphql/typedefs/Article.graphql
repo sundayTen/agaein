@@ -15,12 +15,12 @@ type LFG {
     id: ID!
     type: BREED_TYPE!
     breed: String!
-    name: String!
-    feature: String!
-    gender: String!
-    age: Int!
+    name: String
+    feature: String
+    gender: String
+    age: Int
     password: String
-    alarm: Boolean!
+    alarm: Boolean
     location: Location!
     foundDate: Date!
 }
@@ -29,13 +29,13 @@ type LFP {
     id: ID!
     type: BREED_TYPE!
     breed: String!
-    name: String!
-    feature: String!
-    gender: String!
+    name: String
+    feature: String
+    gender: String
     gratuity: Int
-    age: Int!
+    age: Int
     password: String
-    alarm: Boolean!
+    alarm: Boolean
     location: Location!
     lostDate: Date!
 }
