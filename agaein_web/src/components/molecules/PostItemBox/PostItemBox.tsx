@@ -24,8 +24,18 @@ interface PostItemProps {
 
 const PostItem = (props: PostItemProps) => {
     const { item, bookmarked = false, setBookmark = () => {} } = props;
-    const { id, articleDetail, createdAt } = item;
-    const { breed, gender, location, age } = articleDetail as Lfg;
+    const { id, articleDetail, createdAt, images } = item;
+    const { breed, type, gender, location, age } = articleDetail as Lfg;
+
+    function typeToKr() {
+        if (type === 'DOG') {
+            return '개';
+        }
+        if (type === 'CAT') {
+            return '고양이';
+        }
+        return '기타';
+    }
 
     return (
         <>
@@ -35,12 +45,12 @@ const PostItem = (props: PostItemProps) => {
                         <BookMark active={bookmarked} onClick={setBookmark} />
                     </BookMarkBox>
                     <Thumb>
-                        <Img src={penguin} alt="실종 동물" />
+                        <Img src={images.length === 0 ? penguin : (images[0] as string)} alt="실종 동물" />
                     </Thumb>
                     <InfoList>
                         <InfoItem>
                             <InfoCategory>품종</InfoCategory>
-                            <InfoText>{breed}</InfoText>
+                            <InfoText>{`${typeToKr()} | ${breed}`}</InfoText>
                         </InfoItem>
                         <InfoItem>
                             <InfoCategory>실종일</InfoCategory>
@@ -48,7 +58,6 @@ const PostItem = (props: PostItemProps) => {
                         </InfoItem>
                         <InfoItem>
                             <InfoCategory>지역</InfoCategory>
-                            {/* TODO : 글자수 넘어가는 부분 처리 */}
                             <InfoText>{location.address.substr(0, 9)}</InfoText>
                         </InfoItem>
                     </InfoList>

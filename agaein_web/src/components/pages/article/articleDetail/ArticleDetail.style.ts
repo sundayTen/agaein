@@ -16,7 +16,13 @@ export const ArticleDetailContainer = styled.div`
 `;
 
 export const TitleAndBookMarkContainer = styled.div`
-    display: inline-block;
+    display: flex;
+    position: relative;
+`;
+export const BookmarkContainer = styled.div`
+    position: absolute;
+    top: 5;
+    right: 5;
 `;
 
 export const ArticleDetailDetailContainer = styled.div`
@@ -33,6 +39,8 @@ export const ArticleDetailDetailContainer = styled.div`
 export const ArticleDetailContentContainer = styled.div`
     margin: 20px auto;
     width: 620px;
+    overflow: hidden;
+    width: auto;
 `;
 export const ArticleInfoContainer = styled.div`
     display: flex;

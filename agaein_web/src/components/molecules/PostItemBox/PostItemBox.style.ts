@@ -34,10 +34,10 @@ export const InfoItem = styled.li`
 
 export const InfoCategory = styled.em`
     display: table-cell;
-    padding: 0 10px;
+    padding: 0 10px 0 0;
     font-size: 12px;
     font-weight: 600;
-    color: ${(props) => props.theme.light.primary};
+    color: ${(props) => props.theme.light.DarkGrey2};
 `;
 
 export const InfoText = styled.span`
@@ -56,6 +56,6 @@ export const ContentTag = styled.div`
 
 export const BookMarkBox = styled.div`
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 6px;
+    right: 6px;
 `;

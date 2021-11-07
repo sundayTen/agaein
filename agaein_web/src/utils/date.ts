@@ -20,9 +20,9 @@ const isSameYear = (year1: number, year2: number): boolean => {
  * 오늘 작성된 글 : 시간만 표기
  * 올해지만 오늘은 아님 : 월, 일만 표기
  * 올해가 아님 : 연, 월, 일 표기
- * @param {string} date
+ * @param {string} date\
  */
-export const convertDate = (date: string): string => {
+const convertDate = (date: string): string => {
     const now = moment(new Date());
     const targetDate = moment(date);
 
@@ -37,6 +37,8 @@ export const convertDate = (date: string): string => {
     return targetDate.format('YY년 MM월 DD일');
 };
 
-export const YYYYMMDD = (date: string) => {
+const YYYYMMDD = (date: string) => {
     return moment(date).format('YYYY년 MM월 DD일');
 };
+
+export { convertDate, YYYYMMDD };

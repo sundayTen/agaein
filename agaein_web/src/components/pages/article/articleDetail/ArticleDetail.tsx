@@ -22,10 +22,11 @@ import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
 import { convertDate, YYYYMMDD } from 'utils/date';
 import { Fragment } from 'react';
 import { isArticle, isLFP } from 'utils/typeGuards';
+import penguin from 'assets/image/penguin.png';
 
 const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useBookmark();
-    const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+    const [isOpenModal, setIsOpenModal] = useState(false);
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
@@ -35,7 +36,7 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
     if (data === undefined || !isArticle(data.article)) return <p>No data</p>;
-    const { id, createdAt, articleDetail, view, author, comments = [] } = data.article;
+    const { id, createdAt, articleDetail, view, author, comments = [], images = [] } = data.article;
 
     // ? TypeGuard로 해결할 방법을 모르겠음
     const { breed, feature, age = '??', gender, name, location, foundDate, lostDate } = articleDetail as any;
@@ -57,13 +58,20 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     const closeModal = () => {
         setIsOpenModal(false);
     };
+    const targetImages = () => {
+        if (images.length === 0) {
+            return [penguin];
+        }
+        return images;
+    };
+
     return (
         <Fragment>
             <HorizontalContainer>
-                <ImageCarousel images={imgDummy} />
+                <ImageCarousel images={targetImages() as string[]} />
                 <ArticleDetailContainer>
                     <Chip label="진행중" />
-                    <Chip label="사례금 200,000원" />
+
                     <ArticleDetailContentContainer>
                         <TitleAndBookMarkContainer>
                             <Font label={getTitle()} fontType="h4" fontWeight="bold" htmlElement="span" />
@@ -96,9 +104,3 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
 };
 
 export default ArticleDetail;
-
-const imgDummy = [
-    'https://health.chosun.com/site/data/img_dir/2021/07/26/2021072601445_0.jpg',
-    'https://cdn.mkhealth.co.kr/news/photo/202102/52163_52859_5928.jpg',
-    'https://images.mypetlife.co.kr/content/uploads/2019/09/09153001/dog-panting-1024x683.jpg',
-];

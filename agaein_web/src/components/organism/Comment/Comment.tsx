@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import Button from 'components/molecules/Button';
 import Font from 'components/molecules/Font';
 import Textarea from 'components/molecules/Textarea';
@@ -14,6 +14,7 @@ import {
 import CommentItem from './CommentItem';
 import { useApolloClient } from '@apollo/client';
 import { RequiredGuide, RequiredIcon } from 'components/pages/createArticle/CreateArticle.style';
+import { UserContext } from 'contexts/userContext';
 
 interface CommentProps {
     comments: CommentType[];
@@ -24,6 +25,7 @@ interface CommentProps {
 const Comment = (props: CommentProps) => {
     const { comments = [], articleId, author: articleWriter } = props;
     const client = useApolloClient();
+    const { isLoggedIn } = useContext(UserContext);
     const [createComment] = useCreateCommentMutation();
     const [commentInput, setCommentInput] = useState<string | undefined>(undefined);
     const [password, setPassword] = useState<string | undefined>(undefined);
@@ -59,7 +61,7 @@ const Comment = (props: CommentProps) => {
     };
     // TODO : 비밀번호 규칙을 정해서 적용해야함.
     const onChangePwd = (pwd: string) => {
-        if (true) {
+        if (pwd.length <= 4) {
             setPassword(pwd);
         }
     };
@@ -67,12 +69,15 @@ const Comment = (props: CommentProps) => {
         if (articleWriter.kakaoId === 'anonymous') return false;
         return articleWriter.kakaoId === commentAuthorId;
     };
+    const submitDisabled = () => {
+        return !commentInput || (!isLoggedIn && typeof password === 'string' && password.length !== 4);
+    };
     // ? comments가 null일 수 있는지 모르겠지만 종종 에러가 남.
     if (comments === null) return <></>;
     return (
         <Fragment>
             <CommentHeader>
-                <Font label={`댓글 ${comments?.length}`} fontType="h4" fontWeight="bold" />
+                <Font label={`댓글 ${comments.length}`} fontType="h4" fontWeight="bold" />
             </CommentHeader>
             <CommentContainer>
                 <CommentInputContainer>
@@ -82,21 +87,25 @@ const Comment = (props: CommentProps) => {
                         placeholder="발견 정보 또는 응원의 메세지를 남겨주세요 :)"
                     />
                     <CommentToolContainer>
-                        <CommentPwdContainer>
-                            <CommentPwd
-                                type="password"
-                                value={password}
-                                onChange={(e) => onChangePwd(e.target.value)}
-                            />
-                            <RequiredGuide>
-                                <RequiredIcon />
-                                비회원의 경우 댓글 등록, 수정, 삭제에 비밀번호가 필요합니다.
-                            </RequiredGuide>
-                        </CommentPwdContainer>
+                        {!isLoggedIn ? (
+                            <div />
+                        ) : (
+                            <CommentPwdContainer>
+                                <CommentPwd
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => onChangePwd(e.target.value)}
+                                />
+                                <RequiredGuide>
+                                    <RequiredIcon />
+                                    비회원의 경우 댓글 등록, 수정, 삭제에 비밀번호가 필요합니다.
+                                </RequiredGuide>
+                            </CommentPwdContainer>
+                        )}
                         <Button
                             label="등록"
                             buttonStyle="PAINTED"
-                            disabled={!commentInput}
+                            disabled={submitDisabled()}
                             onClick={onPressSubmit}
                             style={{ float: 'right', marginTop: 10 }}
                         />
