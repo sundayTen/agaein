@@ -1,6 +1,7 @@
 enum BREED_TYPE {
     CAT
     DOG
+    ETC
 }
 
 type Breed {
