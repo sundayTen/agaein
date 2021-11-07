@@ -1,11 +1,11 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 import styled from 'styled-components';
 
 interface PageProps {
     click: boolean
 }
 export const CarouselContainer = styled.div`
-    positon :relative;
+    position: relative;
     width: 580px;
 `;
 
@@ -17,8 +17,8 @@ export const FocusedImage = styled.img`
 
 export const BackIcon = styled(ChevronLeftIcon)`
     position: absolute;
-    right: 560px;
-    top: 310px;
+    right: 540px;
+    top: 190px;
     width: 40px;
     height: 40px;
     color: #fff;
@@ -27,8 +27,8 @@ export const BackIcon = styled(ChevronLeftIcon)`
 
 export const NextIcon = styled(ChevronRightIcon)`
     position: absolute;
-    right: 30px;
-    top: 310px;
+    right: 0px;
+    top: 190px;
     width: 40px;
     height: 40px;
     color: #fff;
@@ -37,7 +37,7 @@ export const NextIcon = styled(ChevronRightIcon)`
 
 export const PageContainer = styled.div`
     position: absolute;
-    top: 490px;
+    top: 380px;
     left: 50%;
     transform: translate(-50%, 0%);
 `

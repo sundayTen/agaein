@@ -18,9 +18,13 @@ import Button from 'components/molecules/Button';
 import { convertDate } from 'utils/date';
 import BookMark from 'components/molecules/BookMark';
 import useBookmark from 'hooks/useBookmark';
+import { useState } from 'react';
+import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
+import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
 
 const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useBookmark();
+    const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
@@ -30,8 +34,11 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
     const { id, createdAt, articleDetail } = data?.article as Article;
-    const { breed, feature, gender, name } = articleDetail as Lfg;
+    const { breed, feature, gender, name, location } = articleDetail as Lfg;
 
+    const closeModal = () => {
+        setIsOpenModal(false);
+    };
     return (
         <>
             <HorizontalContainer>
@@ -63,12 +70,17 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
                     </ArticleInfoContainer>
                     <ArticleMapContainer>
                         <Font label="실종장소" fontType="subhead" style={{ marginBottom: 10 }} />
-                        <KakaoMap size={{ width: 480, height: 260 }} />
-                        <Button label="발견 신고 하기" onClick={() => {}} style={{ width: '100%', marginTop: 20 }} />
+                        <ReactKaKaoMap noClick={true} size={{ width: 480, height: 260 }} />
+                        <Button
+                            label="발견 신고 하기"
+                            onClick={() => setIsOpenModal(true)}
+                            style={{ width: '100%', marginTop: 20 }}
+                        />
                     </ArticleMapContainer>
                 </ArticleDetailContainer>
             </HorizontalContainer>
             <Comment comments={[]} />
+            <WitnessModal open={isOpenModal} close={closeModal} isAuthor={true} />
         </>
     );
 };

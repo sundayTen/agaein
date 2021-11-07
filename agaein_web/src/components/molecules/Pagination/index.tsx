@@ -9,7 +9,6 @@ const Pagination = (props: SearchBarProps) => {
     const onClickSelector = (index: number) => {
         setSelectedPage(index);
     };
-    console.log(pages);
     return (
         <PaginationDiv>
             <Page onClick={() => onClickSelector(selectedPage === 1 ? selectedPage : selectedPage - 1)}>&lt;</Page>

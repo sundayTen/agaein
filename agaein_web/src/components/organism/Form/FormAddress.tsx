@@ -5,12 +5,15 @@ import Input from 'components/molecules/Input';
 import Button from 'components/molecules/Button';
 import MapModal from 'components/organism/mapModal/MapModal';
 
-const MainAddress = styled.div`
+interface MainAddressProps {
+    type: string;
+}
+const MainAddress = styled.div<MainAddressProps>`
     display: flex;
 
     label {
         flex: 1;
-        margin-right: 10px;
+        margin-right: ${(props) => (props.type === 'LFG_M' ? `87px` : `10px`)};
     }
 
     button {
@@ -24,15 +27,20 @@ const DetailAddress = styled.div`
 
 interface FormAddressProps {
     type: string;
+    value?: string;
 }
 
-export function FormAddress({ type }: FormAddressProps) {
+export function FormAddress({ type, value = '' }: FormAddressProps) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-    const [address, setAddress] = useState<string>('');
+    const [address, setAddress] = useState<string>(value);
 
     const closeModal = () => {
         setIsOpenModal(false);
     };
+
+    useEffect(() => {
+        setAddress(value);
+    }, [value]);
     return (
         <>
             <FormRow>
@@ -41,20 +49,28 @@ export function FormAddress({ type }: FormAddressProps) {
                     <RequiredIcon />
                 </FormLabel>
                 <Form>
-                    <MainAddress>
-                        <Input type="text" placeholder="지역명" value={address} />
-                        <Button
-                            label="장소찾기"
-                            size="SMALL"
-                            buttonStyle="PAINTED"
-                            onClick={() => {
-                                setIsOpenModal(true);
-                            }}
+                    <MainAddress type={type}>
+                        <Input
+                            type="text"
+                            placeholder={type === 'LFG_M' ? '지도에서 발견 장소를 클릭해주세요' : '지역명'}
+                            value={address}
                         />
+                        {type === 'LFG_M' ? undefined : (
+                            <Button
+                                label="장소찾기"
+                                size="SMALL"
+                                buttonStyle="PAINTED"
+                                onClick={() => {
+                                    setIsOpenModal(true);
+                                }}
+                            />
+                        )}
                     </MainAddress>
-                    <DetailAddress>
-                        <Input type="text" placeholder="상세 장소 (xx가게 앞, 육교 밑 등)" />
-                    </DetailAddress>
+                    {type === 'LFG_M' ? undefined : (
+                        <DetailAddress>
+                            <Input type="text" placeholder="상세 장소 (xx가게 앞, 육교 밑 등)" />
+                        </DetailAddress>
+                    )}
                 </Form>
             </FormRow>
             <MapModal open={isOpenModal} close={closeModal} setAddress={setAddress} />

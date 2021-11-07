@@ -3,6 +3,7 @@ import Modal from 'components/molecules/Modal';
 import { useEffect, useState } from 'react';
 import KakaoMap from '../kakaomap/KakaoMap';
 import ReactKaKaoMap from '../ReactKakaoMap/ReactKakaoMap';
+import { AddressInput, InputForm, Search } from './MapModal.style';
 interface MapModalProps {
     open: boolean;
     close: () => void;
@@ -10,8 +11,8 @@ interface MapModalProps {
 }
 const MapModal = ({ open, close, setAddress }: MapModalProps) => {
     const [searchValue, setSearchValue] = useState('');
-    const [save, setSave] = useState(false);
     const [search, setSearch] = useState<string | undefined>(undefined);
+    const [addressValue, setAddressValue] = useState('');
 
     const mapSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -19,25 +20,21 @@ const MapModal = ({ open, close, setAddress }: MapModalProps) => {
         setSearchValue('');
     };
 
-    useEffect(() => {
-        setSave(false);
-    }, [open]);
+    const saveAddress = () => {
+        setAddress(addressValue);
+    };
 
-    useEffect(() => {
-        if (save) close();
-    }, [save]);
     return (
-        <Modal open={open} close={close} title="장소 찾기" btnName="선택" onBtn={setSave}>
-            <form className="inputForm" onSubmit={mapSearch}>
-                <Input
-                    style={{ width: 200 }}
+        <Modal open={open} close={close} title="장소 찾기" btnName="선택" onBtn={saveAddress}>
+            <InputForm className="inputForm" onSubmit={mapSearch}>
+                <AddressInput
                     placeholder="지역을 입력하세요"
                     onChange={(e) => setSearchValue(e.target.value)}
                     value={searchValue}
                 />
-            </form>
-            {/* <KakaoMap search={search} setAddress={setAddress} save={save} /> */}
-            <ReactKaKaoMap search={search} setAddress={setAddress} save={save} />
+                <Search />
+            </InputForm>
+            <ReactKaKaoMap search={search} setAddress={setAddressValue} size={{ width: 600, height: 400 }} />
         </Modal>
     );
 };

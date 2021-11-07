@@ -9,6 +9,7 @@ import {
     Title,
     TitleContainer,
     ChildrenContainer,
+    MainContainer,
 } from './Modal.style';
 interface ModalProps {
     children: React.ReactNode;
@@ -16,7 +17,7 @@ interface ModalProps {
     close: () => void;
     title: string;
     btnName?: string;
-    onBtn?: (value: boolean) => void;
+    onBtn?: () => void;
 }
 
 const Modal = ({ open, children, close, title, btnName = '선택', onBtn }: ModalProps) => {
@@ -50,19 +51,22 @@ const Modal = ({ open, children, close, title, btnName = '선택', onBtn }: Moda
                             <Title>{title}</Title>
                             <CloseIcon onClick={() => close()} />
                         </TitleContainer>
-                        <ChildrenContainer>{children}</ChildrenContainer>
-                        <ButtonContainer>
-                            {onBtn ? (
-                                <Button
-                                    buttonStyle="PAINTED"
-                                    size="MEDIUM"
-                                    label={btnName}
-                                    onClick={() => {
-                                        onBtn(true);
-                                    }}
-                                />
-                            ) : null}
-                        </ButtonContainer>
+                        <MainContainer>
+                            <ChildrenContainer>{children}</ChildrenContainer>
+                            <ButtonContainer>
+                                {!!onBtn && (
+                                    <Button
+                                        buttonStyle="PAINTED"
+                                        size="MEDIUM"
+                                        label={btnName}
+                                        onClick={() => {
+                                            onBtn();
+                                            close();
+                                        }}
+                                    />
+                                )}
+                            </ButtonContainer>
+                        </MainContainer>
                     </ModalInner>
                 </ModalWrapper>
             </>

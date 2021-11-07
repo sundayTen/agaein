@@ -78,10 +78,10 @@ const WitnessList = ({
                                 <td>{item.address}</td>
                                 <td>{item.date}</td>
                                 <td>
-                                    <Photo img={!!item.img} />
+                                    <Photo isImg={!!item.img} />
                                 </td>
                                 <td>
-                                    <Phone hp={!!item.hp} />
+                                    <Phone isHp={!!item.hp} />
                                 </td>
                                 <td>{idx === clickIdx ? <ChevronDown /> : <ChevronUp />}</td>
                             </Witness>
@@ -97,7 +97,7 @@ const WitnessList = ({
                                             <br />
                                             <b>
                                                 {item.hp && <span>연락처 : {item.hp} &nbsp;&nbsp;</span>}
-                                                <SmallPhoto img={!!item.img} />
+                                                {item.img && <SmallPhoto isImg={!!item.img} />}
                                                 {item.img?.length}
                                             </b>
                                         </Contents>

@@ -1,4 +1,4 @@
-import { CameraIcon, ChevronUpIcon, PhoneIcon, ChevronDownIcon } from '@heroicons/react/solid';
+import { CameraIcon, ChevronUpIcon, PhoneIcon, ChevronDownIcon } from '@heroicons/react/outline';
 import styled from 'styled-components';
 import { ReactComponent as Usual } from './Img/Usual.svg';
 import { ReactComponent as Click } from './Img/Click.svg';
