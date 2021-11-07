@@ -33,3 +33,7 @@ export const ListItem = styled.li`
     width: 180px;
     padding: 0 20px;
 `;
+export const ReviewWrapper = styled.li`
+    width: 290px;
+    padding: 0 20px;
+`;

@@ -25,7 +25,7 @@ interface PostItemProps {
 const PostItem = (props: PostItemProps) => {
     const { item, bookmarked = false, setBookmark = () => {} } = props;
     const { id, articleDetail, createdAt } = item;
-    const { breed, gender } = articleDetail as Lfg;
+    const { breed, gender, location, age } = articleDetail as Lfg;
 
     return (
         <>
@@ -48,15 +48,20 @@ const PostItem = (props: PostItemProps) => {
                         </InfoItem>
                         <InfoItem>
                             <InfoCategory>지역</InfoCategory>
-                            <InfoText>서울 송파</InfoText>
+                            {/* TODO : 글자수 넘어가는 부분 처리 */}
+                            <InfoText>{location.address.substr(0, 9)}</InfoText>
                         </InfoItem>
                     </InfoList>
-                    <ContentTag>
-                        <Font label={gender} fontType="tag" />
-                    </ContentTag>
-                    <ContentTag>
-                        <Font label="9개월" fontType="tag" />
-                    </ContentTag>
+                    {gender && (
+                        <ContentTag>
+                            <Font label={gender} fontType="tag" />
+                        </ContentTag>
+                    )}
+                    {age && (
+                        <ContentTag>
+                            <Font label={`${age}살`} fontType="tag" />
+                        </ContentTag>
+                    )}
                 </ItemBox>
             </Link>
         </>

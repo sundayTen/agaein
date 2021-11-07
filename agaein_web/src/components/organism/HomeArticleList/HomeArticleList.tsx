@@ -3,7 +3,15 @@ import PostItem from 'components/molecules/PostItemBox/PostItemBox';
 import ReviewItem from 'components/molecules/ReviewItem';
 import { Article, Board_Type, useGetArticlesQuery } from 'graphql/generated/generated';
 import useBookmark from 'hooks/useBookmark';
-import { ArticleList, ButtonViewAll, ListContainer, ListHeader, ListItem, TitleBox } from './HomeArticleList.style';
+import {
+    ArticleList,
+    ButtonViewAll,
+    ListContainer,
+    ListHeader,
+    ListItem,
+    ReviewWrapper,
+    TitleBox,
+} from './HomeArticleList.style';
 interface HomeArticleListProps {
     boardType: Board_Type;
 }
@@ -55,17 +63,17 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
                     <p>등록된 게시글이 없습니다</p>
                 ) : (
                     articles?.map((article) => {
-                        return (
+                        return boardType === Board_Type.Review ? (
+                            <ReviewWrapper>
+                                <ReviewItem item={article} />
+                            </ReviewWrapper>
+                        ) : (
                             <ListItem key={article?.id}>
-                                {boardType === Board_Type.Review ? (
-                                    <ReviewItem />
-                                ) : (
-                                    <PostItem
-                                        item={article as Article}
-                                        bookmarked={isBookmarked(article.id)}
-                                        setBookmark={() => setBookmark(article.id)}
-                                    />
-                                )}
+                                <PostItem
+                                    item={article as Article}
+                                    bookmarked={isBookmarked(article.id)}
+                                    setBookmark={() => setBookmark(article.id)}
+                                />
                             </ListItem>
                         );
                     })
