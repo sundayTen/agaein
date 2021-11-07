@@ -44,7 +44,7 @@ const articleMutations = {
         };
 
         if (
-            args.password === undefined &&
+            password === undefined &&
             context.req.headers.authorization &&
             context.req.headers.authorization.split(' ')[1]
         ) {
