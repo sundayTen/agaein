@@ -4,11 +4,6 @@ enum BOARD_TYPE {
     REVIEW
 }
 
-enum BREED_TYPE {
-    CAT
-    DOG
-}
-
 type Location {
     lat: Float!
     lng: Float!
