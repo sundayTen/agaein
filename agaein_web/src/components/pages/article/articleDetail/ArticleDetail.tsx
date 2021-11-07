@@ -78,12 +78,19 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
                     </ArticleInfoContainer>
                     <ArticleMapContainer>
                         <Font label="실종장소" fontType="subhead" style={{ marginBottom: 10 }} />
-                        <ReactKaKaoMap missPosition={location} size={{ width: 480, height: 260 }} />
-                        <Button label="발견 신고 하기" onClick={() => {}} style={{ width: '100%', marginTop: 20 }} />
+                        <ReactKaKaoMap missPosition={location} size={{ width: 480, height: 260 }} noClick={true} />
+                        <Button
+                            label="발견 신고 하기"
+                            onClick={() => {
+                                setIsOpenModal(true);
+                            }}
+                            style={{ width: '100%', marginTop: 20 }}
+                        />
                     </ArticleMapContainer>
                 </ArticleDetailContainer>
             </HorizontalContainer>
             <Comment comments={comments as CommentType[]} articleId={id} author={author} />
+            <WitnessModal open={isOpenModal} close={closeModal} isAuthor={true} />
         </Fragment>
     );
 };
