@@ -1,10 +1,11 @@
 enum BREED_TYPE {
     CAT
     DOG
+    ETC
 }
 
 type Breed {
-    id: Int!
+    id: ID!
     type: String!
     breed: String!
 }

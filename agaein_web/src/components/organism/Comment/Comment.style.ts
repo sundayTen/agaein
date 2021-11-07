@@ -1,3 +1,4 @@
+import Input from 'components/molecules/Input/Input';
 import styled from 'styled-components';
 
 export const CommentContainer = styled.div`
@@ -13,5 +14,22 @@ export const CommentHeader = styled.div`
 
 // ? 어림잡아 맞춘 부분이라 좋은 방법이 있으면 수정해야함.
 export const CommentInputContainer = styled.div`
-    padding: 30px 30px 50px 30px;
+    padding: 30px 30px 30px 30px;
+`;
+
+export const CommentToolContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`;
+
+export const CommentPwdContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    width: 435px;
+`;
+export const CommentPwd = styled(Input)`
+    width: 120px;
+    margin-right: 10px;
 `;

@@ -23,7 +23,7 @@ const theme: DefaultTheme = {
         white: '#fff',
         black: '#333',
         lightGrey1: '#FAFAFA',
-        lightGrey2: '#ECEDED',
+        lightGrey2: '#EDEDED',
         DarkGrey1: '#C4C4C4',
         DarkGrey2: '#444649',
     },

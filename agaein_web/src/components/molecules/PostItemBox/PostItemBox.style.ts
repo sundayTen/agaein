@@ -38,7 +38,6 @@ export const InfoCategory = styled.em`
     font-size: 12px;
     font-weight: 600;
     color: ${(props) => props.theme.light.primary};
-    font-family: NanumSquareRound;
 `;
 
 export const InfoText = styled.span`

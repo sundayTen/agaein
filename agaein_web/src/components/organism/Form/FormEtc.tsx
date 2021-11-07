@@ -7,9 +7,10 @@ interface FormNameProps {
     name: string;
     value?: string;
     onChange?: (value: string, name: string) => void;
+    type?: string;
 }
 
-export function FormEtc({ name, value, onChange }: FormNameProps) {
+export function FormEtc({ name, value, onChange, type }: FormNameProps) {
     function inputChangeHandler(value: string) {
         onChange?.(value, name);
     }
@@ -19,7 +20,9 @@ export function FormEtc({ name, value, onChange }: FormNameProps) {
             <FormLabel>내용</FormLabel>
             <Form>
                 <Textarea
-                    placeholder="그 외 특징을 작성해주세요"
+                    placeholder={
+                        type === 'LFG_M' ? '그 외 특징 및 상세 위치를 작성해주세요' : '그 외 특징을 작성해주세요'
+                    }
                     value={value}
                     onChange={(e) => inputChangeHandler(e.target.value)}
                 />

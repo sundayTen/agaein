@@ -36,3 +36,7 @@ export const convertDate = (date: string): string => {
     }
     return targetDate.format('YY년 MM월 DD일');
 };
+
+export const YYYYMMDD = (date: string) => {
+    return moment(date).format('YYYY년 MM월 DD일');
+};

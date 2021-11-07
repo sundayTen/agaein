@@ -1,0 +1,5 @@
+type Bookmark {
+    id: ID!
+    userId: ID!
+    articleId: ID!
+}

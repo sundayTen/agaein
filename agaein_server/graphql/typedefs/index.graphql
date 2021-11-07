@@ -17,6 +17,7 @@ type Query {
     article(id: ID!): Article
     # Breed
     breeds(type: BREED_TYPE!): [Breed]!
+    bookmarks: [Bookmark]!
 }
 
 type Mutation {
@@ -34,4 +35,7 @@ type Mutation {
     # Breed
     createBreed(type: BREED_TYPE!, breed: String!): Breed!
     deleteBreed(id:ID!): ID!
+    # Bookmark
+    createBookmark(articleId: ID!): Bookmark!
+    deleteBookmark(id: ID!): ID!
 }

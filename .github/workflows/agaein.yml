@@ -30,7 +30,7 @@ jobs:
           docker ps -f name=${{ env.CONTAINER }} -q | xargs --no-run-if-empty docker container stop
           docker container ls -a -f name=${{ env.CONTAINER }} -q | xargs -r docker container rm
       - name: Docker run
-        run: docker run -d --name ${{ env.CONTAINER }} -p ${{ env.PORT }}:${{ env.PORT }} -v /etc/localtime:/etc/localtime:ro -v /home/actions/assets/image:/build/image --restart always ${{ env.IMAGE }}
+        run: docker run -d --name ${{ env.CONTAINER }} -p ${{ env.PORT }}:${{ env.PORT }} -v /etc/localtime:/etc/localtime:ro -v /home/actions/assets/image:/image --restart always ${{ env.IMAGE }}
       - name: remove Docker <none> image
         run: if [ "$(docker images -f dangling=true -q)" != "" ]; then docker rmi $(docker images -f dangling=true -q); fi
       - name: build Web

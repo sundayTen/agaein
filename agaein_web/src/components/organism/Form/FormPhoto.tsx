@@ -139,9 +139,11 @@ export function FormPhoto({ type, onChange }: FormPhotoProps) {
         <FormRow>
             <FormLabel>
                 {type === 'LFP' ? '실종' : '발견'}동물 사진
-                <RequiredIcon />
+                {type !== 'LFG_M' && <RequiredIcon />}
             </FormLabel>
-            <FormGuide>사진은 최대 5장 등록할 수 있고, 첫번째 사진이 대표 이미지로 등록됩니다.</FormGuide>
+            {type !== 'LFG_M' && (
+                <FormGuide>사진은 최대 5장 등록할 수 있고, 첫번째 사진이 대표 이미지로 등록됩니다.</FormGuide>
+            )}
             <Form>
                 <PhotoLabel>
                     <input

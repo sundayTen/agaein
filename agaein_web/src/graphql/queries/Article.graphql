@@ -1,6 +1,20 @@
 query getArticles($boardType: BOARD_TYPE!) {
     articles(boardType: $boardType) {
-        ...ArticleFragment
+        id
+        images
+        articleDetail {
+            ... on LFG {
+                ...LFGDetail
+            }
+
+            ... on LFP {
+                ...LFPDetail
+            }
+
+            ... on REVIEW {
+                ...ReviewDetail
+            }
+        }
     }
 }
 

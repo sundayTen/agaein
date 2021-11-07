@@ -44,7 +44,7 @@ const articleMutations = {
         };
 
         if (
-            args.password === undefined &&
+            password === undefined &&
             context.req.headers.authorization &&
             context.req.headers.authorization.split(' ')[1]
         ) {
@@ -140,25 +140,26 @@ const articleMutations = {
     },
     createComment: async (_: any, args: any, context: any) => {
         const now = new Date();
+        const { articleId, commentId, content, password } = args;
         const commentForm = {
             userId: 1,
-            articleId: args.articleId,
-            commentId: args.commentId,
-            content: args.content,
-            password: args.password,
+            articleId,
+            commentId,
+            content,
+            password,
             createdAt: now,
             updatedAt: now,
         };
 
-        if (args.commentId) {
-            const comment = await knex('comment').where('id', args.commentId).first();
+        if (commentId) {
+            const comment = await knex('comment').where('id', commentId).first();
             if (comment.commentId) {
                 throw new ApolloError('Comment Depth Error', 'INTERNAL_SERVER_ERROR');
             }
         }
 
         if (
-            args.password === undefined &&
+            password === undefined &&
             context.req.headers.authorization &&
             context.req.headers.authorization.split(' ')[1]
         ) {
