@@ -80,7 +80,7 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
                 </ArticleDetailContainer>
             </HorizontalContainer>
             <Comment comments={[]} />
-            <WitnessModal open={isOpenModal} close={closeModal} author={true} />
+            <WitnessModal open={isOpenModal} close={closeModal} isAuthor={true} />
         </>
     );
 };

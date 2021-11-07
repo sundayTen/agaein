@@ -54,17 +54,17 @@ const Modal = ({ open, children, close, title, btnName = '선택', onBtn }: Moda
                         <MainContainer>
                             <ChildrenContainer>{children}</ChildrenContainer>
                             <ButtonContainer>
-                                {onBtn ? (
+                                {!!onBtn && (
                                     <Button
                                         buttonStyle="PAINTED"
                                         size="MEDIUM"
                                         label={btnName}
                                         onClick={() => {
                                             onBtn();
-                                            return close();
+                                            close();
                                         }}
                                     />
-                                ) : null}
+                                )}
                             </ButtonContainer>
                         </MainContainer>
                     </ModalInner>

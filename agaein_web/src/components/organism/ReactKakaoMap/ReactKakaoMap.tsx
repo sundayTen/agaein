@@ -8,7 +8,7 @@ import { Category, Img, MapContainer, Text, InfoWindow } from './ReactKakaoMap.s
 interface ReactKakaoMapProps {
     search?: string | undefined;
     setAddress?: (value: string) => void;
-    category?: boolean;
+    isCategory?: boolean;
     noClick?: boolean;
     size?: {
         width: number;
@@ -47,7 +47,7 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
             { lat: 37.52491382139469, lng: 127.10195359701143, address: 'aaa', click: false },
             { lat: 37.51491382139469, lng: 127.11195359701143, address: 'aaa', click: false },
         ],
-        category = false,
+        isCategory = false,
         noClick = false,
     } = props;
     const [position, setPosition] = useState<{ lat: number; lng: number }>({
@@ -136,8 +136,11 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
         }
     };
 
+    const searchCheck = () => {
+        return search === '' || search === undefined || search === null;
+    };
     useEffect(() => {
-        if (search === '' || search === undefined || search === null) return;
+        if (searchCheck()) return;
         geocoder.addressSearch(search, addMarker);
     }, [search]);
 
@@ -203,7 +206,7 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
                     );
                 })}
             </Map>
-            {category && (
+            {isCategory && (
                 <Category>
                     <Img src={Lost} alt="실종 위치" width={12} height={17.33} />
                     <Text> 실종 위치</Text>
