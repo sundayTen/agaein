@@ -65,11 +65,8 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
         const isAddress = currentArticleDetail.location.address && currentArticleDetail.location.detail;
 
         return (
-            !isFiles ||
-            !currentArticleDetail.breedId ||
-            !currentArticleDetail[date] ||
-            !isAddress ||
-            !(!isLoggedIn && isCheckRequried && currentArticleDetail.password)
+            !isFiles || !currentArticleDetail.breedId || !currentArticleDetail[date] || !isAddress
+            // !(!isLoggedIn && isCheckRequried && currentArticleDetail.password)
         );
     }, [currentArticleDetail, files, isCheckRequried]);
 
