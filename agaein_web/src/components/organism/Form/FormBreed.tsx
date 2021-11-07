@@ -1,7 +1,8 @@
 //@ts-nocheck
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormRow, FormLabel, Form, RequiredIcon } from '../../pages/createArticle/CreateArticle.style';
+import { useGetBreedsQuery, useGetBreedsLazyQuery } from 'graphql/generated/generated';
 import styled from 'styled-components';
 import Select from 'components/molecules/Select';
 
@@ -20,55 +21,88 @@ interface FormBreedProps {
     onChange?: (value: string, name: string) => void;
 }
 
-//TODO: options 서버에서 받아오기, 동물 종류 입력하면 품종 옵션 다시 받아오기
-const tempAnimalOptions = ['개', '고양이', '기타'];
-const tempBreedOptions = ['골든리트리버', '그레이 하운드', '그레이트 덴', '그레이트 피레니즈', '기타'];
+const animalOptions = [
+    {
+        id: 'DOG',
+        name: '개'
+    },
+    {
+        id: 'CAT',
+        name: '고양이'
+    },
+    {
+        id: 'ECT',
+        name: '기타'
+    }
+]
 
-export function FormBreed({ name, value, onChange }: FormBreedProps) {
-    const [animalType, setAnimalType] = useState({
-        animal: '개',
-        breed: '골든리트리버',
+export function FormBreed({ name, onChange }: FormBreedProps) {
+    const [animal, setAnimal] = useState({
+        id: 'DOG',
+        name: '개'
+    })
+    const [breed, setBreed] = useState({
+        id: 0,
+        name: '선택해주세요'
+    })
+
+    const { data, loading, error } = useGetBreedsQuery({
+        variables: {
+            type: animal.id
+        }
     });
 
-    const setBreedOptions = (name, value) => {
-        setAnimalType({
-            ...animalType,
-            [name]: value,
-        });
+    const breedOptions = data?.breeds
+    
+    const SelectHandler = (id) => {
+        const animalName = animalOptions.filter(option => option.id === id)[0].name;
 
-        //TODO: options 불러오기, type = value
+        setAnimal((prevState => ({
+            ...prevState,
+            id: id,
+            name: animalName
+        })))
+
+        setBreed((prevState => ({
+            ...prevState,
+            id: 0,
+            name: '선택해주세요'
+        })))
     };
 
-    const setBreedId = (name, value) => {
-        setAnimalType({
-            ...animalType,
-            [name]: value,
-        });
+    const setBreedId = (id) => {
+        const breedName = breedOptions.filter(option => option.id === id)[0].breed;
 
-        //TODO: id 넘기기
+        setBreed((prevState => ({
+            ...prevState,
+            id: id,
+            name: breedName
+        })))
+
+        onChange(id, name)
     };
 
     return (
         <FormRow>
             <FormLabel>
-                동물 종류
+                품종
                 <RequiredIcon />
             </FormLabel>
             <Form>
                 <SelectWrapper>
                     <Select
                         name="animal"
-                        defaultValue={animalType.animal}
-                        onChange={setBreedOptions}
-                        options={tempAnimalOptions}
-                    ></Select>
+                        defaultValue={animal.name}
+                        onChange={SelectHandler}
+                        options={animalOptions}
+                    />
                 </SelectWrapper>
                 <SelectWrapper>
                     <Select
                         name="breed"
-                        defaultValue={animalType.breed}
+                        defaultValue={breed.name}
                         onChange={setBreedId}
-                        options={tempBreedOptions}
+                        options={breedOptions}
                     />
                 </SelectWrapper>
             </Form>

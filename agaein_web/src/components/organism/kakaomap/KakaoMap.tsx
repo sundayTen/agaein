@@ -6,7 +6,7 @@ declare global {
 }
 interface kakaoMapProps {
     search?: string | undefined;
-    setAddress?: (value: string) => void;
+    setAddress?: (value: object) => void;
     save?: boolean;
     size?: {
         width: number;
@@ -34,7 +34,12 @@ const KakaoMap = (props: kakaoMapProps) => {
     //const [customOverlays, setCustomOverlays] = useState(null);
     useEffect(() => {
         if (save) {
-            setAddress(addressValue);
+            const address = {
+                lat: 0,
+                lng: 0,
+                address: addressValue
+            }
+            setAddress(address);
         }
     }, [save]);
 
@@ -44,13 +49,13 @@ const KakaoMap = (props: kakaoMapProps) => {
             const roadAddress = result[0].road_address;
 
             const detailAddr = !!roadAddress
-                ? '<div>도로명 주소 : ' +
+                ? '<div>도로명 주소12 : ' +
                   roadAddress.address_name +
                   '</div>' +
-                  '<div>지번 주소 : ' +
+                  '<div>지번 주소3 : ' +
                   address.address_name +
                   '</div>'
-                : '<div>지번 주소 : ' + address.address_name + '</div>';
+                : '<div>지번 주소4 : ' + address.address_name + '</div>';
 
             infowindow.setContent(detailAddr);
             infowindow.open(map, marker);

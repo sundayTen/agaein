@@ -139,3 +139,7 @@ export const ButtonWrapper = styled.div`
         margin-left: 20px;
     }
 `;
+
+export const CheckWrapper = styled.div`
+    margin-top: 30px;
+`;

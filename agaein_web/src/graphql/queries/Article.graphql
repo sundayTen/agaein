@@ -26,6 +26,6 @@ query getArticle($id: ID!) {
 
 mutation createArticle($boardType: BOARD_TYPE!, $files: [Upload]!, $articleDetail: articleDetailInput!) {
     createArticle(boardType: $boardType, files: $files, articleDetail: $articleDetail) {
-        ...ArticleFragment
+        id
     }
 }

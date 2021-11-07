@@ -69,7 +69,7 @@ export function FormGender({ name, value, onChange }: FormGenderProps) {
 
     return (
         <FormRow>
-            <FormLabel>동물 성별</FormLabel>
+            <FormLabel>성별</FormLabel>
             <Form>
                 <RadioLabel>
                     <input

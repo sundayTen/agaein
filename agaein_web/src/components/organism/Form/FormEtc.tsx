@@ -17,7 +17,7 @@ export function FormEtc({ name, value, onChange, type }: FormNameProps) {
 
     return (
         <FormRow>
-            <FormLabel>기타 특징</FormLabel>
+            <FormLabel>내용</FormLabel>
             <Form>
                 <Textarea
                     placeholder={

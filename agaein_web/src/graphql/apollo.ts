@@ -1,13 +1,19 @@
+//@ts-nocheck
 import Cookies from 'universal-cookie';
 import { ApolloClient, createHttpLink, InMemoryCache, from, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
+import { createUploadLink } from 'apollo-upload-client';
 
 // TODO : context를 통해 쿠키를 가져오고 싶은데, Hook Rule에 걸림. 방법이 없을까?
 const cookies = new Cookies();
 const httpLink = createHttpLink({
     uri: 'https://www.agaein.com/graphql',
 });
+const uploadLink = createUploadLink({
+    uri: 'https://www.agaein.com/graphql',
+});
+
 const authLink = setContext((_, { headers }) => {
     const accessToken = cookies.get('accessToken') || '';
     return {
@@ -30,7 +36,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     name: 'agaein',
     version: '0.0.1',
-    link: from([authLink, errorLink, httpLink]),
+    link: from([authLink, errorLink, httpLink, uploadLink]),
     cache: new InMemoryCache({
         addTypename: true,
         resultCaching: true,
