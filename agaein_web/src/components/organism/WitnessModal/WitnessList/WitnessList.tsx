@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { WitnessDetailDiv } from '../WitnessModel.style';
 import {
     ChevronDown,
     ChevronUp,
@@ -74,7 +75,9 @@ const WitnessList = ({
                         <>
                             <Witness key={idx} onClick={(e) => (idx === clickIdx ? setClickIdx(-1) : setClickIdx(idx))}>
                                 <td>{idx === clickIdx ? <ClickIcon /> : <UsualIcon />}</td>
-                                <td style={{ fontWeight: 'bold' }}>{item.name}</td>
+                                <td>
+                                    <b>{item.name}</b>
+                                </td>
                                 <td>{item.address}</td>
                                 <td>{item.date}</td>
                                 <td>
@@ -87,7 +90,7 @@ const WitnessList = ({
                             </Witness>
                             <WitnessDetail click={idx === clickIdx}>
                                 <td colSpan={7}>
-                                    <div style={{ display: 'flex' }}>
+                                    <WitnessDetailDiv>
                                         <Img />
                                         <Contents>
                                             작성된 발견 정보 글을 확인할 수 있습니다.
@@ -101,7 +104,7 @@ const WitnessList = ({
                                                 {item.img?.length}
                                             </b>
                                         </Contents>
-                                    </div>
+                                    </WitnessDetailDiv>
                                 </td>
                             </WitnessDetail>
                         </>

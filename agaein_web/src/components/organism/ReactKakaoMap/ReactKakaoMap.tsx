@@ -5,9 +5,10 @@ import Lost from 'assets/image/Lost.png';
 import Active from 'assets/image/Active.png';
 import Default from 'assets/image/Default.png';
 import { Category, Img, MapContainer, Text, InfoWindow } from './ReactKakaoMap.style';
+import { Location } from 'graphql/generated/generated';
 interface ReactKakaoMapProps {
     search?: string | undefined;
-    setAddress?: (value: any) => void;
+    setAddress?: (value: Location) => void;
     isCategory?: boolean;
     noClick?: boolean;
     size?: {
@@ -56,6 +57,10 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
     });
     const [info, setInfo] = useState(-1);
     const [mapCenter, setMapCenter] = useState({ lat: 37.51491382139469, lng: 127.10195359701143 });
+    const [location, setLocation] = useState<{ address: string; roadAddress: string }>({
+        address: '',
+        roadAddress: '',
+    });
     const [map, setMap] = useState<kakao.maps.Map>();
     const geocoder = new kakao.maps.services.Geocoder();
     const bounds = new kakao.maps.LatLngBounds();
@@ -116,6 +121,10 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
         }
     }, [map]);
 
+    useEffect(() => {
+        setAddress({ ...position, ...location } as Location);
+    }, [position, location]);
+
     const addMarker = (result: any, status: any) => {
         if (status === kakao.maps.services.Status.OK) {
             if (result[0].y && result[0].x) {
@@ -132,11 +141,7 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
             const address = result[0].address;
             const roadAddress = result[0].road_address;
 
-            setAddress({
-                lat: position.lat,
-                lng: position.lng,
-                address: address.address_name,
-            });
+            setLocation({ address: address.address_name, roadAddress: roadAddress?.address_name });
         }
     };
 

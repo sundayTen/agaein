@@ -9,13 +9,13 @@ const StyledSelect = styled.div`
     height: 40px;
     line-height: 40px;
     padding: 0 16px;
-    background: #fff;
+    background: ${(props) => props.theme.light.white};
     border: 1px solid;
     border-color: ${(props) => props.theme.light.DarkGrey1};
     box-sizing: border-box;
     border-radius: 4px;
     font-size: 16px;
-    color: #333;
+    color: ${(props) => props.theme.light.black};
     cursor: pointer;
 
     ${(props) =>
@@ -60,7 +60,7 @@ const SelectList = styled.ul`
     padding: 6px;
     box-shadow: 0px 0px 6px rgba(51, 51, 51, 0.12);
     border-radius: 6px;
-    background-color: #fff;
+    background-color: ${(props) => props.theme.light.white};
     z-index: 1000;
 `;
 

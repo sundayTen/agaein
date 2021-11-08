@@ -12,7 +12,7 @@ const DatePickerWrapper = styled.div`
     width: 320px;
     padding: 9px 14px 9px 40px;
     box-sizing: border-box;
-    border: 1px solid #c4c4c4;
+    border: 1px solid ${(props) => props.theme.light.DarkGrey1};
     border-radius: 4px;
 
     svg {
@@ -20,7 +20,7 @@ const DatePickerWrapper = styled.div`
         top: 9px;
         left: 16px;
         width: 24px;
-        color: #c4c4c4;
+        color: ${(props) => props.theme.light.DarkGrey1};
     }
 `;
 

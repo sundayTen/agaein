@@ -2,9 +2,11 @@ import Modal from 'components/molecules/Modal';
 import { useEffect, useState } from 'react';
 import ReactKaKaoMap from '../ReactKakaoMap/ReactKakaoMap';
 import WitnessList from './WitnessList/WitnessList';
-import { ImgToggleButton, MapToggleButton } from './WitnessModel.style';
+import { ImgToggleButton, MapToggleButton, ToggleButtonDiv } from './WitnessModel.style';
 import WitnessImageCarousel from './WitnessImageCarousel';
 import WithessReport from './WithessReport/WithessReport';
+import { isConstructorDeclaration } from 'typescript';
+import { Location } from 'graphql/generated/generated';
 interface WitnessModalProps {
     open: boolean;
     close: () => void;
@@ -18,12 +20,16 @@ const imgDummy = [
 const WitnessModal = ({ open, close, isAuthor = false }: WitnessModalProps) => {
     const [witnessToggle, setWitnessToggle] = useState<'지도' | '사진'>('지도');
     const [save, setSave] = useState(false);
-    const [address, setAddress] = useState('');
+    const [address, setAddress] = useState<Location>({
+        lat: 0,
+        lng: 0,
+        address: '',
+        roadAddress: '',
+    } as Location);
 
     const witnessSave = () => {
         setSave(true);
     };
-
     return (
         <Modal
             open={open}
@@ -34,14 +40,14 @@ const WitnessModal = ({ open, close, isAuthor = false }: WitnessModalProps) => {
         >
             <div>
                 {isAuthor && (
-                    <div style={{ height: 30 }}>
+                    <ToggleButtonDiv>
                         <ImgToggleButton click={witnessToggle === '사진'} onClick={() => setWitnessToggle('사진')}>
                             사진보기
                         </ImgToggleButton>
                         <MapToggleButton click={witnessToggle === '지도'} onClick={() => setWitnessToggle('지도')}>
                             지도보기
                         </MapToggleButton>
-                    </div>
+                    </ToggleButtonDiv>
                 )}
                 {witnessToggle === '지도' ? (
                     <ReactKaKaoMap setAddress={setAddress} size={{ width: 580, height: 400 }} isCategory={true} />

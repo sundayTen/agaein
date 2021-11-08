@@ -35,8 +35,8 @@ export const Header = styled.tr`
 
 export const Witness = styled.tr`
     height: 45px;
-    color: #333333;
-    border: 1px solid #ededed;
+    color: ${(props) => props.theme.light.black};
+    border: 1px solid ${(props) => props.theme.light.lightGrey2};
     td {
         font-style: normal;
         font-weight: normal;
@@ -48,8 +48,8 @@ export const Witness = styled.tr`
 export const WitnessDetail = styled.tr<StyledWitnessProps>`
     display: ${(props) => (props.click ? `` : `none`)};
     height: 120px;
-    color: #333333;
-    border-bottom: 1px solid #ededed;
+    color: ${(props) => props.theme.light.black};
+    border-bottom: 1px solid ${(props) => props.theme.light.lightGrey2};
     td {
         font-style: normal;
         font-weight: normal;
@@ -80,7 +80,7 @@ export const Contents = styled.div`
 export const Photo = styled(CameraIcon)<StyledPhotoProps>`
     width: 25px;
     height: 25px;
-    color: ${(props) => (props.isImg ? `#EFA03D` : `#F8D6AB`)};
+    color: ${(props) => (props.isImg ? props.theme.light.primary : props.theme.light.primary100)};
     margin-right: 5px;
     vertical-align: middle;
 `;
@@ -88,7 +88,7 @@ export const Photo = styled(CameraIcon)<StyledPhotoProps>`
 export const SmallPhoto = styled(CameraIcon)<StyledPhotoProps>`
     width: 18px;
     height: 18px;
-    color: ${(props) => (props.isImg ? `#EFA03D` : `#F8D6AB`)};
+    color: ${(props) => (props.isImg ? props.theme.light.primary : props.theme.light.primary100)};
     margin-right: 5px;
     margin-bottom: 4px;
     vertical-align: middle;
@@ -97,7 +97,7 @@ export const SmallPhoto = styled(CameraIcon)<StyledPhotoProps>`
 export const Phone = styled(PhoneIcon)<StyledPhoneProps>`
     width: 25px;
     height: 25px;
-    color: ${(props) => (props.isHp ? `#EFA03D` : `#F8D6AB`)};
+    color: ${(props) => (props.isHp ? props.theme.light.primary : props.theme.light.primary100)};
     margin-right: 20px;
     vertical-align: middle;
 `;

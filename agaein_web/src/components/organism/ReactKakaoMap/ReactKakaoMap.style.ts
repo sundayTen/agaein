@@ -25,7 +25,7 @@ export const Text = styled.span`
     font-weight: normal;
     font-size: 10px;
     vertical-align: middle;
-    color: #333333;
+    color: ${(props) => props.theme.light.black};
     margin-right: 10px;
 `;
 
@@ -39,7 +39,7 @@ export const InfoWindow = styled.div<InfoWindowProps>`
     bottom: ${(props) => props.type === "miss" ? (props.roadAddress ? `90px`: `75px`) : (props.roadAddress ? `80px` : `70px`)};
     transform: ${(props) => props.type === "miss" ? `translateX(50%)` : `translateX(1%)`};
     padding: 10px;
-    background: #FFFFFF;
+    background: ${(props) => props.theme.light.white};
     box-shadow: 0px 0px 6px rgba(51, 51, 51, 0.2);
     border-radius: 4px;
 
@@ -61,7 +61,7 @@ export const InfoWindow = styled.div<InfoWindowProps>`
 
     &:after {
         border-color: rgba(255, 255, 255, 0);
-        border-top-color: #ffffff;
+        border-top-color: ${(props) => props.theme.light.white};
         border-width: 10px;
         margin-left: -10px;
     }

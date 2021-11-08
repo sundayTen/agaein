@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Input from 'components/molecules/Input';
 import Button from 'components/molecules/Button';
 import MapModal from 'components/organism/mapModal/MapModal';
+import { Location } from 'graphql/generated/generated';
 
 interface MainAddressProps {
     type: string;
@@ -29,17 +30,19 @@ interface FormAddressProps {
     name: string;
     type: string;
     value?: string;
+    address?: Location;
     onChange: (value: any, name: string) => {};
 }
 
-export function FormAddress({ name, type, onChange, value = '' }: FormAddressProps) {
+export function FormAddress({ name, type, onChange, address }: FormAddressProps) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-    const [addressValue, setAddressValue] = useState({
+    const [addressValue, setAddressValue] = useState<Location>({
         lat: 0,
         lng: 0,
         address: '',
+        roadAddress: '',
         detail: '',
-    });
+    } as Location);
 
     const closeModal = () => {
         setIsOpenModal(false);
@@ -49,12 +52,17 @@ export function FormAddress({ name, type, onChange, value = '' }: FormAddressPro
         onChange(addressValue, name);
     }, [addressValue]);
 
+    useEffect(() => {
+        setMainAddress(address);
+    }, [address]);
+
     const setMainAddress = (value: any) => {
         setAddressValue((prev) => ({
             ...prev,
-            lat: Number(value.lat),
-            lng: Number(value.lng),
-            address: value.address,
+            lat: value?.lat,
+            lng: value?.lng,
+            address: value?.address,
+            roadAddress: value?.roadAddress,
         }));
     };
 
@@ -96,7 +104,7 @@ export function FormAddress({ name, type, onChange, value = '' }: FormAddressPro
                             <Input
                                 type="text"
                                 placeholder="상세 장소 (xx가게 앞, 육교 밑 등)"
-                                value={addressValue.detail}
+                                value={addressValue?.detail as string}
                                 onChange={(e) => setDetailAddress(e.target.value)}
                             />
                         </DetailAddress>
