@@ -50,7 +50,7 @@ export const Title = styled.h2`
     font-size: 34px;
     line-height: 40px;
     letter-spacing: -0.02em;
-    color: #333;
+    color: ${(props) => props.theme.light.black};
     text-align: center;
 `;
 
@@ -69,7 +69,7 @@ export const FormWrapper = styled.div`
     margin: 40px auto 0;
     padding: 40px;
     box-sizing: border-box;
-    background: #ffffff;
+    background: ${(props) => props.theme.light.white};
     border: 1px solid #f6f6f6;
     border-radius: 10px;
 
@@ -83,10 +83,10 @@ export const FormTitle = styled.strong`
     justify-content: space-between;
     align-items: center;
     padding-bottom: 13px;
-    border-bottom: 1px solid #c4c4c4;
+    border-bottom: 1px solid ${(props) => props.theme.light.DarkGrey1};
     font-size: 16px;
     line-height: 24px;
-    color: #333;
+    color: ${(props) => props.theme.light.black};
 `;
 
 export const RequiredIcon = styled.i`
@@ -124,7 +124,7 @@ export const FormLabel = styled.div`
     font-size: 16px;
     line-height: 24px;
     font-weight: 400;
-    color: #333;
+    color: ${(props) => props.theme.light.black};
 `;
 
 export const Form = styled.div`

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ReviewItemContainer = styled.div`
-    background-color: #fff;
+    background-color: ${(props) => props.theme.light.white};
     margin: 10px 10px 10px 10px;
     width: 290px;
     height: 280px;

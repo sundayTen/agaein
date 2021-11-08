@@ -21,7 +21,7 @@ export const BackIcon = styled(ChevronLeftIcon)`
     top: 190px;
     width: 40px;
     height: 40px;
-    color: #fff;
+    color: ${(props) => props.theme.light.white};
     cursor: pointer;
 `
 
@@ -31,7 +31,7 @@ export const NextIcon = styled(ChevronRightIcon)`
     top: 190px;
     width: 40px;
     height: 40px;
-    color: #fff;
+    color: ${(props) => props.theme.light.white};
     cursor: pointer;
 `
 
@@ -46,7 +46,7 @@ export const Page = styled.div<PageProps>`
     margin-right: 15px;
     width: 8px;
     height: 8px;
-    border: 1px solid #EDEDED;
+    border: 1px solid ${(props) => props.theme.light.lightGrey2};
     border-radius: 50%;
-    background: ${(props) => props.click ? `#EFA03D` : `#fff` };
+    background: ${(props) => props.click ? props.theme.light.primary : props.theme.light.white };
 `

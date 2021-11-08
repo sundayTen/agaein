@@ -29,15 +29,17 @@ interface FormAddressProps {
     name: string;
     type: string;
     value?: string;
+    address?: { lat: number; lng: number; address: string; roadAddress: string };
     onChange: (value: any, name: string) => {};
 }
 
-export function FormAddress({ name, type, onChange, value = '' }: FormAddressProps) {
+export function FormAddress({ name, type, onChange, address }: FormAddressProps) {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const [addressValue, setAddressValue] = useState({
         lat: 0,
         lng: 0,
         address: '',
+        roadAddress: '',
         detail: '',
     });
 
@@ -48,13 +50,17 @@ export function FormAddress({ name, type, onChange, value = '' }: FormAddressPro
     useEffect(() => {
         onChange(addressValue, name);
     }, [addressValue]);
-
+    useEffect(() => {
+        setMainAddress(address);
+    }, [address]);
     const setMainAddress = (value: any) => {
+        console.log(value);
         setAddressValue((prev) => ({
             ...prev,
             lat: Number(value.lat),
             lng: Number(value.lng),
             address: value.address,
+            roadAddress: value.roadAddress,
         }));
     };
 

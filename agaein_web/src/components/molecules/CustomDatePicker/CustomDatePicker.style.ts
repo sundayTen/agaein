@@ -23,5 +23,5 @@ font-style: normal;
 font-weight: bold;
 font-size: 12px;
 line-height: 18px;
-color: #333333;
+color: ${(props) => props.theme.light.black};
 `; 

@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { FormWrapper } from './WithessReport.style';
 
 interface ReportProps {
-    address: string;
+    address: { lat: number; lng: number; address: string; roadAddress: string };
 }
 
 const WithessReport = ({ address }: ReportProps) => {
@@ -35,9 +35,9 @@ const WithessReport = ({ address }: ReportProps) => {
                 <RequiredIcon />는 필수적으로 입력해야 할 정보입니다
             </RequiredGuide>
             <FormPhoto type={'LFG_M'} onChange={PhotoChange} />
-            <FormDate type={'LFG'} name={'foundDate'} onChange={inputChange} />
-            <FormAddress type={'LFG_M'} value={address} />
-            <FormHp />
+            <FormDate type={'LFG'} name="foundDate" onChange={inputChange} />
+            <FormAddress name="location" type={'LFG_M'} onChange={inputChange} address={address} />
+            <FormHp name="hp" />
             <FormEtc name="feature" value={reportDetail.feature} onChange={inputChange} />
         </FormWrapper>
     );

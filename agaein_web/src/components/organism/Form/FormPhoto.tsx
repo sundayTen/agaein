@@ -29,10 +29,10 @@ const PhotoLabel = styled.label`
     text-align: center;
     width: 120px;
     height: 120px;
-    border: 1px dashed #c4c4c4;
+    border: 1px dashed ${(props) => props.theme.light.DarkGrey1};
     border-radius: 4px;
     cursor: pointer;
-    color: #c4c4c4;
+    color: ${(props) => props.theme.light.DarkGrey1};
 
     &:hover {
         border: 1px solid ${(props) => props.theme.light.primary};
@@ -88,9 +88,9 @@ const CloseButton = styled.button`
     height: 20px;
     padding: 0;
     border-radius: 50%;
-    background-color: #333;
+    background-color: ${(props) => props.theme.light.black};
     box-shadow: 0px 2px 2px rgba(51, 51, 51, 0.4);
-    color: #fff;
+    color: ${(props) => props.theme.light.white};
 
     svg {
         width: 12px;
