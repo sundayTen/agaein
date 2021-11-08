@@ -49,7 +49,6 @@ export function FormAddress({ name, type, onChange, address }: FormAddressProps)
     };
 
     useEffect(() => {
-        console.log(addressValue);
         onChange(addressValue, name);
     }, [addressValue]);
 
