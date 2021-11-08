@@ -6,6 +6,7 @@ import { ImgToggleButton, MapToggleButton, ToggleButtonDiv } from './WitnessMode
 import WitnessImageCarousel from './WitnessImageCarousel';
 import WithessReport from './WithessReport/WithessReport';
 import { isConstructorDeclaration } from 'typescript';
+import { Location } from 'graphql/generated/generated';
 interface WitnessModalProps {
     open: boolean;
     close: () => void;
@@ -19,12 +20,12 @@ const imgDummy = [
 const WitnessModal = ({ open, close, isAuthor = false }: WitnessModalProps) => {
     const [witnessToggle, setWitnessToggle] = useState<'지도' | '사진'>('지도');
     const [save, setSave] = useState(false);
-    const [address, setAddress] = useState<{ lat: number; lng: number; address: string; roadAddress: string }>({
+    const [address, setAddress] = useState<Location>({
         lat: 0,
         lng: 0,
         address: '',
         roadAddress: '',
-    });
+    } as Location);
 
     const witnessSave = () => {
         setSave(true);

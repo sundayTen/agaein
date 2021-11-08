@@ -2,11 +2,12 @@
 import { FormPhoto, FormAddress, FormDate, FormEtc } from 'components/organism/Form';
 import { FormHp } from 'components/organism/Form/FormHp';
 import { RequiredGuide, RequiredIcon } from 'components/pages/createArticle/CreateArticle.style';
+import { Location } from 'graphql/generated/generated';
 import React, { useState } from 'react';
 import { FormWrapper } from './WithessReport.style';
 
 interface ReportProps {
-    address: { lat: number; lng: number; address: string; roadAddress: string };
+    address: Location;
 }
 
 const WithessReport = ({ address }: ReportProps) => {
