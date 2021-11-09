@@ -35,9 +35,10 @@ const articleQueries = {
         }
     },
     article: async (_: any, args: any) => {
+        const { id } = args;
         try {
-            const article = await knex('article').where(`id`, args.id).first();
-            const articleDetail = await knex(article.type).where('articleId', args.id).first();
+            const article = await knex('article').where(`id`, id).first();
+            const articleDetail = await knex(article.type).where('articleId', `${id}`).first();
             articleDetail.articleType = article.type;
 
             const breedObj = await knex('breed').where('id', articleDetail.breedId).first();
@@ -52,6 +53,12 @@ const articleQueries = {
             articleDetail.keyword = keyword;
 
             article.articleDetail = articleDetail;
+            await knex('article')
+                .where('id', id)
+                .update({
+                    view: article.view + 1,
+                });
+
             return article;
         } catch {
             console.error('Article에서 에러발생');

@@ -32,6 +32,8 @@ const userMutations = {
 
         user.accessToken = getAccessToken(user.id, user.kakaoId);
         user.refreshToken = getRefreshToken(user.id, user.kakaoId);
+        const bookmarks = await knex('bookmark').where('userId', `${user.id}`).select('bookmark.articleId');
+        user.bookmarks = bookmarks.map((bookmark: any) => bookmark.articleId);
 
         return user;
     },

@@ -1,8 +1,8 @@
 import Font from 'components/molecules/Font';
 import useHover from 'hooks/useHover';
 import { Comment } from 'graphql/generated/generated';
-import { Fragment, useRef } from 'react';
-import { convertDate } from 'utils/date';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { formattedDate } from 'utils/date';
 import {
     AuthorTag,
     CommentItemContainer,
@@ -11,22 +11,32 @@ import {
     CommentSelectContainer,
     DotIcon,
     DotIconButton,
+    SelectContainer,
+    SelectItem,
 } from './CommentItem.style';
+import { COMMENT_ADDITIONAL_OPTIONS, COMMENT_OPTION } from '..';
 
 interface CommentItemProps {
     comment: Comment;
     isAuthors: boolean;
+    menuHandler: (key: COMMENT_OPTION) => void;
 }
 
 const CommentItem = (props: CommentItemProps) => {
-    const { comment, isAuthors } = props;
+    const { comment, isAuthors, menuHandler } = props;
     const { content, commentId, author, createdAt } = comment;
     const { nickname } = author;
+    const [selectVisible, setSelectVisible] = useState(false);
     const commentItemRef = useRef(null);
     const isHover = useHover(commentItemRef);
-    const showMenuTooltip = () => {
-        console.log('ToolTip Opened');
+
+    const toggleSelector = () => {
+        setSelectVisible(!selectVisible);
     };
+
+    useEffect(() => {
+        if (!isHover) setSelectVisible(false);
+    }, [isHover]);
 
     return (
         <Fragment>
@@ -41,13 +51,22 @@ const CommentItem = (props: CommentItemProps) => {
                             htmlElement="span"
                             style={{ marginRight: 10 }}
                         />
-                        <Font label={convertDate(createdAt)} fontType="body" htmlElement="span" />
+                        <Font label={formattedDate(createdAt)} fontType="body" htmlElement="span" />
                     </CommentItemWriterContainer>
                     {isHover && (
                         <CommentSelectContainer>
-                            <DotIconButton onClick={showMenuTooltip}>
+                            <DotIconButton onClick={toggleSelector}>
                                 <DotIcon />
                             </DotIconButton>
+                            {selectVisible && (
+                                <SelectContainer>
+                                    {COMMENT_ADDITIONAL_OPTIONS.map((label) => (
+                                        <SelectItem key={label} onClick={() => menuHandler(label)}>
+                                            {label}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContainer>
+                            )}
                         </CommentSelectContainer>
                     )}
                 </CommentItemToolBox>

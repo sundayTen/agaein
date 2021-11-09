@@ -1,8 +1,8 @@
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, useCallback, useContext, useRef, useState } from 'react';
 import Button from 'components/molecules/Button';
 import Font from 'components/molecules/Font';
 import Textarea from 'components/molecules/Textarea';
-import { Comment as CommentType, useCreateCommentMutation, User } from 'graphql/generated/generated';
+import { Comment as CommentType, User } from 'graphql/generated/generated';
 import {
     CommentHeader,
     CommentContainer,
@@ -12,9 +12,10 @@ import {
     CommentToolContainer,
 } from './Comment.style';
 import CommentItem from './CommentItem';
-import { useApolloClient } from '@apollo/client';
 import { RequiredGuide, RequiredIcon } from 'components/pages/createArticle/CreateArticle.style';
 import { UserContext } from 'contexts/userContext';
+import useComment from 'graphql/hooks/useComment';
+import { COMMENT_OPTION } from '.';
 
 interface CommentProps {
     comments: CommentType[];
@@ -24,40 +25,22 @@ interface CommentProps {
 
 const Comment = (props: CommentProps) => {
     const { comments = [], articleId, author: articleWriter } = props;
-    const client = useApolloClient();
     const { isLoggedIn } = useContext(UserContext);
-    const [createComment] = useCreateCommentMutation();
+    const { createComment, deleteComment } = useComment();
+    const commentInputRef = useRef<HTMLTextAreaElement>(null);
     const [commentInput, setCommentInput] = useState<string | undefined>(undefined);
     const [password, setPassword] = useState<string | undefined>(undefined);
 
     const onPressSubmit = () => {
         if (!commentInput) return;
-        setCommentInput(undefined);
         createComment({
-            variables: {
-                articleId,
-                content: commentInput,
-            },
-            update: () => {
-                try {
-                    client.cache.modify({
-                        id: `Article:${articleId}`,
-                        fields: {
-                            // TODO : 아래 코드는 새로생긴 코드가 가장 아래에 생기는데, 대댓글일 경우 로직이 다름.
-                            comments: (prevComments) => {
-                                const newComment = {
-                                    __typename: 'Comment',
-                                    content: commentInput,
-                                };
-                                return [...prevComments, newComment];
-                            },
-                        },
-                    });
-                } catch (error) {
-                    console.error(`Error occur while caching`, error);
-                }
-            },
+            articleId,
+            content: commentInput,
+            password,
+            commentId: '1',
         });
+        setCommentInput(undefined);
+        // TODO : 작성된 코멘트로 이동 -> 이미 10개 이상이면 더보기 해제 후 이동.
     };
     // TODO : 비밀번호 규칙을 정해서 적용해야함.
     const onChangePwd = (pwd: string) => {
@@ -69,9 +52,37 @@ const Comment = (props: CommentProps) => {
         if (articleWriter.kakaoId === 'anonymous') return false;
         return articleWriter.kakaoId === commentAuthorId;
     };
-    const submitDisabled = () => {
+    const submitDisabled = useCallback(() => {
         return !commentInput || (!isLoggedIn && typeof password === 'string' && password.length !== 4);
+    }, [commentInput, password, isLoggedIn]);
+
+    const focusOnInput = () => {
+        commentInputRef.current?.focus({ preventScroll: false });
     };
+
+    const handleMenu = (key: COMMENT_OPTION) => {
+        switch (key) {
+            case '답글':
+                focusOnInput();
+                break;
+            case '수정':
+                // TODO : updateMutation 추가
+                break;
+            case '삭제':
+                // TODO : 팝업 + 실제 데이터로 테스트
+                deleteComment(
+                    {
+                        id: '1',
+                        password,
+                    },
+                    articleId,
+                );
+                break;
+            default:
+                break;
+        }
+    };
+
     // ? comments가 null일 수 있는지 모르겠지만 종종 에러가 남.
     if (comments === null) return <></>;
     return (
@@ -82,18 +93,19 @@ const Comment = (props: CommentProps) => {
             <CommentContainer>
                 <CommentInputContainer>
                     <Textarea
-                        value={commentInput}
+                        ref={commentInputRef}
+                        value={commentInput ?? ''}
                         onChange={(e) => setCommentInput(e.target.value)}
                         placeholder="발견 정보 또는 응원의 메세지를 남겨주세요 :)"
                     />
                     <CommentToolContainer>
-                        {!isLoggedIn ? (
+                        {isLoggedIn ? (
                             <div />
                         ) : (
                             <CommentPwdContainer>
                                 <CommentPwd
                                     type="password"
-                                    value={password}
+                                    value={password ?? ''}
                                     onChange={(e) => onChangePwd(e.target.value)}
                                 />
                                 <RequiredGuide>
@@ -115,6 +127,7 @@ const Comment = (props: CommentProps) => {
                     <CommentItem
                         key={comment.id}
                         comment={comment}
+                        menuHandler={handleMenu}
                         isAuthors={isAuthorComment(comment.author.kakaoId)}
                     />
                 ))}

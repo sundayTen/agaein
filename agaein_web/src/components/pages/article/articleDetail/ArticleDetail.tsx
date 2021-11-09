@@ -19,7 +19,7 @@ import useBookmark from 'hooks/useBookmark';
 import { useState } from 'react';
 import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
 import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
-import { convertDate, YYYYMMDD } from 'utils/date';
+import { formattedDate, YYYYMMDD } from 'utils/date';
 import { Fragment } from 'react';
 import { isArticle, isLFP } from 'utils/typeGuards';
 import penguin from 'assets/image/penguin.png';
@@ -30,6 +30,9 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
+        },
+        onCompleted: (data) => {
+            // TODO : 조회수 즉각반영
         },
     });
 
@@ -81,7 +84,7 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
                         <Font label={feature} fontType="label" />
                     </ArticleDetailContentContainer>
                     <ArticleInfoContainer>
-                        <Font label={convertDate(createdAt)} fontType="tag" />
+                        <Font label={formattedDate(createdAt)} fontType="tag" />
                         <Font label={` 북마크 5 · 댓글 ${comments?.length} · 조회수 ${view}`} fontType="tag" />
                     </ArticleInfoContainer>
                     <ArticleMapContainer>
