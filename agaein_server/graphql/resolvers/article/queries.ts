@@ -8,23 +8,26 @@ const articleQueries = {
             const articleDetails =
                 boardType === 'REVIEW'
                     ? await knex(`${boardType}`)
-                          .join('article', 'article.id', '=', `${boardType}.article_id`)
+                          .join('article', 'article.id', `${boardType}.article_id`)
                           .orderBy('created_at', 'desc')
                           .limit(limit)
                           .offset(offset)
                     : await knex(`${boardType}`)
-                          .join('article', 'article.id', '=', `${boardType}.article_id`)
+                          .join('article', 'article.id', `${boardType}.article_id`)
                           .join('breed', `${boardType}.breed_id`, 'breed.id')
                           .orderBy('created_at', 'desc')
                           .limit(limit)
                           .offset(offset);
 
             const articles = articleDetails.map((detail: any) => {
-                const { articleId, breedId, ...detailData } = detail;
-                return {
-                    id: articleId,
-                    articleDetail: { articleType: args.boardType, ...detailData },
-                };
+                const { articleId, breedId, keyword, ...detailData } = detail;
+                let keywordList = null;
+                if (keyword) {
+                    keywordList = keyword.split('&');
+                }
+                detail.id = articleId;
+                detail.articleDetail = { articleType: args.boardType, keyword: keywordList, ...detailData };
+                return detail;
             });
 
             return articles;
@@ -44,6 +47,9 @@ const articleQueries = {
             const { breed, type } = breedObj;
             articleDetail.breed = breed;
             articleDetail.type = type;
+            if (articleDetail.keyword) {
+                articleDetail.keyword = articleDetail.keyword.split('&');
+            }
             article.articleDetail = articleDetail;
 
             return article;

@@ -202,7 +202,9 @@ export function initLFG() {
                     table.string('feature');
                     table.string('gender');
                     table.string('password');
-                    table.boolean('alarm').defaultTo(false);
+                    table.string('email');
+                    table.string('keyword');
+                    table.boolean('alarm').defaultTo(false).notNullable();
                     table.integer('age');
                     table.json('location').defaultTo({});
                     table.dateTime('found_date');
@@ -236,7 +238,9 @@ export function initLFP() {
                     table.string('gender');
                     table.integer('gratuity');
                     table.string('password');
-                    table.boolean('alarm').defaultTo(false);
+                    table.string('email');
+                    table.string('keyword');
+                    table.boolean('alarm').defaultTo(false).notNullable();
                     table.integer('age');
                     table.json('location').defaultTo({});
                     table.dateTime('lost_date');

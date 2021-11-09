@@ -16,12 +16,23 @@ const articleMutations = {
             gratuity,
             alarm,
             password,
+            keyword,
+            email,
             age,
             title,
             content,
         } = articleDetail;
 
         // @TODO validation 확인해야 됨.
+
+        // @TODO 뒤의 리스트 확인 부분은 나중에 validation으로 옮기기
+        let stringfiedKeyword = '';
+        if (keyword !== undefined && typeof(keyword) === 'object') {
+            stringfiedKeyword = keyword[0];
+            for (let idx = 1; idx < keyword.length; idx++) {
+                stringfiedKeyword += '&' + keyword[idx];
+            }
+        }
 
         const now = new Date();
         const articleForm = {
@@ -73,6 +84,8 @@ const articleMutations = {
                             foundDate,
                             alarm,
                             password,
+                            keyword: stringfiedKeyword,
+                            email,
                             age,
                         },
                         LFP: {
@@ -86,6 +99,8 @@ const articleMutations = {
                             gratuity,
                             alarm,
                             password,
+                            keyword: stringfiedKeyword,
+                            email,
                             age,
                         },
                         REVIEW: {
@@ -100,6 +115,9 @@ const articleMutations = {
                         .returning('id')
                         .then((articleDetailId: any) => {
                             articleDetailForm[boardType].id = articleDetailId[0];
+                            if (boardType === 'LFG' || boardType === 'LFP') {
+                                articleDetailForm[boardType].keyword = keyword;
+                            }
                             article.articleDetail = articleDetailForm[boardType];
 
                             args.files.forEach(async (file: any) => {
