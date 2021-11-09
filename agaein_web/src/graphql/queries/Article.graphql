@@ -1,5 +1,5 @@
-query getArticles($boardType: BOARD_TYPE!) {
-    articles(boardType: $boardType) {
+query getArticles($boardType: BOARD_TYPE!, $limit: Int, $offset: Int) {
+    articles(boardType: $boardType, limit: $limit, offset: $offset) {
         id
         images
         articleDetail {

@@ -3,12 +3,21 @@ import { knex } from '../../database';
 
 const articleQueries = {
     articles: async (_: any, args: any) => {
-        const { boardType } = args;
+        const { boardType, limit = 6, offset = 0 } = args;
         try {
             const articleDetails =
                 boardType === 'REVIEW'
                     ? await knex(`${boardType}`)
-                    : await knex(`${boardType}`).join('breed', `${args.boardType}.breed_id`, 'breed.id');
+                          .join('article', 'article.id', '=', `${boardType}.article_id`)
+                          .orderBy('created_at', 'desc')
+                          .limit(limit)
+                          .offset(offset)
+                    : await knex(`${boardType}`)
+                          .join('article', 'article.id', '=', `${boardType}.article_id`)
+                          .join('breed', `${boardType}.breed_id`, 'breed.id')
+                          .orderBy('created_at', 'desc')
+                          .limit(limit)
+                          .offset(offset);
 
             const articles = articleDetails.map((detail: any) => {
                 const { articleId, breedId, ...detailData } = detail;

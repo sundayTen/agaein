@@ -23,7 +23,6 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
             boardType,
         },
     });
-
     const getTitle = (boardType: Board_Type) => {
         switch (boardType) {
             case Board_Type.Lfg:
@@ -40,6 +39,9 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
     const isEmpty = (items?: Array<Article>) => {
         if (!items) return true;
         return items.length === 0;
+    };
+    const isReviewType = () => {
+        return boardType === Board_Type.Review;
     };
 
     if (loading) return <p>Loading</p>;
@@ -63,14 +65,14 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
                     <p>등록된 게시글이 없습니다</p>
                 ) : (
                     articles?.map((article) => {
-                        return boardType === Board_Type.Review ? (
-                            <ReviewWrapper>
+                        return isReviewType() ? (
+                            <ReviewWrapper key={article.id}>
                                 <ReviewItem item={article} />
                             </ReviewWrapper>
                         ) : (
-                            <ListItem key={article?.id}>
+                            <ListItem key={article.id}>
                                 <PostItem
-                                    item={article as Article}
+                                    item={article}
                                     bookmarked={isBookmarked(article.id)}
                                     setBookmark={() => setBookmark(article.id)}
                                 />

@@ -14,7 +14,7 @@ interface KaKaoLoginResult {
 }
 
 const NavBar = () => {
-    const { isLoggedIn, login, user } = useContext(UserContext);
+    const { isLoggedIn, login, user, signOut } = useContext(UserContext);
     const onLoginComplete = (result: KaKaoLoginResult) => {
         login(result.response.access_token, String(result.profile.id));
     };
@@ -30,7 +30,7 @@ const NavBar = () => {
                 </Title>
             </Link>
             {isLoggedIn ? (
-                <UserTag>
+                <UserTag onClick={signOut}>
                     <Font label={user.nickname ?? '회원'} fontType="subhead" htmlElement="span" />
                     <ChevronDown />
                 </UserTag>

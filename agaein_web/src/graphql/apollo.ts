@@ -15,7 +15,7 @@ const uploadLink = createUploadLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-    const accessToken = cookies.get('accessToken') || '';
+    const accessToken = cookies.get('accessToken') ?? '';
     return {
         headers: {
             ...headers,
@@ -36,7 +36,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     name: 'agaein',
     version: '0.0.1',
-    link: from([authLink, errorLink, httpLink, uploadLink]),
+    link: from([authLink, errorLink, uploadLink, httpLink]),
     cache: new InMemoryCache({
         addTypename: true,
         resultCaching: true,

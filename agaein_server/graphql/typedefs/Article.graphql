@@ -8,6 +8,7 @@ type Location {
     lat: Float!
     lng: Float!
     address: String!
+    roadAddress: String
     detail: String
 }
 
@@ -64,6 +65,7 @@ input LocationInput {
     lat: Float!
     lng: Float!
     address: String!
+    roadAddress: String
     detail: String
 }
 

@@ -1,4 +1,4 @@
-import { Article, Bookmark, Comment, Lfg, Lfp, Review } from 'graphql/generated/generated';
+import { Article, Bookmark, Comment, File, Lfg, Lfp, Review } from 'graphql/generated/generated';
 
 // TODO : Type Guard의 조건을 더 엄밀하게 정의해야함
 
@@ -20,5 +20,8 @@ function isReview(target: unknown): target is Review {
 function isBookmark(target: unknown): target is Bookmark {
     return (target as Bookmark).__typename === 'Bookmark' && (target as Bookmark).articleId !== null;
 }
+function isComments(target: unknown[]) {
+    return (target as Comment[]).some((comment) => isComment(comment));
+}
 
-export { isArticle, isComment, isLFP, isLFG, isReview, isBookmark };
+export { isArticle, isComment, isLFP, isLFG, isReview, isBookmark, isComments };
