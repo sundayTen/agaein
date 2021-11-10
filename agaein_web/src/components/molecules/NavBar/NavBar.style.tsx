@@ -6,14 +6,16 @@ export const Nav = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 75px;
     padding: 0 40px;
     border-bottom: 1px solid rgba(44, 44, 44, 0.233);
     box-shadow: 0px 2px 3px rgba(44, 44, 44, 0.137);
     background-color: ${(props) => props.theme.light.background};
     z-index: 1000;
-    position: sticky;
-    top: 0;
 `;
 
 export const Title = styled.div`
@@ -51,7 +53,7 @@ export const StyledKakaoLogin = styled.div`
 
 export const UserTag = styled.button`
     display: flex;
-    minwidth: 80px;
+    min-width: 80px;
     justify-content: center;
     align-items: center;
 `;

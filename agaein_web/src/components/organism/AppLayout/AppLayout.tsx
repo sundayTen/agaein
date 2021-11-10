@@ -1,6 +1,6 @@
 import Footer from 'components/molecules/Footer';
 import NavBar from 'components/molecules/NavBar';
-import { Container } from './AppLayout.style';
+import { Wrapper, Container, Content } from './AppLayout.style';
 
 interface Props {
     children: JSX.Element;
@@ -8,10 +8,12 @@ interface Props {
 
 export default function AppLayout({ children }: Props) {
     return (
-        <>
+        <Wrapper>
             <NavBar />
-            <Container>{children}</Container>
-            <Footer />
-        </>
+            <Container>
+                <Content>{children}</Content>
+                <Footer />
+            </Container>
+        </Wrapper>
     );
 }
