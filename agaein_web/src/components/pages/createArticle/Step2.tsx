@@ -22,6 +22,7 @@ import {
     FormGratuity,
     FormCheckbox,
     FormEmail,
+    FormKeyword,
     FormPassword,
 } from 'components/organism/Form';
 import Button from 'components/molecules/Button';
@@ -120,6 +121,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                 <FormAge name="age" onChange={inputChangeHandler} />
                 <FormGender name="gender" value={currentArticleDetail.gender} onChange={inputChangeHandler} />
                 <FormEtc name="feature" value={currentArticleDetail.feature} onChange={inputChangeHandler} />
+                <FormKeyword name="keyword" onChange={inputChangeHandler} />
                 {boardType === 'LFP' && (
                     <FormGratuity name="gratuity" value={currentArticleDetail.gratuity} onChange={inputChangeHandler} />
                 )}
