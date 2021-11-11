@@ -4,6 +4,12 @@ enum BOARD_TYPE {
     REVIEW
 }
 
+enum GENDER {
+    male
+    female
+    unknown
+}
+
 type Location {
     lat: Float!
     lng: Float!
@@ -18,10 +24,12 @@ type LFG {
     breed: String!
     name: String
     feature: String
-    gender: String
+    gender: GENDER
     age: Int
     password: String
     alarm: Boolean
+    email: String
+    keyword: [String]
     location: Location!
     foundDate: Date!
 }
@@ -32,11 +40,13 @@ type LFP {
     breed: String!
     name: String
     feature: String
-    gender: String
+    gender: GENDER
     gratuity: Int
     age: Int
     password: String
     alarm: Boolean
+    email: String
+    keyword: [String]
     location: Location!
     lostDate: Date!
 }
@@ -73,12 +83,14 @@ input articleDetailInput {
     breedId: ID
     name: String
     feature: String
-    gender: String
+    gender: GENDER
     location: LocationInput
     foundDate: Date
     age: Int
     password: String
     alarm: Boolean
+    email: String
+    keyword: [String]
     lostDate: Date
     gratuity: Int
     title: String

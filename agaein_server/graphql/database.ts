@@ -202,7 +202,8 @@ export function initLFG() {
                     table.string('feature');
                     table.string('gender');
                     table.string('password');
-                    table.boolean('alarm').defaultTo(false);
+                    table.string('email');
+                    table.boolean('alarm').defaultTo(false).notNullable();
                     table.integer('age');
                     table.json('location').defaultTo({});
                     table.dateTime('found_date');
@@ -236,7 +237,8 @@ export function initLFP() {
                     table.string('gender');
                     table.integer('gratuity');
                     table.string('password');
-                    table.boolean('alarm').defaultTo(false);
+                    table.string('email');
+                    table.boolean('alarm').defaultTo(false).notNullable();
                     table.integer('age');
                     table.json('location').defaultTo({});
                     table.dateTime('lost_date');
@@ -269,6 +271,55 @@ export function initReview() {
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created review table');
+                })
+                .catch((error: String) => {
+                    console.error(error);
+                });
+        }
+    });
+}
+
+export function initKeyword() {
+    knex.schema.hasTable('keyword').then(function (exists: boolean) {
+        if (!exists) {
+            knex.schema
+                .createTable('keyword', function (table: any) {
+                    table.increments();
+                    table.string('keyword').notNullable().unique();
+                })
+                .then(function () {
+                    console.log('[DataBase Initialized] created keyword table');
+                })
+                .catch((error: String) => {
+                    console.error(error);
+                });
+        }
+    });
+}
+
+export function initArticleKeyword() {
+    knex.schema.hasTable('article_keyword').then(function (exists: boolean) {
+        if (!exists) {
+            knex.schema
+                .createTable('article_keyword', function (table: any) {
+                    table.increments();
+                    table
+                        .integer('article_id')
+                        .notNullable()
+                        .references('id')
+                        .inTable('article')
+                        .onUpdate('CASCADE')
+                        .onDelete('CASCADE');
+                    table
+                        .integer('keyword_id')
+                        .notNullable()
+                        .references('id')
+                        .inTable('keyword')
+                        .onUpdate('CASCADE')
+                        .onDelete('CASCADE');
+                })
+                .then(function () {
+                    console.log('[DataBase Initialized] created article_keyword table');
                 })
                 .catch((error: String) => {
                     console.error(error);
