@@ -135,8 +135,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                     </RequiredGuide>
                 </FormTitle>
 
-                {/* TODO: email value 추가후 추가 */}
-                {/* <FormEmail name="email" value={currentArticleDetail.email} onChange={inputChangeHandler} /> */}
+                <FormEmail name="email" value={currentArticleDetail.email} onChange={inputChangeHandler} />
 
                 {!isLoggedIn && (
                     <FormPassword name="password" value={currentArticleDetail.password} onChange={inputChangeHandler} />
@@ -145,7 +144,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                 <CheckWrapper>
                     <FormCheckbox
                         name="alarm"
-                        label="입력된 정보를 바탕으로 유사한 실종견 정보를 카카오톡 알림으로 받겠습니다."
+                        label="입력된 정보를 바탕으로 유사한 실종견 정보를 이메일로 수신하겠습니다."
                         value={currentArticleDetail.alarm}
                         onChange={inputChangeHandler}
                     />
