@@ -126,15 +126,16 @@ const articleMutations = {
                                     keywordId.forEach(async (id: string) => {
                                         articleKeywordForm.push({ articleId: article.id, keywordId: id });
                                     });
-                                    await knex('article_keyword')
-                                        .transacting(trx)
-                                        .insert(articleKeywordForm)
+                                    await knex('article_keyword').transacting(trx).insert(articleKeywordForm);
                                 }
                             }
 
-                            args.files.forEach(async (file: any) => {
-                                const { createReadStream, filename } = await file;
+                            args.files.forEach(async (file: any, idx: Number) => {
+                                const { createReadStream, mimetype } = await file;
                                 const stream = createReadStream();
+
+                                const filename =
+                                    article.id + '_' + idx + '_' + Date.now() + '.' + mimetype.split('/')[1];
 
                                 const imageForm = {
                                     articleId: article.id,
