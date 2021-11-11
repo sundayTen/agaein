@@ -54,7 +54,6 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
         lostDate: '',
         gratuity: '',
     });
-    const [isCheckRequried, setIsCheckRequried] = useState(false);
 
     const boardTitle = boardType === 'LFP' ? '실종' : '발견';
     const dateType = boardType === 'LFP' ? 'lostDate' : 'foundDate';
@@ -68,7 +67,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
             !isFiles || !currentArticleDetail.breedId || !currentArticleDetail[date] || !isAddress
             // !(!isLoggedIn && isCheckRequried && currentArticleDetail.password)
         );
-    }, [currentArticleDetail, files, isCheckRequried]);
+    }, [currentArticleDetail, files]);
 
     const handleGoBack = () => {
         history.goBack();
@@ -80,10 +79,6 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
 
     const inputChangeHandler = (value: any, name: string) => {
         setCurrentArticleDetail((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const requiredCheckHandler = (value: any, name: string) => {
-        setIsCheckRequried(value);
     };
 
     const onPressButton = async () => {
@@ -151,13 +146,6 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                         label="입력된 정보를 바탕으로 유사한 실종견 정보를 카카오톡 알림으로 받겠습니다."
                         value={currentArticleDetail.alarm}
                         onChange={inputChangeHandler}
-                    />
-                    <FormCheckbox
-                        name="requiredCheck"
-                        label="비회원으로 게시글 작성 시 실종 동물 발견 알림을 받지 못합니다. 알림을 받길 원하시면 로그인해 주세요."
-                        value={isCheckRequried}
-                        onChange={requiredCheckHandler}
-                        required
                     />
                 </CheckWrapper>
             </FormWrapper>
