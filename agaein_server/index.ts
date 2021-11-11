@@ -9,6 +9,8 @@ import {
     initLFP,
     initReview,
     initBookmark,
+    initKeyword,
+    initArticleKeyword,
 } from './graphql/database';
 import app from './app';
 
@@ -22,6 +24,8 @@ const initDatabase = async () => {
     await initLFP();
     await initReview();
     await initBookmark();
+    await initKeyword();
+    await initArticleKeyword();
 };
 
 const start = async () => {
