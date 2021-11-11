@@ -21,12 +21,8 @@ const articleQueries = {
 
             const articles = articleDetails.map((detail: any) => {
                 const { articleId, breedId, keyword, ...detailData } = detail;
-                let keywordList = null;
-                if (keyword) {
-                    keywordList = keyword.split('&');
-                }
                 detail.id = articleId;
-                detail.articleDetail = { articleType: args.boardType, keyword: keywordList, ...detailData };
+                detail.articleDetail = { articleType: args.boardType, ...detailData };
                 return detail;
             });
 
@@ -41,17 +37,21 @@ const articleQueries = {
     article: async (_: any, args: any) => {
         try {
             const article = await knex('article').where(`id`, args.id).first();
-            const articleDetail = await knex(article.type).where('articleId', `${args.id}`).first();
+            const articleDetail = await knex(article.type).where('articleId', args.id).first();
             articleDetail.articleType = article.type;
-            const breedObj = await knex('breed').where('id', `${articleDetail.breedId}`).first();
+
+            const breedObj = await knex('breed').where('id', articleDetail.breedId).first();
             const { breed, type } = breedObj;
             articleDetail.breed = breed;
             articleDetail.type = type;
-            if (articleDetail.keyword) {
-                articleDetail.keyword = articleDetail.keyword.split('&');
-            }
-            article.articleDetail = articleDetail;
 
+            const keywordObj = await knex('article_keyword')
+                .join('keyword', 'keyword.id', 'article_keyword.keyword_id')
+                .where('article_id', args.id);
+            const keyword = keywordObj.map((keyword: any) => keyword.keyword);
+            articleDetail.keyword = keyword;
+
+            article.articleDetail = articleDetail;
             return article;
         } catch {
             console.error('Article에서 에러발생');

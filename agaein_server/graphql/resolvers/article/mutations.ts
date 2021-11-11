@@ -25,15 +25,6 @@ const articleMutations = {
 
         // @TODO validation 확인해야 됨.
 
-        // @TODO 뒤의 리스트 확인 부분은 나중에 validation으로 옮기기
-        let stringfiedKeyword = '';
-        if (keyword !== undefined && typeof(keyword) === 'object') {
-            stringfiedKeyword = keyword[0];
-            for (let idx = 1; idx < keyword.length; idx++) {
-                stringfiedKeyword += '&' + keyword[idx];
-            }
-        }
-
         const now = new Date();
         const articleForm = {
             userId: 1,
@@ -71,7 +62,7 @@ const articleMutations = {
                 .transacting(trx)
                 .insert(articleForm)
                 .returning('id')
-                .then((articleId: any) => {
+                .then(async (articleId: any) => {
                     article.id = articleId[0];
                     const articleDetailForm: any = {
                         LFG: {
@@ -84,7 +75,6 @@ const articleMutations = {
                             foundDate,
                             alarm,
                             password,
-                            keyword: stringfiedKeyword,
                             email,
                             age,
                         },
@@ -99,7 +89,6 @@ const articleMutations = {
                             gratuity,
                             alarm,
                             password,
-                            keyword: stringfiedKeyword,
                             email,
                             age,
                         },
@@ -109,16 +98,39 @@ const articleMutations = {
                             content,
                         },
                     };
-                    return knex(boardType)
+                    return await knex(boardType)
                         .transacting(trx)
                         .insert(articleDetailForm[boardType])
                         .returning('id')
-                        .then((articleDetailId: any) => {
+                        .then(async (articleDetailId: any) => {
                             articleDetailForm[boardType].id = articleDetailId[0];
                             if (boardType === 'LFG' || boardType === 'LFP') {
                                 articleDetailForm[boardType].keyword = keyword;
                             }
                             article.articleDetail = articleDetailForm[boardType];
+
+                            if (keyword !== undefined) {
+                                const keywordForm: any = [];
+                                keyword.forEach(async (word: string) => {
+                                    keywordForm.push({ keyword: word });
+                                });
+
+                                const keywordId = await knex('keyword')
+                                    .insert(keywordForm)
+                                    .onConflict('keyword')
+                                    .merge()
+                                    .returning('id');
+
+                                if (keywordId[0] !== undefined) {
+                                    const articleKeywordForm: any = [];
+                                    keywordId.forEach(async (id: string) => {
+                                        articleKeywordForm.push({ articleId: article.id, keywordId: id });
+                                    });
+                                    await knex('article_keyword')
+                                        .transacting(trx)
+                                        .insert(articleKeywordForm)
+                                }
+                            }
 
                             args.files.forEach(async (file: any) => {
                                 const { createReadStream, filename } = await file;
@@ -143,6 +155,12 @@ const articleMutations = {
                                     console.log(`store ${filename}`);
                                 });
                             });
+                        })
+                        .catch(() => {
+                            console.error('createArticle Keyword & Image에서 에러발생');
+                            console.trace();
+
+                            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
                         });
                 })
                 .then(() => {

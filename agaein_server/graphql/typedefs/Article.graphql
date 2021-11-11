@@ -7,6 +7,7 @@ enum BOARD_TYPE {
 enum GENDER {
     male
     female
+    unknown
 }
 
 type Location {
