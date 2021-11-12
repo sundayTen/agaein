@@ -1,18 +1,20 @@
-import React from 'react';
+import { useState } from 'react';
 import { FormRow, FormLabel, Form } from '../../pages/createArticle/CreateArticle.style';
-import styled from 'styled-components';
 import Textarea from 'components/molecules/Textarea';
 
 interface FormNameProps {
     name: string;
-    value?: string;
-    onChange?: (value: string, name: string) => void;
+    onChange: (value: string, name: string) => void;
     type?: string;
 }
 
-export function FormEtc({ name, value, onChange, type }: FormNameProps) {
-    function inputChangeHandler(value: string) {
-        onChange?.(value, name);
+export function FormEtc({ name, onChange, type }: FormNameProps) {
+    const [value, setValue] = useState('');
+
+    function inputChangeHandler(e: React.ChangeEvent<HTMLTextAreaElement>) {
+        const value = e.target.value;
+        setValue(value);
+        onChange(value, name);
     }
 
     return (
@@ -24,7 +26,7 @@ export function FormEtc({ name, value, onChange, type }: FormNameProps) {
                         type === 'LFG_M' ? '그 외 특징 및 상세 위치를 작성해주세요' : '그 외 특징을 작성해주세요'
                     }
                     value={value}
-                    onChange={(e) => inputChangeHandler(e.target.value)}
+                    onChange={inputChangeHandler}
                 />
             </Form>
         </FormRow>

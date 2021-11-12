@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Checkbox from 'components/molecules/Checkbox';
 import styled from 'styled-components';
 
@@ -19,29 +20,25 @@ const Label = styled.p`
     color: ${(props) => props.theme.light.black};
 `;
 
-const Required = styled.span`
-    color: ${(props) => props.theme.light.primary};
-`;
-
-interface FormCheckboxProps {
+interface FormCheckdboxProps {
     name: string;
     label: string;
-    value: boolean;
-    onChange: (value: any, name: string) => {};
-    required?: boolean;
+    onChange: (value: any, name: string) => void;
 }
 
-export function FormCheckbox({ name, label, value, onChange, required }: FormCheckboxProps) {
-    const inputChangeHandler = (value: any) => {
+export function FormCheckbox({ name, label, onChange }: FormCheckdboxProps) {
+    const [value, setValue] = useState<boolean>(false);
+
+    const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.checked;
+        setValue(value);
         onChange(value, name);
     };
 
     return (
         <Wrapper>
-            <Checkbox checked={value} onChange={(e) => inputChangeHandler(e.target.checked)} />
-            <Label>
-                {required && <Required>(필독)</Required>} {label}
-            </Label>
+            <Checkbox checked={value} onChange={inputChangeHandler} />
+            <Label>{label}</Label>
         </Wrapper>
     );
 }

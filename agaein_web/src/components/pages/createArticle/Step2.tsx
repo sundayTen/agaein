@@ -1,5 +1,4 @@
-//@ts-nocheck
-import React, { useState, useEffect, useContext, useMemo } from 'react';
+import { useState, useContext, useMemo } from 'react';
 import {
     Title,
     SubTitle,
@@ -22,13 +21,14 @@ import {
     FormGratuity,
     FormCheckbox,
     FormEmail,
+    FormKeyword,
     FormPassword,
 } from 'components/organism/Form';
 import Button from 'components/molecules/Button';
 import StepIndicator from 'components/molecules/StepIndicator';
 import { CreateArticleStep2Params } from 'router/params';
 import { RouteComponentProps, Link } from 'react-router-dom';
-import { useCreateArticleMutation } from 'graphql/generated/generated';
+import { useCreateArticleMutation, ArticleDetailInput } from 'graphql/generated/generated';
 import { UserContext } from 'contexts/userContext';
 
 const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>) => {
@@ -36,25 +36,26 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     const [create] = useCreateArticleMutation();
     const boardType = match.params.type;
     const [files, setFiles] = useState<[]>();
-    const [currentArticleDetail, setCurrentArticleDetail] = useState<articleDetailInput>({
+    const [currentArticleDetail, setCurrentArticleDetail] = useState<ArticleDetailInput>({
         breedId: '',
         name: '',
         feature: '',
-        gender: 'male',
+        gender: undefined,
         location: {
-            lat: '',
-            lng: '',
+            lat: 0,
+            lng: 0,
             address: '',
             detail: '',
         },
         foundDate: '',
-        age: '',
+        age: undefined,
         password: '',
         alarm: false,
+        email: '',
+        keyword: [],
         lostDate: '',
-        gratuity: '',
+        gratuity: 0,
     });
-    const [isCheckRequried, setIsCheckRequried] = useState(false);
 
     const boardTitle = boardType === 'LFP' ? '실종' : '발견';
     const dateType = boardType === 'LFP' ? 'lostDate' : 'foundDate';
@@ -62,13 +63,13 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     const isInvalid = useMemo<boolean>(() => {
         const isFiles = files?.length;
         const date = dateType;
-        const isAddress = currentArticleDetail.location.address && currentArticleDetail.location.detail;
+        const isAddress = currentArticleDetail.location?.address && currentArticleDetail.location?.detail;
 
         return (
             !isFiles || !currentArticleDetail.breedId || !currentArticleDetail[date] || !isAddress
             // !(!isLoggedIn && isCheckRequried && currentArticleDetail.password)
         );
-    }, [currentArticleDetail, files, isCheckRequried]);
+    }, [currentArticleDetail, files]);
 
     const handleGoBack = () => {
         history.goBack();
@@ -79,11 +80,10 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     };
 
     const inputChangeHandler = (value: any, name: string) => {
-        setCurrentArticleDetail((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const requiredCheckHandler = (value: any, name: string) => {
-        setIsCheckRequried(value);
+        setCurrentArticleDetail({
+            ...currentArticleDetail,
+            [name]: value,
+        });
     };
 
     const onPressButton = async () => {
@@ -117,17 +117,16 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                         <RequiredIcon />는 필수 입력 사항입니다.
                     </RequiredGuide>
                 </FormTitle>
-                <FormPhoto type={boardType} onChange={inputFilesHandler} />
+                <FormPhoto onChange={inputFilesHandler} type={boardType} />
                 <FormBreed name="breedId" onChange={inputChangeHandler} />
-                <FormDate name={dateType} type={boardType} onChange={inputChangeHandler} />
-                <FormAddress name="location" type={boardType} onChange={inputChangeHandler} />
-                <FormName name="name" value={currentArticleDetail.name} onChange={inputChangeHandler} />
+                <FormDate name={dateType} onChange={inputChangeHandler} type={boardType} />
+                <FormAddress name="location" onChange={inputChangeHandler} type={boardType} />
+                <FormName name="name" onChange={inputChangeHandler} />
                 <FormAge name="age" onChange={inputChangeHandler} />
-                <FormGender name="gender" value={currentArticleDetail.gender} onChange={inputChangeHandler} />
-                <FormEtc name="feature" value={currentArticleDetail.feature} onChange={inputChangeHandler} />
-                {boardType === 'LFP' && (
-                    <FormGratuity name="gratuity" value={currentArticleDetail.gratuity} onChange={inputChangeHandler} />
-                )}
+                <FormGender name="gender" onChange={inputChangeHandler} />
+                <FormEtc name="feature" onChange={inputChangeHandler} />
+                <FormKeyword name="keyword" onChange={inputChangeHandler} />
+                {boardType === 'LFP' && <FormGratuity name="gratuity" onChange={inputChangeHandler} />}
             </FormWrapper>
 
             <FormWrapper>
@@ -138,26 +137,15 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                     </RequiredGuide>
                 </FormTitle>
 
-                {/* TODO: email value 추가후 추가 */}
-                {/* <FormEmail name="email" value={currentArticleDetail.email} onChange={inputChangeHandler} /> */}
+                <FormEmail name="email" onChange={inputChangeHandler} />
 
-                {!isLoggedIn && (
-                    <FormPassword name="password" value={currentArticleDetail.password} onChange={inputChangeHandler} />
-                )}
+                {!isLoggedIn && <FormPassword name="password" onChange={inputChangeHandler} />}
 
                 <CheckWrapper>
                     <FormCheckbox
                         name="alarm"
-                        label="입력된 정보를 바탕으로 유사한 실종견 정보를 카카오톡 알림으로 받겠습니다."
-                        value={currentArticleDetail.alarm}
+                        label="입력된 정보를 바탕으로 유사한 실종견 정보를 이메일로 수신하겠습니다."
                         onChange={inputChangeHandler}
-                    />
-                    <FormCheckbox
-                        name="requiredCheck"
-                        label="비회원으로 게시글 작성 시 실종 동물 발견 알림을 받지 못합니다. 알림을 받길 원하시면 로그인해 주세요."
-                        value={isCheckRequried}
-                        onChange={requiredCheckHandler}
-                        required
                     />
                 </CheckWrapper>
             </FormWrapper>

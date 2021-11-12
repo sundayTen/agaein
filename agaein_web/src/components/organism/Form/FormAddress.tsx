@@ -31,7 +31,7 @@ interface FormAddressProps {
     type: string;
     value?: string;
     address?: Location;
-    onChange: (value: any, name: string) => {};
+    onChange: (value: any, name: string) => void;
 }
 
 export function FormAddress({ name, type, onChange, address }: FormAddressProps) {

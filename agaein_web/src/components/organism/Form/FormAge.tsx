@@ -1,5 +1,4 @@
-//@ts-nocheck
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FormRow, FormLabel, Form } from '../../pages/createArticle/CreateArticle.style';
 import styled from 'styled-components';
 import Input from 'components/molecules/Input';
@@ -20,22 +19,31 @@ const AgeWrapper = styled.div`
 
 interface FormAgeProps {
     name: string;
-    onChange?: () => void;
+    onChange: (value: any, name: string) => void;
+}
+
+interface Age {
+    year: string | number;
+    month: string | number;
 }
 
 export function FormAge({ name, onChange }: FormAgeProps) {
-    const [age, setAge] = useState({
+    const [age, setAge] = useState<Age>({
         year: '',
         month: '',
     });
 
     useEffect(() => {
-        const monthAge = age.year*12 + age.month*1;
-        onChange?.(monthAge, name);
-    }, [age])
+        const monthAge = Number(age.year) * 12 + Number(age.month) * 1;
+        onChange(monthAge, name);
+    }, [age]);
 
     function inputChangeHandler(value: string, date: string) {
-        setAge((prev) => ({ ...prev, [date]: value }));
+        const onlyNumber = Number(value.replace(/[^0-9]/g, ''));
+        setAge({
+            ...age,
+            [date]: onlyNumber,
+        });
     }
 
     return (
