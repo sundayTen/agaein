@@ -4,7 +4,6 @@ type User implements Timestamps {
     email: String
     kakaoId: String!
     phoneNumber: String
-    bookmarks: [ID]!
     createdAt: Date!
     updatedAt: Date!
 }
@@ -17,7 +16,6 @@ type Login {
     phoneNumber: String
     accessToken: String!
     refreshToken: String!
-    bookmarks: [ID]!
     createdAt: Date!
     updatedAt: Date!
 }

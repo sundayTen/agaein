@@ -36,7 +36,7 @@ const NavBar = () => {
                 </UserTag>
             ) : (
                 <KakaoLogin
-                    token={process.env.REACT_APP_KAKAO_LOGIN_KEY}
+                    token={KAKAO_LOGIN_KEY}
                     onSuccess={onLoginComplete}
                     onFail={onLoginFailed}
                     getProfile={true}
