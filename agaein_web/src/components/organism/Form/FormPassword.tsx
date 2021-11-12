@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormRow, FormLabel, Form, RequiredIcon } from '../../pages/createArticle/CreateArticle.style';
 import styled from 'styled-components';
 import Input from 'components/molecules/Input';
 
 interface FormPasswordProps {
     name: string;
-    value?: string;
-    onChange?: (value: string, name: string) => void;
+    onChange: (value: string, name: string) => void;
 }
 
-export function FormPassword({ name, value, onChange }: FormPasswordProps) {
+export function FormPassword({ name, onChange }: FormPasswordProps) {
     const [password, setPassword] = useState({
         password1: '',
         password2: '',
@@ -22,7 +21,7 @@ export function FormPassword({ name, value, onChange }: FormPasswordProps) {
         }
 
         if (password.password1.length === 4 && password.password1 === password.password2) {
-            onChange?.(name, password.password1);
+            onChange(name, password.password1);
         }
     }, [password]);
 

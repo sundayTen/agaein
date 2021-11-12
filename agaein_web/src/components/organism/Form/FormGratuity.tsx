@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormRow, FormLabel, Form } from '../../pages/createArticle/CreateArticle.style';
 import { CurrencyDollarIcon } from '@heroicons/react/solid';
 import styled from 'styled-components';
@@ -22,15 +22,18 @@ const InputWrapper = styled.div`
 
 interface FormGratuityProps {
     name: string;
-    value?: string;
-    onChange?: (value: any, name: string) => void;
+    onChange: (value: any, name: string) => void;
 }
 
-export function FormGratuity({ name, value, onChange }: FormGratuityProps) {
+export function FormGratuity({ name, onChange }: FormGratuityProps) {
+    const [value, setValue] = useState('');
+
     function inputChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
-        const onlyNumber = Number(value.replace(/[^0-9]/g, ''));
-        onChange?.(onlyNumber, name);
+        const NumberValue = Number(value.replace(/[^0-9]/g, ''));
+        const numberWithComma = value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        setValue(numberWithComma);
+        onChange(NumberValue, name);
     }
 
     return (
@@ -39,12 +42,7 @@ export function FormGratuity({ name, value, onChange }: FormGratuityProps) {
             <Form>
                 <InputWrapper>
                     <CurrencyDollarIcon />
-                    <Input
-                        type="text"
-                        placeholder="금액을 입력해주세요"
-                        value={value}
-                        onChange={(e) => inputChangeHandler(e)}
-                    />
+                    <Input type="text" placeholder="금액을 입력해주세요" value={value} onChange={inputChangeHandler} />
                 </InputWrapper>
             </Form>
         </FormRow>

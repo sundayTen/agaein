@@ -1,4 +1,4 @@
-import { useState, useRef, KeyboardEvent } from 'react';
+import { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import { FormRow, FormLabel } from '../../pages/createArticle/CreateArticle.style';
 import Input from 'components/molecules/Input';
 import Button from 'components/molecules/Button';
@@ -44,7 +44,6 @@ const DeleteButton = styled.button`
 
 interface FormKeywordProps {
     name: string;
-    keywordInfo: string;
     onChange: (value: any, name: string) => void;
 }
 
@@ -63,6 +62,11 @@ export function FormKeyword({ name, onChange }: FormKeywordProps) {
 
     const nextId = useRef(1);
 
+    useEffect(() => {
+        const valueList = keywordList.map((keyword) => keyword.value);
+        onChange(valueList, name);
+    }, [keywordList]);
+
     const addKeyword = () => {
         const currentKeyword = {
             id: nextId.current,
@@ -70,13 +74,12 @@ export function FormKeyword({ name, onChange }: FormKeywordProps) {
         };
         setKeywordList(keywordList.concat(currentKeyword));
         setKeyword('');
-        onChange?.(keywordList, name);
         nextId.current += 1;
     };
 
     const handleKeypress = (e: KeyboardEvent<HTMLInputElement>) => {
-        const isVaildKey = e.key === 'Enter';
-        if (!isVaildKey) return;
+        const isValidKey = e.key === 'Enter';
+        if (!isValidKey) return;
         addKeyword();
     };
 

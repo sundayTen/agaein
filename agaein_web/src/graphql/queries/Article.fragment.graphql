@@ -37,6 +37,8 @@ fragment LFGDetail on LFG {
     password
     foundDate
     alarm
+    email
+    keyword
     location {
         lat
         lng
@@ -53,6 +55,8 @@ fragment LFPDetail on LFP {
     gratuity
     alarm
     lostDate
+    email
+    keyword
     location {
         lat
         lng

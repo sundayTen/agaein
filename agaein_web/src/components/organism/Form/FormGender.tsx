@@ -1,5 +1,4 @@
-//@ts-nocheck
-import React from 'react';
+import { useState } from 'react';
 import { FormRow, FormLabel } from '../../pages/createArticle/CreateArticle.style';
 import styled from 'styled-components';
 
@@ -60,11 +59,18 @@ const RadioLabel = styled.label`
     }
 `;
 
-interface FormGenderProps {}
+interface FormGenderProps {
+    name: string;
+    onChange: (value: any, name: string) => void;
+}
 
-export function FormGender({ name, value, onChange }: FormGenderProps) {
-    function inputChangeHandler(value: string) {
-        onChange?.(value, name);
+export function FormGender({ name, onChange }: FormGenderProps) {
+    const [gender, setGender] = useState('');
+
+    function inputChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
+        const value = e.target.value;
+        setGender(value);
+        onChange(value, name);
     }
 
     return (
@@ -77,8 +83,8 @@ export function FormGender({ name, value, onChange }: FormGenderProps) {
                         name="gender"
                         value="male"
                         className="blind"
-                        onChange={(e) => inputChangeHandler(e.target.value)}
-                        checked={value === 'male'}
+                        onChange={inputChangeHandler}
+                        checked={gender === 'male'}
                     />
                     <RadioIcon />
                     수컷
@@ -89,8 +95,8 @@ export function FormGender({ name, value, onChange }: FormGenderProps) {
                         name="gender"
                         value="femail"
                         className="blind"
-                        onChange={(e) => inputChangeHandler(e.target.value)}
-                        checked={value === 'femail'}
+                        onChange={inputChangeHandler}
+                        checked={gender === 'femail'}
                     />
                     <RadioIcon />
                     암컷
@@ -101,8 +107,8 @@ export function FormGender({ name, value, onChange }: FormGenderProps) {
                         name="gender"
                         value="unknown"
                         className="blind"
-                        onChange={(e) => inputChangeHandler(e.target.value)}
-                        checked={value === 'unknown'}
+                        onChange={inputChangeHandler}
+                        checked={gender === 'unknown'}
                     />
                     <RadioIcon />
                     모름

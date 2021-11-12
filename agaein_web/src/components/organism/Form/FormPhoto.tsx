@@ -99,6 +99,7 @@ const CloseButton = styled.button`
 
 interface FormPhotoProps {
     type: string;
+    onChange: (value: any) => void;
 }
 
 export function FormPhoto({ type, onChange }: FormPhotoProps) {

@@ -1,5 +1,4 @@
-//@ts-nocheck
-import React, { useState, useEffect, useContext, useMemo } from 'react';
+import { useState, useContext, useMemo } from 'react';
 import {
     Title,
     SubTitle,
@@ -29,7 +28,7 @@ import Button from 'components/molecules/Button';
 import StepIndicator from 'components/molecules/StepIndicator';
 import { CreateArticleStep2Params } from 'router/params';
 import { RouteComponentProps, Link } from 'react-router-dom';
-import { useCreateArticleMutation } from 'graphql/generated/generated';
+import { useCreateArticleMutation, ArticleDetailInput } from 'graphql/generated/generated';
 import { UserContext } from 'contexts/userContext';
 
 const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>) => {
@@ -37,23 +36,25 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     const [create] = useCreateArticleMutation();
     const boardType = match.params.type;
     const [files, setFiles] = useState<[]>();
-    const [currentArticleDetail, setCurrentArticleDetail] = useState<articleDetailInput>({
+    const [currentArticleDetail, setCurrentArticleDetail] = useState<ArticleDetailInput>({
         breedId: '',
         name: '',
         feature: '',
-        gender: 'male',
+        gender: undefined,
         location: {
-            lat: '',
-            lng: '',
+            lat: 0,
+            lng: 0,
             address: '',
             detail: '',
         },
         foundDate: '',
-        age: '',
+        age: undefined,
         password: '',
         alarm: false,
+        email: '',
+        keyword: [],
         lostDate: '',
-        gratuity: '',
+        gratuity: 0,
     });
 
     const boardTitle = boardType === 'LFP' ? '실종' : '발견';
@@ -62,7 +63,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     const isInvalid = useMemo<boolean>(() => {
         const isFiles = files?.length;
         const date = dateType;
-        const isAddress = currentArticleDetail.location.address && currentArticleDetail.location.detail;
+        const isAddress = currentArticleDetail.location?.address && currentArticleDetail.location?.detail;
 
         return (
             !isFiles || !currentArticleDetail.breedId || !currentArticleDetail[date] || !isAddress
@@ -79,7 +80,10 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     };
 
     const inputChangeHandler = (value: any, name: string) => {
-        setCurrentArticleDetail((prev) => ({ ...prev, [name]: value }));
+        setCurrentArticleDetail({
+            ...currentArticleDetail,
+            [name]: value,
+        });
     };
 
     const onPressButton = async () => {
@@ -113,18 +117,16 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                         <RequiredIcon />는 필수 입력 사항입니다.
                     </RequiredGuide>
                 </FormTitle>
-                <FormPhoto type={boardType} onChange={inputFilesHandler} />
+                <FormPhoto onChange={inputFilesHandler} type={boardType} />
                 <FormBreed name="breedId" onChange={inputChangeHandler} />
-                <FormDate name={dateType} type={boardType} onChange={inputChangeHandler} />
-                <FormAddress name="location" type={boardType} onChange={inputChangeHandler} />
-                <FormName name="name" value={currentArticleDetail.name} onChange={inputChangeHandler} />
+                <FormDate name={dateType} onChange={inputChangeHandler} type={boardType} />
+                <FormAddress name="location" onChange={inputChangeHandler} type={boardType} />
+                <FormName name="name" onChange={inputChangeHandler} />
                 <FormAge name="age" onChange={inputChangeHandler} />
-                <FormGender name="gender" value={currentArticleDetail.gender} onChange={inputChangeHandler} />
-                <FormEtc name="feature" value={currentArticleDetail.feature} onChange={inputChangeHandler} />
+                <FormGender name="gender" onChange={inputChangeHandler} />
+                <FormEtc name="feature" onChange={inputChangeHandler} />
                 <FormKeyword name="keyword" onChange={inputChangeHandler} />
-                {boardType === 'LFP' && (
-                    <FormGratuity name="gratuity" value={currentArticleDetail.gratuity} onChange={inputChangeHandler} />
-                )}
+                {boardType === 'LFP' && <FormGratuity name="gratuity" onChange={inputChangeHandler} />}
             </FormWrapper>
 
             <FormWrapper>
@@ -135,17 +137,14 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                     </RequiredGuide>
                 </FormTitle>
 
-                <FormEmail name="email" value={currentArticleDetail.email} onChange={inputChangeHandler} />
+                <FormEmail name="email" onChange={inputChangeHandler} />
 
-                {!isLoggedIn && (
-                    <FormPassword name="password" value={currentArticleDetail.password} onChange={inputChangeHandler} />
-                )}
+                {!isLoggedIn && <FormPassword name="password" onChange={inputChangeHandler} />}
 
                 <CheckWrapper>
                     <FormCheckbox
                         name="alarm"
                         label="입력된 정보를 바탕으로 유사한 실종견 정보를 이메일로 수신하겠습니다."
-                        value={currentArticleDetail.alarm}
                         onChange={inputChangeHandler}
                     />
                 </CheckWrapper>
