@@ -1,7 +1,8 @@
 import { GraphQLUpload } from 'graphql-upload';
-import { userQueries, userMutations } from './user';
-import { breedQueries, breedMutations } from './breed';
 import { articleQueries, articleMutations } from './article';
+import { breedQueries, breedMutations } from './breed';
+import { reportQueries, reportMutations } from './report';
+import { userQueries, userMutations } from './user';
 import { knex } from '../database';
 
 const resolvers = {
@@ -9,11 +10,13 @@ const resolvers = {
         ...userQueries,
         ...articleQueries,
         ...breedQueries,
+        ...reportQueries,
     },
     Mutation: {
         ...userMutations,
         ...articleMutations,
         ...breedMutations,
+        ...reportMutations,
     },
     Upload: GraphQLUpload,
     ArticleDetail: {
@@ -34,18 +37,22 @@ const resolvers = {
             return await knex('comment').where('articleId', `${parent.id}`);
         },
         async images(parent: any) {
-            const articleType = parent.articleDetail.articleType;
-            const rawImages = await knex(articleType).join('image', `${articleType}.article_id`, 'image.article_id');
-            const images: any = {};
-            rawImages.forEach((rawImage: any) => {
-                if (images[rawImage.articleId]) {
-                    images[rawImage.articleId].push(rawImage.url);
-                } else {
-                    images[rawImage.articleId] = [rawImage.url];
-                }
+            const rawImages = await knex('image').where(`article_id`, parent.id);
+            const images = rawImages.map((image: any) => {
+                return image.url;
             });
 
-            return images[parent.id] || [];
+            return images || [];
+        },
+    },
+    Report: {
+        async images(parent: any) {
+            const rawImages = await knex('image').where('report_id', parent.id);
+            const images = rawImages.map((image: any) => {
+                return image.url;
+            });
+
+            return images || [];
         },
     },
 };
