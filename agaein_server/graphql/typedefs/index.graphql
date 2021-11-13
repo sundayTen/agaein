@@ -18,6 +18,8 @@ type Query {
     # Breed
     breeds(type: BREED_TYPE!): [Breed]!
     bookmarks: [Bookmark]!
+    # Report
+    reports(articleId: ID!): [Report]!
 }
 
 type Mutation {
@@ -34,4 +36,6 @@ type Mutation {
     # Bookmark
     createBookmark(articleId: ID!): Bookmark!
     deleteBookmark(id: ID!): ID!
+    # Report
+    createReport(files: [Upload]!, report: reportInput!): Report!
 }
