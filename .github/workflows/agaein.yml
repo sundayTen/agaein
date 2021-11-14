@@ -1,43 +1,44 @@
 name: agaein CI/CD
 
 on:
-  push:
-    branches: [develop]
+    push:
+        branches: [develop]
 env:
-  PORT: 3005
-  IMAGE: server
-  CONTAINER: server
-  OWNER_OR_ORGANIZATION: sundayTen
-  REPOSITORY: agaein
-  USER: fksk94
-  BRANCH: develop
+    PORT: 3005
+    IMAGE: server
+    CONTAINER: server
+    OWNER_OR_ORGANIZATION: sundayTen
+    REPOSITORY: agaein
+    USER: fksk94
+    BRANCH: develop
 
 jobs:
-  deploy:
-    name: Deploy
-    runs-on: [self-hosted, agaein]
-    steps:
-      - name: Check out source code
-        uses: actions/checkout@v2
-      - name: Pull source code
-        run: |
-          cd /home/actions/${{ env.REPOSITORY }}
-          git pull https://${{ env.USER }}:${{ secrets.USER_TOKEN }}@github.com/${{ env.OWNER_OR_ORGANIZATION }}/${{ env.REPOSITORY }}.git ${{ env.BRANCH }}
-      - name: Docker build
-        run: docker build -t ${{ env.IMAGE }} /home/actions/${{ env.REPOSITORY }}/agaein_server
-      - name: Docker stop
-        run: |
-          docker ps -f name=${{ env.CONTAINER }} -q | xargs --no-run-if-empty docker container stop
-          docker container ls -a -f name=${{ env.CONTAINER }} -q | xargs -r docker container rm
-      - name: Docker run
-        run: docker run -d --name ${{ env.CONTAINER }} -p ${{ env.PORT }}:${{ env.PORT }} -v /etc/localtime:/etc/localtime:ro -v /home/actions/assets/image:/image --restart always ${{ env.IMAGE }}
-      - name: remove Docker <none> image
-        run: if [ "$(docker images -f dangling=true -q)" != "" ]; then docker rmi $(docker images -f dangling=true -q); fi
-      - name: build Web
-        env: 
-          CI: ""
-        run: |
-          cd /home/actions/${{ env.REPOSITORY }}/agaein_web
-          yarn install
-          yarn codegen
-          yarn build
+    deploy:
+        name: Deploy
+        runs-on: [self-hosted, agaein]
+        steps:
+            - name: Check out source code
+              uses: actions/checkout@v2
+            - name: Pull source code
+              run: |
+                  cd /home/actions/${{ env.REPOSITORY }}
+                  git pull https://${{ env.USER }}:${{ secrets.USER_TOKEN }}@github.com/${{ env.OWNER_OR_ORGANIZATION }}/${{ env.REPOSITORY }}.git ${{ env.BRANCH }}
+            - name: Docker build
+              run: docker build -t ${{ env.IMAGE }} /home/actions/${{ env.REPOSITORY }}/agaein_server
+            - name: Docker stop
+              run: |
+                  docker ps -f name=${{ env.CONTAINER }} -q | xargs --no-run-if-empty docker container stop
+                  docker container ls -a -f name=${{ env.CONTAINER }} -q | xargs -r docker container rm
+            - name: Docker run
+              run: docker run -d --name ${{ env.CONTAINER }} -p ${{ env.PORT }}:${{ env.PORT }} -v /etc/localtime:/etc/localtime:ro -v /home/actions/assets/image:/image --restart always ${{ env.IMAGE }}
+            - name: remove Docker <none> image
+              run: if [ "$(docker images -f dangling=true -q)" != "" ]; then docker rmi $(docker images -f dangling=true -q); fi
+            - name: build Web
+              env:
+                  CI: ''
+                  SLACK_WEBHOOK_RUL: ${{ secrets.SLACK_WEBHOOK_URL }}
+              run: |
+                  cd /home/actions/${{ env.REPOSITORY }}/agaein_web
+                  yarn install
+                  yarn codegen
+                  yarn build

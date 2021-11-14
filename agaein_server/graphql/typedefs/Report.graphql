@@ -1,6 +1,5 @@
 type Report {
     id: ID!
-    articleId: ID!
     images: [String]!
     phoneNumber: String
     content: String
