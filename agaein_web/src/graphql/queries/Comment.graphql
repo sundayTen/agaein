@@ -16,3 +16,7 @@ mutation createComment($articleId: ID!, $content: String!, $commentId: ID, $pass
         id
     }
 }
+
+mutation deleteComment($id: ID!, $password: String) {
+    deleteComment(id: $id, password: $password)
+}

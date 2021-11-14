@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 import { Article, Lfg } from 'graphql/generated/generated';
 import Font from '../Font';
 import BookMark from '../BookMark';
-import moment from 'moment';
+import { YYYYMMDD } from 'utils/date';
 
 interface PostItemProps {
     item: Article;
@@ -26,16 +26,6 @@ const PostItem = (props: PostItemProps) => {
     const { item, bookmarked = false, setBookmark = () => {} } = props;
     const { id, articleDetail, createdAt, images } = item;
     const { breed, type, gender, location, age } = articleDetail as Lfg;
-
-    function typeToKr() {
-        if (type === 'DOG') {
-            return '개';
-        }
-        if (type === 'CAT') {
-            return '고양이';
-        }
-        return '기타';
-    }
 
     return (
         <>
@@ -50,17 +40,18 @@ const PostItem = (props: PostItemProps) => {
                     <InfoList>
                         <InfoItem>
                             <InfoCategory>품종</InfoCategory>
-                            <InfoText>{`${typeToKr()} | ${breed}`}</InfoText>
+                            <InfoText>{`${type} | ${breed}`}</InfoText>
                         </InfoItem>
                         <InfoItem>
                             <InfoCategory>실종일</InfoCategory>
-                            <InfoText>{moment(createdAt).format('YYYY-MM-DD')}</InfoText>
+                            <InfoText>{YYYYMMDD(createdAt)}</InfoText>
                         </InfoItem>
                         <InfoItem>
                             <InfoCategory>지역</InfoCategory>
                             <InfoText>{location.address.substr(0, 9)}</InfoText>
                         </InfoItem>
                     </InfoList>
+                    {/* TODO : 옵셔널 데이터를 어디까지 보여줄 지 논의해야 함 */}
                     {gender && (
                         <ContentTag>
                             <Font label={gender} fontType="tag" />

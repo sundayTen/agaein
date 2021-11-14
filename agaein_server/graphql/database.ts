@@ -167,9 +167,14 @@ export function initImage() {
                     table.increments();
                     table
                         .integer('article_id')
-                        .notNullable()
                         .references('id')
                         .inTable('article')
+                        .onUpdate('CASCADE')
+                        .onDelete('CASCADE');
+                    table
+                        .integer('report_id')
+                        .references('id')
+                        .inTable('report')
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
                     table.string('url').notNullable();
@@ -320,6 +325,34 @@ export function initArticleKeyword() {
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created article_keyword table');
+                })
+                .catch((error: String) => {
+                    console.error(error);
+                });
+        }
+    });
+}
+
+export function initReport() {
+    knex.schema.hasTable('report').then(function (exists: boolean) {
+        if (!exists) {
+            knex.schema
+                .createTable('report', function (table: any) {
+                    table.increments();
+                    table
+                        .integer('article_id')
+                        .notNullable()
+                        .references('id')
+                        .inTable('article')
+                        .onUpdate('CASCADE')
+                        .onDelete('CASCADE');
+                    table.string('phone_number');
+                    table.string('content');
+                    table.json('location').notNullable().defaultTo({});
+                    table.dateTime('found_date').notNullable();
+                })
+                .then(function () {
+                    console.log('[DataBase Initialized] created report table');
                 })
                 .catch((error: String) => {
                     console.error(error);

@@ -1,0 +1,17 @@
+type Report {
+    id: ID!
+    articleId: ID!
+    images: [String]!
+    phoneNumber: String
+    content: String
+    location: Location!
+    foundDate: Date!
+}
+
+input reportInput {
+    articleId: ID!
+    phoneNumber: String
+    content: String
+    location: LocationInput!
+    foundDate: Date!
+}

@@ -16,7 +16,7 @@ type UserProviderProps = {
 };
 
 const NON_MEMBER: User = {
-    id: 1,
+    id: '1',
     kakaoId: 'anonymous',
 } as unknown as User;
 

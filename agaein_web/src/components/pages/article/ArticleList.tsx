@@ -15,7 +15,7 @@ import useBookmark from 'hooks/useBookmark';
 import { Article, Board_Type, useGetArticlesQuery } from 'graphql/generated/generated';
 import { Fragment } from 'react';
 
-const ArticleList = (props: RouteComponentProps) => {
+const ArticleList = (_: RouteComponentProps) => {
     const { data, loading, error } = useGetArticlesQuery({
         variables: {
             boardType: Board_Type.Lfg,
