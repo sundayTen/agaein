@@ -1,44 +1,53 @@
 import moment from 'moment';
 
-/**
- *
- * @param day1 moment객체의 .get메소드의 리턴타입이 unixTimestamp라 number type
- * @param day2 moment객체의 .get메소드의 리턴타입이 unixTimestamp라 number type
- * @returns boolean
- */
-const isSameDay = (day1: number, day2: number): boolean => {
-    return day1 === day2;
-};
-const isSameMonth = (month1: number, month2: number): boolean => {
-    return month1 === month2;
-};
-const isSameYear = (year1: number, year2: number): boolean => {
-    return year1 === year2;
-};
+const MICROSECOND_UNIT = 1000;
+const MINUIT_TO_SECOND = 60;
+const HOUR_TO_MINUTE = 60;
+const DAY_TO_HOUR = 24;
+
+// * Second 단위로 변환
+const DAY = DAY_TO_HOUR * HOUR_TO_MINUTE * MINUIT_TO_SECOND;
+const HOUR = HOUR_TO_MINUTE * MINUIT_TO_SECOND;
+const MINUIT = MINUIT_TO_SECOND;
 
 /**
- * 오늘 작성된 글 : 시간만 표기
- * 올해지만 오늘은 아님 : 월, 일만 표기
- * 올해가 아님 : 연, 월, 일 표기
- * @param {string} date\
+ * YYYY년 MM월 DD일 포맷으로 변환해주는 함수
+ * @param {string} date Date 객체 string
+ * @returns {string } YYYY년 MM월 DD일
  */
-const convertDate = (date: string): string => {
-    const now = moment(new Date());
-    const targetDate = moment(date);
-
-    if (isSameYear(now.get('year'), targetDate.get('year'))) {
-        if (isSameMonth(now.get('month'), targetDate.get('month'))) {
-            if (isSameDay(now.get('date'), targetDate.get('date'))) {
-                return targetDate.format('HH시 mm분');
-            }
-        }
-        return targetDate.format('MM월 DD일');
-    }
-    return targetDate.format('YY년 MM월 DD일');
-};
-
-const YYYYMMDD = (date: string) => {
+const YYYYMMDD = (date: string): string => {
     return moment(date).format('YYYY년 MM월 DD일');
 };
 
-export { convertDate, YYYYMMDD };
+/**
+ * unix timestamp의 microsecond를 없애줍니다.
+ * @param {number} time unixTimestamp
+ * @returns {number} unixTimestamp
+ */
+const dropFloat = (time: number) => {
+    return Math.floor(time / MICROSECOND_UNIT);
+};
+
+/**
+ * 오늘을 기점으로 시간을 다르게 표기하는 함수
+ * @param date string
+ * @returns {string} **초 전 | **분 전 | **시간 전 | YYYY년 MM월 DD일
+ */
+const formattedDate = (date: string) => {
+    const today = new Date().getTime();
+    const targetDate = new Date(date).getTime();
+    const diff = dropFloat(today) - dropFloat(targetDate);
+
+    if (diff >= DAY) {
+        return YYYYMMDD(date);
+    }
+    if (diff >= HOUR) {
+        return `${Math.floor(diff / HOUR)}시간 전`;
+    }
+    if (diff >= MINUIT) {
+        return `${Math.floor(diff / MINUIT)}분 전`;
+    }
+    return `${Math.floor(diff)}초 전`;
+};
+
+export { YYYYMMDD, formattedDate };

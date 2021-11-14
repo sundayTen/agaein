@@ -5,3 +5,9 @@ query getBreeds($type: BREED_TYPE!) {
         breed
     }
 }
+
+mutation createBookmark($articleId: ID!) {
+    createBookmark(articleId: $articleId) {
+        id
+    }
+}
