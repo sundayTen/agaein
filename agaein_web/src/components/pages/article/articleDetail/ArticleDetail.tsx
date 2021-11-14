@@ -39,7 +39,7 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     const { id, createdAt, articleDetail, view, author, comments = [], images = [] } = data.article;
 
     // ? TypeGuard로 해결할 방법을 모르겠음
-    const { breed, feature, age = '??', gender, name, location, foundDate, lostDate } = articleDetail as any;
+    const { breed, feature, age, gender, name, location, foundDate, lostDate } = articleDetail as any;
 
     function getTitle() {
         if (isLFP(articleDetail)) {
@@ -49,10 +49,18 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     }
 
     function getDescription() {
-        if (isLFP(articleDetail)) {
-            return `실종일 ${YYYYMMDD(lostDate)} · 이름 ${name} · 나이 ${age}살 · 성별 ${gender}`;
+        let description = isLFP(articleDetail) ? `실종일 ${YYYYMMDD(lostDate)}` : `발견일 ${YYYYMMDD(foundDate)}`;
+        if (!!name) {
+            description += ` · 이름 ${name}`;
         }
-        return `발견일 ${YYYYMMDD(foundDate)} · 이름 ${name} · 나이 ${age}살 · 성별 ${gender}`;
+        if (!!age) {
+            description += ` · 나이 ${age}살`;
+        }
+        if (!!gender) {
+            description += ` · 성별 ${gender}`;
+        }
+
+        return description;
     }
 
     const closeModal = () => {
