@@ -21,7 +21,7 @@ export function FormPassword({ name, onChange }: FormPasswordProps) {
         }
 
         if (password.password1.length === 4 && password.password1 === password.password2) {
-            onChange(name, password.password1);
+            onChange(password.password1, name);
         }
     }, [password]);
 

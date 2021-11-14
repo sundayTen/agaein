@@ -54,7 +54,7 @@ interface KeywordType {
 
 export function FormKeyword({ name, onChange }: FormKeywordProps) {
     const [keyword, setKeyword] = useState('');
-    const [keywordList, setKeywordList] = useState<KeywordType[]>([]);
+    const [keywordList, setKeywordList] = useState<KeywordType[]>();
 
     const inputChangeHandler = (value: string) => {
         setKeyword(value);
@@ -62,17 +62,19 @@ export function FormKeyword({ name, onChange }: FormKeywordProps) {
 
     const nextId = useRef(1);
 
-    useEffect(() => {
-        const valueList = keywordList.map((keyword) => keyword.value);
-        onChange(valueList, name);
-    }, [keywordList]);
-
     const addKeyword = () => {
         const currentKeyword = {
             id: nextId.current,
             value: keyword,
         };
-        setKeywordList(keywordList.concat(currentKeyword));
+
+        const currentKeywordList = keywordList?.concat(currentKeyword);
+
+        setKeywordList(currentKeywordList);
+
+        const valueList = currentKeywordList?.map((keyword) => keyword.value);
+        onChange(valueList, name);
+
         setKeyword('');
         nextId.current += 1;
     };
@@ -84,7 +86,7 @@ export function FormKeyword({ name, onChange }: FormKeywordProps) {
     };
 
     const deleteKeyword = (id: any) => {
-        setKeywordList(keywordList.filter((keywordList) => keywordList.id !== id));
+        setKeywordList(keywordList?.filter((keywordList) => keywordList.id !== id));
     };
 
     return (
@@ -101,7 +103,7 @@ export function FormKeyword({ name, onChange }: FormKeywordProps) {
                     <Button label="추가" size="MEDIUM" buttonStyle="BLACK" onClick={addKeyword} />
                 </KeywordForm>
                 <KeywordList>
-                    {keywordList.map((keyword) => {
+                    {keywordList?.map((keyword) => {
                         return (
                             <KeywordItem key={keyword.id}>
                                 {keyword.value}

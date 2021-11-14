@@ -52,9 +52,9 @@ export function FormAddress({ name, type, onChange, address }: FormAddressProps)
         onChange(addressValue, name);
     }, [addressValue]);
 
-    useEffect(() => {
-        setMainAddress(address);
-    }, [address]);
+    // useEffect(() => {
+    //     setMainAddress(address);
+    // }, [address]);
 
     const setMainAddress = (value: any) => {
         setAddressValue((prev) => ({
@@ -62,7 +62,6 @@ export function FormAddress({ name, type, onChange, address }: FormAddressProps)
             lat: value?.lat,
             lng: value?.lng,
             address: value?.address,
-            roadAddress: value?.roadAddress,
         }));
     };
 

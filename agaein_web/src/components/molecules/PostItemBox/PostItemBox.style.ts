@@ -13,6 +13,8 @@ export const ItemBox = styled.div`
 `;
 
 export const Thumb = styled.div`
+    display: flex;
+    align-items: center;
     height: 120px;
     background-color: #eee;
     overflow: hidden;
@@ -20,6 +22,7 @@ export const Thumb = styled.div`
 
 export const Img = styled.img`
     width: 100%;
+    min-height: 100%;
 `;
 
 export const InfoList = styled.ul`

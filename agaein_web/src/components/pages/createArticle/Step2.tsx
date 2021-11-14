@@ -30,45 +30,28 @@ import { CreateArticleStep2Params } from 'router/params';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { useCreateArticleMutation, ArticleDetailInput } from 'graphql/generated/generated';
 import { UserContext } from 'contexts/userContext';
+import { isArticleDetail } from 'utils/typeGuards';
 
 const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>) => {
     const { isLoggedIn } = useContext(UserContext);
     const [create] = useCreateArticleMutation();
     const boardType = match.params.type;
     const [files, setFiles] = useState<[]>();
-    const [currentArticleDetail, setCurrentArticleDetail] = useState<ArticleDetailInput>({
-        breedId: '',
-        name: '',
-        feature: '',
-        gender: undefined,
-        location: {
-            lat: 0,
-            lng: 0,
-            address: '',
-            detail: '',
-        },
-        foundDate: '',
-        age: undefined,
-        password: '',
-        alarm: false,
-        email: '',
-        keyword: [],
-        lostDate: '',
-        gratuity: 0,
-    });
+    const [currentArticleDetail, setCurrentArticleDetail] = useState<ArticleDetailInput>({});
 
     const boardTitle = boardType === 'LFP' ? '실종' : '발견';
     const dateType = boardType === 'LFP' ? 'lostDate' : 'foundDate';
 
-    const isInvalid = useMemo<boolean>(() => {
-        const isFiles = files?.length;
-        const date = dateType;
-        const isAddress = currentArticleDetail.location?.address && currentArticleDetail.location?.detail;
+    const isFiles = () => {
+        return files?.length;
+    };
 
-        return (
-            !isFiles || !currentArticleDetail.breedId || !currentArticleDetail[date] || !isAddress
-            // !(!isLoggedIn && isCheckRequried && currentArticleDetail.password)
-        );
+    const needPassword = () => {
+        return isLoggedIn ? true : currentArticleDetail.password;
+    };
+
+    const isInvalid = useMemo<boolean>(() => {
+        return !isFiles() || !isArticleDetail(currentArticleDetail, dateType, isLoggedIn) || !needPassword();
     }, [currentArticleDetail, files]);
 
     const handleGoBack = () => {
