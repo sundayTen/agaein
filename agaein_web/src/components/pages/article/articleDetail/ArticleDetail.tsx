@@ -23,6 +23,7 @@ import { formattedDate, YYYYMMDD } from 'utils/date';
 import { Fragment } from 'react';
 import { isArticle, isLFP } from 'utils/typeGuards';
 import penguin from 'assets/image/penguin.png';
+import { ArticleList } from 'components/organism/HomeArticleList/HomeArticleList.style';
 
 const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useBookmark();
@@ -101,6 +102,7 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
                 </ArticleDetailContainer>
             </HorizontalContainer>
             <Comment comments={comments as CommentType[]} articleId={id} author={author} />
+
             <WitnessModal open={isOpenModal} close={closeModal} isAuthor={true} />
         </Fragment>
     );

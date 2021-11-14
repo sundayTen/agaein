@@ -2,7 +2,7 @@ import { Fragment, useCallback, useContext, useRef, useState } from 'react';
 import Button from 'components/molecules/Button';
 import Font from 'components/molecules/Font';
 import Textarea from 'components/molecules/Textarea';
-import { Comment as CommentType, User } from 'graphql/generated/generated';
+import { Comment as CommentType, CommentInput, User } from 'graphql/generated/generated';
 import {
     CommentHeader,
     CommentContainer,
@@ -29,6 +29,7 @@ const Comment = (props: CommentProps) => {
     const { createComment, deleteComment } = useComment();
     const commentInputRef = useRef<HTMLTextAreaElement>(null);
     const [commentInput, setCommentInput] = useState<string | undefined>(undefined);
+    const [replyId, setReplyId] = useState<string | undefined>(undefined);
     const [password, setPassword] = useState<string | undefined>(undefined);
 
     const onPressSubmit = () => {
@@ -37,16 +38,22 @@ const Comment = (props: CommentProps) => {
             articleId,
             content: commentInput,
             password,
-            commentId: '1',
+            commentId: replyId,
         });
-        setCommentInput(undefined);
+        resetCommentInput();
         // TODO : 작성된 코멘트로 이동 -> 이미 10개 이상이면 더보기 해제 후 이동.
     };
+
     // TODO : 비밀번호 규칙을 정해서 적용해야함.
     const onChangePwd = (pwd: string) => {
         if (pwd.length <= 4) {
             setPassword(pwd);
         }
+    };
+    const resetCommentInput = () => {
+        setCommentInput(undefined);
+        setPassword(undefined);
+        setReplyId(undefined);
     };
     const isAuthorComment = (commentAuthorId: string) => {
         if (articleWriter.kakaoId === 'anonymous') return false;
@@ -60,10 +67,11 @@ const Comment = (props: CommentProps) => {
         commentInputRef.current?.focus({ preventScroll: false });
     };
 
-    const handleMenu = (key: COMMENT_OPTION) => {
+    const handleMenu = (key: COMMENT_OPTION, commentId: string) => {
         switch (key) {
             case '답글':
                 focusOnInput();
+                setReplyId(commentId);
                 break;
             case '수정':
                 // TODO : updateMutation 추가
@@ -72,7 +80,7 @@ const Comment = (props: CommentProps) => {
                 // TODO : 팝업 + 실제 데이터로 테스트
                 deleteComment(
                     {
-                        id: '1',
+                        id: commentId,
                         password,
                     },
                     articleId,
