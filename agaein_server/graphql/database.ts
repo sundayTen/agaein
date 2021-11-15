@@ -346,10 +346,19 @@ export function initReport() {
                         .inTable('article')
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
+                    table
+                        .integer('user_id')
+                        .notNullable()
+                        .references('id')
+                        .inTable('user')
+                        .onUpdate('CASCADE')
+                        .onDelete('CASCADE');
                     table.string('phone_number');
                     table.string('content');
                     table.json('location').notNullable().defaultTo({});
                     table.dateTime('found_date').notNullable();
+                    table.dateTime('created_at').notNullable();
+                    table.dateTime('updated_at').notNullable();
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created report table');
