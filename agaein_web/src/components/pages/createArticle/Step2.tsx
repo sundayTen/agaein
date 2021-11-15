@@ -51,7 +51,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     };
 
     const isInvalid = useMemo<boolean>(() => {
-        return !isFiles() || !isArticleDetail(currentArticleDetail, dateType, isLoggedIn) || !needPassword();
+        return !isFiles() || !isArticleDetail(currentArticleDetail, dateType) || !needPassword();
     }, [currentArticleDetail, files]);
 
     const handleGoBack = () => {

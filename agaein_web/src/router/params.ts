@@ -7,7 +7,7 @@ export interface CreateArticleStep2Params {
     type: Board_Type;
 }
 export interface ArticleListParams {
-    id: string;
+    type: Board_Type;
 }
 export interface ArticleDetailParams {
     id: string;

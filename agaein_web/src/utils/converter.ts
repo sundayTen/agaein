@@ -1,4 +1,4 @@
-import { Breed_Type, Gender } from 'graphql/generated/generated';
+import { Board_Type, Breed_Type, Gender } from 'graphql/generated/generated';
 
 /**
  * Gender enum을 한글로 변환합니다.
@@ -38,4 +38,17 @@ function convertAnimalType(type: Breed_Type): string {
     return '기타';
 }
 
-export { convertGender, convertAnimalType };
+const getTitle = (boardType: Board_Type) => {
+    switch (boardType) {
+        case Board_Type.Lfg:
+            return '실종동물 찾아요';
+        case Board_Type.Lfp:
+            return '주인을 찾아요';
+        case Board_Type.Review:
+            return '베스트 후기';
+        default:
+            return '잘못된 데이터';
+    }
+};
+
+export { convertGender, convertAnimalType, getTitle };
