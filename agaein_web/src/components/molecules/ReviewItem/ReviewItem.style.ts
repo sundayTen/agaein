@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 
 export const ReviewItemContainer = styled.div`
-    background-color: ${(props) => props.theme.light.white};
-    margin: 10px 10px 10px 10px;
     width: 290px;
-    height: 280px;
     border-width: 2px;
-    border: 2px solid #bfc4ca;
+    border: 1px solid ${(props) => props.theme.light.lightGrey2};
     border-radius: 10px;
+    background-color: ${(props) => props.theme.light.white};
     cursor: pointer;
     overflow: hidden;
 `;
@@ -19,10 +17,6 @@ export const Title = styled.p`
 export const Description = styled.p`
     font-size: 12px;
     color: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
-`;
-export const Avatar = styled.img`
-    width: 100%;
-    height: 160px;
 `;
 
 export const ReviewerContainer = styled.div`
@@ -40,6 +34,20 @@ export const CommentCount = styled.p`
     color: #5f6871;
 `;
 
+export const ReviewImageContainer = styled.div`
+    display: flex;
+    align-items: center;
+    height: 140px;
+    overflow: hidden;
+`;
+
+export const ReviewImage = styled.img`
+    width: 100%;
+    min-height: 100%;
+`;
+
 export const ReviewInfoContainer = styled.div`
-    margin: 10px 10px 10px 10px;
+    padding: 9px 12px 10px;
+    height: 98px;
+    box-sizing: border-box;
 `;

@@ -38,6 +38,12 @@ export const Step1ButtonGroup = styled.div`
     }
 `;
 export const UtilButtonGroup = styled.div`
+    button {
+        width: 200px;
+        height: 58px;
+        border-radius: 8px;
+    }
+
     button + button {
         margin-left: 20px;
     }
@@ -134,6 +140,12 @@ export const Form = styled.div`
 export const ButtonWrapper = styled.div`
     margin: 60px 0 160px;
     text-align: center;
+
+    button {
+        width: 200px;
+        height: 58px;
+        border-radius: 8px;
+    }
 
     button + button {
         margin-left: 20px;

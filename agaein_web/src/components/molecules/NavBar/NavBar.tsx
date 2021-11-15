@@ -1,13 +1,13 @@
 // @ts-nocheck
 
 import { useContext } from 'react';
-import { Nav, Title, AgaeinIconImg, UserTag, ChevronDown } from './NavBar.style';
-import KakaoLogin from 'react-kakao-login';
+import { Nav, Title, AgaeinIconImg, UserTag, ChevronDown, KaKaoLoginButton, KaKaoIcon } from './NavBar.style';
 import { KAKAO_LOGIN_KEY } from 'config/server';
 import { Link } from 'react-router-dom';
 import { UserContext } from 'contexts/userContext';
 import Font from '../Font';
-import KakaoLoginButton from 'assets/image/kakao_login.png';
+import KakaoIcon from 'assets/image/Kakao.png';
+
 interface KaKaoLoginResult {
     response: LoginResponse;
     profile?: UserProfile | undefined;
@@ -25,8 +25,8 @@ const NavBar = () => {
         <Nav>
             <Link to="/">
                 <Title>
-                    <AgaeinIconImg alt="" src="https://img.icons8.com/ios/50/000000/github--v1.png" />
-                    <Font label="AGAEIN" fontType="h3" fontWeight="bold" />
+                    <AgaeinIconImg alt="로고" src="https://img.icons8.com/ios/50/000000/github--v1.png" />
+                    AGAEIN
                 </Title>
             </Link>
             {isLoggedIn ? (
@@ -35,17 +35,18 @@ const NavBar = () => {
                     <ChevronDown />
                 </UserTag>
             ) : (
-                <KakaoLogin
+                <KaKaoLoginButton
                     token={KAKAO_LOGIN_KEY}
                     onSuccess={onLoginComplete}
                     onFail={onLoginFailed}
                     getProfile={true}
                     useLoginForm={true}
-                    type="button"
                     style={{}}
+                    type="button"
                 >
-                    <img src={KakaoLoginButton} alt="카카오 로그인" />
-                </KakaoLogin>
+                    <KaKaoIcon src={KakaoIcon} alt="카카오" />
+                    카카오로 시작하기
+                </KaKaoLoginButton>
             )}
         </Nav>
     );

@@ -9,10 +9,14 @@ export const HorizontalContainer = styled.div`
 
 export const ArticleDetailContainer = styled.div`
     width: 540px;
-    background-color: white;
+    background-color: ${(props) => props.theme.light.white};
     border-radius: 4px;
-    padding: 30px;
     margin: 0 auto;
+`;
+
+export const ContainerTop = styled.div`
+    padding: 30px 30px 20px;
+    border-bottom: 1px solid ${(props) => props.theme.light.lightGrey2};
 `;
 
 export const TitleAndBookMarkContainer = styled.div`
@@ -37,18 +41,15 @@ export const ArticleDetailDetailContainer = styled.div`
 `;
 
 export const ArticleDetailContentContainer = styled.div`
-    margin: 20px auto;
-    width: 620px;
-    overflow: hidden;
-    width: auto;
+    margin-top: 16px;
 `;
+
 export const ArticleInfoContainer = styled.div`
     display: flex;
     justify-content: space-between;
+    margin-top: 30px;
 `;
 
 export const ArticleMapContainer = styled.div`
-    border-top: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
-    padding: 30px;
-    margin: 30px 0;
+    padding: 20px 30px 30px;
 `;

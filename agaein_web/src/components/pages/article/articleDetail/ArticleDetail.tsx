@@ -5,6 +5,7 @@ import { Comment as CommentType, useGetArticleQuery } from 'graphql/generated/ge
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
 import {
+    ContainerTop,
     ArticleDetailContainer,
     ArticleDetailContentContainer,
     ArticleInfoContainer,
@@ -82,20 +83,22 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
             <HorizontalContainer>
                 <ImageCarousel images={targetImages() as string[]} />
                 <ArticleDetailContainer>
-                    <Chip label="진행중" />
+                    <ContainerTop>
+                        <Chip label="진행중" />
 
-                    <ArticleDetailContentContainer>
-                        <TitleAndBookMarkContainer>
-                            <Font label={getTitle()} fontType="h4" fontWeight="bold" htmlElement="span" />
-                            <BookMark active={isBookmarked(id)} onClick={() => setBookmark(id)} />
-                        </TitleAndBookMarkContainer>
-                        <Font label={getDescription()} fontType="body" style={{ marginTop: 5, marginBottom: 30 }} />
-                        <Font label={feature} fontType="label" />
-                    </ArticleDetailContentContainer>
-                    <ArticleInfoContainer>
-                        <Font label={formattedDate(createdAt)} fontType="tag" />
-                        <Font label={` 북마크 5 · 댓글 ${comments?.length} · 조회수 ${view}`} fontType="tag" />
-                    </ArticleInfoContainer>
+                        <ArticleDetailContentContainer>
+                            <TitleAndBookMarkContainer>
+                                <Font label={getTitle()} fontType="h4" fontWeight="bold" htmlElement="span" />
+                                <BookMark active={isBookmarked(id)} onClick={() => setBookmark(id)} />
+                            </TitleAndBookMarkContainer>
+                            <Font label={getDescription()} fontType="body" style={{ marginTop: 6 }} />
+                            <Font label={feature} fontType="label" />
+                        </ArticleDetailContentContainer>
+                        <ArticleInfoContainer>
+                            <Font label={formattedDate(createdAt)} fontType="body" />
+                            <Font label={` 북마크 5 · 댓글 ${comments?.length} · 조회수 ${view}`} fontType="body" />
+                        </ArticleInfoContainer>
+                    </ContainerTop>
                     <ArticleMapContainer>
                         <Font label="실종장소" fontType="subhead" style={{ marginBottom: 10 }} />
                         <ReactKaKaoMap missPosition={location} size={{ width: 480, height: 260 }} noClick={true} />
@@ -104,6 +107,7 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
                             onClick={() => {
                                 setIsOpenModal(true);
                             }}
+                            buttonStyle="BLACK"
                             style={{ width: '100%', marginTop: 20 }}
                         />
                     </ArticleMapContainer>

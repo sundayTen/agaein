@@ -94,7 +94,7 @@ const colorStyles = css`
     ${(props: FontProps) =>
         props.status === 'NORMAL' &&
         css`
-            color: 'black';
+            color: ${(props) => props.theme.light.black};
         `}
     ${(props: FontProps) =>
         props.status === 'DISABLED' &&

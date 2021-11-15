@@ -5,12 +5,22 @@ export const CarouselContainer = styled.div`
     margin-right: 30px;
 `;
 
-// TODO : Image의 크기가 하드코딩되어있으면 사진에 따라 가로세로 비율이 달라 찌그러져 보일 수 있음.
-export const FocusedImage = styled.img`
+export const FocusedImageWrapper = styled.div`
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
     width: 720px;
     height: 548px;
+    margin-right: 30px;
     border-radius: 10px;
+    overflow: hidden;
 `;
+
+export const FocusedImage = styled.img`
+    width: 100%;
+    min-height: 100%;
+`;
+
 export const CarouselList = styled.div`
     display: flex;
     padding-top: 20px;
@@ -21,11 +31,19 @@ interface SmallImgProps {
     active: boolean;
 }
 
-export const SmallImg = styled.img<SmallImgProps>`
+export const SmallImgWrapper = styled.div`
+    display: flex;
+    align-items: center;
     width: 72px;
     height: 72px;
-    cursor: pointer;
     border-radius: 4px;
     margin-right: 6px;
+    overflow: hidden;
+    cursor: pointer;
+`;
+
+export const SmallImg = styled.img<SmallImgProps>`
+    width: 100%;
+    min-height: 100%;
     opacity: ${(props) => (props.active ? 1 : 0.5)};
 `;

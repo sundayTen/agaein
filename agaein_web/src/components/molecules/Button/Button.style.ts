@@ -44,13 +44,10 @@ const colorStyles = css`
         props.buttonStyle === 'PAINTED' &&
         css`
             background-color: ${(props) => props.theme.light.primary};
-            border: 1px solid ${(props) => props.theme.light.primary};
             color: ${(props) => props.theme.light.white};
 
             &:hover {
-                background-color: ${(props) => props.theme.light.white};
-                color: ${(props) => props.theme.light.primary};
-                border: 1px solid ${(props) => props.theme.light.white};
+                background-color: ${(props) => props.theme.light.primary800};
             }
 
             &:disabled {
@@ -69,9 +66,9 @@ const colorStyles = css`
             color: ${(props) => props.theme.light.primary};
 
             &:hover {
-                background-color: ${(props) => props.theme.light.white};
-                color: ${(props) => props.theme.light.primary};
-                border: 1px solid ${(props) => props.theme.light.white};
+                background-color: ${(props) => props.theme.light.primary800};
+                color: ${(props) => props.theme.light.white};
+                border: 1px solid ${(props) => props.theme.light.primary800};
             }
 
             &:disabled {

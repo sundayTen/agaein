@@ -1,7 +1,14 @@
 import penguin from 'assets/image/penguin.png';
 import { Article, Review } from 'graphql/generated/generated';
 import { Fragment } from 'react';
-import { Avatar, Description, ReviewInfoContainer, ReviewItemContainer, Title } from './ReviewItem.style';
+import {
+    Description,
+    ReviewImageContainer,
+    ReviewImage,
+    ReviewInfoContainer,
+    ReviewItemContainer,
+    Title,
+} from './ReviewItem.style';
 
 interface ReviewItemProps {
     item: Article;
@@ -14,7 +21,9 @@ const ReviewItem = (props: ReviewItemProps) => {
     return (
         <Fragment>
             <ReviewItemContainer>
-                <Avatar src={penguin} />
+                <ReviewImageContainer>
+                    <ReviewImage src={penguin} />
+                </ReviewImageContainer>
                 <ReviewInfoContainer>
                     <Title>{title}</Title>
                     <Description>{content}</Description>

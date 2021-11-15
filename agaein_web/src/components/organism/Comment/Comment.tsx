@@ -1,9 +1,10 @@
-import { Fragment, useCallback, useContext, useRef, useState } from 'react';
+import { useCallback, useContext, useRef, useState } from 'react';
 import Button from 'components/molecules/Button';
 import Font from 'components/molecules/Font';
 import Textarea from 'components/molecules/Textarea';
 import { Comment as CommentType, CommentInput, User } from 'graphql/generated/generated';
 import {
+    CommentWrapper,
     CommentHeader,
     CommentContainer,
     CommentInputContainer,
@@ -94,7 +95,7 @@ const Comment = (props: CommentProps) => {
     // ? comments가 null일 수 있는지 모르겠지만 종종 에러가 남.
     if (comments === null) return <></>;
     return (
-        <Fragment>
+        <CommentWrapper>
             <CommentHeader>
                 <Font label={`댓글 ${comments.length}`} fontType="h4" fontWeight="bold" />
             </CommentHeader>
@@ -115,6 +116,7 @@ const Comment = (props: CommentProps) => {
                                     type="password"
                                     value={password ?? ''}
                                     onChange={(e) => onChangePwd(e.target.value)}
+                                    placeholder="비밀번호"
                                 />
                                 <RequiredGuide>
                                     <RequiredIcon />
@@ -140,7 +142,7 @@ const Comment = (props: CommentProps) => {
                     />
                 ))}
             </CommentContainer>
-        </Fragment>
+        </CommentWrapper>
     );
 };
 

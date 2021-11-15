@@ -8,6 +8,7 @@ import {
     InfoText,
     ContentTag,
     BookMarkBox,
+    TagList,
 } from './PostItemBox.style';
 import penguin from 'assets/image/penguin.png';
 import { Link } from 'react-router-dom';
@@ -52,16 +53,18 @@ const PostItem = (props: PostItemProps) => {
                         </InfoItem>
                     </InfoList>
                     {/* TODO : 옵셔널 데이터를 어디까지 보여줄 지 논의해야 함 */}
-                    {gender && (
-                        <ContentTag>
-                            <Font label={gender} fontType="tag" />
-                        </ContentTag>
-                    )}
-                    {age && (
-                        <ContentTag>
-                            <Font label={`${age}살`} fontType="tag" />
-                        </ContentTag>
-                    )}
+                    <TagList>
+                        {gender && (
+                            <ContentTag>
+                                <Font label={gender} fontType="tag" />
+                            </ContentTag>
+                        )}
+                        {age && (
+                            <ContentTag>
+                                <Font label={`${age}살`} fontType="tag" />
+                            </ContentTag>
+                        )}
+                    </TagList>
                 </ItemBox>
             </Link>
         </>

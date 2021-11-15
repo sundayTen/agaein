@@ -3,11 +3,12 @@ import styled from 'styled-components';
 export const ItemBox = styled.div`
     position: relative;
     border-radius: 10px;
-    border: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
     overflow: hidden;
     background-color: white;
+    border: 1px solid ${(props) => props.theme.light.lightGrey2};
+
     &:hover {
-        border: ${(props) => '1px solid ' + props.theme.light.primary};
+        border-color: ${(props) => props.theme.light.primary};
     }
     margin-bottom: 20px;
 `;
@@ -26,39 +27,49 @@ export const Img = styled.img`
 `;
 
 export const InfoList = styled.ul`
-    padding: 10px;
+    padding: 7px 12px;
 `;
 
 export const InfoItem = styled.li`
     display: table-row;
-    padding: 2px 12px;
-    margin-bottom: 6px;
 `;
 
 export const InfoCategory = styled.em`
     display: table-cell;
-    padding: 0 10px 0 0;
+    padding: 0 10px 2px 0;
     font-size: 12px;
-    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
     color: ${(props) => props.theme.light.DarkGrey2};
 `;
 
 export const InfoText = styled.span`
     display: table-cell;
     font-size: 12px;
-`;
-
-export const ContentTag = styled.div`
-    padding: 4px 10px;
-    margin: 0 0 10px 10px;
-    border-radius: 4px;
-    border: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
-    background-color: ${(props) => props.theme.light.lightGrey2};
-    display: inline-block;
+    line-height: 18px;
+    letter-spacing: -0.02em;
 `;
 
 export const BookMarkBox = styled.div`
     position: absolute;
     top: 6px;
     right: 6px;
+`;
+
+export const TagList = styled.div`
+    display: flex;
+    padding: 0 12px 8px;
+`;
+
+export const ContentTag = styled.div`
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
+    background-color: ${(props) => props.theme.light.lightGrey2};
+    display: inline-block;
+
+    & + & {
+        margin-left: 6px;
+    }
 `;

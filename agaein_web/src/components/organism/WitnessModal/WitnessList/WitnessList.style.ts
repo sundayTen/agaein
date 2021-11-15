@@ -36,7 +36,7 @@ export const Header = styled.tr`
 export const Witness = styled.tr`
     height: 45px;
     color: ${(props) => props.theme.light.black};
-    border: 1px solid ${(props) => props.theme.light.lightGrey2};
+    border-bottom: 1px solid ${(props) => props.theme.light.lightGrey2};
     td {
         font-style: normal;
         font-weight: normal;

@@ -43,6 +43,7 @@ export function FormPassword({ name, onChange }: FormPasswordProps) {
                         maxLength={4}
                         value={password.password1}
                         onChange={(e) => inputChangeHandler(e.target.value, 'password1')}
+                        autoComplete="new-password"
                     />
                 </Form>
             </FormRow>
