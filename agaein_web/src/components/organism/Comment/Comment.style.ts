@@ -1,6 +1,10 @@
 import Input from 'components/molecules/Input/Input';
 import styled from 'styled-components';
 
+export const CommentWrapper = styled.div`
+    margin: 40px 0 120px;
+`;
+
 export const CommentContainer = styled.div`
     width: 100%;
     background-color: white;

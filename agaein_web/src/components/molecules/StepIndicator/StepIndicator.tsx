@@ -36,9 +36,9 @@ export const StepIndicator = (props: StepIndicatorProps) => {
                 <Circle status={getStatus(3)} index={3} />
             </StepIndicatorContainer>
             <FontContainer>
-                <Font label="분류 선택" fontType="tag" status={getFontStatus(1)} />
-                <Font label="게시글 작성" fontType="tag" status={getFontStatus(2)} />
-                <Font label="작성 완료" fontType="tag" status={getFontStatus(3)} />
+                <Font label="분류 선택" fontType="label" status={getFontStatus(1)} />
+                <Font label="게시글 작성" fontType="label" status={getFontStatus(2)} />
+                <Font label="작성 완료" fontType="label" status={getFontStatus(3)} />
             </FontContainer>
         </>
     );

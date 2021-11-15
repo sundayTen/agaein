@@ -20,7 +20,13 @@ export function FormEmail({ name, onChange }: FormEmailProps) {
         <FormRow>
             <FormLabel>이메일</FormLabel>
             <Form>
-                <Input type="email" placeholder="이메일을 입력해주세요" value={value} onChange={inputChangeHandler} />
+                <Input
+                    type="email"
+                    placeholder="이메일을 입력해주세요"
+                    value={value}
+                    onChange={inputChangeHandler}
+                    autoComplete="off"
+                />
             </Form>
         </FormRow>
     );

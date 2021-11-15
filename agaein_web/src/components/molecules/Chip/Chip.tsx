@@ -8,11 +8,7 @@ interface ChipProps {
 
 const Chip = (props: ChipProps) => {
     const { label } = props;
-    return (
-        <ChipContainer>
-            <Font label={label} fontType="tag" fontWeight="normal" htmlElement="span" style={{ color: 'white' }} />
-        </ChipContainer>
-    );
+    return <ChipContainer>{label}</ChipContainer>;
 };
 
 export default Chip;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ArticleList = styled.div`
-    margin-bottom: 80px;
+    margin-bottom: 60px;
 `;
 
 export const ListHeader = styled.div`
@@ -12,15 +12,14 @@ export const ListHeader = styled.div`
 export const TitleBox = styled.div`
     display: flex;
     span + span {
-        margin-left: 10px;
+        margin-left: 8px;
     }
 `;
 
 export const ButtonViewAll = styled.button`
-    font-size: 18px;
-    color: #5f6871;
-    cursor: pointer;
     font-family: SsurroundAir;
+    font-size: 14px;
+    color: ${(props) => props.theme.light.DarkGrey2};
 `;
 
 export const ListContainer = styled.ul`
@@ -32,6 +31,10 @@ export const ListContainer = styled.ul`
 export const ListItem = styled.li`
     width: 180px;
     padding: 0 20px;
+
+    a {
+        display: block;
+    }
 `;
 export const ReviewWrapper = styled.li`
     width: 290px;

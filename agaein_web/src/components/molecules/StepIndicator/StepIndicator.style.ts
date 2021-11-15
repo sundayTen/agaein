@@ -2,22 +2,21 @@ import styled from 'styled-components';
 import { StepStatus } from './Circle/Circle';
 
 export const StepIndicatorContainer = styled.div`
-    width: 396px;
     display: flex;
     flex-direction: horizontal;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin: 0 auto;
 `;
 
 export const FontContainer = styled.div`
-    width: 410px;
+    width: 450px;
     display: flex;
     flex-direction: horizontal;
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
-    padding-top: 10px;
+    padding-top: 16px;
 `;
 
 export const Edge = styled.div<{ status: StepStatus }>`

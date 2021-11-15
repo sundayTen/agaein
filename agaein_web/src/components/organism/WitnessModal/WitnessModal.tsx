@@ -2,7 +2,7 @@ import Modal from 'components/molecules/Modal';
 import { useEffect, useState } from 'react';
 import ReactKaKaoMap from '../ReactKakaoMap/ReactKakaoMap';
 import WitnessList from './WitnessList/WitnessList';
-import { ImgToggleButton, MapToggleButton, ToggleButtonDiv } from './WitnessModel.style';
+import { ToggleButtonDiv, ToggleButon } from './WitnessModel.style';
 import WitnessImageCarousel from './WitnessImageCarousel';
 import WithessReport from './WithessReport/WithessReport';
 import { isConstructorDeclaration } from 'typescript';
@@ -41,12 +41,12 @@ const WitnessModal = ({ open, close, isAuthor = false }: WitnessModalProps) => {
             <div>
                 {isAuthor && (
                     <ToggleButtonDiv>
-                        <ImgToggleButton click={witnessToggle === '사진'} onClick={() => setWitnessToggle('사진')}>
-                            사진보기
-                        </ImgToggleButton>
-                        <MapToggleButton click={witnessToggle === '지도'} onClick={() => setWitnessToggle('지도')}>
+                        <ToggleButon click={witnessToggle === '지도'} onClick={() => setWitnessToggle('지도')}>
                             지도보기
-                        </MapToggleButton>
+                        </ToggleButon>
+                        <ToggleButon click={witnessToggle === '사진'} onClick={() => setWitnessToggle('사진')}>
+                            사진보기
+                        </ToggleButon>
                     </ToggleButtonDiv>
                 )}
                 {witnessToggle === '지도' ? (

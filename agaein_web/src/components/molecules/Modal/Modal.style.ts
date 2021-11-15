@@ -21,7 +21,7 @@ export const ChildrenContainer = styled.div`
 
 export const MainContainer = styled.div`
     margin: 0 -24px;
-    padding 0 24px;
+    padding: 0 24px;
     max-height: 720px;
     overflow: auto;
 `;
@@ -79,4 +79,6 @@ export const ModalInner = styled.div`
     margin: 0 auto;
     padding: 21px 24px;
     text-align: left;
+    height: calc(100% - 100px);
+    overflow-y: auto;
 `;

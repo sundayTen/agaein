@@ -1,4 +1,5 @@
 import { ChevronDownIcon } from '@heroicons/react/solid';
+import KakaoLogin from 'react-kakao-login';
 
 import styled from 'styled-components';
 
@@ -6,27 +7,28 @@ export const Nav = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 75px;
+    height: 80px;
     padding: 0 40px;
-    border-bottom: 1px solid rgba(44, 44, 44, 0.233);
-    box-shadow: 0px 2px 3px rgba(44, 44, 44, 0.137);
     background-color: ${(props) => props.theme.light.background};
     z-index: 1000;
 `;
 
-export const Title = styled.div`
-    display: flex;
+export const Title = styled.h1`
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 28px;
+    color: #5f6817;
 `;
 
 export const AgaeinIconImg = styled.img`
+    vertical-align: -6px;
     width: 28px;
     height: 28px;
     margin-right: 6px;
-    vertical-align: -7px;
 `;
 
 export const ManuBox = styled.div`
@@ -45,12 +47,6 @@ export const DarkMode = styled.button`
     text-align: center;
 `;
 
-export const StyledKakaoLogin = styled.div`
-    background-color: #fee500;
-    border-radius: 6px;
-    padding: 9px 14px;
-`;
-
 export const UserTag = styled.button`
     display: flex;
     min-width: 80px;
@@ -60,4 +56,24 @@ export const UserTag = styled.button`
 export const ChevronDown = styled(ChevronDownIcon)`
     width: 24px;
     height: 24px;
+`;
+
+export const KaKaoLoginButton = styled(KakaoLogin)`
+    height: 40px;
+    padding: 0 14px;
+    box-sizing: border-box;
+    background: #fee500;
+    border-radius: 6px;
+    font-family: NanumSquareRound, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: -0.02em;
+    color: #191919;
+`;
+
+export const KaKaoIcon = styled.img`
+    width: 18px;
+    vertical-align: -4px;
+    margin-right: 6px;
 `;

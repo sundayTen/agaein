@@ -14,7 +14,7 @@ const theme: DefaultTheme = {
         primary: '#EFA03D',
         primary100: '#F8D6AB',
         primary400: '#F1AD58',
-        primary800: '#DA9237',
+        primary800: '#EF8F16',
         sub2: '#34735A',
         sub1: '#FFDC4C',
         positive: '#15CCE5',

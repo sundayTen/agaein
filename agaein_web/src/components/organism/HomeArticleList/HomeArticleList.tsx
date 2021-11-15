@@ -54,8 +54,8 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
         <ArticleList>
             <ListHeader>
                 <TitleBox>
-                    <Font label={firstChunk} fontType="h3" fontWeight="bold" status="ACTIVE" htmlElement="span" />
-                    <Font label={secondChunk} fontType="h3" fontWeight="bold" htmlElement="span" />
+                    <Font label={firstChunk} fontType="h4" fontWeight="bold" status="ACTIVE" htmlElement="span" />
+                    <Font label={secondChunk} fontType="h4" fontWeight="bold" htmlElement="span" />
                 </TitleBox>
                 <ButtonViewAll type="button">전체보기 &gt;</ButtonViewAll>
             </ListHeader>
