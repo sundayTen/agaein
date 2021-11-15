@@ -1,11 +1,22 @@
 import { ApolloError } from 'apollo-server-errors';
+import { readAccessToken } from '../../../common/auth/jwtToken';
 import { knex } from '../../database';
 
 const reportMutations = {
-    createReport: async (_: any, args: any) => {
+    createReport: async (_: any, args: any, context: any) => {
         const { files, report } = args;
 
         let reportResponse: any = {};
+        const now = new Date();
+        report.createdAt = now;
+        report.updatedAt = now;
+
+        if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
+            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
+            report.userId = (<any>jwtToken).userId;
+        } else {
+            report.userId = 1;
+        }
 
         return await knex.transaction(async (trx: any) => {
             return await knex('report')

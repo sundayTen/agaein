@@ -54,6 +54,9 @@ const resolvers = {
 
             return images || [];
         },
+        async author(parent: any) {
+            return await knex('user').where('id', `${parent.userId}`).first();
+        },
     },
 };
 
