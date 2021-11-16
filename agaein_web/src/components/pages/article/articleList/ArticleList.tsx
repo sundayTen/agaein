@@ -6,7 +6,6 @@ import {
     ArticleListContainer,
     ArticleListFooter,
     ArticleListHeaderContainer,
-    ArticleListRow,
     SearchBarContainer,
     SearchButton,
     SearchText,
@@ -72,22 +71,19 @@ const ArticleList = ({ history, match }: RouteComponentProps<ArticleListParams>)
                 </SearchBarContainer>
             </ArticleListHeaderContainer>
             <ArticleGridContainer>
-                {[1, 2, 3, 4].map((index) => (
-                    <ArticleListRow>
-                        {articles.slice((index - 1) * NUMBER_PER_ROW, index * NUMBER_PER_ROW).map((item) => (
-                            <ArticleItem type={type}>
-                                {type === Board_Type.Review ? (
-                                    <ReviewItem item={item} />
-                                ) : (
-                                    <PostItemBox
-                                        item={item}
-                                        bookmarked={isBookmarked(item.id)}
-                                        setBookmark={() => setBookmark(item.id)}
-                                    />
-                                )}
-                            </ArticleItem>
-                        ))}
-                    </ArticleListRow>
+                {articles.map((item) => (
+                    <ArticleItem type={type}>
+                        {type === Board_Type.Review ? (
+                            <ReviewItem key={item.id} item={item} />
+                        ) : (
+                            <PostItemBox
+                                key={item.id}
+                                item={item}
+                                bookmarked={isBookmarked(item.id)}
+                                setBookmark={() => setBookmark(item.id)}
+                            />
+                        )}
+                    </ArticleItem>
                 ))}
             </ArticleGridContainer>
             <ArticleListFooter>

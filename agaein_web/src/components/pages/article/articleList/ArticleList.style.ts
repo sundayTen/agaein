@@ -41,11 +41,12 @@ const StyledSearchIcon = styled(SearchIcon)`
     height: 16px;
 `;
 
-const ArticleGridContainer = styled.table``;
-
-const ArticleListRow = styled.tr`
-    display: flex;
+const ArticleGridContainer = styled.ul`
+    min-width: 1320px;
+    display: inline-block;
+    overflow: hidden;
 `;
+
 const SearchText = styled.span`
     color: ${(props) => props.theme.light.white};
     font-size: 16px;
@@ -54,9 +55,10 @@ const SearchText = styled.span`
 interface ArticleItemProps {
     type: Board_Type;
 }
-const ArticleItem = styled.td<ArticleItemProps>`
+const ArticleItem = styled.li<ArticleItemProps>`
+    display: inline-block;
     width: ${(props) => (props.type === Board_Type.Review ? '290px' : '180px')};
-    padding: 0 20px;
+    padding: 0 40px 0 0;
 `;
 
 export {
@@ -64,7 +66,6 @@ export {
     ArticleListHeaderContainer,
     ArticleGridContainer,
     ArticleListFooter,
-    ArticleListRow,
     ArticleItem,
     SearchBarContainer,
     SearchButton,

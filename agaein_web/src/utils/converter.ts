@@ -40,9 +40,9 @@ function convertAnimalType(type: Breed_Type): string {
 
 const getTitle = (boardType: Board_Type) => {
     switch (boardType) {
-        case Board_Type.Lfg:
-            return '실종동물 찾아요';
         case Board_Type.Lfp:
+            return '실종동물 찾아요';
+        case Board_Type.Lfg:
             return '주인을 찾아요';
         case Board_Type.Review:
             return '베스트 후기';
