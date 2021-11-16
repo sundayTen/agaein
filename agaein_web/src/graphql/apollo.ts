@@ -42,6 +42,16 @@ export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
         addTypename: true,
         resultCaching: true,
         typePolicies: {
+            // Query: {
+            //     fields: {
+            //         Article: {
+            //             keyArgs: false,
+            //             merge(exist = [], incoming) {
+            //                 return [...exist, ...incoming];
+            //             },
+            //         },
+            //     },
+            // },
             LFG: {
                 fields: {
                     gender: {

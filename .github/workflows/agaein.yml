@@ -36,7 +36,7 @@ jobs:
             - name: build Web
               env:
                   CI: ''
-                  SLACK_WEBHOOK_RUL: ${{ secrets.SLACK_WEBHOOK_URL }}
+                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
               run: |
                   cd /home/actions/${{ env.REPOSITORY }}/agaein_web
                   yarn install

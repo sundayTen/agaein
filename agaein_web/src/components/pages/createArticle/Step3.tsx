@@ -1,11 +1,9 @@
 import Button from 'components/molecules/Button';
 import Font from 'components/molecules/Font';
 import StepIndicator from 'components/molecules/StepIndicator';
-import { RouteComponentProps } from 'react-router';
-import { ArticleListParams } from 'router/params';
 import { Step1Headers } from './CreateArticle.style';
 
-const Step3 = (props: RouteComponentProps<ArticleListParams>) => {
+const Step3 = () => {
     return (
         <div>
             <StepIndicator active={3} styles={{ marginTop: 100 }} />

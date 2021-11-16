@@ -3,6 +3,7 @@ import PostItem from 'components/molecules/PostItemBox/PostItemBox';
 import ReviewItem from 'components/molecules/ReviewItem';
 import { Article, Board_Type, useGetArticlesQuery } from 'graphql/generated/generated';
 import useBookmark from 'hooks/useBookmark';
+import { getTitle } from 'utils/converter';
 import {
     ArticleList,
     ButtonViewAll,
@@ -21,20 +22,10 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
     const { data, loading, error } = useGetArticlesQuery({
         variables: {
             boardType,
+            limit: 6,
         },
     });
-    const getTitle = (boardType: Board_Type) => {
-        switch (boardType) {
-            case Board_Type.Lfg:
-                return '실종동물 찾아요';
-            case Board_Type.Lfp:
-                return '주인을 찾아요';
-            case Board_Type.Review:
-                return '베스트 후기';
-            default:
-                return '잘못된 데이터';
-        }
-    };
+
     // TODO : utils함수로 빼던가 lodash를 쓰던가 해야할 듯 - Refactor 필요
     const isEmpty = (items?: Array<Article>) => {
         if (!items) return true;
@@ -48,7 +39,7 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
     if (error) return <p>{`Error : ${error}`}</p>;
 
     const [firstChunk, secondChunk] = getTitle(boardType).split(' ');
-    const articles = data?.articles.map((article) => article).slice(0, 6) as Article[];
+    const articles = data?.articles.map((article) => article) as Article[];
 
     return (
         <ArticleList>
@@ -57,7 +48,9 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
                     <Font label={firstChunk} fontType="h4" fontWeight="bold" status="ACTIVE" htmlElement="span" />
                     <Font label={secondChunk} fontType="h4" fontWeight="bold" htmlElement="span" />
                 </TitleBox>
-                <ButtonViewAll type="button">전체보기 &gt;</ButtonViewAll>
+                <ButtonViewAll to={`articles/${boardType}`} type="button">
+                    전체보기 &gt;
+                </ButtonViewAll>
             </ListHeader>
             <ListContainer>
                 {isEmpty(articles) ? (

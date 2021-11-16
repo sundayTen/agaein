@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const ArticleList = styled.div`
@@ -16,7 +17,7 @@ export const TitleBox = styled.div`
     }
 `;
 
-export const ButtonViewAll = styled.button`
+export const ButtonViewAll = styled(Link)`
     font-family: SsurroundAir;
     font-size: 14px;
     color: ${(props) => props.theme.light.DarkGrey2};

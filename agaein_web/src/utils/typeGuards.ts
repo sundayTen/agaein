@@ -1,14 +1,4 @@
-import {
-    Article,
-    ArticleDetail,
-    Bookmark,
-    Comment,
-    File,
-    Lfg,
-    Lfp,
-    Review,
-    ArticleDetailInput,
-} from 'graphql/generated/generated';
+import { Article, Bookmark, Comment, Lfg, Lfp, Review, ArticleDetailInput } from 'graphql/generated/generated';
 
 // TODO : Type Guard의 조건을 더 엄밀하게 정의해야함
 
@@ -34,11 +24,7 @@ function isComments(target: unknown[]) {
     return (target as Comment[]).some((comment) => isComment(comment));
 }
 
-function isArticleDetail(
-    target: unknown,
-    dateType: 'lostDate' | 'foundDate',
-    isLoggedIn: boolean,
-): target is ArticleDetailInput {
+function isArticleDetail(target: unknown, dateType: 'lostDate' | 'foundDate'): target is ArticleDetailInput {
     return (
         !!(target as ArticleDetailInput).location?.address &&
         !!(target as ArticleDetailInput)[dateType] &&

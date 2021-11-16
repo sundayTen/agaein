@@ -24,7 +24,6 @@ import { formattedDate, YYYYMMDD } from 'utils/date';
 import { Fragment } from 'react';
 import { isArticle, isLFP } from 'utils/typeGuards';
 import penguin from 'assets/image/penguin.png';
-import { ArticleList } from 'components/organism/HomeArticleList/HomeArticleList.style';
 
 const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useBookmark();
