@@ -1,11 +1,13 @@
 import Button from 'components/molecules/Button';
 import Font from 'components/molecules/Font';
 import StepIndicator from 'components/molecules/StepIndicator';
+import { RouteComponentProps } from 'react-router';
+import { CreateArticleStep3Params } from 'router/params';
 import { Step1Headers } from './CreateArticle.style';
 
-const Step3 = () => {
+const Step3 = ({ history, match }: RouteComponentProps<CreateArticleStep3Params>) => {
     return (
-        <div>
+        <>
             <StepIndicator active={3} styles={{ marginTop: 100 }} />
             <Step1Headers>
                 <Font label="등록이 완료됐습니다!" fontType="h2" fontWeight="bold" style={{ marginBottom: 12 }} />
@@ -15,9 +17,15 @@ const Step3 = () => {
                     fontType="h3"
                     fontWeight="normal"
                 />
-                <Button size="LARGE" label="작성글 보기" onClick={() => {}} />
+                <Button
+                    size="LARGE"
+                    label="작성글 보기"
+                    onClick={() => {
+                        history.push(`/articleDetail/${match.params.id}`);
+                    }}
+                />
             </Step1Headers>
-        </div>
+        </>
     );
 };
 

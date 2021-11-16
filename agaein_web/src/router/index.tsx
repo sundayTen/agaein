@@ -14,7 +14,7 @@ function Router() {
             <Route path="/articles/:type" component={ArticleList} />
             <Route path="/createArticle/step1" component={CreateArticleStep1} />
             <Route path="/createArticle/step2/:type" component={CreateArticleStep2} />
-            <Route path="/createArticle/step3" component={CreateArticleStep3} />
+            <Route path="/createArticle/step3/:id" component={CreateArticleStep3} />
             <Route path="/articleDetail/:id" component={articleDetail} />
         </Switch>
     );

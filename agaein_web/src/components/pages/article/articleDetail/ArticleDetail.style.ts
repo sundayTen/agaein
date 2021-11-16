@@ -1,3 +1,4 @@
+import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import styled from 'styled-components';
 
 export const HorizontalContainer = styled.div`
@@ -17,6 +18,18 @@ export const ArticleDetailContainer = styled.div`
 export const ContainerTop = styled.div`
     padding: 30px 30px 20px;
     border-bottom: 1px solid ${(props) => props.theme.light.lightGrey2};
+`;
+
+export const ArticleDetailHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+export const StyledDotIcon = styled(DotsHorizontalIcon)`
+    width: 24px;
+    height: 24px;
+    color: ${(props) => props.theme.light.DarkGrey2};
+    cursor: pointer;
 `;
 
 export const TitleAndBookMarkContainer = styled.div`

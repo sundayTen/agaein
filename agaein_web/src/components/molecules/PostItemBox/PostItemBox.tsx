@@ -27,7 +27,6 @@ const PostItem = (props: PostItemProps) => {
     const { item, bookmarked = false, setBookmark = () => {} } = props;
     const { id, articleDetail, createdAt, images } = item;
     const { breed, type, gender, location, age } = articleDetail as Lfg;
-
     return (
         <>
             <Link to={`/articleDetail/${id}`}>

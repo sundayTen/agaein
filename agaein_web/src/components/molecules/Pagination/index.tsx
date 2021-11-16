@@ -16,7 +16,7 @@ const Pagination = (props: SearchBarProps) => {
         <PaginationDiv>
             <Page onClick={() => setActive(active === 1 ? active : active - 1)}>&lt;</Page>
             {pages.map((_, index) => (
-                <Page active={active === index + 1} onClick={() => setActive(index + 1)}>
+                <Page key={index} active={active === index + 1} onClick={() => setActive(index + 1)}>
                     <PageText active={active === index + 1}>{index + 1}</PageText>
                 </Page>
             ))}
