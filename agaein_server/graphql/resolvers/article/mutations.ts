@@ -138,13 +138,7 @@ const articleMutations = {
                                     url: 'https://www.agaein.com/file/image/' + filename,
                                 };
 
-                                await knex('image')
-                                    .transacting(trx)
-                                    .insert(imageForm)
-                                    .returning('*')
-                                    .then((image: any) => {
-                                        article.images.push(image[0]);
-                                    });
+                                await knex('image').transacting(trx).insert(imageForm);
 
                                 const out = require('fs').createWriteStream('image/' + filename);
                                 await stream.pipe(out);
@@ -172,7 +166,7 @@ const articleMutations = {
         });
     },
     updateArticle: async (_: any, args: any, context: any) => {
-        const { articleId, articleDetail } = args;
+        const { id, articleDetail } = args;
         const { password, keyword } = articleDetail;
 
         // @TODO validation 확인해야 됨.
@@ -188,24 +182,26 @@ const articleMutations = {
         };
 
         if (password) {
-            const articlePassword = await knex('article').where('id', articleId).first('password');
+            const articlePassword = await knex('article').where('id', id).first('password');
             if (password !== articlePassword.password) {
                 throw new ApolloError('Invaild Password', 'UNAUTHENTICATED');
             }
         } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
             const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
-            const articleUser = await knex('article').where('id', articleId).first('userId');
+            const articleUser = await knex('article').where('id', id).first('userId');
             if (articleUser.userId !== (<any>jwtToken).userId) {
                 throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
             }
             article.userId = articleUser.userId;
+        } else {
+            throw new ApolloError('Must Need AccessToken or Password', 'UNAUTHENTICATED');
         }
 
         return await knex.transaction(async (trx: any) => {
             return await knex('article')
                 .transacting(trx)
                 .update(articleForm)
-                .where('id', articleId)
+                .where('id', id)
                 .returning('*')
                 .then(async (updatedArticle: any) => {
                     article.id = updatedArticle[0].id;
@@ -226,7 +222,7 @@ const articleMutations = {
                     return await knex(boardType)
                         .transacting(trx)
                         .update(articleDetailForm)
-                        .where('article_id', articleId)
+                        .where('article_id', id)
                         .returning('*')
                         .then(async (updatedArticleDetail: any) => {
                             article.articleDetail = updatedArticleDetail[0];
@@ -270,13 +266,7 @@ const articleMutations = {
                                         url: 'https://www.agaein.com/file/image/' + filename,
                                     };
 
-                                    knex('image')
-                                        .transacting(trx)
-                                        .insert(imageForm)
-                                        .returning('*')
-                                        .then((image: any) => {
-                                            article.images.push(image[0]);
-                                        });
+                                    await knex('image').transacting(trx).insert(imageForm);
 
                                     const out = require('fs').createWriteStream('image/' + filename);
                                     await stream.pipe(out);
@@ -303,6 +293,40 @@ const articleMutations = {
                     throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
                 });
         });
+    },
+    updateComment: async (_: any, args: any, context: any) => {
+        const now = new Date();
+        const { id, content, password } = args;
+        const commentForm = {
+            content,
+            updatedAt: now,
+        };
+
+        if (password) {
+            const commentPassword = await knex('comment').where('id', id).first('password');
+            if (password !== commentPassword.password) {
+                throw new ApolloError('Invaild Password', 'UNAUTHENTICATED');
+            }
+        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
+            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
+            const commentUser = await knex('comment').where('id', id).first('userId');
+            if (commentUser.userId !== (<any>jwtToken).userId) {
+                throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
+            }
+        } else {
+            throw new ApolloError('Must Need AccessToken or Password', 'UNAUTHENTICATED');
+        }
+
+        try {
+            const comments = await knex('comment').update(commentForm).where('id', id).returning('*');
+            const comment = comments[0];
+            return comment;
+        } catch {
+            console.error('createComment에서 에러발생');
+            console.trace();
+
+            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+        }
     },
     createComment: async (_: any, args: any, context: any) => {
         const now = new Date();

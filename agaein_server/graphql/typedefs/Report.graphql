@@ -18,3 +18,10 @@ input reportInput {
     location: LocationInput!
     foundDate: Date!
 }
+
+input updateReportInput {
+    phoneNumber: String
+    content: String
+    location: LocationInput
+    foundDate: Date
+}
