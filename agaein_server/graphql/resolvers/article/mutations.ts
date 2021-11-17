@@ -35,12 +35,9 @@ const articleMutations = {
         };
 
         const article: any = {
-            // 유저 데이터 넣어야 함.
-            user: {},
+            userId: 1,
             view: 0,
             type: boardType,
-            comments: [],
-            images: [],
             createdAt: now,
             updatedAt: now,
         };
@@ -52,10 +49,8 @@ const articleMutations = {
         ) {
             const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
             articleForm.userId = (<any>jwtToken).userId;
+            article.userId = (<any>jwtToken).userId;
         }
-
-        const user = await knex('user').where('id', articleForm.userId).first();
-        article.user = user;
 
         return await knex.transaction(async (trx: any) => {
             return await knex('article')
@@ -108,6 +103,7 @@ const articleMutations = {
                                 articleDetailForm[boardType].keyword = keyword;
                             }
                             article.articleDetail = articleDetailForm[boardType];
+                            article.articleDetail.articleType = boardType;
 
                             if (keyword !== undefined) {
                                 const keywordForm: any = [];
@@ -142,7 +138,7 @@ const articleMutations = {
                                     url: 'https://www.agaein.com/file/image/' + filename,
                                 };
 
-                                knex('image')
+                                await knex('image')
                                     .transacting(trx)
                                     .insert(imageForm)
                                     .returning('*')
@@ -158,7 +154,7 @@ const articleMutations = {
                             });
                         })
                         .catch(() => {
-                            console.error('createArticle Keyword & Image에서 에러발생');
+                            console.error('createArticle articleDetail & Keyword & Image에서 에러발생');
                             console.trace();
 
                             throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
@@ -169,6 +165,139 @@ const articleMutations = {
                 })
                 .catch(() => {
                     console.error('createArticle에서 에러발생');
+                    console.trace();
+
+                    throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+                });
+        });
+    },
+    updateArticle: async (_: any, args: any, context: any) => {
+        const { articleId, articleDetail } = args;
+        const { password, keyword } = articleDetail;
+
+        // @TODO validation 확인해야 됨.
+
+        const now = new Date();
+        const articleForm: any = {
+            updatedAt: now,
+        };
+
+        const article: any = {
+            userId: 1,
+            updatedAt: now,
+        };
+
+        if (password) {
+            const articlePassword = await knex('article').where('id', articleId).first('password');
+            if (password !== articlePassword.password) {
+                throw new ApolloError('Invaild Password', 'UNAUTHENTICATED');
+            }
+        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
+            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
+            const articleUser = await knex('article').where('id', articleId).first('userId');
+            if (articleUser.userId !== (<any>jwtToken).userId) {
+                throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
+            }
+            article.userId = articleUser.userId;
+        }
+
+        return await knex.transaction(async (trx: any) => {
+            return await knex('article')
+                .transacting(trx)
+                .update(articleForm)
+                .where('id', articleId)
+                .returning('*')
+                .then(async (updatedArticle: any) => {
+                    article.id = updatedArticle[0].id;
+                    article.view = updatedArticle[0].view;
+                    article.type = updatedArticle[0].type;
+                    article.createdAt = updatedArticle[0].createdAt;
+
+                    const boardType = article.type;
+
+                    const articleDetailForm: any = {};
+                    for (let key in articleDetail) {
+                        if (key === 'keyword') {
+                            continue;
+                        }
+                        articleDetailForm[key] = articleDetail[key];
+                    }
+
+                    return await knex(boardType)
+                        .transacting(trx)
+                        .update(articleDetailForm)
+                        .where('article_id', articleId)
+                        .returning('*')
+                        .then(async (updatedArticleDetail: any) => {
+                            article.articleDetail = updatedArticleDetail[0];
+                            article.articleDetail.articleType = boardType;
+
+                            if (keyword !== undefined) {
+                                await knex('article_keyword').transacting(trx).where('article_id', article.id).del();
+
+                                const keywordForm: any = [];
+                                keyword.forEach(async (word: string) => {
+                                    keywordForm.push({ keyword: word });
+                                });
+
+                                const keywordId = await knex('keyword')
+                                    .insert(keywordForm)
+                                    .onConflict('keyword')
+                                    .merge()
+                                    .returning('id');
+
+                                if (keywordId[0] !== undefined) {
+                                    const articleKeywordForm: any = [];
+                                    keywordId.forEach(async (id: string) => {
+                                        articleKeywordForm.push({ articleId: article.id, keywordId: id });
+                                    });
+                                    await knex('article_keyword').transacting(trx).insert(articleKeywordForm);
+                                }
+                            }
+
+                            if (args.files[0]) {
+                                await knex('image').transacting(trx).where('article_id', article.id).del();
+
+                                args.files.forEach(async (file: any, idx: Number) => {
+                                    const { createReadStream, mimetype } = await file;
+                                    const stream = createReadStream();
+
+                                    const filename =
+                                        article.id + '_' + idx + '_' + Date.now() + '.' + mimetype.split('/')[1];
+
+                                    const imageForm = {
+                                        articleId: article.id,
+                                        url: 'https://www.agaein.com/file/image/' + filename,
+                                    };
+
+                                    knex('image')
+                                        .transacting(trx)
+                                        .insert(imageForm)
+                                        .returning('*')
+                                        .then((image: any) => {
+                                            article.images.push(image[0]);
+                                        });
+
+                                    const out = require('fs').createWriteStream('image/' + filename);
+                                    await stream.pipe(out);
+                                    await stream.on('close', () => {
+                                        console.log(`store ${filename}`);
+                                    });
+                                });
+                            }
+                        })
+                        .catch(() => {
+                            console.error('updateArticle articleDetail & Keyword & Image에서 에러발생');
+                            console.trace();
+
+                            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+                        });
+                })
+                .then(() => {
+                    return article;
+                })
+                .catch(() => {
+                    console.error('updateArticle에서 에러발생');
                     console.trace();
 
                     throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
