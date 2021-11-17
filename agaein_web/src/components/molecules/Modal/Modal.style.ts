@@ -79,6 +79,6 @@ export const ModalInner = styled.div`
     margin: 0 auto;
     padding: 21px 24px;
     text-align: left;
-    height: calc(100% - 100px);
+    max-height: calc(100% - 100px);
     overflow-y: auto;
 `;

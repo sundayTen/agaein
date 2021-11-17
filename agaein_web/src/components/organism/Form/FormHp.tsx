@@ -16,17 +16,22 @@ const MainHp = styled.div`
 
 interface FormHpProps {
     type?: string;
+    name: string;
+    onChange: (value: string, name: string) => void;
 }
 
-export function FormHp({ type }: FormHpProps) {
-    const [hp, setHp] = useState<string>('');
+export function FormHp({ type, name, onChange }: FormHpProps) {
+    const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        onChange(value, name);
+    };
     return (
         <>
             <FormRow>
                 <FormLabel>연락처</FormLabel>
                 <Form>
                     <MainHp>
-                        <Input type="text" placeholder="'-'을 제외한 숫자만 입력해주세요" value={hp} />
+                        <Input type="text" placeholder="'-'을 제외한 숫자만 입력해주세요" onChange={inputChange} />
                     </MainHp>
                 </Form>
             </FormRow>

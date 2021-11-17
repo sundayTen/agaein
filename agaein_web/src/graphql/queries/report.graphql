@@ -1,0 +1,34 @@
+query getReports($articleId: ID!) {
+    reports(articleId: $articleId) {
+        id
+        articleId
+        author {
+            id
+            nickname
+            email
+            kakaoId
+            phoneNumber
+            createdAt
+            updatedAt
+        }
+        images
+        phoneNumber
+        content
+        location {
+            lat
+            lng
+            address
+            roadAddress
+            detail
+        }
+        foundDate
+        createdAt
+        updatedAt
+    }
+}
+
+mutation createReport($files: [Upload]!, $report: reportInput!) {
+    createReport(files: $files, report: $report) {
+        id
+    }
+}

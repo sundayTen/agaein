@@ -1,7 +1,13 @@
 import Chip from 'components/molecules/Chip';
 import Font from 'components/molecules/Font';
 import ImageCarousel from 'components/molecules/ImageCarousel/ImageCarousel';
-import { Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
+import {
+    Comment as CommentType,
+    Location,
+    Maybe,
+    useGetArticleQuery,
+    useGetReportsQuery,
+} from 'graphql/generated/generated';
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
 import {
@@ -25,6 +31,15 @@ import { Fragment } from 'react';
 import { isArticle, isLFP } from 'utils/typeGuards';
 import penguin from 'assets/image/penguin.png';
 
+interface WitnessArray {
+    id: string;
+    name: string;
+    address: string;
+    date: string;
+    hp?: string;
+    img?: Maybe<string>[];
+}
+
 const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useBookmark();
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -36,14 +51,40 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
             // TODO : 조회수 즉각반영
         },
     });
-
+    const reportData = useGetReportsQuery({
+        variables: {
+            articleId: match.params.id,
+        },
+    });
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
     if (data === undefined || !isArticle(data.article)) return <p>No data</p>;
+
+    if (reportData.loading) return <p>reportData Loading...</p>;
+    if (reportData.error) return <p>reportData Error occur</p>;
     const { id, createdAt, articleDetail, view, author, comments = [], images = [] } = data.article;
 
     // ? TypeGuard로 해결할 방법을 모르겠음
     const { breed, feature, age, gender, name, location, foundDate, lostDate } = articleDetail as any;
+
+    const foundPosition: Array<Location> = [];
+    const witness: Array<WitnessArray> = [];
+    reportData.data?.reports.map((item) => {
+        let position: Location;
+        if (item !== null) {
+            position = item.location;
+            witness.push({
+                id: item.id,
+                name: item.author.nickname ?? '',
+                address: item.location.address,
+                date: item.foundDate,
+                hp: item.phoneNumber ?? '',
+                img: item.images,
+            });
+            return foundPosition.push(position);
+        }
+        return null;
+    });
 
     function getTitle() {
         if (isLFP(articleDetail)) {
@@ -100,7 +141,12 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
                     </ContainerTop>
                     <ArticleMapContainer>
                         <Font label="실종장소" fontType="subhead" style={{ marginBottom: 10 }} />
-                        <ReactKaKaoMap missPosition={location} size={{ width: 480, height: 260 }} noClick={true} />
+                        <ReactKaKaoMap
+                            missPosition={location}
+                            size={{ width: 480, height: 260 }}
+                            foundPosition={foundPosition}
+                            noClick={true}
+                        />
                         <Button
                             label="발견 신고 하기"
                             onClick={() => {
@@ -114,7 +160,15 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
             </HorizontalContainer>
             <Comment comments={comments as CommentType[]} articleId={id} author={author} />
 
-            <WitnessModal open={isOpenModal} close={closeModal} isAuthor={true} />
+            <WitnessModal
+                open={isOpenModal}
+                close={closeModal}
+                witness={witness}
+                foundPosition={foundPosition}
+                missPosition={location}
+                isAuthor={true}
+                articleId={id}
+            />
         </Fragment>
     );
 };
