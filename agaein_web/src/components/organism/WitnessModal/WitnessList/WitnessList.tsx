@@ -24,6 +24,7 @@ interface WitnessArray {
     date: string;
     hp?: string;
     img?: Maybe<string>[];
+    content?: string;
 }
 interface WitnessListProps {
     witness?: Array<WitnessArray>;
@@ -68,9 +69,7 @@ const WitnessList = ({ witness, clickIdx, setClickIdx }: WitnessListProps) => {
                                 <WitnessDetailDiv>
                                     <Img src={!!item.img ? String(item.img[0]) : ''} width="128" height="100" />
                                     <Contents>
-                                        작성된 발견 정보 글을 확인할 수 있습니다.
-                                        <br />
-                                        상세한 위치, 특징, 특이 사항 등등..
+                                        {item.content}
                                         <br />
                                         <br />
                                         <b>

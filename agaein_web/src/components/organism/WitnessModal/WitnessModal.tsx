@@ -22,6 +22,7 @@ interface WitnessArray {
     date: string;
     hp?: string;
     img?: Maybe<string>[];
+    content?: string;
 }
 
 interface WitnessModalProps {

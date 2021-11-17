@@ -38,6 +38,7 @@ interface WitnessArray {
     date: string;
     hp?: string;
     img?: Maybe<string>[];
+    content?: string;
 }
 
 const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
@@ -80,6 +81,7 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
                 date: item.foundDate,
                 hp: item.phoneNumber ?? '',
                 img: item.images,
+                content: String(item.content),
             });
             return foundPosition.push(position);
         }
