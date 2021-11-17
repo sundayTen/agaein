@@ -138,13 +138,7 @@ const articleMutations = {
                                     url: 'https://www.agaein.com/file/image/' + filename,
                                 };
 
-                                await knex('image')
-                                    .transacting(trx)
-                                    .insert(imageForm)
-                                    .returning('*')
-                                    .then((image: any) => {
-                                        article.images.push(image[0]);
-                                    });
+                                await knex('image').transacting(trx).insert(imageForm);
 
                                 const out = require('fs').createWriteStream('image/' + filename);
                                 await stream.pipe(out);
@@ -272,13 +266,7 @@ const articleMutations = {
                                         url: 'https://www.agaein.com/file/image/' + filename,
                                     };
 
-                                    knex('image')
-                                        .transacting(trx)
-                                        .insert(imageForm)
-                                        .returning('*')
-                                        .then((image: any) => {
-                                            article.images.push(image[0]);
-                                        });
+                                    await knex('image').transacting(trx).insert(imageForm);
 
                                     const out = require('fs').createWriteStream('image/' + filename);
                                     await stream.pipe(out);

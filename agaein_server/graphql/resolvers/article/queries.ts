@@ -15,6 +15,7 @@ const articleQueries = {
                     : await knex(`${boardType}`)
                           .join('article', 'article.id', `${boardType}.article_id`)
                           .join('breed', `${boardType}.breed_id`, 'breed.id')
+                          .select('*', `${boardType}.id as id`)
                           .orderBy('created_at', 'desc')
                           .limit(limit)
                           .offset(offset);
