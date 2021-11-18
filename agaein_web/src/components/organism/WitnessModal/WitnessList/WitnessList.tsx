@@ -1,5 +1,5 @@
 import { Maybe } from 'graphql/generated/generated';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { YYYYMMDD } from 'utils/date';
 import { WitnessDetailDiv } from '../WitnessModel.style';
 import {

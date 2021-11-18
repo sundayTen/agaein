@@ -1,19 +1,11 @@
 import Modal from 'components/molecules/Modal';
+import { Location, Maybe, ReportInput, useCreateReportMutation, useGetReportsQuery } from 'graphql/generated/generated';
 import { useEffect, useState } from 'react';
 import ReactKaKaoMap from '../ReactKakaoMap/ReactKakaoMap';
-import WitnessList from './WitnessList/WitnessList';
-import { ToggleButtonDiv, ToggleButon } from './WitnessModel.style';
-import WitnessImageCarousel from './WitnessImageCarousel';
 import WithessReport from './WithessReport/WithessReport';
-import {
-    GetReportsQuery,
-    Location,
-    Maybe,
-    Report,
-    ReportInput,
-    useCreateReportMutation,
-    useGetReportsQuery,
-} from 'graphql/generated/generated';
+import WitnessImageCarousel from './WitnessImageCarousel';
+import WitnessList from './WitnessList/WitnessList';
+import { ToggleButon, ToggleButtonDiv } from './WitnessModel.style';
 
 interface WitnessArray {
     id: string;
@@ -29,7 +21,6 @@ interface WitnessModalProps {
     open: boolean;
     close: () => void;
     isAuthor: boolean;
-    witness: Array<WitnessArray>;
     articleId: string;
     missPosition: {
         lat: number;
@@ -37,18 +28,9 @@ interface WitnessModalProps {
         roadAddress: string;
         address: string;
     };
-    foundPosition: Array<Location>;
 }
 
-const WitnessModal = ({
-    open,
-    close,
-    isAuthor = false,
-    articleId,
-    missPosition,
-    foundPosition,
-    witness,
-}: WitnessModalProps) => {
+const WitnessModal = ({ open, close, isAuthor = false, articleId, missPosition }: WitnessModalProps) => {
     const [create] = useCreateReportMutation();
     const [witnessToggle, setWitnessToggle] = useState<'지도' | '사진'>('지도');
     const [address, setAddress] = useState<Location>({
@@ -72,6 +54,38 @@ const WitnessModal = ({
         foundDate: '',
     });
     const [listClickIdx, setListClickIdx] = useState<number>(-1);
+    const [foundPositionList, setFoundPositionList] = useState<Array<Location>>([]);
+    const [witnessList, setWitnessList] = useState<Array<WitnessArray>>([]);
+
+    const reportData = useGetReportsQuery({
+        variables: {
+            articleId: articleId,
+        },
+    });
+    useEffect(() => {
+        const foundPosition: Array<Location> = [];
+        const witness: Array<WitnessArray> = [];
+        reportData.data?.reports.map((item) => {
+            let position: Location;
+            if (item !== null) {
+                position = item.location;
+                witness.push({
+                    id: item.id,
+                    name: item.author.nickname ?? '',
+                    address: item.location.address,
+                    date: item.foundDate,
+                    hp: item.phoneNumber ?? '',
+                    img: item.images,
+                    content: String(item.content),
+                });
+
+                return foundPosition.push(position);
+            }
+            return null;
+        });
+        setFoundPositionList(foundPosition);
+        setWitnessList(witness);
+    }, [reportData.data]);
 
     const reportSave = async () => {
         const response = await create({
@@ -101,6 +115,9 @@ const WitnessModal = ({
             setWitnessToggle('지도');
         }
     }, [listClickIdx]);
+
+    if (reportData.loading) return <p>reportData Loading...</p>;
+    if (reportData.error) return <p>reportData Error occur</p>;
     return (
         <Modal
             open={open}
@@ -118,7 +135,7 @@ const WitnessModal = ({
                         <ToggleButon
                             click={witnessToggle === '사진'}
                             onClick={() => setWitnessToggle('사진')}
-                            disabled={listClickIdx === -1 ? true : !witness[listClickIdx].img}
+                            disabled={listClickIdx === -1 ? true : !witnessList[listClickIdx].img}
                         >
                             사진보기
                         </ToggleButon>
@@ -126,7 +143,7 @@ const WitnessModal = ({
                 )}
                 {witnessToggle === '지도' ? (
                     <ReactKaKaoMap
-                        foundPosition={foundPosition}
+                        foundPosition={foundPositionList}
                         missPosition={missPosition}
                         setAddress={setAddress}
                         size={{ width: 580, height: 400 }}
@@ -135,10 +152,10 @@ const WitnessModal = ({
                         listClickIdx={listClickIdx}
                     />
                 ) : (
-                    <WitnessImageCarousel images={listClickIdx !== -1 ? witness[listClickIdx].img : undefined} />
+                    <WitnessImageCarousel images={listClickIdx !== -1 ? witnessList[listClickIdx].img : undefined} />
                 )}
                 {isAuthor ? (
-                    <WitnessList witness={witness} clickIdx={listClickIdx} setClickIdx={setListClickIdx} />
+                    <WitnessList witness={witnessList} clickIdx={listClickIdx} setClickIdx={setListClickIdx} />
                 ) : (
                     <WithessReport address={address} reportChange={reportChange} filesChange={filesChange} />
                 )}

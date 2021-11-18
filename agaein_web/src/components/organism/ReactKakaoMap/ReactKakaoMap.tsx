@@ -1,11 +1,11 @@
-import { ReactElement, useState, useEffect } from 'react';
-import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
-import testgif from 'assets/image/testgif.gif';
-import Lost from 'assets/image/Lost.png';
 import Active from 'assets/image/Active.png';
 import Default from 'assets/image/Default.png';
-import { Category, Img, MapContainer, Text, InfoWindow } from './ReactKakaoMap.style';
+import Lost from 'assets/image/Lost.png';
+import testgif from 'assets/image/testgif.gif';
 import { Location } from 'graphql/generated/generated';
+import { useEffect, useState } from 'react';
+import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Category, Img, InfoWindow, MapContainer, Text } from './ReactKakaoMap.style';
 interface ReactKakaoMapProps {
     search?: string | undefined;
     setAddress?: (value: Location) => void;
@@ -139,11 +139,11 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
         }
     };
 
-    const searchCheck = () => {
-        return search === '' || search === undefined || search === null;
+    const nullCheck = (value: any) => {
+        return value === '' || value === undefined || value === null;
     };
     useEffect(() => {
-        if (searchCheck()) return;
+        if (nullCheck(search)) return;
         geocoder.addressSearch(search, addMarker);
     }, [search]);
 
@@ -172,10 +172,10 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
                     <>
                         <MapMarker position={{ lat: missPosition.lat, lng: missPosition.lng }}></MapMarker>
                         <CustomOverlayMap position={{ lat: missPosition.lat, lng: missPosition.lng }}>
-                            <InfoWindow type="miss" roadAddress={!!missPosition.roadAddress}>
+                            <InfoWindow type="miss" roadAddress={!nullCheck(missPosition.roadAddress)}>
                                 <div>
                                     <b>지번 주소</b> : {missPosition.address}
-                                    {!!missPosition.roadAddress && (
+                                    {!nullCheck(missPosition.roadAddress) && (
                                         <>
                                             <br /> <b>도로명 주소</b> : {missPosition.roadAddress}
                                         </>
@@ -200,15 +200,15 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
                             />
                             <CustomOverlayMap position={position}>
                                 {idx === info && (
-                                    <InfoWindow type="withess" roadAddress={!!item.roadAddress}>
+                                    <InfoWindow type="witness" roadAddress={!nullCheck(item.roadAddress)}>
                                         <div>
                                             <b>지번 주소</b> : {address}
+                                            {!nullCheck(item.roadAddress) && (
+                                                <>
+                                                    <br /> <b>도로명 주소</b> : {item.roadAddress}
+                                                </>
+                                            )}
                                         </div>
-                                        {!!item.roadAddress && (
-                                            <>
-                                                <br /> <b>도로명 주소</b> : {item.roadAddress}
-                                            </>
-                                        )}
                                     </InfoWindow>
                                 )}
                             </CustomOverlayMap>

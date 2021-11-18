@@ -3,13 +3,7 @@ query getReports($articleId: ID!) {
         id
         articleId
         author {
-            id
-            nickname
-            email
-            kakaoId
-            phoneNumber
-            createdAt
-            updatedAt
+            ...UserFragment
         }
         images
         phoneNumber

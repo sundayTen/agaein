@@ -36,7 +36,7 @@ export const MapContainer = styled.div`
 export const InfoWindow = styled.div<InfoWindowProps>`
     position: relative;
     left: -50%;
-    bottom: ${(props) => props.type === "miss" ? (props.roadAddress ? `90px`: `75px`) : (props.roadAddress ? `80px` : `70px`)};
+    bottom: ${(props) => props.type === "miss" ? (props.roadAddress ? `85px`: `75px`) : (props.roadAddress ? `90px` : `70px`)};
     transform: ${(props) => props.type === "miss" ? `translateX(50%)` : `translateX(0.3%)`};
     padding: 10px;
     background: ${(props) => props.theme.light.white};
