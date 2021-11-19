@@ -105,9 +105,7 @@ const WitnessModal = ({ open, close, isAuthor = false, articleId, missPosition }
     const reportChange = (value: any, name: string) => {
         setReport({ ...report, [name]: value });
     };
-    useEffect(() => {
-        console.log(report);
-    }, [report]);
+
     const filesChange = (value: Array<File>) => {
         setFiles(value);
     };
