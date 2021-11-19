@@ -1,8 +1,8 @@
 //@ts-nocheck
 
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FormRow, FormLabel, Form, RequiredIcon } from '../../pages/createArticle/CreateArticle.style';
-import { useGetBreedsQuery, useGetBreedsLazyQuery } from 'graphql/generated/generated';
+import { useGetBreedsQuery } from 'graphql/generated/generated';
 import styled from 'styled-components';
 import Select from 'components/molecules/Select';
 
@@ -24,62 +24,62 @@ interface FormBreedProps {
 const animalOptions = [
     {
         id: 'DOG',
-        name: '개'
+        name: '개',
     },
     {
         id: 'CAT',
-        name: '고양이'
+        name: '고양이',
     },
     {
         id: 'ECT',
-        name: '기타'
-    }
-]
+        name: '기타',
+    },
+];
 
 export function FormBreed({ name, onChange }: FormBreedProps) {
     const [animal, setAnimal] = useState({
         id: 'DOG',
-        name: '개'
-    })
+        name: '개',
+    });
     const [breed, setBreed] = useState({
         id: 0,
-        name: '선택해주세요'
-    })
+        name: '선택해주세요',
+    });
 
     const { data, loading, error } = useGetBreedsQuery({
         variables: {
-            type: animal.id
-        }
+            type: animal.id,
+        },
     });
 
-    const breedOptions = data?.breeds
-    
-    const SelectHandler = (id) => {
-        const animalName = animalOptions.filter(option => option.id === id)[0].name;
+    const breedOptions = data?.breeds;
 
-        setAnimal((prevState => ({
+    const SelectHandler = (id) => {
+        const animalName = animalOptions.filter((option) => option.id === id)[0].name;
+
+        setAnimal((prevState) => ({
             ...prevState,
             id: id,
-            name: animalName
-        })))
+            name: animalName,
+        }));
 
-        setBreed((prevState => ({
+        setBreed((prevState) => ({
             ...prevState,
             id: 0,
-            name: '선택해주세요'
-        })))
+            name: '선택해주세요',
+        }));
     };
 
     const setBreedId = (id) => {
-        const breedName = breedOptions.filter(option => option.id === id)[0].breed;
+        const breedName = breedOptions.filter((option) => option.id === id)[0].breed;
 
-        setBreed((prevState => ({
+        setBreed((prevState) => ({
             ...prevState,
             id: id,
-            name: breedName
-        })))
+            name: breedName,
+        }));
 
-        onChange(id, name)
+        onChange(id, name);
     };
 
     return (
@@ -90,20 +90,10 @@ export function FormBreed({ name, onChange }: FormBreedProps) {
             </FormLabel>
             <Form>
                 <SelectWrapper>
-                    <Select
-                        name="animal"
-                        defaultValue={animal.name}
-                        onChange={SelectHandler}
-                        options={animalOptions}
-                    />
+                    <Select name="animal" defaultValue={animal.name} onChange={SelectHandler} options={animalOptions} />
                 </SelectWrapper>
                 <SelectWrapper>
-                    <Select
-                        name="breed"
-                        defaultValue={breed.name}
-                        onChange={setBreedId}
-                        options={breedOptions}
-                    />
+                    <Select name="breed" defaultValue={breed.name} onChange={setBreedId} options={breedOptions} />
                 </SelectWrapper>
             </Form>
         </FormRow>

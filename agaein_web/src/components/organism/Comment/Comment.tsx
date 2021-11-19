@@ -2,7 +2,7 @@ import { useCallback, useContext, useRef, useState } from 'react';
 import Button from 'components/molecules/Button';
 import Font from 'components/molecules/Font';
 import Textarea from 'components/molecules/Textarea';
-import { Comment as CommentType, CommentInput, User } from 'graphql/generated/generated';
+import { Comment as CommentType, User } from 'graphql/generated/generated';
 import {
     CommentWrapper,
     CommentHeader,

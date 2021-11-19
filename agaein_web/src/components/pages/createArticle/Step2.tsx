@@ -27,16 +27,17 @@ import {
 import Button from 'components/molecules/Button';
 import StepIndicator from 'components/molecules/StepIndicator';
 import { CreateArticleStep2Params } from 'router/params';
-import { RouteComponentProps, Link } from 'react-router-dom';
-import { useCreateArticleMutation, ArticleDetailInput } from 'graphql/generated/generated';
+import { RouteComponentProps } from 'react-router-dom';
+import { ArticleDetailInput } from 'graphql/generated/generated';
 import { UserContext } from 'contexts/userContext';
 import { isArticleDetail } from 'utils/typeGuards';
+import useArticle from 'graphql/hooks/useArticle';
 
 const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>) => {
     const { isLoggedIn } = useContext(UserContext);
-    const [create] = useCreateArticleMutation();
+    const { createArticle } = useArticle();
     const boardType = match.params.type;
-    const [files, setFiles] = useState<[]>();
+    const [files, setFiles] = useState<[]>([]);
     const [currentArticleDetail, setCurrentArticleDetail] = useState<ArticleDetailInput>({});
 
     const boardTitle = boardType === 'LFP' ? '실종' : '발견';
@@ -70,22 +71,11 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     };
 
     const onPressButton = async () => {
-        const response = await create({
-            variables: {
-                boardType: boardType,
-                files: files,
-                articleDetail: currentArticleDetail,
-            },
-        });
-
-        if (!!response.errors) {
-            console.log(response.errors[0].message);
-            return;
-        }
-
-        // TODO : 완료 로직
-        console.log('response', response);
-        history.push('/createArticle/step3');
+        createArticle({
+            boardType,
+            files,
+            articleDetail: currentArticleDetail,
+        }).then((response) => history.push(`/createArticle/step3/${response.data?.createArticle.id}`));
     };
 
     return (

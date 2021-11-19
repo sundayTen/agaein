@@ -29,3 +29,12 @@ mutation createArticle($boardType: BOARD_TYPE!, $files: [Upload]!, $articleDetai
         id
     }
 }
+
+mutation deleteArticle($id: ID!, $password: String) {
+    deleteArticle(id: $id, password: $password)
+}
+mutation updateArticle($id: ID!, $files: [Upload]!, $articleDetail: articleDetailInput!) {
+    updateArticle(id: $id, files: $files, articleDetail: $articleDetail) {
+        id
+    }
+}
