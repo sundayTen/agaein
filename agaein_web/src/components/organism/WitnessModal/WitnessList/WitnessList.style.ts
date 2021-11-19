@@ -9,11 +9,11 @@ interface StyledWitnessProps {
 }
 
 interface StyledPhotoProps {
-    isImg: boolean;
+    isimg: boolean;
 }
 
 interface StyledPhoneProps {
-    isHp: boolean;
+    ishp: boolean;
 }
 
 export const WitnessListTable = styled.table`
@@ -67,7 +67,7 @@ export const ClickIcon = styled(Click)`
     margin: 0 5px;
 `;
 
-export const Img = styled(TestImg)`
+export const Img = styled.img`
     margin: 3px 10px;
     vertical-align: middle;
 `;
@@ -80,7 +80,7 @@ export const Contents = styled.div`
 export const Photo = styled(CameraIcon)<StyledPhotoProps>`
     width: 25px;
     height: 25px;
-    color: ${(props) => (props.isImg ? props.theme.light.primary : props.theme.light.primary100)};
+    color: ${(props) => (props.isimg ? props.theme.light.primary : props.theme.light.primary100)};
     margin-right: 5px;
     vertical-align: middle;
 `;
@@ -88,7 +88,7 @@ export const Photo = styled(CameraIcon)<StyledPhotoProps>`
 export const SmallPhoto = styled(CameraIcon)<StyledPhotoProps>`
     width: 18px;
     height: 18px;
-    color: ${(props) => (props.isImg ? props.theme.light.primary : props.theme.light.primary100)};
+    color: ${(props) => (props.isimg ? props.theme.light.primary : props.theme.light.primary100)};
     margin-right: 5px;
     margin-bottom: 4px;
     vertical-align: middle;
@@ -97,7 +97,7 @@ export const SmallPhoto = styled(CameraIcon)<StyledPhotoProps>`
 export const Phone = styled(PhoneIcon)<StyledPhoneProps>`
     width: 25px;
     height: 25px;
-    color: ${(props) => (props.isHp ? props.theme.light.primary : props.theme.light.primary100)};
+    color: ${(props) => (props.ishp ? props.theme.light.primary : props.theme.light.primary100)};
     margin-right: 20px;
     vertical-align: middle;
 `;
@@ -114,3 +114,8 @@ export const ChevronDown = styled(ChevronDownIcon)`
     height: 25px;
     vertical-align: middle;
 `;
+
+export const Hpspan = styled.span`
+    margin-right: 10px;
+`;
+

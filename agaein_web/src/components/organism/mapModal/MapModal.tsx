@@ -1,7 +1,5 @@
-import Input from 'components/molecules/Input';
 import Modal from 'components/molecules/Modal';
-import { useEffect, useState } from 'react';
-import KakaoMap from '../kakaomap/KakaoMap';
+import { useState } from 'react';
 import ReactKaKaoMap from '../ReactKakaoMap/ReactKakaoMap';
 import { AddressInput, InputForm, Search } from './MapModal.style';
 interface MapModalProps {

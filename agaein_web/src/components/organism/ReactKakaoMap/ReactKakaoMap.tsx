@@ -1,11 +1,11 @@
-import { ReactElement, useState, useEffect } from 'react';
-import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
-import testgif from 'assets/image/testgif.gif';
-import Lost from 'assets/image/Lost.png';
 import Active from 'assets/image/Active.png';
 import Default from 'assets/image/Default.png';
-import { Category, Img, MapContainer, Text, InfoWindow } from './ReactKakaoMap.style';
+import Lost from 'assets/image/Lost.png';
+import testgif from 'assets/image/testgif.gif';
 import { Location } from 'graphql/generated/generated';
+import { useEffect, useState } from 'react';
+import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Category, Img, InfoWindow, MapContainer, Text } from './ReactKakaoMap.style';
 interface ReactKakaoMapProps {
     search?: string | undefined;
     setAddress?: (value: Location) => void;
@@ -19,16 +19,11 @@ interface ReactKakaoMapProps {
     missPosition?: {
         lat: number;
         lng: number;
+        roadAddress: string;
         address: string;
     };
-    foundPosition?: [
-        {
-            click: boolean;
-            lat: number;
-            lng: number;
-            address: string;
-        },
-    ];
+    foundPosition?: Array<Location>;
+    listClickIdx?: number;
 }
 declare global {
     interface Window {
@@ -42,20 +37,17 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
         setAddress = () => {},
         size = { width: 500, height: 500 },
         borderRadius = 5,
-        missPosition = { lat: 37.52491382139469, lng: 127.11195359701143, address: 'aaa' },
-        foundPosition = [
-            { lat: 37.51491382139469, lng: 127.10195359701143, address: 'aaa', click: false },
-            { lat: 37.52491382139469, lng: 127.10195359701143, address: 'aaa', click: false },
-            { lat: 37.51491382139469, lng: 127.11195359701143, address: 'aaa', click: false },
-        ],
+        missPosition,
+        foundPosition,
         isCategory = false,
         noClick = false,
+        listClickIdx,
     } = props;
     const [position, setPosition] = useState<{ lat: number; lng: number }>({
         lat: -1,
         lng: -1,
     });
-    const [info, setInfo] = useState(-1);
+    const [infoIdx, setInfoIdx] = useState(-1);
     const [mapCenter, setMapCenter] = useState({ lat: 37.51491382139469, lng: 127.10195359701143 });
     const [location, setLocation] = useState<{ address: string; roadAddress: string }>({
         address: '',
@@ -95,31 +87,33 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
         },
     };
     useEffect(() => {
-        let clickList = false;
-        foundPosition.map((item: { click: boolean; lat: number; lng: number; address: string }) => {
-            if (item.click) {
-                clickList = true;
-                return setMapCenter({
-                    lat: item.lat,
-                    lng: item.lng,
-                });
-            }
-        });
-        if (clickList) {
-            return;
-        } else {
-            //TODO : 발견 리스트 마커 전체 보이게 하는 코드
-            // bounds.extend(new kakao.maps.LatLng(missPosition?.lat, missPosition?.lng));
-            // foundPosition.map((item) => {
-            //     return bounds.extend(new kakao.maps.LatLng(item.lat, item.lng));
-            // });
-            // map?.setBounds(bounds);
-            return setMapCenter({
-                lat: missPosition.lat,
-                lng: missPosition.lng,
+        !!missPosition &&
+            setMapCenter({
+                lat: missPosition?.lat,
+                lng: missPosition?.lng,
             });
-        }
     }, [map]);
+
+    useEffect(() => {
+        if (foundPosition) {
+            for (let idx = 0; idx < foundPosition.length; idx++) {
+                const item = foundPosition[idx];
+                if (idx === listClickIdx) {
+                    setMapCenter({
+                        lat: item.lat,
+                        lng: item.lng,
+                    });
+                    break;
+                } else {
+                    !!missPosition &&
+                        setMapCenter({
+                            lat: missPosition?.lat,
+                            lng: missPosition?.lng,
+                        });
+                }
+            }
+        }
+    }, [listClickIdx]);
 
     useEffect(() => {
         setAddress({ ...position, ...location } as Location);
@@ -145,11 +139,11 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
         }
     };
 
-    const searchCheck = () => {
-        return search === '' || search === undefined || search === null;
+    const nullCheck = (value: any) => {
+        return value === '' || value === undefined || value === null;
     };
     useEffect(() => {
-        if (searchCheck()) return;
+        if (nullCheck(search)) return;
         geocoder.addressSearch(search, addMarker);
     }, [search]);
 
@@ -178,52 +172,49 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
                     <>
                         <MapMarker position={{ lat: missPosition.lat, lng: missPosition.lng }}></MapMarker>
                         <CustomOverlayMap position={{ lat: missPosition.lat, lng: missPosition.lng }}>
-                            <InfoWindow type="miss" roadAddress={true}>
+                            <InfoWindow type="miss" roadAddress={!nullCheck(missPosition.roadAddress)}>
                                 <div>
                                     <b>지번 주소</b> : {missPosition.address}
-                                    <br />
-                                    <b>도로명 주소</b> : ㅁ니ㅏㅇ런미ㅏ;런ㅁ리ㅏㅓ니ㅏㄹ
+                                    {!nullCheck(missPosition.roadAddress) && (
+                                        <>
+                                            <br /> <b>도로명 주소</b> : {missPosition.roadAddress}
+                                        </>
+                                    )}
                                 </div>
                             </InfoWindow>
                         </CustomOverlayMap>
                     </>
                 )}
-                {foundPosition.map(
-                    (
-                        item: {
-                            click: boolean;
-                            lat: number;
-                            lng: number;
-                            address: string;
-                        },
-                        idx: number,
-                    ) => {
-                        const position = { lat: item.lat, lng: item.lng };
-                        const address = item.address;
-                        return (
-                            <>
-                                <MapMarker
-                                    key={idx}
-                                    position={position}
-                                    image={item.click ? activeImg : defaultImg}
-                                    onMouseOver={(e) => {
-                                        setInfo(idx);
-                                    }}
-                                    onMouseOut={() => setInfo(-1)}
-                                />
-                                <CustomOverlayMap position={position}>
-                                    {idx === info && (
-                                        <InfoWindow type="withess" roadAddress={false}>
-                                            <div>
-                                                <b>지번 주소</b> : {address}
-                                            </div>
-                                        </InfoWindow>
-                                    )}
-                                </CustomOverlayMap>
-                            </>
-                        );
-                    },
-                )}
+                {foundPosition?.map((item, idx) => {
+                    const position = { lat: item.lat, lng: item.lng };
+                    const address = item.address;
+                    return (
+                        <div key={idx}>
+                            <MapMarker
+                                position={position}
+                                image={idx === listClickIdx ? activeImg : defaultImg}
+                                onMouseOver={() => {
+                                    setInfoIdx(idx);
+                                }}
+                                onMouseOut={() => setInfoIdx(-1)}
+                            />
+                            <CustomOverlayMap position={position}>
+                                {idx === infoIdx && (
+                                    <InfoWindow type="witness" roadAddress={!nullCheck(item.roadAddress)}>
+                                        <div>
+                                            <b>지번 주소</b> : {address}
+                                            {!nullCheck(item.roadAddress) && (
+                                                <>
+                                                    <br /> <b>도로명 주소</b> : {item.roadAddress}
+                                                </>
+                                            )}
+                                        </div>
+                                    </InfoWindow>
+                                )}
+                            </CustomOverlayMap>
+                        </div>
+                    );
+                })}
             </Map>
             {isCategory && (
                 <Category>

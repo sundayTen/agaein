@@ -1,29 +1,28 @@
+import penguin from 'assets/image/penguin.png';
+import BookMark from 'components/molecules/BookMark';
+import Button from 'components/molecules/Button';
 import Chip from 'components/molecules/Chip';
 import Font from 'components/molecules/Font';
 import ImageCarousel from 'components/molecules/ImageCarousel/ImageCarousel';
+import Comment from 'components/organism/Comment';
+import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
+import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
 import { Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
+import useBookmark from 'hooks/useBookmark';
+import { Fragment, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
+import { formattedDate, YYYYMMDD } from 'utils/date';
+import { isArticle, isLFP } from 'utils/typeGuards';
 import {
-    ContainerTop,
     ArticleDetailContainer,
     ArticleDetailContentContainer,
     ArticleInfoContainer,
     ArticleMapContainer,
+    ContainerTop,
     HorizontalContainer,
     TitleAndBookMarkContainer,
 } from './ArticleDetail.style';
-import Comment from 'components/organism/Comment';
-import Button from 'components/molecules/Button';
-import BookMark from 'components/molecules/BookMark';
-import useBookmark from 'hooks/useBookmark';
-import { useState } from 'react';
-import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
-import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
-import { formattedDate, YYYYMMDD } from 'utils/date';
-import { Fragment } from 'react';
-import { isArticle, isLFP } from 'utils/typeGuards';
-import penguin from 'assets/image/penguin.png';
 
 const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useBookmark();
@@ -40,6 +39,7 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
     if (data === undefined || !isArticle(data.article)) return <p>No data</p>;
+
     const { id, createdAt, articleDetail, view, author, comments = [], images = [] } = data.article;
 
     // ? TypeGuard로 해결할 방법을 모르겠음
@@ -100,7 +100,12 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
                     </ContainerTop>
                     <ArticleMapContainer>
                         <Font label="실종장소" fontType="subhead" style={{ marginBottom: 10 }} />
-                        <ReactKaKaoMap missPosition={location} size={{ width: 480, height: 260 }} noClick={true} />
+                        <ReactKaKaoMap
+                            missPosition={location}
+                            size={{ width: 480, height: 260 }}
+                            //foundPosition={foundPosition}
+                            noClick={true}
+                        />
                         <Button
                             label="발견 신고 하기"
                             onClick={() => {
@@ -114,7 +119,13 @@ const ArticleDetail = ({ match }: RouteComponentProps<ArticleDetailParams>) => {
             </HorizontalContainer>
             <Comment comments={comments as CommentType[]} articleId={id} author={author} />
 
-            <WitnessModal open={isOpenModal} close={closeModal} isAuthor={true} />
+            <WitnessModal
+                open={isOpenModal}
+                close={closeModal}
+                missPosition={location}
+                isAuthor={true}
+                articleId={id}
+            />
         </Fragment>
     );
 };
