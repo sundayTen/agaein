@@ -54,7 +54,7 @@ interface KeywordType {
 
 export function FormKeyword({ name, onChange }: FormKeywordProps) {
     const [keyword, setKeyword] = useState('');
-    const [keywordList, setKeywordList] = useState<KeywordType[]>();
+    const [keywordList, setKeywordList] = useState<KeywordType[]>([]);
 
     const inputChangeHandler = (value: string) => {
         setKeyword(value);
@@ -81,8 +81,7 @@ export function FormKeyword({ name, onChange }: FormKeywordProps) {
 
     const handleKeypress = (e: KeyboardEvent<HTMLInputElement>) => {
         const isValidKey = e.key === 'Enter';
-        if (!isValidKey) return;
-        addKeyword();
+        if (isValidKey) addKeyword();
     };
 
     const deleteKeyword = (id: any) => {
