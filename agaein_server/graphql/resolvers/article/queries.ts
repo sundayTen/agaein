@@ -35,6 +35,18 @@ const articleQueries = {
             throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
         }
     },
+    articleLength: async (_: any, args: any) => {
+        try {
+            const articleLength = await knex(`${args.boardType}`).count('*').first();
+
+            return articleLength.count;
+        } catch {
+            console.error('articleLength에서 에러발생');
+            console.trace();
+
+            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+        }
+    },
     article: async (_: any, args: any) => {
         const { id } = args;
         try {

@@ -15,6 +15,7 @@ type Query {
     # Article
     articles(boardType: BOARD_TYPE!, offset: Int, limit: Int): [Article]!
     article(id: ID!): Article
+    articleLength(boardType: BOARD_TYPE!): Int!
     # Breed
     breeds(type: BREED_TYPE!): [Breed]!
     bookmarks: [Bookmark]!
