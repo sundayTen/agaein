@@ -9,7 +9,7 @@ export const CommentItemContainer = styled.div<CommentContainerProps>`
     height: 47px;
     border-top: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
     margin: ${(props) => `10px ${props.isChildren ? '30px' : '0'}`};
-    padding: 30px 20px;
+    padding: 20px 20px;
 `;
 export const CommentItemWriterContainer = styled.div`
     display: inline-block;

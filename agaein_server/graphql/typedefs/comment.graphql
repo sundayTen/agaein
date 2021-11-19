@@ -1,7 +1,7 @@
 type Comment implements Timestamps {
     id: ID!
     content: String!
-    commentId: ID
+    reply: [Comment]!
     password: String
     author: User!
     createdAt: Date!

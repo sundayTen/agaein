@@ -37,3 +37,17 @@ export const CommentPwd = styled(Input)`
     width: 120px;
     margin-right: 10px;
 `;
+
+export const DeleteModal = styled.div`
+    width: 460px;
+    margin: 0 auto;
+`;
+
+export const ButtonGroup = styled.div`
+    display: flex;
+    margin-top: 40px;
+    justify-content: center;
+    button + button {
+        margin-left: 20px;
+    }
+`;

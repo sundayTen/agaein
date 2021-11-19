@@ -6,6 +6,9 @@ fragment ArticleFragment on Article {
     type
     view
     comments {
+        reply {
+            ...CommentFragment
+        }
         ...CommentFragment
     }
     author {

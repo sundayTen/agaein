@@ -20,7 +20,7 @@ function isReview(target: unknown): target is Review {
 function isBookmark(target: unknown): target is Bookmark {
     return (target as Bookmark).__typename === 'Bookmark' && (target as Bookmark).articleId !== null;
 }
-function isComments(target: unknown[]) {
+function isComments(target: unknown[]): target is Comment[] {
     return (target as Comment[]).some((comment) => isComment(comment));
 }
 

@@ -1,11 +1,11 @@
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useMemo } from 'react';
 import { Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
 import useArticle from 'graphql/hooks/useArticle';
 import useBookmark from 'hooks/useBookmark';
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
 import { formattedDate, YYYYMMDD } from 'utils/date';
-import { isArticle, isLFP } from 'utils/typeGuards';
+import { isArticle, isComments, isLFP } from 'utils/typeGuards';
 import {
     ArticleDetailContainer,
     ArticleDetailContentContainer,
@@ -22,16 +22,25 @@ import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
 import Comment from 'components/organism/Comment';
 import penguin from 'assets/image/penguin.png';
 import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
+import { useApolloClient } from '@apollo/client';
 
 const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useBookmark();
     const { deleteArticle } = useArticle();
+    const client = useApolloClient();
     const [isOpenModal, setIsOpenModal] = useState(false);
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
         },
-        onCompleted: (data) => {},
+        onCompleted: (data) => {
+            client.cache.modify({
+                id: `Article:${data.article?.id}`,
+                fields: {
+                    view: (prevViewCount) => prevViewCount + 1,
+                },
+            });
+        },
     });
 
     if (loading) return <p>Loading...</p>;
@@ -42,6 +51,24 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
 
     // ? TypeGuard로 해결할 방법을 모르겠음
     const { breed, feature, age, gender, name, location, foundDate, lostDate } = articleDetail as any;
+
+    const commentsWithReply = () => {
+        if (comments === null || !isComments(comments)) {
+            return [];
+        }
+        return comments
+            .map((comment) => {
+                if (hasReply(comment)) {
+                    return [comment, ...comment.reply];
+                }
+                return comment;
+            })
+            .flat();
+    };
+
+    function hasReply(comment: CommentType) {
+        return comment.reply.length > 0 && isComments(comment.reply);
+    }
 
     function getTitle() {
         if (isLFP(articleDetail)) {
@@ -99,7 +126,10 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                         </ArticleDetailContentContainer>
                         <ArticleInfoContainer>
                             <Font label={formattedDate(createdAt)} fontType="body" />
-                            <Font label={` 북마크 5 · 댓글 ${comments?.length} · 조회수 ${view}`} fontType="body" />
+                            <Font
+                                label={` 북마크 5 · 댓글 ${commentsWithReply().length} · 조회수 ${view}`}
+                                fontType="body"
+                            />
                         </ArticleInfoContainer>
                     </ContainerTop>
                     <ArticleMapContainer>
@@ -116,7 +146,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                     </ArticleMapContainer>
                 </ArticleDetailContainer>
             </HorizontalContainer>
-            <Comment comments={comments as CommentType[]} articleId={id} author={author} />
+            <Comment comments={commentsWithReply() as CommentType[]} articleId={id} author={author} />
 
             <WitnessModal
                 open={isOpenModal}

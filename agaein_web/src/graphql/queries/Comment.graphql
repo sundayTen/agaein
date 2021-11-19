@@ -2,7 +2,6 @@ fragment CommentFragment on Comment {
     id
     content
     password
-    commentId
     author {
         nickname
         email
@@ -13,6 +12,12 @@ fragment CommentFragment on Comment {
 }
 mutation createComment($articleId: ID!, $content: String!, $commentId: ID, $password: String) {
     createComment(articleId: $articleId, content: $content, commentId: $commentId, password: $password) {
+        id
+    }
+}
+
+mutation updateComment($id: ID!, $content: String!, $password: String) {
+    updateComment(id: $id, content: $content, password: $password) {
         id
     }
 }

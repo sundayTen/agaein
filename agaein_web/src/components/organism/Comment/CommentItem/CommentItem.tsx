@@ -26,7 +26,7 @@ interface CommentItemProps {
 const CommentItem = (props: CommentItemProps) => {
     const { comment, isAuthors, menuHandler } = props;
     const { isLoggedIn } = useContext(UserContext);
-    const { id, content, commentId, author, createdAt } = comment;
+    const { id, content, reply, author, createdAt } = comment;
     const { kakaoId, nickname } = author;
 
     const [selectVisible, setSelectVisible] = useState(false);
@@ -39,13 +39,17 @@ const CommentItem = (props: CommentItemProps) => {
     const isMemberComment = () => {
         return kakaoId !== 'anonymous';
     };
+    const isChildren = () => {
+        return reply === undefined || reply === [];
+    };
 
     useEffect(() => {
         if (!isHover) setSelectVisible(false);
     }, [isHover]);
+
     return (
         <Fragment>
-            <CommentItemContainer isChildren={!!commentId} ref={commentItemRef}>
+            <CommentItemContainer isChildren={isChildren()} ref={commentItemRef}>
                 <CommentItemToolBox>
                     <CommentItemWriterContainer>
                         {isAuthors && <AuthorTag>작성자</AuthorTag>}
