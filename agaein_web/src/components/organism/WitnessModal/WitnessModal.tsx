@@ -122,7 +122,7 @@ const WitnessModal = ({ open, close, isAuthor = false, articleId, missPosition }
         <Modal
             open={open}
             close={close}
-            title="발견 리스트"
+            title={isAuthor ? '발견 리스트' : '발견 신고'}
             btnName={isAuthor ? undefined : '등록'}
             onBtn={isAuthor ? undefined : reportSave}
         >
