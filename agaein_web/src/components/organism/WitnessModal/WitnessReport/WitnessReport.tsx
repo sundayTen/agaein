@@ -2,7 +2,7 @@ import { FormPhoto, FormAddress, FormDate, FormEtc } from 'components/organism/F
 import { FormHp } from 'components/organism/Form/FormHp';
 import { RequiredGuide, RequiredIcon } from 'components/pages/createArticle/CreateArticle.style';
 import { Location } from 'graphql/generated/generated';
-import { FormWrapper } from './WithessReport.style';
+import { FormWrapper } from './WitnessReport.style';
 
 interface ReportProps {
     address: Location;
@@ -10,7 +10,7 @@ interface ReportProps {
     filesChange: (value: Array<File>) => void;
 }
 
-const WithessReport = ({ address, reportChange, filesChange }: ReportProps) => {
+const WitnessReport = ({ address, reportChange, filesChange }: ReportProps) => {
     return (
         <FormWrapper>
             <RequiredGuide style={{ float: 'right' }}>
@@ -25,4 +25,4 @@ const WithessReport = ({ address, reportChange, filesChange }: ReportProps) => {
     );
 };
 
-export default WithessReport;
+export default WitnessReport;

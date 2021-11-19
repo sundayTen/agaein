@@ -47,7 +47,7 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
         lat: -1,
         lng: -1,
     });
-    const [info, setInfo] = useState(-1);
+    const [infoIdx, setInfoIdx] = useState(-1);
     const [mapCenter, setMapCenter] = useState({ lat: 37.51491382139469, lng: 127.10195359701143 });
     const [location, setLocation] = useState<{ address: string; roadAddress: string }>({
         address: '',
@@ -193,13 +193,13 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
                             <MapMarker
                                 position={position}
                                 image={idx === listClickIdx ? activeImg : defaultImg}
-                                onMouseOver={(e) => {
-                                    setInfo(idx);
+                                onMouseOver={() => {
+                                    setInfoIdx(idx);
                                 }}
-                                onMouseOut={() => setInfo(-1)}
+                                onMouseOut={() => setInfoIdx(-1)}
                             />
                             <CustomOverlayMap position={position}>
-                                {idx === info && (
+                                {idx === infoIdx && (
                                     <InfoWindow type="witness" roadAddress={!nullCheck(item.roadAddress)}>
                                         <div>
                                             <b>지번 주소</b> : {address}

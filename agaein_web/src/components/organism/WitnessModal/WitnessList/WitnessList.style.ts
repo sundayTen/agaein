@@ -114,3 +114,8 @@ export const ChevronDown = styled(ChevronDownIcon)`
     height: 25px;
     vertical-align: middle;
 `;
+
+export const Hpspan = styled.span`
+    margin-right: 10px;
+`;
+

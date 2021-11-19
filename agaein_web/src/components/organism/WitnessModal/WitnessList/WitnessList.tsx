@@ -8,6 +8,7 @@ import {
     ClickIcon,
     Contents,
     Header,
+    Hpspan,
     Img,
     Phone,
     Photo,
@@ -62,7 +63,7 @@ const WitnessList = ({ witness, clickIdx, setClickIdx }: WitnessListProps) => {
                             <td>
                                 <Phone ishp={!!item.hp} />
                             </td>
-                            <td>{idx === clickIdx ? <ChevronDown /> : <ChevronUp />}</td>
+                            <td>{idx === clickIdx ? <ChevronUp /> : <ChevronDown />}</td>
                         </Witness>
                         <WitnessDetail click={idx === clickIdx}>
                             <td colSpan={7}>
@@ -73,7 +74,7 @@ const WitnessList = ({ witness, clickIdx, setClickIdx }: WitnessListProps) => {
                                         <br />
                                         <br />
                                         <b>
-                                            {item.hp && <span>연락처 : {item.hp} &nbsp;&nbsp;</span>}
+                                            {item.hp && <Hpspan>연락처 : {item.hp}</Hpspan>}
                                             {item.img && <SmallPhoto isimg={!!item.img} />}
                                             {item.img?.length}
                                         </b>

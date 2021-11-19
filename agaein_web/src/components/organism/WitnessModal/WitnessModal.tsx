@@ -2,10 +2,10 @@ import Modal from 'components/molecules/Modal';
 import { Location, Maybe, ReportInput, useCreateReportMutation, useGetReportsQuery } from 'graphql/generated/generated';
 import { useEffect, useState } from 'react';
 import ReactKaKaoMap from '../ReactKakaoMap/ReactKakaoMap';
-import WithessReport from './WithessReport/WithessReport';
 import WitnessImageCarousel from './WitnessImageCarousel';
 import WitnessList from './WitnessList/WitnessList';
 import { ToggleButon, ToggleButtonDiv } from './WitnessModel.style';
+import WitnessReport from './WitnessReport/WitnessReport';
 
 interface WitnessArray {
     id: string;
@@ -105,7 +105,9 @@ const WitnessModal = ({ open, close, isAuthor = false, articleId, missPosition }
     const reportChange = (value: any, name: string) => {
         setReport({ ...report, [name]: value });
     };
-
+    useEffect(() => {
+        console.log(report);
+    }, [report]);
     const filesChange = (value: Array<File>) => {
         setFiles(value);
     };
@@ -157,7 +159,7 @@ const WitnessModal = ({ open, close, isAuthor = false, articleId, missPosition }
                 {isAuthor ? (
                     <WitnessList witness={witnessList} clickIdx={listClickIdx} setClickIdx={setListClickIdx} />
                 ) : (
-                    <WithessReport address={address} reportChange={reportChange} filesChange={filesChange} />
+                    <WitnessReport address={address} reportChange={reportChange} filesChange={filesChange} />
                 )}
             </div>
         </Modal>
