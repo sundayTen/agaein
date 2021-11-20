@@ -20,13 +20,14 @@ const Label = styled.p`
     color: ${(props) => props.theme.light.black};
 `;
 
-interface FormCheckdboxProps {
+interface FormCheckboxProps {
     name: string;
     label: string;
     onChange: (value: any, name: string) => void;
+    disabled?: boolean;
 }
 
-export function FormCheckbox({ name, label, onChange }: FormCheckdboxProps) {
+export function FormCheckbox({ name, label, onChange, disabled }: FormCheckboxProps) {
     const [value, setValue] = useState<boolean>(false);
 
     const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +38,7 @@ export function FormCheckbox({ name, label, onChange }: FormCheckdboxProps) {
 
     return (
         <Wrapper>
-            <Checkbox checked={value} onChange={inputChangeHandler} />
+            <Checkbox checked={value} onChange={inputChangeHandler} disabled={disabled} />
             <Label>{label}</Label>
         </Wrapper>
     );

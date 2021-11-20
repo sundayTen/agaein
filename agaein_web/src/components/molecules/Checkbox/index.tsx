@@ -44,6 +44,11 @@ const Label = styled.label`
     input:disabled + ${StyledCheckbox} {
         border-color: ${(props) => props.theme.light.DarkGrey1};
         background-color: ${(props) => props.theme.light.lightGrey2};
+        cursor: default;
+
+        svg {
+            display: none;
+        }
     }
 `;
 

@@ -1,4 +1,4 @@
-import { useState, useContext, useMemo } from 'react';
+import { useState, useContext, useMemo, useEffect } from 'react';
 import {
     Title,
     SubTitle,
@@ -39,6 +39,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     const boardType = match.params.type;
     const [files, setFiles] = useState<[]>([]);
     const [currentArticleDetail, setCurrentArticleDetail] = useState<ArticleDetailInput>({});
+    const [isValidEmail, setIsValidEmail] = useState(false);
 
     const boardTitle = boardType === 'LFP' ? '실종' : '발견';
     const dateType = boardType === 'LFP' ? 'lostDate' : 'foundDate';
@@ -49,6 +50,16 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
 
     const needPassword = () => {
         return isLoggedIn ? true : currentArticleDetail.password;
+    };
+
+    useEffect(() => {
+        if (!!currentArticleDetail.email) {
+            setIsValidEmail(validateEmail(currentArticleDetail.email));
+        }
+    }, [currentArticleDetail]);
+
+    const validateEmail = (email: string) => {
+        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
     };
 
     const isInvalid = useMemo<boolean>(() => {
@@ -119,6 +130,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                         name="alarm"
                         label="입력된 정보를 바탕으로 유사한 실종견 정보를 이메일로 수신하겠습니다."
                         onChange={inputChangeHandler}
+                        disabled={!isValidEmail}
                     />
                 </CheckWrapper>
             </FormWrapper>

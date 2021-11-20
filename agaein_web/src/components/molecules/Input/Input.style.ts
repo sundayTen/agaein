@@ -1,10 +1,33 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { ExclamationCircleIcon } from '@heroicons/react/solid';
+
+interface StyledInputProps {
+    isError: boolean | undefined;
+}
 
 const Label = styled.label`
     display: block;
+    position: relative;
 `;
 
-const StyledInput = styled.input`
+const ErrorIcon = styled(ExclamationCircleIcon)`
+    position: absolute;
+    top: 11px;
+    right: 14px;
+    width: 20px;
+    height: 20px;
+    color: ${(props) => props.theme.light.negative};
+`;
+
+const ErrorMsg = styled.p`
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: -0.02em;
+    color: ${(props) => props.theme.light.negative};
+`;
+
+const StyledInput = styled.input<StyledInputProps>`
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
@@ -32,6 +55,13 @@ const StyledInput = styled.input`
         border-color: ${(props) => props.theme.light.DarkGrey1};
         background-color: ${(props) => props.theme.light.lightGrey2};
     }
+
+    ${(props) =>
+        props.isError &&
+        css`
+            border-color: ${(props) => props.theme.light.negative} !important;
+            padding-right: 34px !important;
+        `}
 `;
 
-export { StyledInput, Label };
+export { StyledInput, Label, ErrorIcon, ErrorMsg };

@@ -5,7 +5,7 @@ import Input from 'components/molecules/Input';
 
 interface FormPasswordProps {
     name: string;
-    onChange: (value: string, name: string) => void;
+    onChange: (value: string | undefined, name: string) => void;
 }
 
 export function FormPassword({ name, onChange }: FormPasswordProps) {
@@ -14,11 +14,16 @@ export function FormPassword({ name, onChange }: FormPasswordProps) {
         password2: '',
     });
 
+    const [isError, setIsError] = useState(false);
+
     useEffect(() => {
-        if (password.password1 !== password.password2) {
-            console.log('비밀번호가 같지 않습니다');
+        if (password.password1 !== password.password2 && password.password2 !== '') {
+            setIsError(true);
+            onChange(undefined, name);
             return;
         }
+
+        setIsError(false);
 
         if (password.password1.length === 4 && password.password1 === password.password2) {
             onChange(password.password1, name);
@@ -59,6 +64,9 @@ export function FormPassword({ name, onChange }: FormPasswordProps) {
                         maxLength={4}
                         value={password.password2}
                         onChange={(e) => inputChangeHandler(e.target.value, 'password2')}
+                        isError={isError}
+                        ErrorMessage={'비밀번호가 같지 않습니다.'}
+                        autoComplete="new-password"
                     />
                 </Form>
             </FormRow>
