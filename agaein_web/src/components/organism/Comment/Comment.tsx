@@ -167,7 +167,7 @@ const Comment = (props: CommentProps) => {
                 children={
                     <DeleteModal>
                         <Font label={`정말 삭제하시겠습니까?`} fontType="label" htmlElement="p" />
-                        <Font label={`이 행동은 되둘릴 수 없습니다.`} fontType="label" htmlElement="p" />
+                        <Font label={`이 행동은 되돌릴 수 없습니다.`} fontType="label" htmlElement="p" />
                         <ButtonGroup>
                             <Button label="취소" onClick={closeModal} />
                             <Button label="삭제" buttonStyle="PAINTED" onClick={dropComment} />
