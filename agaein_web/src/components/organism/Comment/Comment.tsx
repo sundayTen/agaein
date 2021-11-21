@@ -13,7 +13,7 @@ import {
     CommentToolContainer,
 } from './Comment.style';
 import CommentItem from './CommentItem';
-import { RequiredGuide, RequiredIcon } from 'components/pages/createArticle/CreateArticle.style';
+import { RequiredGuide, RequiredIcon } from 'components/organism/Form/Form.style';
 import { UserContext } from 'contexts/userContext';
 import useComment from 'graphql/hooks/useComment';
 import { COMMENT_OPTION } from '.';

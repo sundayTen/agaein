@@ -1,14 +1,20 @@
-import { forwardRef } from 'react';
-import { StyledInput, Label } from './Input.style';
+import { FC, InputHTMLAttributes } from 'react';
+import { StyledInput, Label, ErrorIcon, ErrorMsg } from './Input.style';
+interface InputProp extends InputHTMLAttributes<HTMLInputElement> {
+    isError?: boolean;
+    ErrorMessage?: string;
+}
 
-type InputProps = JSX.IntrinsicElements['input'];
-
-const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+const Input: FC<InputProp> = ({ isError, ErrorMessage, ...props }) => {
     return (
-        <Label>
-            <StyledInput {...props} ref={ref} />
-        </Label>
+        <>
+            <Label>
+                <StyledInput {...props} isError={isError} />
+                {isError && <ErrorIcon />}
+            </Label>
+            {isError && <ErrorMsg>{ErrorMessage}</ErrorMsg>}
+        </>
     );
-});
+};
 
 export default Input;

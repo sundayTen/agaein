@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormRow, FormLabel, Form } from '../../pages/createArticle/CreateArticle.style';
+import { FormRow, FormLabel, Form } from './Form.style';
 import { CurrencyDollarIcon } from '@heroicons/react/solid';
 import styled from 'styled-components';
 import Input from 'components/molecules/Input';

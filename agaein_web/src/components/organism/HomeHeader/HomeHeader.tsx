@@ -9,7 +9,7 @@ const HomeHeader = () => {
         history.push('/createArticle/step1');
     };
     const onClickSearch = () => {
-        console.log('Search Button Clicked');
+        history.push('/search');
     };
 
     return (

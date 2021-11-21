@@ -1,7 +1,7 @@
 import Input from 'components/molecules/Input';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Form, FormLabel, FormRow } from '../../pages/createArticle/CreateArticle.style';
+import { Form, FormLabel, FormRow } from './Form.style';
 
 const MainHp = styled.div`
     display: flex;
