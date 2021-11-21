@@ -73,7 +73,13 @@ const CommentItem = (props: CommentItemProps) => {
                                         // TODO : 매우 비효율적. 다른 방법이 필요함.
                                         if (isMemberComment() && !isLoggedIn && label !== '답글') return <></>;
                                         return (
-                                            <SelectItem key={label} onClick={() => menuHandler(label, id)}>
+                                            <SelectItem
+                                                key={label}
+                                                onClick={() => {
+                                                    menuHandler(label, id);
+                                                    setSelectVisible(false);
+                                                }}
+                                            >
                                                 {label}
                                             </SelectItem>
                                         );

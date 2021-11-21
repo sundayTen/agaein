@@ -22,13 +22,8 @@ const ImageCarousel = (props: ImageCarouselProps) => {
             </FocusedImageWrapper>
             <CarouselList>
                 {images.map((img, index) => (
-                    <SmallImgWrapper>
-                        <SmallImg
-                            key={index.toString()}
-                            src={img}
-                            active={index === active}
-                            onClick={() => setActive(index)}
-                        />
+                    <SmallImgWrapper key={index.toString()}>
+                        <SmallImg src={img} active={index === active} onClick={() => setActive(index)} />
                     </SmallImgWrapper>
                 ))}
             </CarouselList>

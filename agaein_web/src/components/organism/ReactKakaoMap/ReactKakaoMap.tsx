@@ -22,7 +22,7 @@ interface ReactKakaoMapProps {
         roadAddress: string;
         address: string;
     };
-    foundPosition?: Array<Location>;
+    foundPosition?: Location[];
     listClickIdx?: number;
 }
 declare global {
@@ -38,7 +38,7 @@ const ReactKaKaoMap = (props: ReactKakaoMapProps) => {
         size = { width: 500, height: 500 },
         borderRadius = 5,
         missPosition,
-        foundPosition,
+        foundPosition = [],
         isCategory = false,
         noClick = false,
         listClickIdx,

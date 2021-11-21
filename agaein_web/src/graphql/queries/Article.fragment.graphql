@@ -43,9 +43,7 @@ fragment LFGDetail on LFG {
     email
     keyword
     location {
-        lat
-        lng
-        address
+        ...LocationFragment
     }
 }
 fragment LFPDetail on LFP {
@@ -61,14 +59,19 @@ fragment LFPDetail on LFP {
     email
     keyword
     location {
-        lat
-        lng
-        address
-        detail
+        ...LocationFragment
     }
 }
 fragment ReviewDetail on REVIEW {
     id
     title
     content
+}
+
+fragment LocationFragment on Location {
+    lat
+    lng
+    address
+    detail
+    roadAddress
 }

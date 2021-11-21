@@ -1,11 +1,11 @@
-import { useState, Fragment, useMemo } from 'react';
+import { useState, Fragment, useContext } from 'react';
 import { Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
 import useArticle from 'graphql/hooks/useArticle';
 import useBookmark from 'hooks/useBookmark';
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
 import { formattedDate, YYYYMMDD } from 'utils/date';
-import { isArticle, isComments, isLFP } from 'utils/typeGuards';
+import { isArticle, isComments, isLFP, isReports } from 'utils/typeGuards';
 import {
     ArticleDetailContainer,
     ArticleDetailContentContainer,
@@ -16,6 +16,8 @@ import {
     TitleAndBookMarkContainer,
     ArticleDetailHeader,
     StyledDotIcon,
+    InfoHeader,
+    InfoHeaderFont,
 } from './ArticleDetail.style';
 import { Font, Chip, Button, BookMark, ImageCarousel } from 'components/molecules';
 import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
@@ -23,10 +25,12 @@ import Comment from 'components/organism/Comment';
 import penguin from 'assets/image/penguin.png';
 import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
 import { useApolloClient } from '@apollo/client';
+import { UserContext } from 'contexts/userContext';
 
 const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useBookmark();
     const { deleteArticle } = useArticle();
+    const { isLoggedIn, user } = useContext(UserContext);
     const client = useApolloClient();
     const [isOpenModal, setIsOpenModal] = useState(false);
     const { data, error, loading } = useGetArticleQuery({
@@ -50,7 +54,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
     const { id, createdAt, articleDetail, view, author, comments = [], images = [] } = data.article;
 
     // ? TypeGuard로 해결할 방법을 모르겠음
-    const { breed, feature, age, gender, name, location, foundDate, lostDate } = articleDetail as any;
+    const { breed, feature, age, gender, name, location, foundDate, lostDate, type } = articleDetail as any;
 
     const commentsWithReply = () => {
         if (comments === null || !isComments(comments)) {
@@ -66,15 +70,19 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
             .flat();
     };
 
+    const isAuthor = () => {
+        return isLoggedIn && user.id === author.id;
+    };
+
     function hasReply(comment: CommentType) {
         return comment.reply.length > 0 && isComments(comment.reply);
     }
 
     function getTitle() {
         if (isLFP(articleDetail)) {
-            return `${location.address}에서 강아지(${breed})를 발견했어요`;
+            return `${location.address}에서 ${type}(${breed})를 발견했어요`;
         }
-        return `${location.address}에서 강아지(${breed})를 찾고있어요`;
+        return `${location.address}에서 ${type}(${breed})를 찾고있어요`;
     }
 
     function getDescription() {
@@ -100,6 +108,13 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
             return [penguin];
         }
         return images;
+    };
+
+    const getFoundLocations = () => {
+        if (isReports(data.reports)) {
+            return data.reports.map((report) => report.location);
+        }
+        return [];
     };
     const onClickDelete = () => {
         history.goBack();
@@ -133,10 +148,21 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                         </ArticleInfoContainer>
                     </ContainerTop>
                     <ArticleMapContainer>
-                        <Font label="실종장소" fontType="subhead" style={{ marginBottom: 10 }} />
-                        <ReactKaKaoMap missPosition={location} size={{ width: 480, height: 260 }} noClick={true} />
+                        <InfoHeader>
+                            <InfoHeaderFont>실종장소</InfoHeaderFont>
+                            <InfoHeaderFont>
+                                발견 제보
+                                <InfoHeaderFont panted>{` ${getFoundLocations().length}`}</InfoHeaderFont>
+                            </InfoHeaderFont>
+                        </InfoHeader>
+                        <ReactKaKaoMap
+                            missPosition={location}
+                            foundPosition={getFoundLocations()}
+                            size={{ width: 480, height: 260 }}
+                            noClick={true}
+                        />
                         <Button
-                            label="발견 신고 하기"
+                            label={isAuthor() ? '발견 리스트 보기' : '발견 신고 하기'}
                             onClick={() => {
                                 setIsOpenModal(true);
                             }}
@@ -152,7 +178,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                 open={isOpenModal}
                 close={closeModal}
                 missPosition={location}
-                isAuthor={true}
+                isAuthor={isAuthor()}
                 articleId={id}
             />
         </Fragment>
