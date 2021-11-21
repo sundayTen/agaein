@@ -36,22 +36,11 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     name: 'agaein',
     version: '0.0.1',
-    // ? uploadLink 타입에러가 나는 부분은 공공연한 이슈이고, 일단 type assertion으로 처리함.
     link: from([authLink, errorLink, uploadLink as unknown as ApolloLink, httpLink]),
     cache: new InMemoryCache({
         addTypename: true,
         resultCaching: true,
         typePolicies: {
-            // Query: {
-            //     fields: {
-            //         Article: {
-            //             keyArgs: false,
-            //             merge(exist = [], incoming) {
-            //                 return [...exist, ...incoming];
-            //             },
-            //         },
-            //     },
-            // },
             LFG: {
                 fields: {
                     gender: {

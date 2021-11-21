@@ -1,12 +1,15 @@
 import {
     MutationCreateCommentArgs,
     MutationDeleteCommentArgs,
+    MutationUpdateCommentArgs,
     useCreateCommentMutation,
     useDeleteCommentMutation,
+    useUpdateCommentMutation,
 } from 'graphql/generated/generated';
 
 const useComment = () => {
     const [create] = useCreateCommentMutation();
+    const [edit] = useUpdateCommentMutation();
     const [drop] = useDeleteCommentMutation();
 
     const createComment = (params: MutationCreateCommentArgs) => {
@@ -23,7 +26,6 @@ const useComment = () => {
                     cache.modify({
                         id: `Article:${articleId}`,
                         fields: {
-                            // TODO : 아래 코드는 새로생긴 코드가 가장 아래에 생기는데, 대댓글일 경우 로직이 다름.
                             comments: (prevComments) => {
                                 const newComment = {
                                     __typename: 'Comment',
@@ -35,6 +37,31 @@ const useComment = () => {
                     });
                 } catch (error) {
                     console.error(`Error occur while caching`, error);
+                }
+            },
+        });
+    };
+
+    const updateComment = (params: MutationUpdateCommentArgs) => {
+        const { id, content, password } = params;
+        edit({
+            variables: {
+                id,
+                content,
+                password,
+            },
+            update: (cache) => {
+                try {
+                    cache.modify({
+                        id: `Comment:${id}`,
+                        fields: {
+                            content: () => {
+                                return content;
+                            },
+                        },
+                    });
+                } catch (error) {
+                    console.error('Error at Caching : ', error);
                 }
             },
         });
@@ -58,7 +85,7 @@ const useComment = () => {
         });
     };
 
-    return { createComment, deleteComment };
+    return { createComment, updateComment, deleteComment };
 };
 
 export default useComment;

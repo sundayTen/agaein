@@ -28,13 +28,16 @@ const resolvers = {
         async author(parent: any) {
             return await knex('user').where('id', `${parent.userId}`).first();
         },
+        async reply(parent: any) {
+            return (await knex('comment').where('commentId', `${parent.id}`)) ?? [];
+        },
     },
     Article: {
         async author(parent: any) {
             return await knex('user').where('id', `${parent.userId}`).first();
         },
         async comments(parent: any) {
-            return await knex('comment').where('articleId', `${parent.id}`);
+            return await knex('comment').where('articleId', `${parent.id}`).whereNull('commentId');
         },
         async images(parent: any) {
             const rawImages = await knex('image').where(`article_id`, parent.id);
