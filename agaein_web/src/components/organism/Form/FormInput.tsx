@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { FormRow, FormLabel, Form } from '../../pages/createArticle/CreateArticle.style';
+import { FormRow, FormLabel, Form } from './Form.style';
 import Input from 'components/molecules/Input';
 
-interface FormNameProps {
+interface FormInputProps {
     name: string;
     onChange: (value: string, name: string) => void;
+    label: string;
+    placeholder: string;
 }
 
-export function FormName({ name, onChange }: FormNameProps) {
+export function FormInput({ name, onChange, label, placeholder }: FormInputProps) {
     const [value, setValue] = useState('');
 
     function inputChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
@@ -18,9 +20,9 @@ export function FormName({ name, onChange }: FormNameProps) {
 
     return (
         <FormRow>
-            <FormLabel>이름</FormLabel>
+            <FormLabel>{label}</FormLabel>
             <Form>
-                <Input type="text" placeholder="동물 이름을 입력해주세요" value={value} onChange={inputChangeHandler} />
+                <Input type="text" placeholder={placeholder} value={value} onChange={inputChangeHandler} />
             </Form>
         </FormRow>
     );

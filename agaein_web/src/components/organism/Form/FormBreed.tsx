@@ -1,7 +1,7 @@
 //@ts-nocheck
 
 import { useState } from 'react';
-import { FormRow, FormLabel, Form, RequiredIcon } from '../../pages/createArticle/CreateArticle.style';
+import { FormRow, FormLabel, Form, RequiredIcon } from './Form.style';
 import { useGetBreedsQuery } from 'graphql/generated/generated';
 import styled from 'styled-components';
 import Select from 'components/molecules/Select';

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FormRow, FormLabel, Form, RequiredIcon } from '../../pages/createArticle/CreateArticle.style';
-import styled from 'styled-components';
+import { FormRow, FormLabel, Form, RequiredIcon } from './Form.style';
 import Input from 'components/molecules/Input';
 
 interface FormPasswordProps {

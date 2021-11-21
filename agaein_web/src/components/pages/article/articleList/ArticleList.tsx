@@ -53,6 +53,10 @@ const ArticleList = ({ history, match }: RouteComponentProps<ArticleListParams>)
     }
     const articles = data?.articles as Article[];
 
+    const goCreateArticlePage = () => {
+        type === Board_Type.Review ? history.push('/review') : history.push(`/createArticle/step2/${type}`);
+    };
+
     return (
         <ArticleListContainer>
             <ArticleListHeaderContainer>
@@ -86,11 +90,7 @@ const ArticleList = ({ history, match }: RouteComponentProps<ArticleListParams>)
                 ))}
             </ArticleGridContainer>
             <ArticleListFooter>
-                <Button
-                    label="게시글 작성"
-                    buttonStyle="PAINTED"
-                    onClick={() => history.push(`/createArticle/step2/${type}`)}
-                />
+                <Button label="게시글 작성" buttonStyle="PAINTED" onClick={goCreateArticlePage} />
                 <Pagination active={page} setActive={setPage} />
             </ArticleListFooter>
         </ArticleListContainer>

@@ -1,5 +1,5 @@
-import { RequiredGuide } from "components/pages/createArticle/CreateArticle.style";
-import styled from "styled-components";
+import { RequiredGuide } from 'components/organism/Form/Form.style';
+import styled from 'styled-components';
 
 export const FormWrapper = styled.div`
     positon: relative;

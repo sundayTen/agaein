@@ -3,8 +3,10 @@ import Home from 'components/pages/home/Home';
 import CreateArticleStep1 from 'components/pages/createArticle/Step1';
 import CreateArticleStep2 from 'components/pages/createArticle/Step2';
 import CreateArticleStep3 from 'components/pages/createArticle/Step3';
-import articleDetail from 'components/pages/article/articleDetail';
+import ArticleDetail from 'components/pages/article/articleDetail';
 import ArticleList from 'components/pages/article/articleList';
+import Search from 'components/pages/search/Search';
+import Review from 'components/pages/review/Review';
 
 // * 요기서 찾는 사람과 찾은 사람 화면을 분기하고, Route 목록은 다른 파일로 뺀다.
 function Router() {
@@ -15,7 +17,9 @@ function Router() {
             <Route path="/createArticle/step1" component={CreateArticleStep1} />
             <Route path="/createArticle/step2/:type" component={CreateArticleStep2} />
             <Route path="/createArticle/step3/:id" component={CreateArticleStep3} />
-            <Route path="/articleDetail/:id" component={articleDetail} />
+            <Route path="/articleDetail/:id" component={ArticleDetail} />
+            <Route path="/search" component={Search} />
+            <Route path="/review" component={Review} />
         </Switch>
     );
 }

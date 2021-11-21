@@ -1,6 +1,6 @@
-import { FormPhoto, FormAddress, FormDate, FormEtc } from 'components/organism/Form';
+import { FormPhoto, FormAddress, FormDate, FormTextarea } from 'components/organism/Form';
 import { FormHp } from 'components/organism/Form/FormHp';
-import { RequiredGuide, RequiredIcon } from 'components/pages/createArticle/CreateArticle.style';
+import { RequiredGuide, RequiredIcon } from 'components/organism/Form/Form.style';
 import { Location } from 'graphql/generated/generated';
 import { FormWrapper } from './WitnessReport.style';
 
@@ -20,7 +20,7 @@ const WitnessReport = ({ address, reportChange, filesChange }: ReportProps) => {
             <FormDate type={'LFG'} name="foundDate" onChange={reportChange} />
             <FormAddress name="location" type={'LFG_M'} onChange={reportChange} address={address} />
             <FormHp name="phoneNumber" onChange={reportChange} />
-            <FormEtc name="content" onChange={reportChange} />
+            <FormTextarea name="content" onChange={reportChange} placeholder="그 외 특징 및 상세 위치를 작성해주세요" />
         </FormWrapper>
     );
 };

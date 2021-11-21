@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormRow, FormLabel, Form, RequiredIcon } from '../../pages/createArticle/CreateArticle.style';
+import { FormRow, FormLabel, Form, RequiredIcon } from './Form.style';
 
 import DatePicker, { CalendarContainer, registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';

@@ -1,28 +1,21 @@
 import { useState, useContext, useMemo, useEffect } from 'react';
+import { ButtonWrapper, CheckWrapper } from './CreateArticle.style';
+import PageTitle from 'components/organism/PageTitle/PageTitle';
 import {
-    Title,
-    SubTitle,
-    FormWrapper,
-    FormTitle,
-    RequiredGuide,
-    RequiredIcon,
-    ButtonWrapper,
-    CheckWrapper,
-} from './CreateArticle.style';
-import {
-    FormName,
+    FormInput,
     FormPhoto,
     FormAddress,
     FormDate,
     FormBreed,
     FormAge,
     FormGender,
-    FormEtc,
+    FormTextarea,
     FormGratuity,
     FormCheckbox,
     FormEmail,
     FormKeyword,
     FormPassword,
+    FormWrapper,
 } from 'components/organism/Form';
 import Button from 'components/molecules/Button';
 import StepIndicator from 'components/molecules/StepIndicator';
@@ -92,39 +85,27 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     return (
         <>
             <StepIndicator active={2} styles={{ marginTop: 100 }} />
-            <Title>게시글 작성하기</Title>
-            <SubTitle>상세하게 작성할수록 발견될 확률이 올라가요</SubTitle>
-            <FormWrapper>
-                <FormTitle>
-                    {boardTitle}동물 정보
-                    <RequiredGuide>
-                        <RequiredIcon />는 필수 입력 사항입니다.
-                    </RequiredGuide>
-                </FormTitle>
+            <PageTitle title="게시글 작성하기" subTitle="상세하게 작성할수록 발견될 확률이 올라가요" />
+            <FormWrapper formTitle={boardTitle + '동물 정보'}>
                 <FormPhoto onChange={inputFilesHandler} type={boardType} />
                 <FormBreed name="breedId" onChange={inputChangeHandler} />
                 <FormDate name={dateType} onChange={inputChangeHandler} type={boardType} />
                 <FormAddress name="location" onChange={inputChangeHandler} type={boardType} />
-                <FormName name="name" onChange={inputChangeHandler} />
+                <FormInput
+                    name="name"
+                    onChange={inputChangeHandler}
+                    label="이름"
+                    placeholder="동물 이름을 입력해주세요"
+                />
                 <FormAge name="age" onChange={inputChangeHandler} />
                 <FormGender name="gender" onChange={inputChangeHandler} />
-                <FormEtc name="feature" onChange={inputChangeHandler} />
+                <FormTextarea name="feature" onChange={inputChangeHandler} placeholder="그 외 특징을 작성해주세요" />
                 <FormKeyword name="keyword" onChange={inputChangeHandler} />
                 {boardType === 'LFP' && <FormGratuity name="gratuity" onChange={inputChangeHandler} />}
             </FormWrapper>
-
-            <FormWrapper>
-                <FormTitle>
-                    게시글 관리
-                    <RequiredGuide>
-                        <RequiredIcon />는 필수 입력 사항입니다.
-                    </RequiredGuide>
-                </FormTitle>
-
+            <FormWrapper formTitle={'게시글 관리'}>
                 <FormEmail name="email" onChange={inputChangeHandler} />
-
                 {!isLoggedIn && <FormPassword name="password" onChange={inputChangeHandler} />}
-
                 <CheckWrapper>
                     <FormCheckbox
                         name="alarm"
@@ -134,7 +115,6 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
                     />
                 </CheckWrapper>
             </FormWrapper>
-
             <ButtonWrapper>
                 <Button label="돌아가기" buttonStyle="BORDER" onClick={handleGoBack} />
                 <Button label="다음으로" buttonStyle="PAINTED" onClick={onPressButton} disabled={isInvalid} />

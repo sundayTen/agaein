@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormRow, FormLabel } from '../../pages/createArticle/CreateArticle.style';
+import { FormRow, FormLabel } from './Form.style';
 import styled from 'styled-components';
 
 const Form = styled.div`

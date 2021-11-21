@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, KeyboardEvent } from 'react';
-import { FormRow, FormLabel } from '../../pages/createArticle/CreateArticle.style';
+import { FormRow, FormLabel } from './Form.style';
 import Input from 'components/molecules/Input';
 import Button from 'components/molecules/Button';
 import { XIcon } from '@heroicons/react/solid';

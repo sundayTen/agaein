@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FormRow, FormLabel, Form } from '../../pages/createArticle/CreateArticle.style';
+import { FormRow, FormLabel, Form } from './Form.style';
 import styled from 'styled-components';
 import Input from 'components/molecules/Input';
 

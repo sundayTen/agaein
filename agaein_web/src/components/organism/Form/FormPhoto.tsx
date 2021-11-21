@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React, { useState, useEffect } from 'react';
-import { FormLabel, RequiredIcon } from '../../pages/createArticle/CreateArticle.style';
+import { FormLabel, RequiredIcon } from './Form.style';
 import styled from 'styled-components';
 import { CloudUploadIcon } from '@heroicons/react/solid';
 import { XIcon } from '@heroicons/react/solid';
