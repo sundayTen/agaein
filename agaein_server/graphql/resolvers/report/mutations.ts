@@ -16,7 +16,7 @@ const reportMutations = {
             const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
             report.userId = (<any>jwtToken).userId;
         } else {
-            report.userId = 1;
+            throw new ApolloError('Not Found AccessToken', 'UNAUTHENTICATED');
         }
 
         return await knex.transaction(async (trx: any) => {
@@ -70,7 +70,6 @@ const reportMutations = {
         let reportResponse: any = {};
         const now = new Date();
         report.updatedAt = now;
-        console.log(report);
 
         // @TODO 패스워드가 없으면 바로 생성이나 수정인데, 피그마 상에는 패스워드가 없었음. 이 부분 무조건 회원만 가능한건가?
         if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
@@ -79,6 +78,8 @@ const reportMutations = {
             if (reportUser.userId !== (<any>jwtToken).userId) {
                 throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
             }
+        } else {
+            throw new ApolloError('Not Found AccessToken', 'UNAUTHENTICATED');
         }
 
         return await knex.transaction(async (trx: any) => {
@@ -130,6 +131,27 @@ const reportMutations = {
                     throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
                 });
         });
+    },
+    deleteReport: async (_: any, args: any, context: any) => {
+        const report = await knex('report').where('id', args.id).first();
+
+        if (report === undefined) {
+            throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
+        }
+
+        // @TODO 패스워드가 없으면 바로 생성이나 수정인데, 피그마 상에는 패스워드가 없었음. 이 부분 무조건 회원만 가능한건가?
+        if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
+            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
+            if (report.userId !== (<any>jwtToken).userId) {
+                throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
+            }
+        } else {
+            throw new ApolloError('Not Found AccessToken', 'UNAUTHENTICATED');
+        }
+
+        await knex('report').where('id', args.id).del();
+
+        return args.id;
     },
 };
 

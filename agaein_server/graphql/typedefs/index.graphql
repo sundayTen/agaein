@@ -42,4 +42,5 @@ type Mutation {
     # Report
     createReport(files: [Upload]!, report: reportInput!): Report!
     updateReport(id: ID!, files: [Upload]!, report: updateReportInput!): Report!
+    deleteReport(id: ID!): ID!
 }

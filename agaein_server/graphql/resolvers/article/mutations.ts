@@ -385,6 +385,8 @@ const articleMutations = {
             if (article.userId !== (<any>jwtToken).userId) {
                 throw new ApolloError('Unautorized Token', 'UNAUTHENTICATED');
             }
+        } else {
+            throw new ApolloError('Wrong Route', 'UNAUTHENTICATED');
         }
 
         await knex('article').where('id', args.id).del();
@@ -407,6 +409,8 @@ const articleMutations = {
             if (comment.userId !== (<any>jwtToken).userId) {
                 throw new ApolloError('Unautorized Token', 'UNAUTHENTICATED');
             }
+        } else {
+            throw new ApolloError('Wrong Route', 'UNAUTHENTICATED');
         }
 
         await knex('comment').where('id', args.id).del();
