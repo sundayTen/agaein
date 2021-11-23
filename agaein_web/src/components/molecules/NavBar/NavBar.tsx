@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { useContext } from 'react';
-import { Nav, Title, AgaeinIconImg, UserTag, ChevronDown, KaKaoLoginButton, KaKaoIcon } from './NavBar.style';
+import { Nav, Title, AgaeinIconImg, UserTag, ChevronDown, KaKaoLoginButton, KaKaoIcon, Avatar } from './NavBar.style';
 import { KAKAO_LOGIN_KEY } from 'config/server';
 import { Link } from 'react-router-dom';
 import { UserContext } from 'contexts/userContext';
@@ -31,6 +31,7 @@ const NavBar = () => {
             </Link>
             {isLoggedIn ? (
                 <UserTag onClick={signOut}>
+                    <Avatar src={'https://t1.daumcdn.net/cfile/tistory/27738433597DCB1312'} />
                     <Font label={user.nickname ?? '회원'} fontType="subhead" htmlElement="span" />
                     <ChevronDown />
                 </UserTag>

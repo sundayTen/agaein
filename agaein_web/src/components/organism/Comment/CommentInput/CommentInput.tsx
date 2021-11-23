@@ -1,9 +1,11 @@
-import { Textarea } from 'components/molecules';
+import { forwardRef, Fragment, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from 'react';
 import { RequiredGuide, RequiredIcon } from 'components/organism/Form/Form.style';
+import { Textarea } from 'components/molecules';
 import { UserContext } from 'contexts/userContext';
-import React, { forwardRef, Fragment, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from 'react';
+import { ReplyIcon } from '../CommentItem/CommentItem.style';
 import {
     CommentInputContainer,
+    CommentInputWrapper,
     CommentPwd,
     CommentPwdContainer,
     CommentToolContainer,
@@ -12,12 +14,12 @@ import {
 
 export interface CommentInputProps extends InputHTMLAttributes<HTMLTextAreaElement> {
     content?: string;
-    commentId?: string;
+    isReply?: boolean;
     onPressSubmit: (content: string, password?: string) => void;
 }
 
 const CommentInput = forwardRef<HTMLTextAreaElement, CommentInputProps>((props, ref) => {
-    const { content = null, commentId, onPressSubmit, ...TextAreaProps } = props;
+    const { content = null, isReply = false, onPressSubmit, ...TextAreaProps } = props;
     const { isLoggedIn } = useContext(UserContext);
     const [commentInput, setCommentInput] = useState<string | undefined>('');
     const [password, setPassword] = useState<string | undefined>(undefined);
@@ -26,12 +28,6 @@ const CommentInput = forwardRef<HTMLTextAreaElement, CommentInputProps>((props, 
         setCommentInput(content ?? '');
     }, [content]);
 
-    // TODO : 비밀번호 규칙을 정해서 적용해야함.
-    const onChangePwd = (pwd: string) => {
-        if (pwd.length <= 4) {
-            setPassword(pwd);
-        }
-    };
     const onClickSubmitButton = () => {
         if (commentInput === undefined || (!isLoggedIn && password === undefined)) return;
         onPressSubmit(commentInput, password);
@@ -54,40 +50,41 @@ const CommentInput = forwardRef<HTMLTextAreaElement, CommentInputProps>((props, 
     }, [isCommentInput, isPassword]);
 
     return (
-        <Fragment>
-            <CommentInputContainer>
-                <Textarea
-                    {...TextAreaProps}
-                    ref={ref}
-                    value={commentInput ?? ''}
-                    style={{ padding: '14px 114px 14px 14px' }}
-                    onChange={(e) => setCommentInput(e.target.value)}
-                    placeholder="발견 정보 또는 응원의 메세지를 남겨주세요 :)"
-                />
-                <SubmitButton onClick={onClickSubmitButton} disabled={submitDisabled()}>
-                    등록
-                </SubmitButton>
-            </CommentInputContainer>
-            <CommentToolContainer>
-                {!isLoggedIn && (
-                    <CommentPwdContainer>
-                        <CommentPwd
-                            type="password"
-                            maxLength={4}
-                            value={password ?? ''}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                onChangePwd(e.target.value);
-                            }}
-                            placeholder="비밀번호"
-                        />
-                        <RequiredGuide>
-                            <RequiredIcon />
-                            비회원의 경우 댓글 등록, 수정, 삭제에 비밀번호가 필요합니다.
-                        </RequiredGuide>
-                    </CommentPwdContainer>
-                )}
-            </CommentToolContainer>
-        </Fragment>
+        <CommentInputWrapper>
+            {isReply && <ReplyIcon />}
+            <Fragment>
+                <CommentInputContainer>
+                    <Textarea
+                        {...TextAreaProps}
+                        ref={ref}
+                        value={commentInput ?? ''}
+                        style={{ padding: '14px 114px 14px 14px' }}
+                        onChange={(e) => setCommentInput(e.target.value)}
+                        placeholder="발견 정보 또는 응원의 메세지를 남겨주세요 :)"
+                    />
+                    <SubmitButton onClick={onClickSubmitButton} disabled={submitDisabled()}>
+                        등록
+                    </SubmitButton>
+                </CommentInputContainer>
+                <CommentToolContainer>
+                    {!isLoggedIn && (
+                        <CommentPwdContainer>
+                            <CommentPwd
+                                type="password"
+                                maxLength={4}
+                                value={password ?? ''}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="비밀번호"
+                            />
+                            <RequiredGuide>
+                                <RequiredIcon />
+                                비회원의 경우 댓글 등록, 수정, 삭제에 비밀번호가 필요합니다.
+                            </RequiredGuide>
+                        </CommentPwdContainer>
+                    )}
+                </CommentToolContainer>
+            </Fragment>
+        </CommentInputWrapper>
     );
 });
 

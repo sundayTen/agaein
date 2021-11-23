@@ -12,7 +12,7 @@ import {
 } from './PostItemBox.style';
 import penguin from 'assets/image/penguin.png';
 import { Link } from 'react-router-dom';
-import { Article, Lfg } from 'graphql/generated/generated';
+import { Article, Lfp } from 'graphql/generated/generated';
 import Font from '../Font';
 import BookMark from '../BookMark';
 import { YYYYMMDD } from 'utils/date';
@@ -26,7 +26,13 @@ interface PostItemProps {
 const PostItem = (props: PostItemProps) => {
     const { item, bookmarked = false, setBookmark = () => {} } = props;
     const { id, articleDetail, createdAt, images } = item;
-    const { breed, type, gender, location, age } = articleDetail as Lfg;
+    const { breed, type, gender, location, age, gratuity } = articleDetail as Lfp;
+    const isNotNull = (item: unknown) => {
+        if (typeof item === 'number') {
+            return item !== null && item !== undefined && item > 0;
+        }
+        return item !== null && item !== undefined;
+    };
     return (
         <>
             <Link to={`/articleDetail/${id}`}>
@@ -53,14 +59,19 @@ const PostItem = (props: PostItemProps) => {
                     </InfoList>
                     {/* TODO : 옵셔널 데이터를 어디까지 보여줄 지 논의해야 함 */}
                     <TagList>
-                        {gender && (
+                        {isNotNull(gender) && (
                             <ContentTag>
-                                <Font label={gender} fontType="tag" />
+                                <Font label={gender as string} fontType="tag" />
                             </ContentTag>
                         )}
-                        {age && (
+                        {isNotNull(age) && (
                             <ContentTag>
                                 <Font label={`${age}살`} fontType="tag" />
+                            </ContentTag>
+                        )}
+                        {isNotNull(gratuity) && (
+                            <ContentTag>
+                                <Font label={`사례금 ${gratuity}원`} fontType="tag" />
                             </ContentTag>
                         )}
                     </TagList>

@@ -1,4 +1,3 @@
-import Input from 'components/molecules/Input/Input';
 import styled from 'styled-components';
 
 export const CommentWrapper = styled.div`
@@ -10,6 +9,7 @@ export const CommentContainer = styled.div`
     background-color: white;
     border-radius: 10px;
     margin-top: 15px;
+    padding: 30px;
 `;
 
 export const CommentHeader = styled.div`
@@ -27,4 +27,7 @@ export const ButtonGroup = styled.div`
     button + button {
         margin-left: 20px;
     }
+`;
+export const CommentBorder = styled.hr`
+    color: ${(props) => props.theme.light.lightGrey2};
 `;

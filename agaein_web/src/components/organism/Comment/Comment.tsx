@@ -1,32 +1,38 @@
-import { Fragment, useCallback, useRef, useState } from 'react';
+import { Fragment, useCallback, useContext, useRef, useState } from 'react';
 import { Comment as CommentType, User } from 'graphql/generated/generated';
-import { CommentWrapper, CommentHeader, CommentContainer, DeleteModal, ButtonGroup } from './Comment.style';
-import { Modal, Font, Button } from 'components/molecules';
-import { COMMENT_OPTION } from '.';
+import { CommentWrapper, CommentHeader, CommentContainer, CommentBorder } from './Comment.style';
+import { Font, Input } from 'components/molecules';
+import { calculateCommentsCount, COMMENT_INTERACTION_TYPE, COMMENT_OPTION } from '.';
 import useComment from 'graphql/hooks/useComment';
 import CommentItem from './CommentItem';
 import CommentInput from './CommentInput';
+import { UserContext, ModalContext } from 'contexts';
+import { InputRefProps } from 'components/molecules/Input/Input';
 
 interface CommentProps {
     comments: CommentType[];
     articleId: string;
     author: User;
 }
-type SUBMIT_MODE = 'create' | 'edit';
+
+interface renderCommentProps {
+    comments: CommentType[];
+    isReply?: boolean;
+}
 
 const Comment = (props: CommentProps) => {
     const { comments = [], articleId, author: articleWriter } = props;
     const helperInputRef = useRef<HTMLTextAreaElement>(null);
     const { createComment, updateComment, deleteComment } = useComment();
-    const [isModalOpened, setIsModalOpened] = useState(false);
+    const { user } = useContext(UserContext);
+    const { show, close } = useContext(ModalContext);
     const [targetCommentId, setTargetCommentId] = useState<string | undefined>(undefined);
-    const [submitButtonMode, setSubmitButtonMode] = useState<SUBMIT_MODE>('create');
-    const [password] = useState<string | undefined>(undefined);
+    const [commentInteractionType, setCommentInteractionType] = useState<COMMENT_INTERACTION_TYPE>('create');
     const [editCommentInput, setEditCommentInput] = useState<string | undefined>(undefined);
-
+    const inputRef = useRef<InputRefProps>(null);
     const onPressSubmit = useCallback(
         (content: string, password?: string) => {
-            if (submitButtonMode === 'create') {
+            if (commentInteractionType === 'create') {
                 createComment({
                     articleId,
                     content,
@@ -44,7 +50,7 @@ const Comment = (props: CommentProps) => {
             }
             setTargetCommentId(undefined);
         },
-        [submitButtonMode, targetCommentId],
+        [commentInteractionType, targetCommentId],
     );
 
     const isAuthorComment = (commentAuthorId: string) => {
@@ -55,35 +61,87 @@ const Comment = (props: CommentProps) => {
     const focusOnHelper = () => {
         helperInputRef.current?.focus({ preventScroll: false });
     };
-    const closeModal = () => {
-        setIsModalOpened(false);
-    };
-    const dropComment = () => {
-        if (targetCommentId === undefined) return;
+    const dropComment = (commentId: string) => {
+        if (isAuthorComment(user.kakaoId)) {
+        }
         deleteComment(
             {
-                id: targetCommentId,
-                password,
+                id: commentId,
+                password: inputRef.current?.getValue(),
             },
             articleId,
         );
         setTargetCommentId(undefined);
-        closeModal();
+        setCommentInteractionType('create');
+        close();
+    };
+
+    const getTargetContent = (commentId: string) => {
+        return comments.find((comment) => comment.id === commentId)?.content;
+    };
+    const isUnknownComment = (commentId: string) => {
+        return !!comments.find((comment) => comment.id === commentId)?.password;
+    };
+
+    const setEditInfo = (commentId: string) => {
+        setCommentInteractionType('edit');
+        setEditCommentInput(getTargetContent(commentId));
     };
 
     const handleMenu = (key: COMMENT_OPTION, commentId: string) => {
-        setTargetCommentId(commentId);
         switch (key) {
             case '답글':
-                setSubmitButtonMode('create');
+                setCommentInteractionType('create');
+                setTargetCommentId(commentId);
                 setEditCommentInput(undefined);
                 break;
             case '수정':
-                setSubmitButtonMode('edit');
-                setEditCommentInput(comments.find((comment) => comment.id === commentId)?.content);
+                if (isUnknownComment(commentId)) {
+                    show({
+                        title: '비밀번호 확인',
+                        content: `비회원으로 작성된 댓글을 수정하기 위해서는
+                        댓글 등록시 입력한 비밀번호를 입력해주셔야 합니다.`,
+                        cancelButtonLabel: '취소',
+                        cancelButtonPressed: close,
+                        confirmButtonLabel: '확인',
+                        confirmButtonPressed: () => {
+                            setTargetCommentId(commentId);
+                            setEditInfo(commentId);
+                            close();
+                        },
+                        children: <Input ref={inputRef} style={{ marginTop: 20 }} type="password" maxLength={4} />,
+                    });
+                } else {
+                    setTargetCommentId(commentId);
+                    setEditInfo(commentId);
+                }
                 break;
             case '삭제':
-                setIsModalOpened(true);
+                setCommentInteractionType('delete');
+                if (isUnknownComment(commentId)) {
+                    show({
+                        title: '댓글 삭제',
+                        content: `비회원으로 작성된 댓글을 수정하기 위해서는
+                        댓글 등록시 입력한 비밀번호를 입력해주셔야 합니다.`,
+                        cancelButtonLabel: '취소',
+                        cancelButtonPressed: close,
+                        confirmButtonLabel: '확인',
+                        confirmButtonPressed: () => {
+                            dropComment(commentId);
+                            close();
+                        },
+                        children: <Input ref={inputRef} style={{ marginTop: 20 }} type="password" maxLength={4} />,
+                    });
+                } else {
+                    show({
+                        title: '댓글 삭제',
+                        content: `정말 삭제하시겠습니까?\n 이 행동은 되돌릴 수 없습니다`,
+                        cancelButtonLabel: '취소',
+                        cancelButtonPressed: close,
+                        confirmButtonLabel: '삭제',
+                        confirmButtonPressed: () => dropComment(commentId),
+                    });
+                }
                 break;
             default:
                 break;
@@ -93,48 +151,56 @@ const Comment = (props: CommentProps) => {
             focusOnHelper();
         }, 100);
     };
-    return (
-        <>
-            <CommentWrapper>
-                <CommentHeader>
-                    <Font label={`댓글 ${comments.length}`} fontType="h4" fontWeight="bold" />
-                </CommentHeader>
-                <CommentContainer>
-                    {comments.map((comment) => (
+
+    const isInputComponent = (commentId: string) => {
+        return commentInteractionType !== 'delete' && commentId === targetCommentId;
+    };
+    const hasReply = (comment: CommentType) => {
+        return comment.reply && comment.reply !== [];
+    };
+
+    const RenderComments = ({ comments, isReply = false }: renderCommentProps) => {
+        if (!comments) return <></>;
+        return (
+            <>
+                {comments.map((comment) => {
+                    return (
                         <Fragment key={comment.id}>
-                            <CommentItem
-                                comment={comment}
-                                menuHandler={handleMenu}
-                                isAuthors={isAuthorComment(comment.author.kakaoId)}
-                            />
-                            {comment.id === targetCommentId && (
-                                <CommentInput
-                                    ref={helperInputRef}
-                                    content={editCommentInput}
-                                    onPressSubmit={onPressSubmit}
+                            <>
+                                <CommentItem
+                                    comment={comment}
+                                    menuHandler={handleMenu}
+                                    isReply={isReply}
+                                    isAuthors={isAuthorComment(comment.author.kakaoId)}
                                 />
-                            )}
+                                {isInputComponent(comment.id) && (
+                                    <CommentInput
+                                        ref={helperInputRef}
+                                        isReply
+                                        content={editCommentInput}
+                                        onPressSubmit={onPressSubmit}
+                                    />
+                                )}
+                            </>
+                            {<RenderComments comments={comment.reply as CommentType[]} isReply={hasReply(comment)} />}
+                            {!isReply && <CommentBorder />}
                         </Fragment>
-                    ))}
-                    <CommentInput onPressSubmit={onPressSubmit} />
-                </CommentContainer>
-            </CommentWrapper>
-            <Modal
-                children={
-                    <DeleteModal>
-                        <Font label={`정말 삭제하시겠습니까?`} fontType="label" htmlElement="p" />
-                        <Font label={`이 행동은 되돌릴 수 없습니다.`} fontType="label" htmlElement="p" />
-                        <ButtonGroup>
-                            <Button label="취소" onClick={closeModal} />
-                            <Button label="삭제" buttonStyle="PAINTED" onClick={dropComment} />
-                        </ButtonGroup>
-                    </DeleteModal>
-                }
-                open={isModalOpened}
-                title="경고"
-                close={closeModal}
-            />
-        </>
+                    );
+                })}
+            </>
+        );
+    };
+
+    return (
+        <CommentWrapper>
+            <CommentHeader>
+                <Font label={`댓글 ${calculateCommentsCount(comments)}`} fontType="h4" fontWeight="bold" />
+            </CommentHeader>
+            <CommentContainer>
+                <RenderComments comments={comments} />
+                <CommentInput onPressSubmit={onPressSubmit} />
+            </CommentContainer>
+        </CommentWrapper>
     );
 };
 
