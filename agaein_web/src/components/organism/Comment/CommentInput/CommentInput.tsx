@@ -1,7 +1,7 @@
 import { Textarea } from 'components/molecules';
 import { RequiredGuide, RequiredIcon } from 'components/organism/Form/Form.style';
 import { UserContext } from 'contexts/userContext';
-import React, { forwardRef, Fragment, InputHTMLAttributes, useCallback, useContext, useState } from 'react';
+import React, { forwardRef, Fragment, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from 'react';
 import {
     CommentInputContainer,
     CommentPwd,
@@ -11,15 +11,20 @@ import {
 } from './CommentInput.style';
 
 export interface CommentInputProps extends InputHTMLAttributes<HTMLTextAreaElement> {
+    content?: string;
     commentId?: string;
     onPressSubmit: (content: string, password?: string) => void;
 }
 
 const CommentInput = forwardRef<HTMLTextAreaElement, CommentInputProps>((props, ref) => {
-    const { commentId, onPressSubmit, ...TextAreaProps } = props;
+    const { content = null, commentId, onPressSubmit, ...TextAreaProps } = props;
     const { isLoggedIn } = useContext(UserContext);
     const [commentInput, setCommentInput] = useState<string | undefined>('');
     const [password, setPassword] = useState<string | undefined>(undefined);
+
+    useEffect(() => {
+        setCommentInput(content ?? '');
+    }, [content]);
 
     // TODO : 비밀번호 규칙을 정해서 적용해야함.
     const onChangePwd = (pwd: string) => {
@@ -36,10 +41,17 @@ const CommentInput = forwardRef<HTMLTextAreaElement, CommentInputProps>((props, 
         setCommentInput(undefined);
         setPassword(undefined);
     };
+    const isCommentInput = useCallback(() => {
+        return commentInput === undefined || commentInput === '';
+    }, [commentInput]);
+
+    const isPassword = useCallback(() => {
+        return !isLoggedIn && (password === undefined || password.length < 4);
+    }, [isLoggedIn, password]);
 
     const submitDisabled = useCallback(() => {
-        return !commentInput || (!isLoggedIn && typeof password === 'string' && password.length !== 4);
-    }, [commentInput, isLoggedIn]);
+        return isCommentInput() || isPassword();
+    }, [isCommentInput, isPassword]);
 
     return (
         <Fragment>
@@ -61,6 +73,7 @@ const CommentInput = forwardRef<HTMLTextAreaElement, CommentInputProps>((props, 
                     <CommentPwdContainer>
                         <CommentPwd
                             type="password"
+                            maxLength={4}
                             value={password ?? ''}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 onChangePwd(e.target.value);

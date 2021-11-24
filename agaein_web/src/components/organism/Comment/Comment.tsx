@@ -22,6 +22,7 @@ const Comment = (props: CommentProps) => {
     const [targetCommentId, setTargetCommentId] = useState<string | undefined>(undefined);
     const [submitButtonMode, setSubmitButtonMode] = useState<SUBMIT_MODE>('create');
     const [password] = useState<string | undefined>(undefined);
+    const [editCommentInput, setEditCommentInput] = useState<string | undefined>(undefined);
 
     const onPressSubmit = useCallback(
         (content: string, password?: string) => {
@@ -39,6 +40,7 @@ const Comment = (props: CommentProps) => {
                     content,
                     password,
                 });
+                setEditCommentInput(undefined);
             }
             setTargetCommentId(undefined);
         },
@@ -74,9 +76,11 @@ const Comment = (props: CommentProps) => {
         switch (key) {
             case '답글':
                 setSubmitButtonMode('create');
+                setEditCommentInput(undefined);
                 break;
             case '수정':
                 setSubmitButtonMode('edit');
+                setEditCommentInput(comments.find((comment) => comment.id === commentId)?.content);
                 break;
             case '삭제':
                 setIsModalOpened(true);
@@ -104,7 +108,11 @@ const Comment = (props: CommentProps) => {
                                 isAuthors={isAuthorComment(comment.author.kakaoId)}
                             />
                             {comment.id === targetCommentId && (
-                                <CommentInput ref={helperInputRef} onPressSubmit={onPressSubmit} />
+                                <CommentInput
+                                    ref={helperInputRef}
+                                    content={editCommentInput}
+                                    onPressSubmit={onPressSubmit}
+                                />
                             )}
                         </Fragment>
                     ))}

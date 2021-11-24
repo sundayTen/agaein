@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const CommentInputContainer = styled.div`
     position: relative;
-    margin: 30px 30px 30px 30px;
+    margin: 30px 30px 0px 30px;
 `;
 
 export const SubmitButton = styled.button`
@@ -22,12 +22,12 @@ export const CommentToolContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding: 12px 0px 30px 30px;
 `;
 
 export const CommentPwdContainer = styled.div`
     display: flex;
     align-items: center;
-    margin-top: 10px;
     width: 435px;
 `;
 export const CommentPwd = styled(Input)`
