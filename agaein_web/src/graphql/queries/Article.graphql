@@ -22,6 +22,11 @@ query getArticle($id: ID!) {
     article(id: $id) {
         ...ArticleFragment
     }
+    reports(articleId: $id) {
+        location {
+            ...LocationFragment
+        }
+    }
 }
 
 mutation createArticle($boardType: BOARD_TYPE!, $files: [Upload]!, $articleDetail: articleDetailInput!) {

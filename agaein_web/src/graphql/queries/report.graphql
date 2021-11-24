@@ -1,7 +1,6 @@
 query getReports($articleId: ID!) {
     reports(articleId: $articleId) {
         id
-        articleId
         author {
             ...UserFragment
         }
@@ -9,15 +8,9 @@ query getReports($articleId: ID!) {
         phoneNumber
         content
         location {
-            lat
-            lng
-            address
-            roadAddress
-            detail
+            ...LocationFragment
         }
         foundDate
-        createdAt
-        updatedAt
     }
 }
 

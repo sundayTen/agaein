@@ -66,3 +66,14 @@ export const ArticleInfoContainer = styled.div`
 export const ArticleMapContainer = styled.div`
     padding: 20px 30px 30px;
 `;
+export const InfoHeader = styled.div`
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+`;
+export const InfoHeaderFont = styled.span<{ panted?: boolean }>`
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 22px;
+    color: ${(props) => (props.panted ? props.theme.light.primary : props.theme.light.DarkGrey2)};
+`;
