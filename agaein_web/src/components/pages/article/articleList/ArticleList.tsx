@@ -22,7 +22,7 @@ const ArticleList = ({ history, match }: RouteComponentProps<ArticleListParams>)
     const [searchInput, setSearchInput] = useState<string | undefined>(undefined);
     const [page, setPage] = useState(1);
     const goCreateArticlePage = () => {
-        type === Board_Type.Review ? history.push('/review') : history.push(`/createArticle/step2/${type}`);
+        type === Board_Type.Review ? history.push('/createReview') : history.push(`/createArticle/step2/${type}`);
     };
 
     return (

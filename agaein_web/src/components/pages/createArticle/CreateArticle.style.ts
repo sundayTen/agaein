@@ -25,14 +25,10 @@ export const Step1Container = styled.div`
     margin-bottom: 176px;
 `;
 
-export const Step1Headers = styled.div`
-    padding: 80px 0px;
-    text-align: center;
-`;
-
 export const Step1ButtonGroup = styled.div`
-    margin-top: 30px;
-    margin-bottom: 100px;
+    margin-top: 80px;
+    margin-bottom: 60px;
+
     button + button {
         margin-left: 20px;
     }
@@ -67,4 +63,16 @@ export const ButtonWrapper = styled.div`
 
 export const CheckWrapper = styled.div`
     margin-top: 30px;
+`;
+
+// * Step 3
+export const Step3ButtonGroup = styled.div`
+    margin-top: 40px;
+    margin-bottom: 80px;
+    text-align: center;
+
+    button {
+        width: 200px;
+        height: 58px;
+    }
 `;

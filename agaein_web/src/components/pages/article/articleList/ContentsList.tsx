@@ -40,12 +40,11 @@ const ContentsList = (props: ListProps) => {
     return (
         <ArticleGridContainer>
             {articles.map((item) => (
-                <ArticleItem type={type}>
+                <ArticleItem type={type} key={item.id}>
                     {type === Board_Type.Review ? (
-                        <ReviewItem key={item.id} item={item} />
+                        <ReviewItem item={item} />
                     ) : (
                         <PostItemBox
-                            key={item.id}
                             item={item}
                             bookmarked={isBookmarked(item.id)}
                             setBookmark={() => setBookmark(item.id)}
