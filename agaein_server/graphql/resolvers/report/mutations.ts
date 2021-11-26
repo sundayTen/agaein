@@ -11,8 +11,9 @@ const reportMutations = {
         report.createdAt = now;
         report.updatedAt = now;
 
-        // @TODO 패스워드가 없으면 바로 생성이나 수정인데, 피그마 상에는 패스워드가 없었음. 이 부분 무조건 회원만 가능한건가?
-        if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
+        if (report.password) {
+            report.userId = 1;
+        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
             const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
             report.userId = (<any>jwtToken).userId;
         } else {
@@ -71,8 +72,13 @@ const reportMutations = {
         const now = new Date();
         report.updatedAt = now;
 
-        // @TODO 패스워드가 없으면 바로 생성이나 수정인데, 피그마 상에는 패스워드가 없었음. 이 부분 무조건 회원만 가능한건가?
-        if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
+        const reportPassword = await knex('report').where('id', id).first('password');
+
+        if (reportPassword.password) {
+            if (report.password !== reportPassword.password) {
+                throw new ApolloError('Invaild Password', 'UNAUTHENTICATED');
+            }
+        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
             const reportUser = await knex('report').where('id', id).first('user_id');
             const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
             if (reportUser.userId !== (<any>jwtToken).userId) {
@@ -133,14 +139,19 @@ const reportMutations = {
         });
     },
     deleteReport: async (_: any, args: any, context: any) => {
-        const report = await knex('report').where('id', args.id).first();
+        const { id, password } = args;
+
+        const report = await knex('report').where('id', id).first();
 
         if (report === undefined) {
             throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
         }
 
-        // @TODO 패스워드가 없으면 바로 생성이나 수정인데, 피그마 상에는 패스워드가 없었음. 이 부분 무조건 회원만 가능한건가?
-        if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
+        if (report.password) {
+            if (report.password !== password) {
+                throw new ApolloError('Invaild Password', 'UNAUTHENTICATED');
+            }
+        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
             const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
             if (report.userId !== (<any>jwtToken).userId) {
                 throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
@@ -149,9 +160,9 @@ const reportMutations = {
             throw new ApolloError('Not Found AccessToken', 'UNAUTHENTICATED');
         }
 
-        await knex('report').where('id', args.id).del();
+        await knex('report').where('id', id).del();
 
-        return args.id;
+        return id;
     },
 };
 

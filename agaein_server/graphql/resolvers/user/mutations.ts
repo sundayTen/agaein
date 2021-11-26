@@ -1,5 +1,6 @@
 import { ApolloError } from 'apollo-server-errors';
 import { isValidatedLogin } from '../../../common/validation/user';
+import { getRandomNickname } from '../../../common/utils/nickname';
 import { getAccessToken, getRefreshToken } from '../../../common/auth/jwtToken';
 import { knex } from '../../database';
 
@@ -24,6 +25,7 @@ const userMutations = {
                 kakao_id: args.kakaoId,
                 created_at: now,
                 updated_at: now,
+                nickname: getRandomNickname(),
             };
 
             user = await knex('user').insert(userForm).returning('*');
