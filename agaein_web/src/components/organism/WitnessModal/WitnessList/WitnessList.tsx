@@ -8,7 +8,7 @@ import {
     ClickIcon,
     Contents,
     Header,
-    Hpspan,
+    HpSpan,
     Img,
     Phone,
     Photo,
@@ -74,7 +74,7 @@ const WitnessList = ({ witness, clickIdx, setClickIdx }: WitnessListProps) => {
                                         <br />
                                         <br />
                                         <b>
-                                            {item.hp && <Hpspan>연락처 : {item.hp}</Hpspan>}
+                                            {item.hp && <HpSpan>연락처 : {item.hp}</HpSpan>}
                                             {item.img && <SmallPhoto isimg={!!item.img} />}
                                             {item.img?.length}
                                         </b>

@@ -13,14 +13,13 @@ export const WitnessDetailDiv = styled.div`
     display: flex;
 `;
 
-export const ToggleButon = styled.button<ToggleButtonProps>`
+export const ToggleButton = styled.button<ToggleButtonProps>`
     width: 120px;
     height: 30px;
     border: 1px solid ${(props) => props.theme.light.DarkGrey1};
     margin-bottom: 10px;
     border-radius: 4px 0px 0px 4px;
     background: ${(props) => props.theme.light.white};
-    font-family: NanumSquareRound;
     color: #505050;
     font-weight: bold;
     font-size: 12px;

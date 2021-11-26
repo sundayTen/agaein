@@ -115,7 +115,7 @@ export const ChevronDown = styled(ChevronDownIcon)`
     vertical-align: middle;
 `;
 
-export const Hpspan = styled.span`
+export const HpSpan = styled.span`
     margin-right: 10px;
 `;
 

@@ -1,7 +1,14 @@
-import { useState, Fragment, useContext } from 'react';
+import { useApolloClient } from '@apollo/client';
+import penguin from 'assets/image/penguin.png';
+import { BookMark, Button, Chip, Font, ImageCarousel } from 'components/molecules';
+import Comment from 'components/organism/Comment';
+import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
+import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
+import { UserContext } from 'contexts/userContext';
 import { Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
 import useArticle from 'graphql/hooks/useArticle';
 import useBookmark from 'hooks/useBookmark';
+import { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
 import { formattedDate, YYYYMMDD } from 'utils/date';
@@ -9,23 +16,16 @@ import { isArticle, isComments, isLFP, isReports } from 'utils/typeGuards';
 import {
     ArticleDetailContainer,
     ArticleDetailContentContainer,
+    ArticleDetailHeader,
     ArticleInfoContainer,
     ArticleMapContainer,
     ContainerTop,
     HorizontalContainer,
-    TitleAndBookMarkContainer,
-    ArticleDetailHeader,
-    StyledDotIcon,
     InfoHeader,
     InfoHeaderFont,
+    StyledDotIcon,
+    TitleAndBookMarkContainer,
 } from './ArticleDetail.style';
-import { Font, Chip, Button, BookMark, ImageCarousel } from 'components/molecules';
-import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
-import Comment from 'components/organism/Comment';
-import penguin from 'assets/image/penguin.png';
-import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
-import { useApolloClient } from '@apollo/client';
-import { UserContext } from 'contexts/userContext';
 
 const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useBookmark();
@@ -174,13 +174,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
             </HorizontalContainer>
             <Comment comments={commentsWithReply() as CommentType[]} articleId={id} author={author} />
 
-            <WitnessModal
-                open={isOpenModal}
-                close={closeModal}
-                missPosition={location}
-                isAuthor={isAuthor()}
-                articleId={id}
-            />
+            <WitnessModal open={isOpenModal} close={closeModal} missPosition={location} type="LIST" articleId={id} />
         </Fragment>
     );
 };
