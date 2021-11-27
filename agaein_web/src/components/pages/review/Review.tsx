@@ -47,7 +47,7 @@ const Review = ({ history, match }: RouteComponentProps) => {
         <>
             <PageTitle title="후기 작성하기" subTitle="감사의 마음을 담은 따뜻한 후기를 남겨주세요" />
             <FormWrapper formTitle={'후기 작성'}>
-                <FormPhoto onChange={inputFilesHandler} type="REVIEW" />
+                <FormPhoto onChange={inputFilesHandler} />
                 <FormInput
                     name="title"
                     onChange={inputChangeHandler}

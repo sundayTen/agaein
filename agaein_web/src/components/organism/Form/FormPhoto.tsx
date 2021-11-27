@@ -98,12 +98,12 @@ const CloseButton = styled.button`
 `;
 
 interface FormPhotoProps {
-    type?: string;
     onChange: (value: any) => void;
     required?: boolean;
+    isReport?: boolean;
 }
 
-export function FormPhoto({ type, onChange, required }: FormPhotoProps) {
+export function FormPhoto({ onChange, required = false, isReport = false }: FormPhotoProps) {
     const [photoList, setPhotoList] = useState([]);
     const [previewList, setPreviewList] = useState([]);
 
@@ -143,7 +143,7 @@ export function FormPhoto({ type, onChange, required }: FormPhotoProps) {
                 사진 등록
                 {required && <RequiredIcon />}
             </FormLabel>
-            {type !== 'LFG_M' && (
+            {!isReport && (
                 <FormGuide>사진은 최대 5장 등록할 수 있고, 첫번째 사진이 대표 이미지로 등록됩니다.</FormGuide>
             )}
             <Form>
