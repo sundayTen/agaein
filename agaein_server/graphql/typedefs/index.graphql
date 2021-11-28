@@ -16,7 +16,6 @@ type Query {
     articles(boardType: BOARD_TYPE!, offset: Int, limit: Int, order: ARTICLE_ORDER, search: String): [Article]!
     article(id: ID!): Article
     articleLength(boardType: BOARD_TYPE!): Int!
-    bestReviews: [Article]!
     # Breed
     breeds(type: BREED_TYPE!): [Breed]!
     bookmarks: [Bookmark]!

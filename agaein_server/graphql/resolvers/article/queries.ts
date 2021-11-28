@@ -114,28 +114,6 @@ const articleQueries = {
             throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
         }
     },
-    bestReviews: async () => {
-        try {
-            const articleDetails = await knex('review')
-                .join('article', 'article.id', 'review.article_id')
-                .orderBy('view', 'desc')
-                .limit(4);
-
-            const articles = articleDetails.map((detail: any) => {
-                const { articleId, ...detailData } = detail;
-                detail.id = articleId;
-                detail.articleDetail = { articleType: 'REVIEW', ...detailData };
-                return detail;
-            });
-
-            return articles;
-        } catch {
-            console.error('bestReviews에서 에러발생');
-            console.trace();
-
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
-        }
-    },
 };
 
 export default articleQueries;
