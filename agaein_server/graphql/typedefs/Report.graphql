@@ -17,6 +17,7 @@ input reportInput {
     content: String
     location: LocationInput!
     foundDate: Date!
+    password: String
 }
 
 input updateReportInput {
@@ -24,4 +25,5 @@ input updateReportInput {
     content: String
     location: LocationInput
     foundDate: Date
+    password: String
 }

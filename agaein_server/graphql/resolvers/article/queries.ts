@@ -3,22 +3,55 @@ import { knex } from '../../database';
 
 const articleQueries = {
     articles: async (_: any, args: any) => {
-        const { boardType, limit = 6, offset = 0 } = args;
+        const { boardType, limit = 6, offset = 0, order = 'new' } = args;
         try {
-            const articleDetails =
-                boardType === 'REVIEW'
-                    ? await knex(`${boardType}`)
-                          .join('article', 'article.id', `${boardType}.article_id`)
-                          .orderBy('created_at', 'desc')
-                          .limit(limit)
-                          .offset(offset)
-                    : await knex(`${boardType}`)
-                          .join('article', 'article.id', `${boardType}.article_id`)
-                          .join('breed', `${boardType}.breed_id`, 'breed.id')
-                          .select('*', `${boardType}.id as id`)
-                          .orderBy('created_at', 'desc')
-                          .limit(limit)
-                          .offset(offset);
+            let articleDetails;
+            if (order === 'new') {
+                articleDetails =
+                    boardType === 'REVIEW'
+                        ? await knex(`${boardType}`)
+                              .join('article', 'article.id', `${boardType}.article_id`)
+                              .orderBy('created_at', 'desc')
+                              .limit(limit)
+                              .offset(offset)
+                        : await knex(`${boardType}`)
+                              .join('article', 'article.id', `${boardType}.article_id`)
+                              .join('breed', `${boardType}.breed_id`, 'breed.id')
+                              .select('*', `${boardType}.id as id`)
+                              .orderBy('created_at', 'desc')
+                              .limit(limit)
+                              .offset(offset);
+            } else if (order === "old") {
+                articleDetails =
+                    boardType === 'REVIEW'
+                        ? await knex(`${boardType}`)
+                              .join('article', 'article.id', `${boardType}.article_id`)
+                              .orderBy('created_at', 'asc')
+                              .limit(limit)
+                              .offset(offset)
+                        : await knex(`${boardType}`)
+                              .join('article', 'article.id', `${boardType}.article_id`)
+                              .join('breed', `${boardType}.breed_id`, 'breed.id')
+                              .select('*', `${boardType}.id as id`)
+                              .orderBy('created_at', 'asc')
+                              .limit(limit)
+                              .offset(offset);
+            } else {
+                articleDetails =
+                    boardType === 'REVIEW'
+                        ? await knex(`${boardType}`)
+                              .join('article', 'article.id', `${boardType}.article_id`)
+                              .orderBy('view', 'desc')
+                              .limit(limit)
+                              .offset(offset)
+                        : await knex(`${boardType}`)
+                              .join('article', 'article.id', `${boardType}.article_id`)
+                              .join('breed', `${boardType}.breed_id`, 'breed.id')
+                              .select('*', `${boardType}.id as id`)
+                              .orderBy('view', 'desc')
+                              .limit(limit)
+                              .offset(offset);
+            }
 
             const articles = articleDetails.map((detail: any) => {
                 const { articleId, breedId, keyword, ...detailData } = detail;

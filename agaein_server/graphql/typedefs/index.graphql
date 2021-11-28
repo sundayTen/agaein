@@ -13,7 +13,7 @@ type Query {
     user(id: ID!): User
     me: User!
     # Article
-    articles(boardType: BOARD_TYPE!, offset: Int, limit: Int): [Article]!
+    articles(boardType: BOARD_TYPE!, offset: Int, limit: Int, order: ARTICLE_ORDER): [Article]!
     article(id: ID!): Article
     articleLength(boardType: BOARD_TYPE!): Int!
     # Breed
@@ -42,5 +42,5 @@ type Mutation {
     # Report
     createReport(files: [Upload]!, report: reportInput!): Report!
     updateReport(id: ID!, files: [Upload]!, report: updateReportInput!): Report!
-    deleteReport(id: ID!): ID!
+    deleteReport(id: ID!, password: String): ID!
 }

@@ -10,6 +10,12 @@ enum GENDER {
     unknown
 }
 
+enum ARTICLE_ORDER {
+    new
+    old
+    view
+}
+
 type Location {
     lat: Float!
     lng: Float!
@@ -26,7 +32,6 @@ type LFG {
     feature: String
     gender: GENDER
     age: Int
-    password: String
     alarm: Boolean
     email: String
     keyword: [String]
@@ -43,7 +48,6 @@ type LFP {
     gender: GENDER
     gratuity: Int
     age: Int
-    password: String
     alarm: Boolean
     email: String
     keyword: [String]
