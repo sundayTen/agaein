@@ -7,7 +7,7 @@ import { SelectContainer, SelectItem } from 'components/organism/Comment/Comment
 import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
 import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
 import { UserContext } from 'contexts/userContext';
-import { Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
+import { Board_Type, Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
 import useArticle from 'graphql/hooks/useArticle';
 import useBookmark from 'hooks/useBookmark';
 import { Fragment, useContext, useState } from 'react';
@@ -108,10 +108,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                 onClickDelete();
                 break;
             case '수정':
-                /**
-                 * TODO : id만 보내는 방법을 모르겠음. 의미없이 boardType을 보내야만 하는가.
-                 * QueryString으로 보내는 방법이 있긴 한데 혼용해도 되나?
-                 */
+                history.push(`/createArticle/step2/${isLFP(articleDetail) ? Board_Type.Lfp : Board_Type.Lfg}/${id}`);
                 break;
             case '키워드 편집':
                 break;
