@@ -1,5 +1,7 @@
 export function getRandomNickname() {
-    const number = new Date().getMilliseconds() % 15;
+    const date = new Date();
+    const num1 = date.getMilliseconds() % 15;
+    const num2 = date.getTime() % 15;
 
     const adjective = [
         '작은',
@@ -35,5 +37,5 @@ export function getRandomNickname() {
         '가수',
         '배우',
     ];
-    return adjective[number] + " " + noun[number];
+    return adjective[num1] + ' ' + noun[num2];
 }

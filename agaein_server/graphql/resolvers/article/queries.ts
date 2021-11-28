@@ -3,7 +3,8 @@ import { knex } from '../../database';
 
 const articleQueries = {
     articles: async (_: any, args: any) => {
-        const { boardType, limit = 6, offset = 0, order = 'new' } = args;
+        const { boardType, limit = 6, offset = 0, order = 'new', search } = args;
+        // @TODO search 쿼리 회의 필요.
         try {
             let articleDetails;
             if (order === 'new') {
@@ -21,7 +22,7 @@ const articleQueries = {
                               .orderBy('created_at', 'desc')
                               .limit(limit)
                               .offset(offset);
-            } else if (order === "old") {
+            } else if (order === 'old') {
                 articleDetails =
                     boardType === 'REVIEW'
                         ? await knex(`${boardType}`)
@@ -54,7 +55,7 @@ const articleQueries = {
             }
 
             const articles = articleDetails.map((detail: any) => {
-                const { articleId, breedId, keyword, ...detailData } = detail;
+                const { articleId, ...detailData } = detail;
                 detail.id = articleId;
                 detail.articleDetail = { articleType: args.boardType, ...detailData };
                 return detail;
@@ -108,6 +109,28 @@ const articleQueries = {
             return article;
         } catch {
             console.error('Article에서 에러발생');
+            console.trace();
+
+            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+        }
+    },
+    bestReviews: async () => {
+        try {
+            const articleDetails = await knex('review')
+                .join('article', 'article.id', 'review.article_id')
+                .orderBy('view', 'desc')
+                .limit(4);
+
+            const articles = articleDetails.map((detail: any) => {
+                const { articleId, ...detailData } = detail;
+                detail.id = articleId;
+                detail.articleDetail = { articleType: 'REVIEW', ...detailData };
+                return detail;
+            });
+
+            return articles;
+        } catch {
+            console.error('bestReviews에서 에러발생');
             console.trace();
 
             throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
