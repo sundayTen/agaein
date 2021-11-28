@@ -15,6 +15,7 @@ import SearchBar from './SearchBar';
 import Select from './Select';
 import StepIndicator from './StepIndicator';
 import Textarea from './Textarea';
+import ErrorCheckerInput from './ErrorCheckerInput';
 
 export {
     BookMark,
@@ -34,4 +35,5 @@ export {
     Select,
     StepIndicator,
     Textarea,
+    ErrorCheckerInput,
 };

@@ -1,11 +1,12 @@
 import { useApolloClient } from '@apollo/client';
 import penguin from 'assets/image/penguin.png';
-import { BookMark, Button, Chip, Font, ImageCarousel } from 'components/molecules';
+import { BookMark, Button, Chip, Font, ImageCarousel, ErrorCheckerInput } from 'components/molecules';
 import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
 import Comment, { calculateCommentsCount } from 'components/organism/Comment';
 import { SelectContainer, SelectItem } from 'components/organism/Comment/CommentItem/CommentItem.style';
 import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
 import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
+import { ModalContext } from 'contexts';
 import { UserContext } from 'contexts/userContext';
 import { Board_Type, Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
 import useArticle from 'graphql/hooks/useArticle';
@@ -38,6 +39,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
     const client = useApolloClient();
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [menuVisible, setMenuVisible] = useState(false);
+    const { show, close } = useContext(ModalContext);
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
@@ -102,23 +104,45 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
         }
         return [];
     };
+
     const handleMenu = (key: ARTICLE_MENU_TYPE) => {
         switch (key) {
             case '삭제':
-                onClickDelete();
+                if (isAuthor()) {
+                    show({
+                        title: '게시글 삭제',
+                        content: `정말 삭제하시겠습니까?\n 이 행동은 되돌릴 수 없습니다`,
+                        cancelButtonLabel: '취소',
+                        cancelButtonPressed: close,
+                        confirmButtonLabel: '삭제',
+                        confirmButtonPressed: deleteUserArticle,
+                    });
+                } else {
+                    show({
+                        title: '게시글 삭제',
+                        content: `비회원으로 작성된 게시글을 수정하기 위해서는
+                        게시글 등록시 입력한 비밀번호를 입력해주셔야 합니다.`,
+                        children: (
+                            <ErrorCheckerInput
+                                confirmButtonLabel="삭제하기"
+                                closeModal={close}
+                                targetId={id}
+                                contentType="ARTICLE"
+                            />
+                        ),
+                    });
+                }
                 break;
             case '수정':
                 history.push(`/createArticle/step2/${isLFP(articleDetail) ? Board_Type.Lfp : Board_Type.Lfg}/${id}`);
-                break;
-            case '키워드 편집':
                 break;
             default:
                 break;
         }
     };
-    const onClickDelete = () => {
-        history.goBack();
+    const deleteUserArticle = () => {
         deleteArticle({ id: match.params.id, password: undefined });
+        history.goBack();
     };
 
     const toggleSelector = () => {
@@ -169,9 +193,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                         <ArticleInfoContainer>
                             <Font label={formattedDate(createdAt)} fontType="body" />
                             <Font
-                                label={` 북마크 5 · 댓글 ${calculateCommentsCount(
-                                    comments as CommentType[],
-                                )} · 조회수 ${view}`}
+                                label={` 댓글 ${calculateCommentsCount(comments as CommentType[])} · 조회수 ${view}`}
                                 fontType="body"
                             />
                         </ArticleInfoContainer>
@@ -188,7 +210,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                             missPosition={location}
                             foundPosition={getFoundLocations()}
                             size={{ width: 480, height: 260 }}
-                            noClick={true}
+                            noClick
                         />
                         <Button
                             label={isAuthor() ? '발견 리스트 보기' : '발견 신고 하기'}
@@ -201,7 +223,6 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                     </ArticleMapContainer>
                 </ArticleDetailContainer>
             </HorizontalContainer>
-
             <Comment comments={comments as CommentType[]} articleId={id} author={author} />
             <WitnessModal open={isOpenModal} close={closeModal} missPosition={location} articleId={id} type={'LIST'} />
         </Fragment>

@@ -57,7 +57,6 @@ const PostItem = (props: PostItemProps) => {
                             <InfoText>{location.address.substr(0, 9)}</InfoText>
                         </InfoItem>
                     </InfoList>
-                    {/* TODO : 옵셔널 데이터를 어디까지 보여줄 지 논의해야 함 */}
                     <TagList>
                         {isNotNull(gender) && (
                             <ContentTag>
@@ -66,7 +65,7 @@ const PostItem = (props: PostItemProps) => {
                         )}
                         {isNotNull(age) && (
                             <ContentTag>
-                                <Font label={`${age}살`} fontType="tag" />
+                                <Font label={`${age}`} fontType="tag" />
                             </ContentTag>
                         )}
                         {isNotNull(gratuity) && (

@@ -14,12 +14,11 @@ import {
 
 export interface CommentInputProps extends InputHTMLAttributes<HTMLTextAreaElement> {
     content?: string;
-    isReply?: boolean;
     onPressSubmit: (content: string, password?: string) => void;
 }
 
 const CommentInput = forwardRef<HTMLTextAreaElement, CommentInputProps>((props, ref) => {
-    const { content = null, isReply = false, onPressSubmit, ...TextAreaProps } = props;
+    const { content = null, onPressSubmit, ...TextAreaProps } = props;
     const { isLoggedIn } = useContext(UserContext);
     const [commentInput, setCommentInput] = useState<string | undefined>('');
     const [password, setPassword] = useState<string | undefined>(undefined);
@@ -51,7 +50,6 @@ const CommentInput = forwardRef<HTMLTextAreaElement, CommentInputProps>((props, 
 
     return (
         <CommentInputWrapper>
-            {isReply && <ReplyIcon />}
             <Fragment>
                 <CommentInputContainer>
                     <Textarea

@@ -29,5 +29,7 @@ export const ButtonGroup = styled.div`
     }
 `;
 export const CommentBorder = styled.hr`
-    color: ${(props) => props.theme.light.lightGrey2};
+    background: ${(props) => props.theme.light.lightGrey2};
+    height: 1px;
+    border: 0;
 `;
