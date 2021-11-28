@@ -13,7 +13,7 @@ type Query {
     user(id: ID!): User
     me: User!
     # Article
-    articles(boardType: BOARD_TYPE!, offset: Int, limit: Int, order: ARTICLE_ORDER): [Article]!
+    articles(boardType: BOARD_TYPE!, offset: Int, limit: Int, order: ARTICLE_ORDER, search: String): [Article]!
     article(id: ID!): Article
     articleLength(boardType: BOARD_TYPE!): Int!
     # Breed
