@@ -206,13 +206,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
             </HorizontalContainer>
 
             <Comment comments={comments as CommentType[]} articleId={id} author={author} />
-            <WitnessModal
-                open={isOpenModal}
-                close={closeModal}
-                missPosition={location}
-                isAuthor={isAuthor()}
-                articleId={id}
-            />
+            <WitnessModal open={isOpenModal} close={closeModal} missPosition={location} articleId={id} type={'LIST'} />
         </Fragment>
     );
 };
