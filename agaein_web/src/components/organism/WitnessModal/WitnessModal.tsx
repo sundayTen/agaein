@@ -1,10 +1,18 @@
 import Modal from 'components/molecules/Modal';
-import { Location, Maybe, ReportInput, useCreateReportMutation, useGetReportsQuery } from 'graphql/generated/generated';
+import { client } from 'graphql/apollo';
+import {
+    GetReportsDocument,
+    Location,
+    Maybe,
+    ReportInput,
+    useCreateReportMutation,
+    useGetReportsQuery,
+} from 'graphql/generated/generated';
 import { useEffect, useState } from 'react';
 import ReactKaKaoMap from '../ReactKakaoMap/ReactKakaoMap';
 import WitnessImageCarousel from './WitnessImageCarousel';
 import WitnessList from './WitnessList/WitnessList';
-import { ToggleButon, ToggleButtonDiv } from './WitnessModel.style';
+import { ToggleButton, ToggleButtonDiv } from './WitnessModel.style';
 import WitnessReport from './WitnessReport/WitnessReport';
 
 interface WitnessArray {
@@ -20,7 +28,7 @@ interface WitnessArray {
 interface WitnessModalProps {
     open: boolean;
     close: () => void;
-    isAuthor: boolean;
+    type: 'LIST' | 'REPORT';
     articleId: string;
     missPosition: {
         lat: number;
@@ -30,7 +38,7 @@ interface WitnessModalProps {
     };
 }
 
-const WitnessModal = ({ open, close, isAuthor = false, articleId, missPosition }: WitnessModalProps) => {
+const WitnessModal = ({ open, close, type, articleId, missPosition }: WitnessModalProps) => {
     const [create] = useCreateReportMutation();
     const [witnessToggle, setWitnessToggle] = useState<'지도' | '사진'>('지도');
     const [address, setAddress] = useState<Location>({
@@ -93,10 +101,32 @@ const WitnessModal = ({ open, close, isAuthor = false, articleId, missPosition }
                 files: files,
                 report: report,
             },
+            update: (_, { data }) => {
+                try {
+                    const prevData = client.readQuery({
+                        query: GetReportsDocument,
+                        variables: {
+                            articleId: articleId,
+                        },
+                    });
+                    client.writeQuery({
+                        query: GetReportsDocument,
+                        variables: {
+                            articleId: articleId,
+                        },
+                        data: {
+                            reports: [...prevData.reports, data?.createReport],
+                        },
+                        broadcast: true,
+                    });
+                } catch (error) {
+                    console.log(error);
+                }
+            },
         });
 
         if (!!response.errors) {
-            //console.log(response.errors[0].message);
+            console.log(response.errors[0].message);
             return;
         }
 
@@ -122,23 +152,23 @@ const WitnessModal = ({ open, close, isAuthor = false, articleId, missPosition }
         <Modal
             open={open}
             close={close}
-            title={isAuthor ? '발견 리스트' : '발견 신고'}
-            btnName={isAuthor ? undefined : '등록'}
-            onBtn={isAuthor ? undefined : reportSave}
+            title={type === 'LIST' ? '발견 리스트' : '발견 신고'}
+            btnName={type === 'LIST' ? undefined : '등록'}
+            onBtn={type === 'LIST' ? undefined : reportSave}
         >
             <div>
-                {isAuthor && (
+                {type === 'LIST' && (
                     <ToggleButtonDiv>
-                        <ToggleButon click={witnessToggle === '지도'} onClick={() => setWitnessToggle('지도')}>
+                        <ToggleButton click={witnessToggle === '지도'} onClick={() => setWitnessToggle('지도')}>
                             지도보기
-                        </ToggleButon>
-                        <ToggleButon
+                        </ToggleButton>
+                        <ToggleButton
                             click={witnessToggle === '사진'}
                             onClick={() => setWitnessToggle('사진')}
                             disabled={listClickIdx === -1 ? true : !witnessList[listClickIdx].img}
                         >
                             사진보기
-                        </ToggleButon>
+                        </ToggleButton>
                     </ToggleButtonDiv>
                 )}
                 {witnessToggle === '지도' ? (
@@ -148,13 +178,13 @@ const WitnessModal = ({ open, close, isAuthor = false, articleId, missPosition }
                         setAddress={setAddress}
                         size={{ width: 580, height: 400 }}
                         isCategory={true}
-                        noClick={isAuthor ? true : undefined}
+                        noClick={type === 'LIST' ? true : undefined}
                         listClickIdx={listClickIdx}
                     />
                 ) : (
                     <WitnessImageCarousel images={listClickIdx !== -1 ? witnessList[listClickIdx].img : undefined} />
                 )}
-                {isAuthor ? (
+                {type === 'LIST' ? (
                     <WitnessList witness={witnessList} clickIdx={listClickIdx} setClickIdx={setListClickIdx} />
                 ) : (
                     <WitnessReport address={address} reportChange={reportChange} filesChange={filesChange} />
