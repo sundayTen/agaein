@@ -1,7 +1,6 @@
 fragment CommentFragment on Comment {
     id
     content
-    password
     author {
         nickname
         email

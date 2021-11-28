@@ -7,10 +7,10 @@ query getReports($articleId: ID!) {
         images
         phoneNumber
         content
+        foundDate
         location {
             ...LocationFragment
         }
-        foundDate
     }
 }
 
@@ -18,4 +18,14 @@ mutation createReport($files: [Upload]!, $report: reportInput!) {
     createReport(files: $files, report: $report) {
         id
     }
+}
+
+mutation updateReport($id: ID!, $files: [Upload]!, $report: updateReportInput!) {
+    updateReport(id: $id, files: $files, report: $report) {
+        id
+    }
+}
+
+mutation deleteReport($id: ID!, $password: String) {
+    deleteReport(id: $id, password: $password)
 }
