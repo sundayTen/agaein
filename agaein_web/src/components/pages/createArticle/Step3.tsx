@@ -1,30 +1,25 @@
 import Button from 'components/molecules/Button';
-import Font from 'components/molecules/Font';
 import StepIndicator from 'components/molecules/StepIndicator';
+import PageTitle from 'components/organism/PageTitle/PageTitle';
 import { RouteComponentProps } from 'react-router';
 import { CreateArticleStep3Params } from 'router/params';
-import { Step1Headers } from './CreateArticle.style';
+import { Step3ButtonGroup } from './CreateArticle.style';
 
 const Step3 = ({ history, match }: RouteComponentProps<CreateArticleStep3Params>) => {
     return (
         <>
             <StepIndicator active={3} styles={{ marginTop: 100 }} />
-            <Step1Headers>
-                <Font label="등록이 완료됐습니다!" fontType="h2" fontWeight="bold" style={{ marginBottom: 12 }} />
-                <Font
-                    style={{ marginBottom: 30 }}
-                    label="작성된 정보와 유사한 실종동물 리스트 입니다."
-                    fontType="h3"
-                    fontWeight="normal"
-                />
+            <PageTitle title="게시글 등록 완료" subTitle="입력하신 정보와 유사한 실종된 동물 리스트입니다." />
+            <Step3ButtonGroup>
                 <Button
-                    size="LARGE"
+                    size="XLARGE"
+                    buttonStyle="PAINTED"
                     label="작성글 보기"
                     onClick={() => {
                         history.push(`/articleDetail/${match.params.id}`);
                     }}
                 />
-            </Step1Headers>
+            </Step3ButtonGroup>
         </>
     );
 };

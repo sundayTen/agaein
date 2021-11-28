@@ -21,7 +21,7 @@ import Button from 'components/molecules/Button';
 import StepIndicator from 'components/molecules/StepIndicator';
 import { CreateArticleStep2Params } from 'router/params';
 import { RouteComponentProps } from 'react-router-dom';
-import { ArticleDetailInput } from 'graphql/generated/generated';
+import { ArticleDetailInput, File } from 'graphql/generated/generated';
 import { UserContext } from 'contexts/userContext';
 import { isArticleDetail } from 'utils/typeGuards';
 import useArticle from 'graphql/hooks/useArticle';
@@ -30,7 +30,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     const { isLoggedIn } = useContext(UserContext);
     const { createArticle } = useArticle();
     const boardType = match.params.type;
-    const [files, setFiles] = useState<[]>([]);
+    const [files, setFiles] = useState<File[]>([]);
     const [currentArticleDetail, setCurrentArticleDetail] = useState<ArticleDetailInput>({});
     const [isValidEmail, setIsValidEmail] = useState(false);
 
@@ -87,7 +87,7 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
             <StepIndicator active={2} styles={{ marginTop: 100 }} />
             <PageTitle title="게시글 작성하기" subTitle="상세하게 작성할수록 발견될 확률이 올라가요" />
             <FormWrapper formTitle={boardTitle + '동물 정보'}>
-                <FormPhoto onChange={inputFilesHandler} type={boardType} />
+                <FormPhoto onChange={inputFilesHandler} required={true} />
                 <FormBreed name="breedId" onChange={inputChangeHandler} />
                 <FormDate name={dateType} onChange={inputChangeHandler} type={boardType} />
                 <FormAddress name="location" onChange={inputChangeHandler} type={boardType} />

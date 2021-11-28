@@ -1,11 +1,12 @@
 import Button from 'components/molecules/Button';
 import Font from 'components/molecules/Font';
 import StepIndicator from 'components/molecules/StepIndicator';
+import PageTitle from 'components/organism/PageTitle/PageTitle';
 import { Board_Type } from 'graphql/generated/generated';
 import { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { CreateArticleStep1Params } from 'router/params';
-import { BigButton, Step1ButtonGroup, Step1Container, Step1Headers, UtilButtonGroup } from './CreateArticle.style';
+import { BigButton, Step1ButtonGroup, Step1Container, UtilButtonGroup } from './CreateArticle.style';
 
 const Step1 = ({ history }: RouteComponentProps<CreateArticleStep1Params>) => {
     const [selectedBtnIndex, setSelectedBtnIndex] = useState(-1);
@@ -27,10 +28,7 @@ const Step1 = ({ history }: RouteComponentProps<CreateArticleStep1Params>) => {
         <>
             <Step1Container>
                 <StepIndicator active={1} />
-                <Step1Headers>
-                    <Font label="카테고리 선택하기" fontType="h2" fontWeight="bold" style={{ marginBottom: 12 }} />
-                    <Font label="목적에 맞는 카테고리를 선택해주세요" fontType="h3" fontWeight="normal" />
-                </Step1Headers>
+                <PageTitle title="카테고리 선택하기" subTitle="목적에 맞는 카테고리를 선택해주세요" />
                 <Step1ButtonGroup>
                     {/* TODO : Button 컴포넌트로 대체 */}
                     <BigButton onClick={() => onClickSelector(0)} active={selectedBtnIndex === 0}>

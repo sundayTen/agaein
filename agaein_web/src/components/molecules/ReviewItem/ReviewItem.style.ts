@@ -8,6 +8,10 @@ export const ReviewItemContainer = styled.div`
     background-color: ${(props) => props.theme.light.white};
     cursor: pointer;
     overflow: hidden;
+
+    &:hover {
+        border: 1px solid ${(props) => props.theme.light.primary};
+    }
 `;
 
 export const Title = styled.p`

@@ -16,13 +16,15 @@ interface ReviewItemProps {
 
 const ReviewItem = (props: ReviewItemProps) => {
     const { item } = props;
-    const { articleDetail } = item;
+    const { articleDetail, images } = item;
     const { title, content } = articleDetail as Review;
+    const reviewImage = images.length === 0 ? penguin : (images[0] as string);
+
     return (
         <Fragment>
             <ReviewItemContainer>
                 <ReviewImageContainer>
-                    <ReviewImage src={penguin} />
+                    <ReviewImage src={reviewImage} />
                 </ReviewImageContainer>
                 <ReviewInfoContainer>
                     <Title>{title}</Title>

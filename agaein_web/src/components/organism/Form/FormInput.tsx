@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormRow, FormLabel, Form } from './Form.style';
+import { FormRow, FormLabel, Form, RequiredIcon } from './Form.style';
 import Input from 'components/molecules/Input';
 
 interface FormInputProps {
@@ -7,9 +7,10 @@ interface FormInputProps {
     onChange: (value: string, name: string) => void;
     label: string;
     placeholder: string;
+    required?: boolean;
 }
 
-export function FormInput({ name, onChange, label, placeholder }: FormInputProps) {
+export function FormInput({ name, onChange, label, placeholder, required }: FormInputProps) {
     const [value, setValue] = useState('');
 
     function inputChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
@@ -20,7 +21,10 @@ export function FormInput({ name, onChange, label, placeholder }: FormInputProps
 
     return (
         <FormRow>
-            <FormLabel>{label}</FormLabel>
+            <FormLabel>
+                {label}
+                {required && <RequiredIcon />}
+            </FormLabel>
             <Form>
                 <Input type="text" placeholder={placeholder} value={value} onChange={inputChangeHandler} />
             </Form>

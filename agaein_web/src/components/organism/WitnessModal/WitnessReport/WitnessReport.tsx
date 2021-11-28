@@ -16,7 +16,7 @@ const WitnessReport = ({ address, reportChange, filesChange }: ReportProps) => {
             <RequiredGuide style={{ float: 'right' }}>
                 <RequiredIcon />는 필수적으로 입력해야 할 정보입니다
             </RequiredGuide>
-            <FormPhoto type={'LFG_M'} onChange={filesChange} />
+            <FormPhoto onChange={filesChange} isReport />
             <FormDate type={'LFG'} name="foundDate" onChange={reportChange} />
             <FormAddress name="location" type={'LFG_M'} onChange={reportChange} address={address} />
             <FormHp name="phoneNumber" onChange={reportChange} />
