@@ -1,7 +1,7 @@
 import Font from 'components/molecules/Font';
 import useHover from 'hooks/useHover';
 import { Comment } from 'graphql/generated/generated';
-import { Fragment, useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { formattedDate } from 'utils/date';
 import {
     AuthorTag,
@@ -11,22 +11,24 @@ import {
     CommentSelectContainer,
     DotIcon,
     DotIconButton,
+    ReplyIcon,
     SelectContainer,
     SelectItem,
 } from './CommentItem.style';
-import { COMMENT_ADDITIONAL_OPTIONS, COMMENT_OPTION } from '..';
+import { AUTHOR_OPTIONS, USER_OPTIONS, COMMENT_OPTION } from '..';
 import { UserContext } from 'contexts/userContext';
 
 interface CommentItemProps {
     comment: Comment;
     isAuthors: boolean;
+    isReply?: boolean;
     menuHandler: (key: COMMENT_OPTION, commentId: string) => void;
 }
 
 const CommentItem = (props: CommentItemProps) => {
-    const { comment, isAuthors, menuHandler } = props;
-    const { isLoggedIn } = useContext(UserContext);
-    const { id, content, reply, author, createdAt } = comment;
+    const { comment, isAuthors, isReply = false, menuHandler } = props;
+    const { user } = useContext(UserContext);
+    const { id, content, author, createdAt } = comment;
     const { kakaoId, nickname } = author;
 
     const [selectVisible, setSelectVisible] = useState(false);
@@ -36,11 +38,19 @@ const CommentItem = (props: CommentItemProps) => {
     const toggleSelector = () => {
         setSelectVisible(!selectVisible);
     };
-    const isMemberComment = () => {
-        return kakaoId !== 'anonymous';
+    const isNonMemberComment = () => {
+        return kakaoId === 'anonymous';
     };
-    const isChildren = () => {
-        return reply === undefined || reply === [];
+
+    const isMyComment = () => {
+        return user.kakaoId === kakaoId;
+    };
+
+    const getOption = () => {
+        if (isMyComment() || isNonMemberComment()) {
+            return AUTHOR_OPTIONS;
+        }
+        return USER_OPTIONS;
     };
 
     useEffect(() => {
@@ -48,50 +58,48 @@ const CommentItem = (props: CommentItemProps) => {
     }, [isHover]);
 
     return (
-        <Fragment>
-            <CommentItemContainer isChildren={isChildren()} ref={commentItemRef}>
-                <CommentItemToolBox>
-                    <CommentItemWriterContainer>
-                        {isAuthors && <AuthorTag>작성자</AuthorTag>}
-                        <Font
-                            label={nickname ?? '비회원'}
-                            fontType="subhead"
-                            fontWeight="bold"
-                            htmlElement="span"
-                            style={{ marginRight: 10 }}
-                        />
-                        <Font label={formattedDate(createdAt)} fontType="body" htmlElement="span" />
-                    </CommentItemWriterContainer>
-                    {isHover && (
-                        <CommentSelectContainer>
-                            <DotIconButton onClick={toggleSelector}>
-                                <DotIcon />
-                            </DotIconButton>
-                            {selectVisible && (
-                                <SelectContainer>
-                                    {COMMENT_ADDITIONAL_OPTIONS.map((label) => {
-                                        // TODO : 매우 비효율적. 다른 방법이 필요함.
-                                        if (isMemberComment() && !isLoggedIn && label !== '답글') return <></>;
-                                        return (
-                                            <SelectItem
-                                                key={label}
-                                                onClick={() => {
-                                                    menuHandler(label, id);
-                                                    setSelectVisible(false);
-                                                }}
-                                            >
-                                                {label}
-                                            </SelectItem>
-                                        );
-                                    })}
-                                </SelectContainer>
-                            )}
-                        </CommentSelectContainer>
-                    )}
-                </CommentItemToolBox>
-                <Font label={content} fontType="subhead" />
-            </CommentItemContainer>
-        </Fragment>
+        <CommentItemContainer isReply={isReply} ref={commentItemRef}>
+            <CommentItemToolBox>
+                <CommentItemWriterContainer>
+                    {isReply && <ReplyIcon />}
+                    {isAuthors && <AuthorTag>작성자</AuthorTag>}
+                    <Font
+                        label={nickname ?? '비회원'}
+                        fontType="subhead"
+                        fontWeight="bold"
+                        htmlElement="span"
+                        style={{ marginRight: 10 }}
+                    />
+                    <Font label={formattedDate(createdAt)} fontType="body" htmlElement="span" />
+                </CommentItemWriterContainer>
+                {isHover && (
+                    <CommentSelectContainer>
+                        <DotIconButton onClick={toggleSelector}>
+                            <DotIcon />
+                        </DotIconButton>
+                        {selectVisible && (
+                            <SelectContainer>
+                                {getOption().map((label) => {
+                                    // TODO : 매우 비효율적. 다른 방법이 필요함.
+                                    return (
+                                        <SelectItem
+                                            key={label}
+                                            onClick={() => {
+                                                menuHandler(label, id);
+                                                setSelectVisible(false);
+                                            }}
+                                        >
+                                            {label}
+                                        </SelectItem>
+                                    );
+                                })}
+                            </SelectContainer>
+                        )}
+                    </CommentSelectContainer>
+                )}
+            </CommentItemToolBox>
+            <Font label={content} fontType="subhead" />
+        </CommentItemContainer>
     );
 };
 

@@ -9,6 +9,7 @@ import { client } from 'graphql/apollo';
 import { ThemeProvider } from 'styled-components';
 import { theme } from 'theme/theme';
 import { UserProvider } from 'contexts/userContext';
+import { ModalProvider } from 'contexts/modalContext';
 import ScrollToTop from 'components/molecules/ScrollToTop/scrollToTop';
 
 ReactDOM.render(
@@ -17,8 +18,10 @@ ReactDOM.render(
             <ApolloProvider client={client}>
                 <ThemeProvider theme={theme}>
                     <UserProvider>
-                        <ScrollToTop />
-                        <App />
+                        <ModalProvider>
+                            <ScrollToTop />
+                            <App />
+                        </ModalProvider>
                     </UserProvider>
                 </ThemeProvider>
             </ApolloProvider>

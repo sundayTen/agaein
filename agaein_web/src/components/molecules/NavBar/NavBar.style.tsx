@@ -57,7 +57,12 @@ export const ChevronDown = styled(ChevronDownIcon)`
     width: 24px;
     height: 24px;
 `;
-
+export const Avatar = styled.img`
+    width: 48px;
+    height: 48px;
+    border-radius: 50px;
+    margin-right: 14px;
+`;
 export const KaKaoLoginButton = styled(KakaoLogin)`
     height: 40px;
     padding: 0 14px;

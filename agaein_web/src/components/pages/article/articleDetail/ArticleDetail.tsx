@@ -1,24 +1,28 @@
 import { useApolloClient } from '@apollo/client';
 import penguin from 'assets/image/penguin.png';
 import { BookMark, Button, Chip, Font, ImageCarousel } from 'components/molecules';
-import Comment from 'components/organism/Comment';
+import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
+import Comment, { calculateCommentsCount } from 'components/organism/Comment';
+import { SelectContainer, SelectItem } from 'components/organism/Comment/CommentItem/CommentItem.style';
 import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
 import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
 import { UserContext } from 'contexts/userContext';
-import { Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
+import { Board_Type, Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
 import useArticle from 'graphql/hooks/useArticle';
 import useBookmark from 'hooks/useBookmark';
 import { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
 import { formattedDate, YYYYMMDD } from 'utils/date';
-import { isArticle, isComments, isLFP, isReports } from 'utils/typeGuards';
+import { isArticle, isLFP, isReports } from 'utils/typeGuards';
+import { ARTICLE_MENU_TYPE, AUTHOR_MENU } from '.';
 import {
     ArticleDetailContainer,
     ArticleDetailContentContainer,
     ArticleDetailHeader,
     ArticleInfoContainer,
     ArticleMapContainer,
+    ArticleSelectContainer,
     ContainerTop,
     HorizontalContainer,
     InfoHeader,
@@ -33,6 +37,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
     const { isLoggedIn, user } = useContext(UserContext);
     const client = useApolloClient();
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [menuVisible, setMenuVisible] = useState(false);
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
@@ -46,7 +51,6 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
             });
         },
     });
-
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
     if (data === undefined || !isArticle(data.article)) return <p>No data</p>;
@@ -54,29 +58,11 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
     const { id, createdAt, articleDetail, view, author, comments = [], images = [] } = data.article;
 
     // ? TypeGuard로 해결할 방법을 모르겠음
-    const { breed, feature, age, gender, name, location, foundDate, lostDate, type } = articleDetail as any;
-
-    const commentsWithReply = () => {
-        if (comments === null || !isComments(comments)) {
-            return [];
-        }
-        return comments
-            .map((comment) => {
-                if (hasReply(comment)) {
-                    return [comment, ...comment.reply];
-                }
-                return comment;
-            })
-            .flat();
-    };
+    const { breed, feature, age, gender, name, location, foundDate, lostDate, type, keyword } = articleDetail as any;
 
     const isAuthor = () => {
         return isLoggedIn && user.id === author.id;
     };
-
-    function hasReply(comment: CommentType) {
-        return comment.reply.length > 0 && isComments(comment.reply);
-    }
 
     function getTitle() {
         if (isLFP(articleDetail)) {
@@ -116,9 +102,27 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
         }
         return [];
     };
+    const handleMenu = (key: ARTICLE_MENU_TYPE) => {
+        switch (key) {
+            case '삭제':
+                onClickDelete();
+                break;
+            case '수정':
+                history.push(`/createArticle/step2/${isLFP(articleDetail) ? Board_Type.Lfp : Board_Type.Lfg}/${id}`);
+                break;
+            case '키워드 편집':
+                break;
+            default:
+                break;
+        }
+    };
     const onClickDelete = () => {
         history.goBack();
         deleteArticle({ id: match.params.id, password: undefined });
+    };
+
+    const toggleSelector = () => {
+        setMenuVisible(!menuVisible);
     };
 
     return (
@@ -129,7 +133,24 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                     <ContainerTop>
                         <ArticleDetailHeader>
                             <Chip label="진행중" />
-                            <StyledDotIcon onClick={onClickDelete} />
+                            {isAuthor() && (
+                                <ArticleSelectContainer>
+                                    <StyledDotIcon onClick={toggleSelector} />
+                                    {menuVisible && (
+                                        <SelectContainer>
+                                            {AUTHOR_MENU.map((menu) => (
+                                                <SelectItem
+                                                    onClick={() => handleMenu(menu)}
+                                                    style={{ minWidth: 80 }}
+                                                    key={menu}
+                                                >
+                                                    {menu}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContainer>
+                                    )}
+                                </ArticleSelectContainer>
+                            )}
                         </ArticleDetailHeader>
                         <ArticleDetailContentContainer>
                             <TitleAndBookMarkContainer>
@@ -137,12 +158,20 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                                 <BookMark active={isBookmarked(id)} onClick={() => setBookmark(id)} />
                             </TitleAndBookMarkContainer>
                             <Font label={getDescription()} fontType="body" style={{ marginTop: 6 }} />
-                            <Font label={feature} fontType="label" />
+                            <Font label={feature} fontType="label" style={{ marginTop: 30, marginBottom: 10 }} />
+                            {keyword &&
+                                keyword.map((label: string, index: number) => (
+                                    <ContentTag key={index.toString()}>
+                                        <Font label={label} fontType="tag" />
+                                    </ContentTag>
+                                ))}
                         </ArticleDetailContentContainer>
                         <ArticleInfoContainer>
                             <Font label={formattedDate(createdAt)} fontType="body" />
                             <Font
-                                label={` 북마크 5 · 댓글 ${commentsWithReply().length} · 조회수 ${view}`}
+                                label={` 북마크 5 · 댓글 ${calculateCommentsCount(
+                                    comments as CommentType[],
+                                )} · 조회수 ${view}`}
                                 fontType="body"
                             />
                         </ArticleInfoContainer>
@@ -172,9 +201,9 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                     </ArticleMapContainer>
                 </ArticleDetailContainer>
             </HorizontalContainer>
-            <Comment comments={commentsWithReply() as CommentType[]} articleId={id} author={author} />
 
-            <WitnessModal open={isOpenModal} close={closeModal} missPosition={location} type="LIST" articleId={id} />
+            <Comment comments={comments as CommentType[]} articleId={id} author={author} />
+            <WitnessModal open={isOpenModal} close={closeModal} missPosition={location} articleId={id} type={'LIST'} />
         </Fragment>
     );
 };

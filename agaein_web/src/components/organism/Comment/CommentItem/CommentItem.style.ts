@@ -1,15 +1,14 @@
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import styled from 'styled-components';
+import { ReactComponent as Reply } from 'assets/image/reply.svg';
 
 interface CommentContainerProps {
-    isChildren?: boolean;
+    isReply?: boolean;
 }
 
 export const CommentItemContainer = styled.div<CommentContainerProps>`
     height: 47px;
-    border-top: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
-    margin: ${(props) => `10px ${props.isChildren ? '30px' : '0'}`};
-    padding: 20px 20px;
+    margin: ${(props) => `20px ${props.isReply ? '0 10px 10px' : '0'}`};
 `;
 export const CommentItemWriterContainer = styled.div`
     display: inline-block;
@@ -20,6 +19,12 @@ export const CommentItemToolBox = styled.div`
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
+`;
+
+export const ReplyIcon = styled(Reply)`
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
 `;
 
 export const DotIcon = styled(DotsVerticalIcon)`

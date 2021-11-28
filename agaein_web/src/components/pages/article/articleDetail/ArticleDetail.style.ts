@@ -77,3 +77,8 @@ export const InfoHeaderFont = styled.span<{ panted?: boolean }>`
     line-height: 22px;
     color: ${(props) => (props.panted ? props.theme.light.primary : props.theme.light.DarkGrey2)};
 `;
+
+export const ArticleSelectContainer = styled.div`
+    display: inline-block;
+    position: relative;
+`;
