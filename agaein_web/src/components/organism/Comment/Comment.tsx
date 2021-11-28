@@ -80,7 +80,7 @@ const Comment = (props: CommentProps) => {
         return comments.find((comment) => comment.id === commentId)?.content;
     };
     const isUnknownComment = (commentId: string) => {
-        return !!comments.find((comment) => comment.id === commentId)?.password;
+        return comments.find((comment) => comment.id === commentId)?.author.kakaoId === 'anonymous';
     };
 
     const setEditInfo = (commentId: string) => {

@@ -37,7 +37,6 @@ fragment LFGDetail on LFG {
     feature
     gender
     age
-    password
     foundDate
     alarm
     email
