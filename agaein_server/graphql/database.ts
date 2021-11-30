@@ -370,3 +370,22 @@ export function initReport() {
         }
     });
 }
+
+export function initCrawlingSite() {
+    knex.schema.hasTable('crawling_site').then(function (exists: boolean) {
+        if (!exists) {
+            knex.schema
+                .createTable('crawling_site', function (table: any) {
+                    table.increments();
+                    table.string('site').notNullable();
+                    table.json('info').notNullable().defaultTo({});
+                })
+                .then(function () {
+                    console.log('[DataBase Initialized] created crawling_site table');
+                })
+                .catch((error: String) => {
+                    console.error(error);
+                });
+        }
+    });
+}

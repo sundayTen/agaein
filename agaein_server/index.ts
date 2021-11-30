@@ -12,6 +12,7 @@ import {
     initKeyword,
     initArticleKeyword,
     initReport,
+    initCrawlingSite,
 } from './graphql/database';
 import app from './app';
 
@@ -28,6 +29,7 @@ const initDatabase = async () => {
     await initKeyword();
     await initArticleKeyword();
     await initReport();
+    await initCrawlingSite();
 };
 
 const start = async () => {
