@@ -119,3 +119,24 @@ export const HpSpan = styled.span`
     margin-right: 10px;
 `;
 
+export const NullWitness = styled.div`
+text-align: center;
+width: 580px;
+line-height: 30px;
+margin-top: 35px;
+`
+
+export const NullWitnessSpan = styled.span`
+    vertical-align: middle;
+    font-size: 14px;
+    line-height: 22px;
+`
+export const ReportLink = styled.a`
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: -0.02em;
+    text-decoration-line: underline;
+    vertical-align: middle;
+`
+
