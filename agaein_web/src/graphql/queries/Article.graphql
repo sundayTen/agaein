@@ -2,6 +2,11 @@ query getArticles($boardType: BOARD_TYPE!, $limit: Int, $offset: Int, $order: AR
     articles(boardType: $boardType, limit: $limit, offset: $offset, order: $order, search: $search) {
         id
         images
+        view
+        author {
+            nickname
+        }
+        createdAt
         articleDetail {
             ... on LFG {
                 ...LFGDetail

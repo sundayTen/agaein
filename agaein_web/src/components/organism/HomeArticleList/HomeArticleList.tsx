@@ -1,7 +1,7 @@
 import Font from 'components/molecules/Font';
 import PostItem from 'components/molecules/PostItemBox/PostItemBox';
 import ReviewItem from 'components/molecules/ReviewItem';
-import { Article, Board_Type, useGetArticlesQuery } from 'graphql/generated/generated';
+import { Article, Board_Type, useGetArticlesQuery, Article_Order } from 'graphql/generated/generated';
 import useBookmark from 'hooks/useBookmark';
 import { getTitle } from 'utils/converter';
 import {
@@ -19,27 +19,37 @@ interface HomeArticleListProps {
 
 const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
     const { isBookmarked, setBookmark } = useBookmark();
+    const isReviewType = () => {
+        return boardType === Board_Type.Review;
+    };
+
+    const variables = isReviewType()
+        ? {
+              boardType,
+              limit: 4,
+              order: Article_Order.View,
+          }
+        : {
+              boardType,
+              limit: 6,
+          };
+
     const { data, loading, error } = useGetArticlesQuery({
-        variables: {
-            boardType,
-            limit: 6,
-        },
+        variables,
     });
+
+    if (loading) return <p>Loading</p>;
+    if (error) return <p>{`Error : ${error}`}</p>;
+
+    const articles = data?.articles.map((article) => article) as Article[];
 
     // TODO : utils함수로 빼던가 lodash를 쓰던가 해야할 듯 - Refactor 필요
     const isEmpty = (items?: Array<Article>) => {
         if (!items) return true;
         return items.length === 0;
     };
-    const isReviewType = () => {
-        return boardType === Board_Type.Review;
-    };
-
-    if (loading) return <p>Loading</p>;
-    if (error) return <p>{`Error : ${error}`}</p>;
 
     const [firstChunk, secondChunk] = getTitle(boardType).split(' ');
-    const articles = data?.articles.map((article) => article) as Article[];
 
     return (
         <ArticleList>
@@ -48,7 +58,7 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
                     <Font label={firstChunk} fontType="h4" fontWeight="bold" status="ACTIVE" htmlElement="span" />
                     <Font label={secondChunk} fontType="h4" fontWeight="bold" htmlElement="span" />
                 </TitleBox>
-                <ButtonViewAll to={`articles/${boardType}`} type="button">
+                <ButtonViewAll to={isReviewType() ? `reviews` : `articles/${boardType}`} type="button">
                     전체보기 &gt;
                 </ButtonViewAll>
             </ListHeader>

@@ -1,4 +1,5 @@
-import { Page, PageText, PaginationDiv } from './Pagination.style';
+import { PageList, PageItem } from './Pagination.style';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 
 interface SearchBarProps {
     active: number;
@@ -13,15 +14,19 @@ const Pagination = (props: SearchBarProps) => {
         .map((_, i) => i);
 
     return (
-        <PaginationDiv>
-            <Page onClick={() => setActive(active === 1 ? active : active - 1)}>&lt;</Page>
+        <PageList>
+            <PageItem type="button" onClick={() => setActive(active === 1 ? active : active - 1)}>
+                <ChevronLeftIcon />
+            </PageItem>
             {pages.map((_, index) => (
-                <Page key={index} active={active === index + 1} onClick={() => setActive(index + 1)}>
-                    <PageText active={active === index + 1}>{index + 1}</PageText>
-                </Page>
+                <PageItem type="button" key={index} active={active === index + 1} onClick={() => setActive(index + 1)}>
+                    {index + 1}
+                </PageItem>
             ))}
-            <Page onClick={() => setActive(active === 10 ? active : active + 1)}>&gt;</Page>
-        </PaginationDiv>
+            <PageItem type="button" onClick={() => setActive(active === 10 ? active : active + 1)}>
+                <ChevronRightIcon />
+            </PageItem>
+        </PageList>
     );
 };
 
