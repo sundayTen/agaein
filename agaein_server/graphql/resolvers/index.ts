@@ -2,6 +2,7 @@ import { GraphQLUpload } from 'graphql-upload';
 import { articleQueries, articleMutations } from './article';
 import { breedQueries, breedMutations } from './breed';
 import { reportQueries, reportMutations } from './report';
+import { bookmarkQueries, bookmarkMutations } from './bookmark';
 import { userQueries, userMutations } from './user';
 import { knex } from '../database';
 
@@ -11,12 +12,14 @@ const resolvers = {
         ...articleQueries,
         ...breedQueries,
         ...reportQueries,
+        ...bookmarkQueries,
     },
     Mutation: {
         ...userMutations,
         ...articleMutations,
         ...breedMutations,
         ...reportMutations,
+        ...bookmarkMutations,
     },
     Upload: GraphQLUpload,
     ArticleDetail: {
