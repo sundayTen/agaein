@@ -166,6 +166,12 @@ const articleMutations = {
         });
     },
     updateArticle: async (_: any, args: any, context: any) => {
+        const articleData = await knex('article').where('id', args.id).first();
+
+        if (articleData === undefined) {
+            throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
+        }
+
         const { id, articleDetail } = args;
         const { password, keyword } = articleDetail;
 
@@ -182,8 +188,7 @@ const articleMutations = {
         };
 
         if (password) {
-            const articlePassword = await knex('article').where('id', id).first('password');
-            if (password !== articlePassword.password) {
+            if (password !== articleData.password) {
                 throw new ApolloError('Invaild Password', 'UNAUTHENTICATED');
             }
         } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
@@ -295,16 +300,20 @@ const articleMutations = {
         });
     },
     updateComment: async (_: any, args: any, context: any) => {
-        const now = new Date();
+        const comment = await knex('comment').where('id', args.id).first();
+
+        if (comment === undefined || comment.content === '') {
+            throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
+        }
+
         const { id, content, password } = args;
-        const commentForm = {
-            content,
-            updatedAt: now,
-        };
+
+        if (content === "") {
+            throw new ApolloError('Empty Content', 'BAD_USER_INPUT');
+        }
 
         if (password) {
-            const commentPassword = await knex('comment').where('id', id).first('password');
-            if (password !== commentPassword.password) {
+            if (password !== comment.password) {
                 throw new ApolloError('Invaild Password', 'UNAUTHENTICATED');
             }
         } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
@@ -316,6 +325,12 @@ const articleMutations = {
         } else {
             throw new ApolloError('Must Need AccessToken or Password', 'UNAUTHENTICATED');
         }
+
+        const now = new Date();
+        const commentForm = {
+            content,
+            updatedAt: now,
+        };
 
         try {
             const comments = await knex('comment').update(commentForm).where('id', id).returning('*');
@@ -396,7 +411,7 @@ const articleMutations = {
     deleteComment: async (_: any, args: any, context: any) => {
         const comment = await knex('comment').where('id', args.id).first();
 
-        if (comment === undefined) {
+        if (comment === undefined || comment.content === '') {
             throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
         }
 
@@ -413,7 +428,13 @@ const articleMutations = {
             throw new ApolloError('Wrong Route', 'UNAUTHENTICATED');
         }
 
-        await knex('comment').where('id', args.id).del();
+        const now = new Date();
+        const commentForm = {
+            content: '',
+            updatedAt: now,
+        };
+
+        await knex('comment').update(commentForm).where('id', args.id);
 
         return args.id;
     },
