@@ -19,6 +19,10 @@ const YYYYMMDD = (date: string): string => {
     return moment(date).format('YYYY년 MM월 DD일');
 };
 
+const YYYY_MM_DD = (date: string): string => {
+    return moment(date).format('YYYY-MM-DD');
+};
+
 /**
  * unix timestamp의 microsecond를 없애줍니다.
  * @param {number} time unixTimestamp
@@ -50,4 +54,4 @@ const formattedDate = (date: string) => {
     return `${Math.floor(diff)}초 전`;
 };
 
-export { YYYYMMDD, formattedDate };
+export { YYYYMMDD, YYYY_MM_DD, formattedDate };

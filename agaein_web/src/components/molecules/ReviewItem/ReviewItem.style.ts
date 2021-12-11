@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ReviewItemContainer = styled.div`
     width: 290px;
-    border-width: 2px;
+    box-sizing: border-box;
     border: 1px solid ${(props) => props.theme.light.lightGrey2};
     border-radius: 10px;
     background-color: ${(props) => props.theme.light.white};
