@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { PhotographIcon } from '@heroicons/react/outline';
 import {
     ReviewInfo,
@@ -7,60 +7,41 @@ import {
     ReviewTable,
     ReviewPagination,
 } from 'components/pages/review/ReviewList.style';
-import { Board_Type, useGetArticlesQuery, Review, User, Article_Order } from 'graphql/generated/generated';
+import { Board_Type, useGetArticlesLazyQuery, Review, Article, Article_Order } from 'graphql/generated/generated';
 import { YYYY_MM_DD } from 'utils/date';
 import { Pagination } from 'components/molecules';
-
-// ? articleDetail type 이 LFG 로 되어있어서 따로 선언해줬는데 Review 로 바꿀 방법을 모르겠음
-interface ReviewInterface {
-    id: string;
-    images: string[];
-    view: number;
-    type: Board_Type;
-    articleDetail: Review;
-    author: User;
-    createdAt: string;
-    updatedAt: string;
-}
 
 const AllReviewList = () => {
     const boardType = Board_Type.Review;
     const [page, setPage] = useState(1);
     const ITEM_PER_PAGE = 12;
     const [orderType, setOrderType] = useState<Article_Order>(Article_Order.New);
-    const [orderSelected, setOrderSelected] = useState('new');
 
-    const { data, loading, error } = useGetArticlesQuery({
-        variables: {
-            boardType,
-            limit: 12,
-            offset: (page - 1) * ITEM_PER_PAGE,
-            order: orderType,
-        },
-    });
+    const [get, { data, loading, error }] = useGetArticlesLazyQuery();
+
+    const getArticles = useCallback(() => {
+        get({
+            variables: {
+                boardType,
+                limit: 12,
+                offset: (page - 1) * ITEM_PER_PAGE,
+                order: orderType,
+            },
+        });
+    }, [orderType, page]);
+
+    useEffect(() => {
+        getArticles();
+    }, [orderType, page]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
 
-    const reviews = data?.articles.map((review) => review) as ReviewInterface[];
+    const reviews = data?.articles.map((review) => review) as Article[];
 
     const selectHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectValue = e.target.value;
-        setOrderSelected(selectValue);
-
-        switch (selectValue) {
-            case 'new':
-                setOrderType(Article_Order.New);
-                break;
-            case 'old':
-                setOrderType(Article_Order.Old);
-                break;
-            case 'view':
-                setOrderType(Article_Order.View);
-                break;
-            default:
-                console.log(`error`);
-        }
+        const selectValue = e.target.value as Article_Order;
+        setOrderType(selectValue);
     };
 
     return (
@@ -70,10 +51,10 @@ const AllReviewList = () => {
                     총 <Count>146</Count>건
                 </ReviewCount>
                 {/* TODO: 셀렉트 컴포넌트 완성되면 변경예정 */}
-                <select onChange={selectHandler} value={orderSelected}>
-                    <option value="new">최신순</option>
-                    <option value="old">등록일순</option>
-                    <option value="view">조회순</option>
+                <select onChange={selectHandler} value={orderType}>
+                    <option value={Article_Order.New}>최신순</option>
+                    <option value={Article_Order.Old}>등록일순</option>
+                    <option value={Article_Order.View}>조회순</option>
                 </select>
             </ReviewInfo>
             <ReviewTable>
@@ -95,16 +76,18 @@ const AllReviewList = () => {
                 </thead>
                 <tbody>
                     {reviews?.map((review) => {
+                        const { id, images, view, author, createdAt } = review!;
+                        const { title } = review?.articleDetail as Review;
                         return (
-                            <tr key={review.id}>
-                                <td>{review.id}</td>
+                            <tr key={id}>
+                                <td>{id}</td>
                                 <td>
-                                    {review.articleDetail.title}
-                                    {review.images.length !== 0 && <PhotographIcon />}
+                                    {title}
+                                    {images.length !== 0 && <PhotographIcon />}
                                 </td>
-                                <td>{review.view}</td>
-                                <td>{review.author.kakaoId}</td>
-                                <td>{YYYY_MM_DD(review.createdAt)}</td>
+                                <td>{view}</td>
+                                <td>{author.nickname}</td>
+                                <td>{YYYY_MM_DD(createdAt)}</td>
                             </tr>
                         );
                     })}

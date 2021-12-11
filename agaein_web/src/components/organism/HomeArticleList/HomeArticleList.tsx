@@ -1,7 +1,13 @@
 import Font from 'components/molecules/Font';
 import PostItem from 'components/molecules/PostItemBox/PostItemBox';
 import ReviewItem from 'components/molecules/ReviewItem';
-import { Article, Board_Type, useGetArticlesQuery, Article_Order } from 'graphql/generated/generated';
+import {
+    Article,
+    Board_Type,
+    useGetArticlesQuery,
+    Article_Order,
+    GetArticlesQueryVariables,
+} from 'graphql/generated/generated';
 import useBookmark from 'hooks/useBookmark';
 import { getTitle } from 'utils/converter';
 import {
@@ -23,16 +29,11 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
         return boardType === Board_Type.Review;
     };
 
-    const variables = isReviewType()
-        ? {
-              boardType,
-              limit: 4,
-              order: Article_Order.View,
-          }
-        : {
-              boardType,
-              limit: 6,
-          };
+    const variables: GetArticlesQueryVariables = {
+        boardType,
+        limit: isReviewType() ? 4 : 6,
+        order: isReviewType() ? Article_Order.View : undefined,
+    };
 
     const { data, loading, error } = useGetArticlesQuery({
         variables,
