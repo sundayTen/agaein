@@ -6,110 +6,45 @@ const articleQueries = {
         const { boardType, limit = 6, offset = 0, order = 'new', search } = args;
 
         if (search !== undefined) {
-            const splited_search = search.split(' ');
-            if (splited_search.length > 1) {
-                splited_search.push(search);
+            const splitted_search = search.split(' ');
+            if (splitted_search.length > 1) {
+                splitted_search.push(search);
             }
 
             let allArticleDetails: Array<any> = [];
 
-            for (const search of splited_search) {
+            for (const search of splitted_search) {
                 try {
-                    let articleDetails;
-                    if (order === 'new') {
-                        articleDetails =
-                            boardType === 'REVIEW'
-                                ? await knex(`${boardType}`)
-                                      .join('article', 'article.id', `${boardType}.article_id`)
-                                      .where(`${boardType}.content`, 'like', `%${search}%`)
-                                      .orWhere(`${boardType}.title`, 'like', `%${search}%`)
-                                      .orderBy('created_at', 'desc')
-                                      .limit(limit)
-                                      .offset(offset)
-                                : await knex(`${boardType}`)
-                                      .join('article', 'article.id', `${boardType}.article_id`)
-                                      .join('breed', `${boardType}.breed_id`, 'breed.id')
-                                      .join('article_keyword', 'article.id', 'article_keyword.article_id')
-                                      .join('keyword', 'article_keyword.keyword_id', 'keyword.id')
-                                      .where(`${boardType}.name`, search)
-                                      .orWhere(`${boardType}.feature`, 'like', `%${search}%`)
-                                      .orWhere(
-                                          'breed.type',
-                                          search === '강아지' || search === '개'
-                                              ? 'DOG'
-                                              : search === '고양이' || search === '냥이'
-                                              ? 'CAT'
-                                              : 'X',
-                                      )
-                                      .orWhere('breed.breed', search)
-                                      .orWhere('keyword.keyword', search)
-                                      .select('*', `${boardType}.id as id`)
-                                      .orderBy('created_at', 'desc')
-                                      .limit(limit)
-                                      .offset(offset);
-                    } else if (order === 'old') {
-                        articleDetails =
-                            boardType === 'REVIEW'
-                                ? await knex(`${boardType}`)
-                                      .join('article', 'article.id', `${boardType}.article_id`)
-                                      .where(`${boardType}.content`, 'like', `%${search}%`)
-                                      .orWhere(`${boardType}.title`, 'like', `%${search}%`)
-                                      .orderBy('created_at', 'asc')
-                                      .limit(limit)
-                                      .offset(offset)
-                                : await knex(`${boardType}`)
-                                      .join('article', 'article.id', `${boardType}.article_id`)
-                                      .join('breed', `${boardType}.breed_id`, 'breed.id')
-                                      .join('article_keyword', 'article.id', 'article_keyword.article_id')
-                                      .join('keyword', 'article_keyword.keyword_id', 'keyword.id')
-                                      .where(`${boardType}.name`, search)
-                                      .orWhere(`${boardType}.feature`, 'like', `%${search}%`)
-                                      .orWhere(
-                                          'breed.type',
-                                          search === '강아지' || search === '개'
-                                              ? 'DOG'
-                                              : search === '고양이' || search === '냥이'
-                                              ? 'CAT'
-                                              : 'X',
-                                      )
-                                      .orWhere('breed.breed', search)
-                                      .orWhere('keyword.keyword', search)
-                                      .select('*', `${boardType}.id as id`)
-                                      .orderBy('created_at', 'asc')
-                                      .limit(limit)
-                                      .offset(offset);
-                    } else {
-                        articleDetails =
-                            boardType === 'REVIEW'
-                                ? await knex(`${boardType}`)
-                                      .join('article', 'article.id', `${boardType}.article_id`)
-                                      .where(`${boardType}.content`, 'like', `%${search}%`)
-                                      .orWhere(`${boardType}.title`, 'like', `%${search}%`)
-                                      .orderBy('view', 'desc')
-                                      .limit(limit)
-                                      .offset(offset)
-                                : await knex(`${boardType}`)
-                                      .join('article', 'article.id', `${boardType}.article_id`)
-                                      .join('breed', `${boardType}.breed_id`, 'breed.id')
-                                      .join('article_keyword', 'article.id', 'article_keyword.article_id')
-                                      .join('keyword', 'article_keyword.keyword_id', 'keyword.id')
-                                      .where(`${boardType}.name`, search)
-                                      .orWhere(`${boardType}.feature`, 'like', `%${search}%`)
-                                      .orWhere(
-                                          'breed.type',
-                                          search === '강아지' || search === '개'
-                                              ? 'DOG'
-                                              : search === '고양이' || search === '냥이'
-                                              ? 'CAT'
-                                              : 'X',
-                                      )
-                                      .orWhere('breed.breed', search)
-                                      .orWhere('keyword.keyword', search)
-                                      .select('*', `${boardType}.id as id`)
-                                      .orderBy('view', 'desc')
-                                      .limit(limit)
-                                      .offset(offset);
-                    }
+                    const articleDetails =
+                        boardType === 'REVIEW'
+                            ? await knex(`${boardType}`)
+                                  .join('article', 'article.id', `${boardType}.article_id`)
+                                  .where(`${boardType}.content`, 'like', `%${search}%`)
+                                  .orWhere(`${boardType}.title`, 'like', `%${search}%`)
+                                  .orderBy(order === 'view' ? 'view' : 'created_at', order === 'old' ? 'asc' : 'desc')
+                                  .limit(limit)
+                                  .offset(offset)
+                            : await knex(`${boardType}`)
+                                  .join('article', 'article.id', `${boardType}.article_id`)
+                                  .join('breed', `${boardType}.breed_id`, 'breed.id')
+                                  .join('article_keyword', 'article.id', 'article_keyword.article_id')
+                                  .join('keyword', 'article_keyword.keyword_id', 'keyword.id')
+                                  .where(`${boardType}.name`, search)
+                                  .orWhere(`${boardType}.feature`, 'like', `%${search}%`)
+                                  .orWhere(
+                                      'breed.type',
+                                      search === '강아지' || search === '개'
+                                          ? 'DOG'
+                                          : search === '고양이' || search === '냥이'
+                                          ? 'CAT'
+                                          : 'X',
+                                  )
+                                  .orWhere('breed.breed', search)
+                                  .orWhere('keyword.keyword', search)
+                                  .select('*', `${boardType}.id as id`)
+                                  .orderBy(order === 'view' ? 'view' : 'created_at', order === 'old' ? 'asc' : 'desc')
+                                  .limit(limit)
+                                  .offset(offset);
                     allArticleDetails = allArticleDetails.concat([...articleDetails]);
                 } catch {
                     console.error('Articles 검색에서 에러발생');
@@ -138,53 +73,20 @@ const articleQueries = {
         }
 
         try {
-            let articleDetails;
-            if (order === 'new') {
-                articleDetails =
-                    boardType === 'REVIEW'
-                        ? await knex(`${boardType}`)
-                              .join('article', 'article.id', `${boardType}.article_id`)
-                              .orderBy('created_at', 'desc')
-                              .limit(limit)
-                              .offset(offset)
-                        : await knex(`${boardType}`)
-                              .join('article', 'article.id', `${boardType}.article_id`)
-                              .join('breed', `${boardType}.breed_id`, 'breed.id')
-                              .select('*', `${boardType}.id as id`)
-                              .orderBy('created_at', 'desc')
-                              .limit(limit)
-                              .offset(offset);
-            } else if (order === 'old') {
-                articleDetails =
-                    boardType === 'REVIEW'
-                        ? await knex(`${boardType}`)
-                              .join('article', 'article.id', `${boardType}.article_id`)
-                              .orderBy('created_at', 'asc')
-                              .limit(limit)
-                              .offset(offset)
-                        : await knex(`${boardType}`)
-                              .join('article', 'article.id', `${boardType}.article_id`)
-                              .join('breed', `${boardType}.breed_id`, 'breed.id')
-                              .select('*', `${boardType}.id as id`)
-                              .orderBy('created_at', 'asc')
-                              .limit(limit)
-                              .offset(offset);
-            } else {
-                articleDetails =
-                    boardType === 'REVIEW'
-                        ? await knex(`${boardType}`)
-                              .join('article', 'article.id', `${boardType}.article_id`)
-                              .orderBy('view', 'desc')
-                              .limit(limit)
-                              .offset(offset)
-                        : await knex(`${boardType}`)
-                              .join('article', 'article.id', `${boardType}.article_id`)
-                              .join('breed', `${boardType}.breed_id`, 'breed.id')
-                              .select('*', `${boardType}.id as id`)
-                              .orderBy('view', 'desc')
-                              .limit(limit)
-                              .offset(offset);
-            }
+            const articleDetails =
+                boardType === 'REVIEW'
+                    ? await knex(`${boardType}`)
+                          .join('article', 'article.id', `${boardType}.article_id`)
+                          .orderBy(order === 'view' ? 'view' : 'created_at', order === 'old' ? 'asc' : 'desc')
+                          .limit(limit)
+                          .offset(offset)
+                    : await knex(`${boardType}`)
+                          .join('article', 'article.id', `${boardType}.article_id`)
+                          .join('breed', `${boardType}.breed_id`, 'breed.id')
+                          .select('*', `${boardType}.id as id`)
+                          .orderBy(order === 'view' ? 'view' : 'created_at', order === 'old' ? 'asc' : 'desc')
+                          .limit(limit)
+                          .offset(offset);
 
             const articles = articleDetails.map((detail: any) => {
                 const { articleId, ...detailData } = detail;
