@@ -39,6 +39,7 @@ fragment LFGDetail on LFG {
     age
     foundDate
     alarm
+    status
     email
     keyword
     location {
@@ -54,6 +55,7 @@ fragment LFPDetail on LFP {
     gender
     gratuity
     alarm
+    status
     lostDate
     email
     keyword
@@ -63,6 +65,7 @@ fragment LFPDetail on LFP {
 }
 fragment ReviewDetail on REVIEW {
     id
+    articleId
     title
     content
 }

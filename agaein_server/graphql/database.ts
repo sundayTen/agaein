@@ -209,6 +209,7 @@ export function initLFG() {
                     table.string('password');
                     table.string('email');
                     table.boolean('alarm').defaultTo(false).notNullable();
+                    table.string('status').defaultTo('finding').notNullable();
                     table.integer('age');
                     table.json('location').defaultTo({});
                     table.dateTime('found_date');
@@ -244,6 +245,7 @@ export function initLFP() {
                     table.string('password');
                     table.string('email');
                     table.boolean('alarm').defaultTo(false).notNullable();
+                    table.string('status').defaultTo('finding').notNullable();
                     table.integer('age');
                     table.json('location').defaultTo({});
                     table.dateTime('lost_date');
@@ -269,8 +271,7 @@ export function initReview() {
                         .notNullable()
                         .references('id')
                         .inTable('article')
-                        .onUpdate('CASCADE')
-                        .onDelete('CASCADE');
+                        .onUpdate('CASCADE');
                     table.string('title');
                     table.text('content');
                 })
