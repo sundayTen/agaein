@@ -63,7 +63,7 @@ const PostItem = (props: PostItemProps) => {
                                 <Font label={gender as string} fontType="tag" />
                             </ContentTag>
                         )}
-                        {isNotNull(age) && (
+                        {age && (
                             <ContentTag>
                                 <Font label={`${age}`} fontType="tag" />
                             </ContentTag>
