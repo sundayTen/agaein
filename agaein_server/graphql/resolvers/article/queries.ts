@@ -61,7 +61,7 @@ const articleQueries = {
                 if (distinct[detail.articleId] === undefined) {
                     distinct[detail.articleId] = true;
                     detail.id = articleId;
-                    detail.articleDetail = { articleType: args.boardType, ...detailData };
+                    detail.articleDetail = { articleType: args.boardType, articleId, ...detailData };
                     detail.articleDetail.keyword = null;
                     res.push(detail);
                 }
@@ -91,7 +91,7 @@ const articleQueries = {
             const articles = articleDetails.map((detail: any) => {
                 const { articleId, ...detailData } = detail;
                 detail.id = articleId;
-                detail.articleDetail = { articleType: args.boardType, ...detailData };
+                detail.articleDetail = { articleType: args.boardType, articleId, ...detailData };
                 return detail;
             });
 

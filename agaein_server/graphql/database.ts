@@ -268,7 +268,6 @@ export function initReview() {
                     table.increments();
                     table
                         .integer('article_id')
-                        .notNullable()
                         .references('id')
                         .inTable('article')
                         .onUpdate('CASCADE');

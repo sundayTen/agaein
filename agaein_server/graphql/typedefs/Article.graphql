@@ -64,7 +64,7 @@ type LFP {
 
 type REVIEW {
     id: ID!
-    articleId: ID!
+    articleId: ID
     title: String
     content: String
 }
