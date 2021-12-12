@@ -3,6 +3,7 @@ import { FormRow, FormLabel, Form } from './Form.style';
 import { CurrencyDollarIcon } from '@heroicons/react/solid';
 import styled from 'styled-components';
 import Input from 'components/molecules/Input';
+import { numberWithComma } from 'utils/number';
 
 const InputWrapper = styled.div`
     position: relative;
@@ -31,8 +32,7 @@ export function FormGratuity({ name, onChange }: FormGratuityProps) {
     function inputChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
         const NumberValue = Number(value.replace(/[^0-9]/g, ''));
-        const numberWithComma = value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        setValue(numberWithComma);
+        setValue(numberWithComma(value));
         onChange(NumberValue, name);
     }
 

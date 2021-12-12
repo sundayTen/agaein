@@ -51,6 +51,7 @@ fragment LFPDetail on LFP {
     type
     breed
     name
+    age
     feature
     gender
     gratuity

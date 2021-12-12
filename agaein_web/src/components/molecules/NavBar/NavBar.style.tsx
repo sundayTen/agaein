@@ -25,10 +25,8 @@ export const Title = styled.h1`
 `;
 
 export const AgaeinIconImg = styled.img`
-    vertical-align: -6px;
-    width: 28px;
-    height: 28px;
-    margin-right: 6px;
+    width: 160px;
+    height: 55px;
 `;
 
 export const ManuBox = styled.div`

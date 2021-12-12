@@ -57,6 +57,13 @@ const CommentItem = (props: CommentItemProps) => {
         if (!isHover) setSelectVisible(false);
     }, [isHover]);
 
+    const commentContent = () => {
+        if (content === '') {
+            return '삭제된 댓글입니다';
+        }
+        return content;
+    };
+
     return (
         <CommentItemContainer isReply={isReply} ref={commentItemRef}>
             <CommentItemToolBox>
@@ -98,7 +105,8 @@ const CommentItem = (props: CommentItemProps) => {
                     </CommentSelectContainer>
                 )}
             </CommentItemToolBox>
-            <Font label={content} fontType="subhead" />
+            {/* 삭제된 글은 다른 스타일로 보이도록 수정 */}
+            <Font label={commentContent()} fontType="subhead" />
         </CommentItemContainer>
     );
 };

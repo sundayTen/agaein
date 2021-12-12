@@ -3,7 +3,7 @@ import { ApolloClient, createHttpLink, InMemoryCache, from, NormalizedCacheObjec
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { createUploadLink } from 'apollo-upload-client';
-import { convertAnimalType, convertGender } from 'utils/converter';
+import { convertAge, convertAnimalType, convertGender, convertGratuity } from 'utils/converter';
 
 // TODO : context를 통해 쿠키를 가져오고 싶은데, Hook Rule에 걸림. 방법이 없을까?
 const cookies = new Cookies();
@@ -53,6 +53,11 @@ export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
                             return convertAnimalType(type);
                         },
                     },
+                    age: {
+                        read(age) {
+                            return convertAge(age);
+                        },
+                    },
                 },
             },
             LFP: {
@@ -65,6 +70,16 @@ export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
                     type: {
                         read(type) {
                             return convertAnimalType(type);
+                        },
+                    },
+                    age: {
+                        read(age) {
+                            return convertAge(age);
+                        },
+                    },
+                    gratuity: {
+                        read(gratuity) {
+                            return convertGratuity(gratuity);
                         },
                     },
                 },

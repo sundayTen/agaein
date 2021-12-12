@@ -68,11 +68,12 @@ const useComment = () => {
     };
     const deleteComment = (params: MutationDeleteCommentArgs, articleId: string) => {
         const { id, password } = params;
-        drop({
+        return drop({
             variables: {
                 id,
                 password,
             },
+
             update: (cache) => {
                 try {
                     const normalizedId = `Article:${articleId}`;

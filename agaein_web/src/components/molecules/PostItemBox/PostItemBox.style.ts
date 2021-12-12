@@ -65,7 +65,6 @@ export const TagList = styled.div`
 export const ContentTag = styled.div`
     padding: 4px 10px;
     border-radius: 4px;
-    border: ${(props) => '1px solid ' + props.theme.light.DarkGrey1};
     background-color: ${(props) => props.theme.light.lightGrey2};
     display: inline-block;
 

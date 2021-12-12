@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useContext, useRef, useState } from 'react';
 import { Comment as CommentType, User } from 'graphql/generated/generated';
 import { CommentWrapper, CommentHeader, CommentContainer, CommentBorder } from './Comment.style';
-import { Font, Input } from 'components/molecules';
+import { Font, ErrorCheckerInput } from 'components/molecules';
 import { calculateCommentsCount, COMMENT_INTERACTION_TYPE, COMMENT_OPTION } from '.';
 import useComment from 'graphql/hooks/useComment';
 import CommentItem from './CommentItem';
@@ -52,7 +52,6 @@ const Comment = (props: CommentProps) => {
         },
         [commentInteractionType, targetCommentId],
     );
-
     const isAuthorComment = (commentAuthorId: string) => {
         if (articleWriter.kakaoId === 'anonymous') return false;
         return articleWriter.kakaoId === commentAuthorId;
@@ -96,25 +95,8 @@ const Comment = (props: CommentProps) => {
                 setEditCommentInput(undefined);
                 break;
             case '수정':
-                if (isUnknownComment(commentId)) {
-                    show({
-                        title: '비밀번호 확인',
-                        content: `비회원으로 작성된 댓글을 수정하기 위해서는
-                        댓글 등록시 입력한 비밀번호를 입력해주셔야 합니다.`,
-                        cancelButtonLabel: '취소',
-                        cancelButtonPressed: close,
-                        confirmButtonLabel: '확인',
-                        confirmButtonPressed: () => {
-                            setTargetCommentId(commentId);
-                            setEditInfo(commentId);
-                            close();
-                        },
-                        children: <Input ref={inputRef} style={{ marginTop: 20 }} type="password" maxLength={4} />,
-                    });
-                } else {
-                    setTargetCommentId(commentId);
-                    setEditInfo(commentId);
-                }
+                setTargetCommentId(commentId);
+                setEditInfo(commentId);
                 break;
             case '삭제':
                 setCommentInteractionType('delete');
@@ -123,14 +105,14 @@ const Comment = (props: CommentProps) => {
                         title: '댓글 삭제',
                         content: `비회원으로 작성된 댓글을 수정하기 위해서는
                         댓글 등록시 입력한 비밀번호를 입력해주셔야 합니다.`,
-                        cancelButtonLabel: '취소',
-                        cancelButtonPressed: close,
-                        confirmButtonLabel: '확인',
-                        confirmButtonPressed: () => {
-                            dropComment(commentId);
-                            close();
-                        },
-                        children: <Input ref={inputRef} style={{ marginTop: 20 }} type="password" maxLength={4} />,
+                        children: (
+                            <ErrorCheckerInput
+                                confirmButtonLabel="삭제하기"
+                                closeModal={close}
+                                targetId={commentId}
+                                contentType="COMMENT"
+                            />
+                        ),
                     });
                 } else {
                     show({
@@ -159,30 +141,30 @@ const Comment = (props: CommentProps) => {
         return comment.reply && comment.reply !== [];
     };
 
-    const RenderComments = ({ comments, isReply = false }: renderCommentProps) => {
+    const RenderComments = ({ comments }: renderCommentProps) => {
         if (!comments) return <></>;
         return (
             <>
                 {comments.map((comment) => {
+                    const isReply = hasReply(comment);
                     return (
                         <Fragment key={comment.id}>
                             <>
                                 <CommentItem
                                     comment={comment}
                                     menuHandler={handleMenu}
-                                    isReply={isReply}
+                                    isReply={!isReply}
                                     isAuthors={isAuthorComment(comment.author.kakaoId)}
                                 />
                                 {isInputComponent(comment.id) && (
                                     <CommentInput
                                         ref={helperInputRef}
-                                        isReply
                                         content={editCommentInput}
                                         onPressSubmit={onPressSubmit}
                                     />
                                 )}
                             </>
-                            {<RenderComments comments={comment.reply as CommentType[]} isReply={hasReply(comment)} />}
+                            {<RenderComments comments={comment.reply as CommentType[]} />}
                             {!isReply && <CommentBorder />}
                         </Fragment>
                     );

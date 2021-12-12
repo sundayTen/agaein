@@ -1,6 +1,5 @@
-import { useCreateBookmarkMutation } from 'graphql/generated/generated';
-import { useEffect, useState } from 'react';
-import useLocalStorage from './useLocalStorage';
+import { useCreateBookmarkMutation, useDeleteBookmarkMutation } from 'graphql/generated/generated';
+import { useState } from 'react';
 
 /**
  * TODO : 아래 내용대로 훅 수정
@@ -12,12 +11,8 @@ import useLocalStorage from './useLocalStorage';
  */
 const useBookmark = () => {
     const [create] = useCreateBookmarkMutation();
-    const [storedValue, setValue] = useLocalStorage<string[]>('bookmark', []);
+    const [drop] = useDeleteBookmarkMutation();
     const [bookmarks, setBookmarks] = useState<string[]>([]);
-
-    useEffect(() => {
-        setBookmarks(storedValue ?? []);
-    }, []);
 
     const getTargetBookmarks = (article_id: string) => {
         const isExist = !!bookmarks.find((bookmark) => bookmark === article_id);
@@ -29,8 +24,23 @@ const useBookmark = () => {
 
     const setBookmark = (article_id: string) => {
         const target = getTargetBookmarks(article_id);
-        setValue(target);
         setBookmarks(target);
+        updateBookmarkAtServer(article_id);
+    };
+
+    const updateBookmarkAtServer = (articleId: string) => {
+        if (isBookmarked(articleId)) {
+            drop({
+                variables: {
+                    id: articleId,
+                },
+            });
+        }
+        create({
+            variables: {
+                articleId,
+            },
+        });
     };
 
     const isBookmarked = (article_id: string) => {

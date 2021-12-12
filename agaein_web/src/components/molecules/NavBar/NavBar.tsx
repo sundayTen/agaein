@@ -1,12 +1,13 @@
 // @ts-nocheck
 
 import { useContext } from 'react';
-import { Nav, Title, AgaeinIconImg, UserTag, ChevronDown, KaKaoLoginButton, KaKaoIcon, Avatar } from './NavBar.style';
+import { Nav, AgaeinIconImg, UserTag, ChevronDown, KaKaoLoginButton, KaKaoIcon, Avatar } from './NavBar.style';
 import { KAKAO_LOGIN_KEY } from 'config/server';
 import { Link } from 'react-router-dom';
 import { UserContext } from 'contexts/userContext';
 import Font from '../Font';
 import KakaoIcon from 'assets/image/Kakao.png';
+import Logo from 'assets/image/agaein_long_logo.png';
 
 interface KaKaoLoginResult {
     response: LoginResponse;
@@ -24,10 +25,7 @@ const NavBar = () => {
     return (
         <Nav>
             <Link to="/">
-                <Title>
-                    <AgaeinIconImg alt="로고" src="https://img.icons8.com/ios/50/000000/github--v1.png" />
-                    AGAEIN
-                </Title>
+                <AgaeinIconImg src={Logo} />
             </Link>
             {isLoggedIn ? (
                 <UserTag onClick={signOut}>

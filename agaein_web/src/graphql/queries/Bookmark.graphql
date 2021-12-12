@@ -1,0 +1,15 @@
+query getBookmarks {
+    bookmarks {
+        id
+        articleId
+    }
+}
+mutation createBookmark($articleId: ID!) {
+    createBookmark(articleId: $articleId) {
+        id
+    }
+}
+
+mutation deleteBookmark($id: ID!) {
+    deleteBookmark(id: $id)
+}

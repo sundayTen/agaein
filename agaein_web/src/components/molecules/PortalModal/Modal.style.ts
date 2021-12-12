@@ -55,7 +55,8 @@ const ModalContent = styled.div`
     text-align: left;
     max-height: calc(100% - 100px);
     overflow-y: auto;
-    max-width: 460px;
+    min-width: 460px;
+    max-width: 658px;
 `;
 
 const ChildrenContainer = styled.div`
