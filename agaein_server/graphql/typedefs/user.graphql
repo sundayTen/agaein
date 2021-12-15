@@ -20,7 +20,7 @@ type Login {
     updatedAt: Date!
 }
 
-type profile {
+type Profile {
     user: User!
     lfps: [Article]!
     lfgs: [Article]!

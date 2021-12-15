@@ -12,7 +12,7 @@ type Query {
     # User
     user(id: ID!): User
     me: User!
-    profile: profile!
+    profile: Profile!
     # Article
     articles(boardType: BOARD_TYPE!, offset: Int, limit: Int, order: ARTICLE_ORDER, search: String): [Article]!
     article(id: ID!): Article
