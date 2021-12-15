@@ -12,6 +12,7 @@ type Query {
     # User
     user(id: ID!): User
     me: User!
+    profile: profile!
     # Article
     articles(boardType: BOARD_TYPE!, offset: Int, limit: Int, order: ARTICLE_ORDER, search: String): [Article]!
     article(id: ID!): Article
@@ -26,6 +27,7 @@ type Query {
 type Mutation {
     # User
     login(kakaoId: String!): Login!
+    updateUser(nickname: String, email: String, phoneNumber: String): User!
     # Article
     createArticle(boardType: BOARD_TYPE!, files: [Upload]!, articleDetail: articleDetailInput!): Article!
     updateArticle(id: ID!, files: [Upload]!, articleDetail: articleDetailInput!): Article!

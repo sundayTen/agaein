@@ -19,3 +19,12 @@ type Login {
     createdAt: Date!
     updatedAt: Date!
 }
+
+type profile {
+    user: User!
+    lfps: [Article]!
+    lfgs: [Article]!
+    reviews: [Article]!
+    bookmarks: [Article]!
+    reports: [Report]!
+}
