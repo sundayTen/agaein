@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-server-errors';
 import { isValidatedLogin } from '../../../common/validation/user';
 import { getRandomNickname } from '../../../common/utils/nickname';
-import { getAccessToken, getRefreshToken } from '../../../common/auth/jwtToken';
+import { getAccessToken, getRefreshToken, readAccessToken } from '../../../common/auth/jwtToken';
 import { knex } from '../../database';
 
 const userMutations = {
@@ -36,6 +36,34 @@ const userMutations = {
         user.refreshToken = getRefreshToken(user.id, user.kakaoId);
 
         return user;
+    },
+    updateUser: async (_: any, args: any, context: any) => {
+        const { email, nickname, phoneNumber } = args;
+        const userForm: any = {};
+
+        if (email !== undefined) {
+            userForm.email = email;
+        }
+
+        if (nickname !== undefined) {
+            userForm.nickname = nickname;
+        }
+
+        if (phoneNumber !== undefined) {
+            userForm.phoneNumber = phoneNumber;
+        }
+
+        if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
+            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
+            return (
+                await knex('user')
+                    .update(userForm)
+                    .where('id', (<any>jwtToken).userId)
+                    .returning('*')
+            )[0];
+        } else {
+            throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
+        }
     },
 };
 
