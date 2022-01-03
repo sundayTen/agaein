@@ -122,18 +122,21 @@ const articleQueries = {
             const articleDetail = await knex(article.type).where('articleId', `${id}`).first();
             articleDetail.articleType = article.type;
 
-            const breedObj = await knex('breed').where('id', articleDetail.breedId).first();
-            const { breed, type } = breedObj;
-            articleDetail.breed = breed;
-            articleDetail.type = type;
+            if (article.type !== 'REVIEW') {
+                const breedObj = await knex('breed').where('id', articleDetail.breedId).first();
+                const { breed, type } = breedObj;
+                articleDetail.breed = breed;
+                articleDetail.type = type;
 
-            const keywordObj = await knex('article_keyword')
-                .join('keyword', 'keyword.id', 'article_keyword.keyword_id')
-                .where('article_id', args.id);
-            const keyword = keywordObj.map((keyword: any) => keyword.keyword);
-            articleDetail.keyword = keyword;
+                const keywordObj = await knex('article_keyword')
+                    .join('keyword', 'keyword.id', 'article_keyword.keyword_id')
+                    .where('article_id', args.id);
+                const keyword = keywordObj.map((keyword: any) => keyword.keyword);
+                articleDetail.keyword = keyword;
+            }
 
             article.articleDetail = articleDetail;
+
             await knex('article')
                 .where('id', id)
                 .update({
