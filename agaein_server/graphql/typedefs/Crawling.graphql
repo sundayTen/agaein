@@ -12,3 +12,14 @@ type CrawlingResult {
     site: String!
     keywords: [String]
 }
+
+input CrawlingInput {
+    type: BREED_TYPE!
+    breed: String
+    lostDate: Date!
+    location: LocationInput!
+    name: String
+    age: Int
+    gender: GENDER
+    keywords: [String]
+}
