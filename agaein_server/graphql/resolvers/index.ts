@@ -1,6 +1,7 @@
 import { GraphQLUpload } from 'graphql-upload';
 import { articleQueries, articleMutations } from './article';
 import { breedQueries, breedMutations } from './breed';
+import { crawlingQueries, crawlingMutations } from './crawling';
 import { reportQueries, reportMutations } from './report';
 import { bookmarkQueries, bookmarkMutations } from './bookmark';
 import { userQueries, userMutations } from './user';
@@ -13,6 +14,7 @@ const resolvers = {
         ...breedQueries,
         ...reportQueries,
         ...bookmarkQueries,
+        ...crawlingQueries,
     },
     Mutation: {
         ...userMutations,
@@ -20,6 +22,7 @@ const resolvers = {
         ...breedMutations,
         ...reportMutations,
         ...bookmarkMutations,
+        ...crawlingMutations,
     },
     Upload: GraphQLUpload,
     ArticleDetail: {

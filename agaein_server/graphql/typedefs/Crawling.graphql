@@ -1,0 +1,14 @@
+# 데이터 타입(Breed, Location, GENDER 등) 쓰지 않는 이유 - 크롤링해오면 모든 사이트가 타입상황이 달라서.
+type CrawlingResult {
+    rank: Int!
+    type: String!
+    breed: String
+    location: String
+    name: String
+    gender: String
+    age: String
+    foundDate: Date
+    createdDate: Date
+    site: String!
+    keywords: [String]
+}

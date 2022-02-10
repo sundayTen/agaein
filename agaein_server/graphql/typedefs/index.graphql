@@ -22,6 +22,8 @@ type Query {
     bookmarks: [Bookmark]!
     # Report
     reports(articleId: ID!): [Report]!
+    # Crawling
+    crawlingResults: [CrawlingResult]!
 }
 
 type Mutation {
