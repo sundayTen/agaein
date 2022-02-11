@@ -15,6 +15,8 @@ interface ModalContextProps {
     close: () => void;
     show: (info: ModalInfoProps) => void;
     update: (info: ModalInfoProps) => void;
+    loading: boolean;
+    setLoading: (isLoading: boolean) => void;
 }
 const ModalContext = createContext<ModalContextProps>({} as ModalContextProps);
 
@@ -24,6 +26,7 @@ type ModalProviderContext = {
 
 const ModalProvider = ({ children }: ModalProviderContext): JSX.Element => {
     const [modalContent, setModalContent] = useState<ModalInfoProps | null>(null);
+    const [loading, setLoading] = useState(false);
     const history = useHistory();
     useEffect(() => {
         return history.listen(() => {
@@ -43,8 +46,9 @@ const ModalProvider = ({ children }: ModalProviderContext): JSX.Element => {
     const update = (info: ModalInfoProps) => {
         setModalContent({ ...modalContent, ...info });
     };
+
     return (
-        <ModalContext.Provider value={{ close, show, update }}>
+        <ModalContext.Provider value={{ close, show, update, loading, setLoading }}>
             {children}
             <ModalPortal modalContent={modalContent} />
         </ModalContext.Provider>

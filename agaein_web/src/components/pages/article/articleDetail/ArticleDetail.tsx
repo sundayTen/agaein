@@ -36,27 +36,21 @@ import {
 
 const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useBookmark();
-    const { deleteArticle } = useArticle();
+    const { deleteArticle, readArticle } = useArticle();
     const { isLoggedIn, user } = useContext(UserContext);
-    const client = useApolloClient();
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [menuVisible, setMenuVisible] = useState(false);
-    const { show, close } = useContext(ModalContext);
+    const { show, close, setLoading } = useContext(ModalContext);
     const [modalType, setModalType] = useState<'LIST' | 'REPORT'>('REPORT');
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
         },
         onCompleted: (data) => {
-            client.cache.modify({
-                id: `Article:${data.article?.id}`,
-                fields: {
-                    view: (prevViewCount) => prevViewCount + 1,
-                },
-            });
+            readArticle(data.article?.id);
         },
     });
-    if (loading) return <p>Loading...</p>;
+    setLoading(loading);
     if (error) return <p>Error occur</p>;
     if (data === undefined || !isArticle(data.article)) return <p>No data</p>;
 

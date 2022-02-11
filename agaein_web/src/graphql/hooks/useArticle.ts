@@ -1,3 +1,4 @@
+import { useApolloClient } from '@apollo/client';
 import {
     GetArticlesDocument,
     MutationCreateArticleArgs,
@@ -12,6 +13,16 @@ const useArticle = () => {
     const [create] = useCreateArticleMutation();
     const [edit] = useUpdateArticleMutation();
     const [drop] = useDeleteArticleMutation();
+    const client = useApolloClient();
+
+    const readArticle = (id?: string | undefined) => {
+        client.cache.modify({
+            id: `Article:${id}`,
+            fields: {
+                view: (prevViewCount) => prevViewCount + 1,
+            },
+        });
+    };
 
     const createArticle = (args: MutationCreateArticleArgs) => {
         const { boardType, files, articleDetail } = args;
@@ -57,6 +68,6 @@ const useArticle = () => {
         });
     };
 
-    return { createArticle, updateArticle, deleteArticle };
+    return { createArticle, updateArticle, deleteArticle, readArticle };
 };
 export default useArticle;

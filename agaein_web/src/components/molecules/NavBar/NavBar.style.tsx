@@ -15,6 +15,7 @@ export const Header = styled.header`
     padding: 0 40px;
     background-color: ${(props) => props.theme.light.background};
     z-index: 1000;
+    border-bottom: ${(props) => (props.isBorder ? '1px solid #eeee' : '')};
 `;
 
 export const AgaeinIconImg = styled.img`
