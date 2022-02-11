@@ -39,6 +39,13 @@ export const ToggleButton = styled.button<ToggleButtonProps>`
 
     & + & {
         border-radius: 0px 4px 4px 0px;
-        margin-left: -1px;
+        margin-left: 0px;
+    }
+
+    &:disabled {
+        border: 1px solid ${(props) => props.theme.light.DarkGrey1};
+        background-color: ${(props) => props.theme.light.lightGrey2};
+        color: ${(props) => props.theme.light.DarkGrey1};
+        cursor: default;
     }
 `;
