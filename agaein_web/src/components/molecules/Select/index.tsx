@@ -2,54 +2,6 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 
-// const StyledSelect = styled.div`
-//     position: relative;
-//     width: 220px;
-//     height: 40px;
-//     line-height: 40px;
-//     padding: 0 16px;
-//     background: ${(props) => props.theme.light.white};
-//     border: 1px solid;
-//     border-color: ${(props) => props.theme.light.DarkGrey1};
-//     box-sizing: border-box;
-//     border-radius: 4px;
-//     font-size: 16px;
-//     color: ${(props) => props.theme.light.black};
-//     cursor: pointer;
-
-//     ${(props) =>
-//         props.selected &&
-//         css`
-//             border-color: ${(props) => props.theme.light.primary};
-//         `}
-
-//     &:hover {
-//         border-color: ${(props) => props.theme.light.primary};
-//     }
-// `;
-
-// const SelectIcon = styled.i`
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     position: absolute;
-//     top: 0;
-//     right: 0;
-//     width: 40px;
-//     height: 40px;
-
-//     svg {
-//         width: 20px;
-//     }
-
-//     ${(props) =>
-//         props.selected &&
-//         css`
-//             transform: rotate(180deg);
-//             color: ${(props) => props.theme.light.primary};
-//         `}
-// `;
-
 const SelectList = styled.ul<{ optionsAbsoluteTop: string; optionsMinWidth: string }>`
     position: absolute;
     top: ${(props) => props.optionsAbsoluteTop};
