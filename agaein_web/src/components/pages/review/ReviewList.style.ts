@@ -6,7 +6,6 @@ export const BestReview = styled.div`
 
 export const BestReviewTitle = styled.strong`
     display: block;
-    margin-bottom: 20px;
     font-size: 20px;
     line-height: 24px;
     letter-spacing: -0.02em;
@@ -33,6 +32,10 @@ export const Count = styled.span`
 export const ReviewTable = styled.table`
     width: 100%;
     margin-top: 12px;
+
+    tr {
+        cursor: pointer;
+    }
 
     th {
         padding: 7px 0;

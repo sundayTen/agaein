@@ -1,24 +1,11 @@
 import Font from 'components/molecules/Font';
 import PostItem from 'components/molecules/PostItemBox/PostItemBox';
-import ReviewItem from 'components/molecules/ReviewItem';
-import {
-    Article,
-    Board_Type,
-    useGetArticlesQuery,
-    Article_Order,
-    GetArticlesQueryVariables,
-} from 'graphql/generated/generated';
+import { Article, Board_Type, useGetArticlesQuery, GetArticlesQueryVariables } from 'graphql/generated/generated';
 import useBookmark from 'hooks/useBookmark';
 import { getTitle } from 'utils/converter';
-import {
-    ArticleList,
-    ButtonViewAll,
-    ListContainer,
-    ListHeader,
-    ListItem,
-    ReviewWrapper,
-    TitleBox,
-} from './HomeArticleList.style';
+import { ArticleList, ButtonViewAll, ListContainer, ListHeader, ListItem, TitleBox } from './HomeArticleList.style';
+import BestReviewList from '../BestReviewList/BestReviewList';
+
 interface HomeArticleListProps {
     boardType: Board_Type;
 }
@@ -29,10 +16,10 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
         return boardType === Board_Type.Review;
     };
 
+    //TODO: review 인 경우 불러오지 않도록 수정
     const variables: GetArticlesQueryVariables = {
         boardType,
-        limit: isReviewType() ? 4 : 6,
-        order: isReviewType() ? Article_Order.View : undefined,
+        limit: 6,
     };
 
     const { data, loading, error } = useGetArticlesQuery({
@@ -63,28 +50,28 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
                     전체보기 &gt;
                 </ButtonViewAll>
             </ListHeader>
-            <ListContainer>
-                {isEmpty(articles) ? (
-                    // TODO : 디자인 요청해서 컴포넌트로 만들어야 할 듯
-                    <p>등록된 게시글이 없습니다</p>
-                ) : (
-                    articles?.map((article) => {
-                        return isReviewType() ? (
-                            <ReviewWrapper key={article.id}>
-                                <ReviewItem item={article} />
-                            </ReviewWrapper>
-                        ) : (
-                            <ListItem key={article.id}>
-                                <PostItem
-                                    item={article}
-                                    bookmarked={isBookmarked(article.id)}
-                                    setBookmark={() => setBookmark(article.id)}
-                                />
-                            </ListItem>
-                        );
-                    })
-                )}
-            </ListContainer>
+            {isReviewType() ? (
+                <BestReviewList />
+            ) : (
+                <ListContainer>
+                    {isEmpty(articles) ? (
+                        // TODO : 디자인 요청해서 컴포넌트로 만들어야 할 듯
+                        <p>등록된 게시글이 없습니다</p>
+                    ) : (
+                        articles?.map((article) => {
+                            return (
+                                <ListItem key={article.id}>
+                                    <PostItem
+                                        item={article}
+                                        bookmarked={isBookmarked(article.id)}
+                                        setBookmark={() => setBookmark(article.id)}
+                                    />
+                                </ListItem>
+                            );
+                        })
+                    )}
+                </ListContainer>
+            )}
         </ArticleList>
     );
 };

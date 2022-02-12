@@ -37,7 +37,3 @@ export const ListItem = styled.li`
         display: block;
     }
 `;
-export const ReviewWrapper = styled.li`
-    width: 290px;
-    padding: 0 20px;
-`;
