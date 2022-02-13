@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useContext } from 'react';
 import { PhotographIcon } from '@heroicons/react/outline';
 import {
     ReviewInfo,
@@ -10,12 +10,15 @@ import {
 import { Board_Type, useGetArticlesLazyQuery, Review, Article, Article_Order } from 'graphql/generated/generated';
 import { YYYY_MM_DD } from 'utils/date';
 import { Pagination } from 'components/molecules';
+import { ModalContext } from 'contexts';
+import ReviewDetail from 'components/organism/ReviewDetail';
 
 const AllReviewList = () => {
     const boardType = Board_Type.Review;
     const [page, setPage] = useState(1);
     const ITEM_PER_PAGE = 12;
     const [orderType, setOrderType] = useState<Article_Order>(Article_Order.New);
+    const { show } = useContext(ModalContext);
 
     const [get, { data, loading, error }] = useGetArticlesLazyQuery();
 
@@ -79,7 +82,15 @@ const AllReviewList = () => {
                         const { id, images, view, author, createdAt } = review!;
                         const { title } = review?.articleDetail as Review;
                         return (
-                            <tr key={id}>
+                            <tr
+                                key={id}
+                                onClick={() =>
+                                    show({
+                                        title: review.articleDetail.id + '번째 후기',
+                                        children: <ReviewDetail review={review} />,
+                                    })
+                                }
+                            >
                                 <td>{id}</td>
                                 <td>
                                     {title}

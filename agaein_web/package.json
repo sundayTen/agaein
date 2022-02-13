@@ -29,6 +29,7 @@
         "react-kakao-maps-sdk": "^1.0.3",
         "react-router-dom": "^5.2.1",
         "react-scripts": "4.0.3",
+        "react-slick": "^0.28.1",
         "styled-components": "^5.3.1",
         "styled-normalize": "^8.0.7",
         "typescript": "^4.1.2",
@@ -67,6 +68,7 @@
         "@graphql-codegen/typescript-operations": "^2.1.3",
         "@graphql-codegen/typescript-react-apollo": "^3.1.3",
         "@types/apollo-upload-client": "^14.1.0",
+        "@types/react-slick": "^0.23.8",
         "kakao.maps.d.ts": "^0.1.23"
     }
 }
