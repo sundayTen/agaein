@@ -34,7 +34,7 @@ query getArticle($id: ID!) {
     }
 }
 
-mutation createArticle($boardType: BOARD_TYPE!, $files: [Upload]!, $articleDetail: articleDetailInput!) {
+mutation createArticle($boardType: BOARD_TYPE!, $files: [Upload]!, $articleDetail: ArticleDetailInput!) {
     createArticle(boardType: $boardType, files: $files, articleDetail: $articleDetail) {
         id
     }
@@ -43,7 +43,7 @@ mutation createArticle($boardType: BOARD_TYPE!, $files: [Upload]!, $articleDetai
 mutation deleteArticle($id: ID!, $password: String) {
     deleteArticle(id: $id, password: $password)
 }
-mutation updateArticle($id: ID!, $files: [Upload]!, $articleDetail: articleDetailInput!) {
+mutation updateArticle($id: ID!, $files: [Upload]!, $articleDetail: ArticleDetailInput!) {
     updateArticle(id: $id, files: $files, articleDetail: $articleDetail) {
         id
     }

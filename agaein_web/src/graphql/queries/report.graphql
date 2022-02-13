@@ -14,13 +14,13 @@ query getReports($articleId: ID!) {
     }
 }
 
-mutation createReport($files: [Upload]!, $report: reportInput!) {
+mutation createReport($files: [Upload]!, $report: ReportInput!) {
     createReport(files: $files, report: $report) {
         id
     }
 }
 
-mutation updateReport($id: ID!, $files: [Upload]!, $report: updateReportInput!) {
+mutation updateReport($id: ID!, $files: [Upload]!, $report: UpdateReportInput!) {
     updateReport(id: $id, files: $files, report: $report) {
         id
     }
