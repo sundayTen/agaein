@@ -11,7 +11,7 @@ type Report implements Timestamps {
     updatedAt: Date!
 }
 
-input reportInput {
+input ReportInput {
     articleId: ID!
     phoneNumber: String
     content: String
@@ -20,7 +20,7 @@ input reportInput {
     password: String
 }
 
-input updateReportInput {
+input UpdateReportInput {
     phoneNumber: String
     content: String
     location: LocationInput

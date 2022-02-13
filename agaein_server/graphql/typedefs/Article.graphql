@@ -91,7 +91,7 @@ input LocationInput {
     detail: String
 }
 
-input articleDetailInput {
+input ArticleDetailInput {
     breedId: ID
     articleId: ID
     name: String
