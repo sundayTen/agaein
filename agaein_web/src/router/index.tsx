@@ -8,6 +8,7 @@ import ArticleList from 'components/pages/article/articleList';
 import Search from 'components/pages/search/Search';
 import Review from 'components/pages/review/Review';
 import ReviewList from 'components/pages/review/ReviewList';
+import CrawlingResultPage from 'components/pages/crawling/CrawlingResultPage';
 
 // * 요기서 찾는 사람과 찾은 사람 화면을 분기하고, Route 목록은 다른 파일로 뺀다.
 function Router() {
@@ -22,6 +23,7 @@ function Router() {
             <Route path="/search" component={Search} />
             <Route path="/createReview" component={Review} />
             <Route path="/reviews" component={ReviewList} />
+            <Route path="/crawlingResult" component={CrawlingResultPage} />
         </Switch>
     );
 }

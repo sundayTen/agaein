@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface ContentTagProps {
+    type?: 'CRAWLING';
+}
+
 export const ItemBox = styled.div`
     position: relative;
     border-radius: 10px;
@@ -62,10 +66,12 @@ export const TagList = styled.div`
     padding: 0 12px 8px;
 `;
 
-export const ContentTag = styled.div`
+export const ContentTag = styled.div<ContentTagProps>`
     padding: 4px 10px;
     border-radius: 4px;
-    background-color: ${(props) => props.theme.light.lightGrey2};
+    vertical-align: middle;
+    background-color: ${(props) =>
+        props.type === 'CRAWLING' ? props.theme.light.white : props.theme.light.lightGrey2};
     display: inline-block;
 
     & + & {
