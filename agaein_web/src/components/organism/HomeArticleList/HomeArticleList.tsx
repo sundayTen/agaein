@@ -16,7 +16,6 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
         return boardType === Board_Type.Review;
     };
 
-    //TODO: review 인 경우 불러오지 않도록 수정
     const variables: GetArticlesQueryVariables = {
         boardType,
         limit: 6,
@@ -24,6 +23,7 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
 
     const { data, loading, error } = useGetArticlesQuery({
         variables,
+        skip: isReviewType(),
     });
 
     if (loading) return <p>Loading</p>;

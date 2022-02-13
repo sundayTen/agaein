@@ -86,7 +86,7 @@ const AllReviewList = () => {
                                 key={id}
                                 onClick={() =>
                                     show({
-                                        title: review.articleDetail.id + '번째 후기',
+                                        title: review.articleDetail.id + '번째 후기',
                                         children: <ReviewDetail review={review} />,
                                     })
                                 }
