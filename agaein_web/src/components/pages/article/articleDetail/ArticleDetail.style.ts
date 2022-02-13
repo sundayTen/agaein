@@ -1,4 +1,4 @@
-import { DotsHorizontalIcon } from '@heroicons/react/solid';
+import { DotsHorizontalIcon, ViewListIcon } from '@heroicons/react/solid';
 import styled from 'styled-components';
 
 export const HorizontalContainer = styled.div`
@@ -82,3 +82,17 @@ export const ArticleSelectContainer = styled.div`
     display: inline-block;
     position: relative;
 `;
+
+export const WitnessListButton = styled.button`
+    background: ${(props) => props.theme.light.primary};
+    border-radius: 6px;
+    width: 60px;
+    margin-left: 10px;
+    line-height: 40px;
+`
+export const ListIcon = styled(ViewListIcon)`
+    vertical-align: middle;
+    color: #fff;
+    width: 25px;
+    height: 25px;
+`

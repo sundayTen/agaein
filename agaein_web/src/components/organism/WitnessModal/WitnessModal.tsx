@@ -29,6 +29,7 @@ interface WitnessModalProps {
     open: boolean;
     close: () => void;
     type: 'LIST' | 'REPORT';
+    setType: (value: 'LIST' | 'REPORT') => void;
     articleId: string;
     missPosition: {
         lat: number;
@@ -38,7 +39,7 @@ interface WitnessModalProps {
     };
 }
 
-const WitnessModal = ({ open, close, type, articleId, missPosition }: WitnessModalProps) => {
+const WitnessModal = ({ open, close, type, articleId, missPosition, setType }: WitnessModalProps) => {
     const [create] = useCreateReportMutation();
     const [witnessToggle, setWitnessToggle] = useState<'지도' | '사진'>('지도');
     const [address, setAddress] = useState<Location>({
@@ -185,7 +186,12 @@ const WitnessModal = ({ open, close, type, articleId, missPosition }: WitnessMod
                     <WitnessImageCarousel images={listClickIdx !== -1 ? witnessList[listClickIdx].img : undefined} />
                 )}
                 {type === 'LIST' ? (
-                    <WitnessList witness={witnessList} clickIdx={listClickIdx} setClickIdx={setListClickIdx} />
+                    <WitnessList
+                        witness={witnessList}
+                        clickIdx={listClickIdx}
+                        setClickIdx={setListClickIdx}
+                        setType={setType}
+                    />
                 ) : (
                     <WitnessReport address={address} reportChange={reportChange} filesChange={filesChange} />
                 )}

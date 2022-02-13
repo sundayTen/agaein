@@ -28,8 +28,10 @@ import {
     HorizontalContainer,
     InfoHeader,
     InfoHeaderFont,
+    ListIcon,
     StyledDotIcon,
     TitleAndBookMarkContainer,
+    WitnessListButton,
 } from './ArticleDetail.style';
 
 const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
@@ -40,6 +42,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [menuVisible, setMenuVisible] = useState(false);
     const { show, close } = useContext(ModalContext);
+    const [modalType, setModalType] = useState<'LIST' | 'REPORT'>('REPORT');
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
@@ -212,19 +215,37 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                             size={{ width: 480, height: 260 }}
                             noClick
                         />
-                        <Button
-                            label={isAuthor() ? '발견 리스트 보기' : '발견 신고 하기'}
-                            onClick={() => {
-                                setIsOpenModal(true);
-                            }}
-                            buttonStyle="BLACK"
-                            style={{ width: '100%', marginTop: 20 }}
-                        />
+                        <div>
+                            <Button
+                                label="발견 신고 하기"
+                                onClick={() => {
+                                    setIsOpenModal(true);
+                                    setModalType('REPORT');
+                                }}
+                                buttonStyle="BLACK"
+                                style={{ width: '85%', marginTop: 20 }}
+                            />
+                            <WitnessListButton
+                                onClick={() => {
+                                    setIsOpenModal(true);
+                                    setModalType('LIST');
+                                }}
+                            >
+                                <ListIcon />
+                            </WitnessListButton>
+                        </div>
                     </ArticleMapContainer>
                 </ArticleDetailContainer>
             </HorizontalContainer>
             <Comment comments={comments as CommentType[]} articleId={id} author={author} />
-            <WitnessModal open={isOpenModal} close={closeModal} missPosition={location} articleId={id} type={'LIST'} />
+            <WitnessModal
+                open={isOpenModal}
+                close={closeModal}
+                missPosition={location}
+                articleId={id}
+                type={modalType}
+                setType={setModalType}
+            />
         </Fragment>
     );
 };

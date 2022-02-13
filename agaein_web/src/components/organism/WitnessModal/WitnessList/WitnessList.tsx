@@ -10,8 +10,11 @@ import {
     Header,
     HpSpan,
     Img,
+    NullWitness,
+    NullWitnessSpan,
     Phone,
     Photo,
+    ReportLink,
     SmallPhoto,
     UsualIcon,
     Witness,
@@ -31,9 +34,21 @@ interface WitnessListProps {
     witness?: Array<WitnessArray>;
     clickIdx: number;
     setClickIdx: (value: number) => void;
+    setType: (value: 'LIST' | 'REPORT') => void;
 }
 
-const WitnessList = ({ witness, clickIdx, setClickIdx }: WitnessListProps) => {
+const WitnessList = ({ witness, clickIdx, setClickIdx, setType }: WitnessListProps) => {
+    if (witness?.length === 0)
+        return (
+            <NullWitness>
+                <NullWitnessSpan>아직 등록된 제보가 없어요..</NullWitnessSpan>
+                <br />
+
+                <ReportLink href="#!" onClick={() => setType('REPORT')}>
+                    가장 먼저 발견 제보하기
+                </ReportLink>
+            </NullWitness>
+        );
     return (
         <WitnessListTable>
             <thead>
