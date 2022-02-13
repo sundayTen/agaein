@@ -29,8 +29,6 @@ const SelectItem = styled.li`
 interface SelectProps {
     children: React.ReactNode;
     name: string;
-    defaultValue: string;
-    onChange: () => void;
     options: { id: string; name: string; onClick: () => void }[];
     optionsAbsoluteTop: string;
     optionsMinWidth: string;

@@ -1,0 +1,35 @@
+mutation crawling(
+    $type: BREED_TYPE!
+    $lostDate: Date!
+    $location: LocationInput!
+    $breed: String
+    $name: String
+    $age: Int
+    $gender: GENDER
+    $keywords: [String]
+) {
+    crawling(
+        baseInfo: {
+            type: $type
+            lostDate: $lostDate
+            location: $location
+            breed: $breed
+            name: $name
+            age: $age
+            gender: $gender
+            keywords: $keywords
+        }
+    ) {
+        rank
+        type
+        breed
+        location
+        name
+        gender
+        age
+        foundDate
+        createdDate
+        site
+        keywords
+    }
+}
