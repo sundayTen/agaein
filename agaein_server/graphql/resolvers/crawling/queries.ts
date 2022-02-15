@@ -14,7 +14,7 @@ const crawlingQueries = {
             foundDate: "2021-12-12",
             createdDate: "2021-12-12",
             site: "http://www.angel.or.kr/view.php?code=dog&number=47011",
-            keyword: ["목걸이", "스크래치", "곰돌이컷"]
+            keywords: ["목걸이", "스크래치", "곰돌이컷"]
         }
         const dummyCrawlingResult2 = {
             rank: 2,
@@ -27,7 +27,7 @@ const crawlingQueries = {
             foundDate: "2022-01-12",
             createdDate: "2022-02-09",
             site: "http://www.angel.or.kr/view.php?code=dog&number=47106",
-            keyword: ["활발함", "작음"]
+            keywords: ["활발함", "작음"]
         }
 
         return [dummyCrawlingResult, dummyCrawlingResult2];
@@ -52,7 +52,7 @@ const crawlingQueries = {
             foundDate: "2021-12-12",
             createdDate: "2021-12-12",
             site: "http://www.angel.or.kr/view.php?code=dog&number=47011",
-            keyword: ["목걸이", "스크래치", "곰돌이컷"]
+            keywords: ["목걸이", "스크래치", "곰돌이컷"]
         }
         const dummyCrawlingResult2 = {
             rank: 2,
@@ -65,7 +65,7 @@ const crawlingQueries = {
             foundDate: "2022-01-12",
             createdDate: "2022-02-09",
             site: "http://www.angel.or.kr/view.php?code=dog&number=47106",
-            keyword: ["활발함", "작음"]
+            keywords: ["활발함", "작음"]
         }
 
         return [{
