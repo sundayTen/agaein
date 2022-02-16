@@ -1,6 +1,7 @@
 // @ts-nocheck
 
 import { useState, useContext } from 'react';
+import { useHistory } from 'react-router';
 import {
     Header,
     AgaeinIconImg,
@@ -25,6 +26,7 @@ interface KaKaoLoginResult {
 }
 
 const NavBar = () => {
+    const history = useHistory();
     const [isShowDropBox, setIsShowDropBox] = useState(false);
     const { isLoggedIn, login, user, signOut } = useContext(UserContext);
 
@@ -38,7 +40,7 @@ const NavBar = () => {
 
     const handleMyPageButton = () => {
         setIsShowDropBox(false);
-        //TODO 마이페이지로 이동
+        history.push('/myPage');
     };
 
     const handleLogoutButton = () => {
