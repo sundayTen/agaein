@@ -1,11 +1,21 @@
 // @ts-nocheck
 
-import { useContext } from 'react';
-import { Nav, AgaeinIconImg, UserTag, ChevronDown, KaKaoLoginButton, KaKaoIcon, Avatar } from './NavBar.style';
+import { useState, useContext } from 'react';
+import {
+    Header,
+    AgaeinIconImg,
+    UserInfo,
+    UserTag,
+    ChevronDown,
+    KaKaoLoginButton,
+    KaKaoIcon,
+    Avatar,
+    UserDropbox,
+    DropboxItem,
+} from './NavBar.style';
 import { KAKAO_LOGIN_KEY } from 'config/server';
 import { Link } from 'react-router-dom';
 import { UserContext } from 'contexts/userContext';
-import Font from '../Font';
 import KakaoIcon from 'assets/image/Kakao.png';
 import Logo from 'assets/image/agaein_long_logo.png';
 
@@ -15,24 +25,50 @@ interface KaKaoLoginResult {
 }
 
 const NavBar = () => {
+    const [isShowDropBox, setIsShowDropBox] = useState(false);
     const { isLoggedIn, login, user, signOut } = useContext(UserContext);
+
     const onLoginComplete = (result: KaKaoLoginResult) => {
         login(result.response.access_token, String(result.profile.id));
     };
+
     const onLoginFailed = (result: KaKaoError) => {
         console.error(result);
     };
+
+    const handleMyPageButton = () => {
+        setIsShowDropBox(false);
+        //TODO 마이페이지로 이동
+    };
+
+    const handleLogoutButton = () => {
+        setIsShowDropBox(false);
+        signOut();
+    };
+
     return (
-        <Nav>
+        <Header>
             <Link to="/">
                 <AgaeinIconImg src={Logo} />
             </Link>
             {isLoggedIn ? (
-                <UserTag onClick={signOut}>
-                    <Avatar src={'https://t1.daumcdn.net/cfile/tistory/27738433597DCB1312'} />
-                    <Font label={user.nickname ?? '회원'} fontType="subhead" htmlElement="span" />
-                    <ChevronDown />
-                </UserTag>
+                <UserInfo>
+                    <UserTag type="button" onClick={() => setIsShowDropBox(!isShowDropBox)}>
+                        <Avatar src={'https://t1.daumcdn.net/cfile/tistory/27738433597DCB1312'} />
+                        {user.nickname ? user.nickname : '회원'}
+                        <ChevronDown />
+                    </UserTag>
+                    {isShowDropBox && (
+                        <UserDropbox>
+                            <DropboxItem type="button" onClick={handleMyPageButton}>
+                                마이페이지
+                            </DropboxItem>
+                            <DropboxItem type="button" onClick={handleLogoutButton}>
+                                로그아웃
+                            </DropboxItem>
+                        </UserDropbox>
+                    )}
+                </UserInfo>
             ) : (
                 <KaKaoLoginButton
                     token={KAKAO_LOGIN_KEY}
@@ -47,7 +83,7 @@ const NavBar = () => {
                     카카오로 시작하기
                 </KaKaoLoginButton>
             )}
-        </Nav>
+        </Header>
     );
 };
 export default NavBar;
