@@ -22,6 +22,9 @@ type Query {
     bookmarks: [Bookmark]!
     # Report
     reports(articleId: ID!): [Report]!
+    # Crawling
+    crawlingResults(id: ID!): [CrawlingResult]!
+    crawlingHistory: [CrawlingHistory]!
 }
 
 type Mutation {
@@ -46,5 +49,5 @@ type Mutation {
     updateReport(id: ID!, files: [Upload]!, report: UpdateReportInput!): Report!
     deleteReport(id: ID!, password: String): ID!
     # Crawling
-    crawling(baseInfo: CrawlingInput!): [CrawlingResult]!
+    crawling(baseInfo: CrawlingInput!): ID!
 }
