@@ -13,6 +13,24 @@ type CrawlingResult {
     keywords: [String]
 }
 
+type CrawlingHistory {
+    id: ID!
+    user: User!
+    crawlingKeywords: CrawlingKeywords!
+    crawlingResults: [CrawlingResult]!
+}
+
+type CrawlingKeywords {
+    type: BREED_TYPE!
+    breed: String
+    lostDate: Date!
+    location: Location!
+    name: String
+    age: Int
+    gender: GENDER
+    keywords: [String]
+}
+
 input CrawlingInput {
     type: BREED_TYPE!
     breed: String
