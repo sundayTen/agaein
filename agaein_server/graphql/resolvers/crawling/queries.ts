@@ -71,7 +71,7 @@ const crawlingQueries = {
         return [{
             id: 1,
             user: user,
-            crawlingKeywords: {type: "CAT", lostDate: "2022-02-11", location: {lat: 1.1, lng: 1.1, address: "test"}},
+            crawlingKeywords: {breedId: "1", lostDate: "2022-02-11", location: {lat: 1.1, lng: 1.1, address: "test"}},
             crawlingResults: [dummyCrawlingResult, dummyCrawlingResult2]
         }];
     }
