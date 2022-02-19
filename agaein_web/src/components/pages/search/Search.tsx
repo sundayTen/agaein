@@ -7,17 +7,62 @@ import {
     FormAge,
     FormGender,
     FormWrapper,
+    FormKeyword,
 } from 'components/organism/Form';
 import { ButtonWrapper } from 'components/pages/createArticle/CreateArticle.style';
 import Button from 'components/molecules/Button';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { useState } from 'react';
+import { useCrawlingMutation } from 'graphql/generated/generated';
+import { useEffect } from 'react';
 
 const Search = ({ history }: RouteComponentProps) => {
+    const [crawling] = useCrawlingMutation();
+    const [crawlingId, setCrawlingId] = useState<String>();
+    const [currentInputData, setCurrentInputData] = useState({
+        lostDate: '',
+        location: {
+            lat: 1,
+            lng: 1,
+            address: '',
+        },
+        keyword: [],
+    });
+
     const handleGoBack = () => {
         history.goBack();
     };
 
-    const inputChangeHandler = () => {};
+    const inputChangeHandler = (value: any, name: string) => {
+        setCurrentInputData({
+            ...currentInputData,
+            [name]: value,
+        });
+    };
+
+    const getCrawlingData = async () => {
+        const response = await crawling({
+            variables: {
+                lostDate: currentInputData?.lostDate,
+                location: currentInputData?.location,
+            },
+        });
+
+        if (!!response.errors) {
+            console.log(response.errors[0].message);
+            return;
+        }
+
+        if (response.data) {
+            setCrawlingId(response.data.crawling);
+        }
+    };
+
+    useEffect(() => {
+        if (crawlingId) {
+            history.push(`/crawlingResult/${crawlingId}/${currentInputData.keyword}`);
+        }
+    }, [crawlingId]);
 
     return (
         <>
@@ -25,7 +70,7 @@ const Search = ({ history }: RouteComponentProps) => {
             <FormWrapper formTitle={'실종 동물 정보'}>
                 <FormBreed name="breedId" onChange={inputChangeHandler} />
                 <FormDate name="lostDate" onChange={inputChangeHandler} type="LFP" />
-                <FormAddress name="address" onChange={inputChangeHandler} type="LFP" />
+                <FormAddress name="location" onChange={inputChangeHandler} type="LFP" />
                 <FormInput
                     name="name"
                     onChange={inputChangeHandler}
@@ -34,10 +79,18 @@ const Search = ({ history }: RouteComponentProps) => {
                 />
                 <FormAge name="age" onChange={inputChangeHandler} />
                 <FormGender name="gender" onChange={inputChangeHandler} />
+                <FormKeyword name="keyword" onChange={inputChangeHandler} />
             </FormWrapper>
             <ButtonWrapper>
-                <Button label="돌아가기" buttonStyle="BORDER" onClick={handleGoBack} />
-                <Button label="다음으로" buttonStyle="PAINTED" onClick={() => {}} disabled={true} />
+                <Button label="돌아가기" buttonStyle="BORDER" onClick={handleGoBack} style={{ marginRight: 20 }} />
+                <Button
+                    label="다음으로"
+                    buttonStyle="PAINTED"
+                    onClick={() => {
+                        getCrawlingData();
+                    }}
+                    disabled={currentInputData.lostDate === '' || currentInputData.location.address === ''}
+                />
             </ButtonWrapper>
         </>
     );

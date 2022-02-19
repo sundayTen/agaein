@@ -16,3 +16,8 @@ export interface ArticleListParams {
 export interface ArticleDetailParams {
     id: string;
 }
+
+export interface CrawlingResultParams {
+    id: string;
+    keyword: string;
+}

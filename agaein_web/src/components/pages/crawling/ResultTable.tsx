@@ -1,15 +1,19 @@
 import { Button, Font } from 'components/molecules';
 import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
-import { CrawlingMutation } from 'graphql/generated/generated';
+import { CrawlingResultsQuery } from 'graphql/generated/generated';
 import { useState } from 'react';
 import { BodyTr, HiddenBodyTr, Table, Thead } from './CrawlingResult.style';
 
 interface ResultTableProps {
-    crawlingData: CrawlingMutation | undefined;
+    crawlingData: CrawlingResultsQuery | undefined;
 }
 
 const ResultTable = ({ crawlingData }: ResultTableProps) => {
     const [clickIdx, setClickIdx] = useState(-1);
+    const isData = (data: any) => {
+        return data ? data : '-';
+    };
+
     return (
         <Table>
             <Thead>
@@ -25,22 +29,24 @@ const ResultTable = ({ crawlingData }: ResultTableProps) => {
                 <th>일치키워드</th>
             </Thead>
             <tbody>
-                {crawlingData?.crawling.map((data, idx) => {
+                {crawlingData?.crawlingResults.map((data, idx) => {
                     return (
                         <>
                             <BodyTr onClick={() => (clickIdx === idx ? setClickIdx(-1) : setClickIdx(idx))}>
-                                <td>{data?.rank}</td>
+                                <td>{isData(data?.rank)}</td>
                                 <td>
-                                    {data?.type} / {data?.breed}
+                                    {isData(data?.type)} / {isData(data?.breed)}
                                 </td>
-                                <td>{data?.location}</td>
-                                <td>{data?.name}</td>
-                                <td>{data?.gender}</td>
-                                <td>{data?.age}</td>
-                                <td>{data?.foundDate}</td>
-                                <td>{data?.createdDate}</td>
+                                <td>{isData(data?.location)}</td>
+                                <td>{isData(data?.name)}</td>
+                                <td>{isData(data?.gender)}</td>
+                                <td>{isData(data?.age)}</td>
+                                <td>{isData(data?.foundDate)}</td>
+                                <td>{isData(data?.createdDate)}</td>
                                 <td style={{ width: '120px' }}>
-                                    <Button label="바로가기" onClick={() => {}} buttonStyle="PAINTED" />
+                                    <a href={data?.site}>
+                                        <Button label="바로가기" onClick={() => {}} buttonStyle="PAINTED" />
+                                    </a>
                                 </td>
                                 <td>일치키워드</td>
                             </BodyTr>

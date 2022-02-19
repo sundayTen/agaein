@@ -15,21 +15,23 @@ import {
     SortFilter,
 } from './CrawlingResult.style';
 import ResultTable from './ResultTable';
-import { Breed_Type, CrawlingMutation, LocationInput, useCrawlingMutation } from 'graphql/generated/generated';
+import { useCrawlingResultsQuery } from 'graphql/generated/generated';
+import { RouteComponentProps } from 'react-router-dom';
+import { CrawlingResultParams } from 'router/params';
 
-const CrawlingResultPage = () => {
+const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResultParams>) => {
+    const { id, keyword } = match.params;
+    const keywords = keyword?.split(',');
+    const keywordsLabel = keyword ? '(' + keywords.length + ')' : '(0)';
     const [page, setPage] = useState(1);
-    const [crawlingData, setCrawlingData] = useState<CrawlingMutation>();
     const [selectValue, setSelectValue] = useState<String>('최신순');
     const [isSelect, setIsSelect] = useState<boolean>(false);
-    const [crawling] = useCrawlingMutation();
-    const type: Breed_Type = Breed_Type.Dog;
-    const lostDate = '2020-02-11';
-    const location: LocationInput = {
-        lat: 38.124,
-        lng: 38.123,
-        address: '지번',
-    };
+    const { data, loading, error } = useCrawlingResultsQuery({
+        variables: {
+            id,
+        },
+    });
+
     const sortFilterOptions = [
         {
             id: '최신순',
@@ -46,29 +48,6 @@ const CrawlingResultPage = () => {
             },
         },
     ];
-    const getCrawlingData = async () => {
-        const response = await crawling({
-            variables: {
-                type: type,
-                lostDate: lostDate,
-                location: location,
-            },
-        });
-
-        if (!!response.errors) {
-            console.log(response.errors[0].message);
-            return;
-        }
-
-        console.log('response', response);
-        if (response.data) {
-            setCrawlingData(response.data);
-        }
-    };
-
-    useEffect(() => {
-        getCrawlingData();
-    }, []);
 
     return (
         <>
@@ -76,10 +55,14 @@ const CrawlingResultPage = () => {
             <SearchFilter>
                 <Font label="검색 필터" fontType="label" fontWeight="bold" />
                 &nbsp;
-                <Font label="(4)" fontType="label" style={{ marginRight: 12, color: '#505050' }} />
-                <ContentTag type="CRAWLING">
-                    <Font label="강아지" fontType="tag" style={{ lineHeight: '14px' }} />
-                </ContentTag>
+                <Font label={keywordsLabel} fontType="label" style={{ marginRight: 12, color: '#505050' }} />
+                {keywords?.map((item) => {
+                    return (
+                        <ContentTag type="CRAWLING">
+                            <Font label={item} fontType="tag" style={{ lineHeight: '14px' }} />
+                        </ContentTag>
+                    );
+                })}
                 <RefreshButton to="/search">
                     다시 검색하기
                     <AgainIcon />
@@ -87,7 +70,7 @@ const CrawlingResultPage = () => {
             </SearchFilter>
             <InfoHeader>
                 <InfoHeaderFont>
-                    총 <InfoHeaderFont panted>146</InfoHeaderFont>건
+                    총 <InfoHeaderFont panted>{data?.crawlingResults.length}</InfoHeaderFont>건
                 </InfoHeaderFont>
                 <SelectContainer
                     onClick={() => {
@@ -102,7 +85,7 @@ const CrawlingResultPage = () => {
                     </Select>
                 </SelectContainer>
             </InfoHeader>
-            <ResultTable crawlingData={crawlingData} />
+            <ResultTable crawlingData={data} />
             <PagingContainer>
                 <Pagination active={page} setActive={setPage} />
             </PagingContainer>

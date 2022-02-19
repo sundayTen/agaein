@@ -23,7 +23,7 @@ function Router() {
             <Route path="/search" component={Search} />
             <Route path="/createReview" component={Review} />
             <Route path="/reviews" component={ReviewList} />
-            <Route path="/crawlingResult" component={CrawlingResultPage} />
+            <Route path="/crawlingResult/:id/:keyword?" component={CrawlingResultPage} />
         </Switch>
     );
 }
