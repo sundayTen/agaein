@@ -1,4 +1,4 @@
-import { argsToArgsConfig } from 'graphql/type/definition';
+import { ApolloError } from 'apollo-server-errors';
 
 function isValidatedName(name: any) {
     if (name === undefined) {
@@ -66,10 +66,9 @@ export function isValidatedSignup(user: any) {
     return true;
 }
 
-export function isValidatedLogin(kakaoId: String) {
+export function validateLogin(kakaoId: String) {
+    // @TODO 밸리데이션 변경 요망 - 로그인 바꿀 때 같이.
     if (kakaoId.length < 6) {
-        return false;
+        throw new ApolloError('isNotValidated', 'BAD_USER_INPUT');
     }
-
-    return true;
 }

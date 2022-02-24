@@ -6,10 +6,10 @@ import requests
 
 # 로컬 라이브러리
 from database.database import get_db
-from database.models import CrawlingSite
+from database.models import CrawlingSite, CrawlingResult
+import re
 
 
-# @TODO 로깅 넣기
 def angel_crawling(db: Session = next(get_db())):
 
     angel = db.query(CrawlingSite).filter(CrawlingSite.site == "angel").first()
@@ -36,16 +36,55 @@ def angel_crawling(db: Session = next(get_db())):
             url = f"http://www.angel.or.kr/view.php?code={code}&number=" + str(index)
             response = requests.get(url)
 
+            db_sink = dict()
+            db_sink["type"] = code
+
             if response.status_code == 200:
                 html = response.text
                 soup = BeautifulSoup(html, "html.parser")
+
                 try:
-                    raw_location = str(soup.select(".style")[0]).split("(")[1]
-                    if raw_location[0] == "목" or raw_location[0] == "구":
-                        location = raw_location[6:-5]
-                        print(f"[angel] {index}번째 게시물: {location}")
+                    if re.split(r"[()]", str(soup.select(".about-header")[0]))[1][0:2] in ["목격", "구조"]:
+                        pass
+                    else:
+                        print(f"[angel] {index}번째 게시물은 목격 및 구조 게시물이 아닙니다.")
+                        continue
+
+                    db_sink["site"] = url
+                    db_sink["created_date"] = str(soup.select(".about-info")[0]).split("</em> ")[1].split(" ")[0]
+                    db_sink["keywords"] = str(soup.select(".about-info")[0]).split("<br/>")[1][:-11] + " / "
+
+                    data = soup.select(".left")
+                    detail_data = re.split(r"[<>]", str(data[0]))[2].split(" / ")
+                    db_sink["breed"] = detail_data[0]
+                    db_sink["gender"] = detail_data[1]
+                    db_sink["age"] = detail_data[2].split("\n")[0]
+
+                    if len(detail_data) > 3:
+                        db_sink["name"] = re.split(r"[()]", detail_data[3])[1]
+
+                    db_sink["found_date"] = re.split(r"[<>]", str(data[1]))[2]
+                    db_sink["location"] = re.split(r"[<>]", str(data[2]))[2]
+                    db_sink["keywords"] += re.split(r"[<>]", str(data[4]))[2]
+
+                    crawling_result = CrawlingResult(
+                        type = db_sink.get("type"),
+                        site = db_sink.get("site"),
+                        created_date = db_sink.get("created_date"),
+                        found_date = db_sink.get("found_date"),
+                        keywords = db_sink.get("keywords"),
+                        breed = db_sink.get("breed"),
+                        gender = db_sink.get("gender"),
+                        age = db_sink.get("age"),
+                        name = db_sink.get("name"),
+                        location = db_sink.get("location")
+                    )
+
+                    db.add(crawling_result)
+
+                    print(f"[angel] ------- {index}번째 게시물 크롤링 성공 -------")
                 except:
-                    print("[angel] ------- 존재하지 않는 게시물 입니다. -------")
+                    print(f"[angel] {index}번째 게시물이 존재하지 않습니다.")
                 finally:
                     index += 1
             else:
@@ -57,5 +96,5 @@ def angel_crawling(db: Session = next(get_db())):
                 break
 
         angel.info[f"{code}_index"] = index
-        flag_modified(angel, 'info')
+        flag_modified(angel, "info")
         db.commit()

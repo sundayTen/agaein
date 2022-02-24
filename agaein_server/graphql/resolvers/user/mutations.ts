@@ -1,22 +1,15 @@
 import { ApolloError } from 'apollo-server-errors';
-import { isValidatedLogin } from '../../../common/validation/user';
+import { knex } from '../../database';
+import { validateLogin } from '../../../common/validation/user';
 import { getRandomNickname } from '../../../common/utils/nickname';
 import { getAccessToken, getRefreshToken, readAccessToken } from '../../../common/auth/jwtToken';
-import { knex } from '../../database';
+import { validateAuthorizationHeader } from '../../../common/validation/auth';
 
 const userMutations = {
     login: async (_: any, args: any, context: any) => {
-        // TODO : getToken 함수로 조건문 캡술화
-        if (
-            context.req.headers.authorization === undefined ||
-            context.req.headers.authorization.split(' ')[1] === undefined
-        ) {
-            throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
-        }
-
-        if (!isValidatedLogin(args.kakaoId)) {
-            throw new ApolloError('isNotValidated', 'BAD_USER_INPUT');
-        }
+        const authorization = context.req.headers.authorization;
+        validateAuthorizationHeader(authorization);
+        validateLogin(args.kakaoId)
 
         let user = await knex('user').where('kakao_id', args.kakaoId).first();
         if (user === undefined) {
@@ -28,8 +21,8 @@ const userMutations = {
                 nickname: getRandomNickname(),
             };
 
-            user = await knex('user').insert(userForm).returning('*');
-            user = user[0];
+            const users = await knex('user').insert(userForm).returning('*');
+            user = users[0];
         }
 
         user.accessToken = getAccessToken(user.id, user.kakaoId);
@@ -38,32 +31,23 @@ const userMutations = {
         return user;
     },
     updateUser: async (_: any, args: any, context: any) => {
+        const authorization = context.req.headers.authorization;
+        validateAuthorizationHeader(authorization);
+
         const { email, nickname, phoneNumber } = args;
         const userForm: any = {};
+        userForm.email = email ? email : null;
+        userForm.nickname = nickname ? nickname : null;
+        userForm.phoneNumber = phoneNumber ? phoneNumber : null;
+        userForm.updatedAt = new Date();
 
-        if (email !== undefined) {
-            userForm.email = email;
-        }
-
-        if (nickname !== undefined) {
-            userForm.nickname = nickname;
-        }
-
-        if (phoneNumber !== undefined) {
-            userForm.phoneNumber = phoneNumber;
-        }
-
-        if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
-            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
-            return (
-                await knex('user')
-                    .update(userForm)
-                    .where('id', (<any>jwtToken).userId)
-                    .returning('*')
-            )[0];
-        } else {
-            throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
-        }
+        const jwtToken = readAccessToken(authorization.split(' ')[1]);
+        return (
+            await knex('user')
+                .update(userForm)
+                .where('id', (<any>jwtToken).userId)
+                .returning('*')
+        )[0];
     },
 };
 

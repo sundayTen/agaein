@@ -377,11 +377,38 @@ export function initCrawlingSite() {
             knex.schema
                 .createTable('crawling_site', function (table: any) {
                     table.increments();
-                    table.string('site').notNullable();
+                    table.text('site').notNullable();
                     table.json('info').notNullable().defaultTo({});
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created crawling_site table');
+                })
+                .catch((error: String) => {
+                    console.error(error);
+                });
+        }
+    });
+}
+
+export function initCrawlingResult() {
+    knex.schema.hasTable('crawling_result').then(function (exists: boolean) {
+        if (!exists) {
+            knex.schema
+                .createTable('crawling_result', function (table: any) {
+                    table.increments();
+                    table.string('type').notNullable();
+                    table.text('site').notNullable();
+                    table.dateTime('found_date');
+                    table.dateTime('created_date');
+                    table.text('keywords');
+                    table.string('breed');
+                    table.string('gender');
+                    table.string('age');
+                    table.string('location');
+                    table.string('name');
+                })
+                .then(function () {
+                    console.log('[DataBase Initialized] created crawling_result table');
                 })
                 .catch((error: String) => {
                     console.error(error);
