@@ -31,6 +31,8 @@ const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResu
             id,
         },
     });
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error occur</p>;
 
     const sortFilterOptions = [
         {
@@ -85,7 +87,7 @@ const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResu
                     </Select>
                 </SelectContainer>
             </InfoHeader>
-            <ResultTable crawlingData={data} />
+            <ResultTable crawlingData={data?.crawlingResults} />
             <PagingContainer>
                 <Pagination active={page} setActive={setPage} />
             </PagingContainer>
