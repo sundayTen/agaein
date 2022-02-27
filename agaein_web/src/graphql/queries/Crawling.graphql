@@ -1,8 +1,7 @@
 mutation crawling(
-    $type: BREED_TYPE!
+    $breedId: ID
     $lostDate: Date!
     $location: LocationInput!
-    $breed: String
     $name: String
     $age: Int
     $gender: GENDER
@@ -10,16 +9,19 @@ mutation crawling(
 ) {
     crawling(
         baseInfo: {
-            type: $type
+            breedId: $breedId
             lostDate: $lostDate
             location: $location
-            breed: $breed
             name: $name
             age: $age
             gender: $gender
             keywords: $keywords
         }
-    ) {
+    )
+}
+
+query crawlingResults($id: ID!) {
+    crawlingResults(id: $id) {
         rank
         type
         breed
