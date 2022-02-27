@@ -10,7 +10,7 @@ interface ResultTableProps {
 
 const ResultTable = ({ crawlingData }: ResultTableProps) => {
     const [clickIdx, setClickIdx] = useState(-1);
-    const isData = (data: any) => {
+    const isData = (data: CrawlingResult[keyof CrawlingResult] | null) => {
         if (data === null || data === undefined) {
             return '-';
         }
