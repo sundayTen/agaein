@@ -15,8 +15,8 @@ class CrawlingSite(Base):
     site = Column(String(255), unique=True, index=True, nullable=False)
     info = Column(JSON, nullable=False)
 
-class CrawlingResult(Base):
-    __tablename__ = "crawling_result"
+class CrawlingPetResult(Base):
+    __tablename__ = "crawling_pet_result"
 
     id = Column(Integer, primary_key=True)
     type = Column(String(255), index=True, nullable=False)

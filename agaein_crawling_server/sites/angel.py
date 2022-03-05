@@ -6,7 +6,7 @@ import requests
 
 # 로컬 라이브러리
 from database.database import get_db
-from database.models import CrawlingSite, CrawlingResult
+from database.models import CrawlingSite, CrawlingPetResult
 import re
 
 
@@ -37,7 +37,7 @@ def angel_crawling(db: Session = next(get_db())):
             response = requests.get(url)
 
             db_sink = dict()
-            db_sink["type"] = code
+            db_sink["type"] = code.upper();
 
             if response.status_code == 200:
                 html = response.text
@@ -52,22 +52,28 @@ def angel_crawling(db: Session = next(get_db())):
 
                     db_sink["site"] = url
                     db_sink["created_date"] = str(soup.select(".about-info")[0]).split("</em> ")[1].split(" ")[0]
-                    db_sink["keywords"] = str(soup.select(".about-info")[0]).split("<br/>")[1][:-11] + " / "
+                    db_sink["keywords"] = str(soup.select(".about-info")[0]).split("<br/>")[1][:-11].replace(" ", "")
 
                     data = soup.select(".left")
                     detail_data = re.split(r"[<>]", str(data[0]))[2].split(" / ")
                     db_sink["breed"] = detail_data[0]
-                    db_sink["gender"] = detail_data[1]
-                    db_sink["age"] = detail_data[2].split("\n")[0]
+                    db_sink["gender"] = "FEMALE" if detail_data[1] == "암컷" else ("MALE" if detail_data[1] == "수컷" else "UNKNOWN")
+                    raw_age = detail_data[2].split("\n")[0]
+                    str_age = ""
+                    for sidx in raw_age:
+                        if 47 < ord(sidx) < 58:
+                            str_age += sidx
+
+                    db_sink["age"] = None if str_age == "" else int(str_age)
 
                     if len(detail_data) > 3:
                         db_sink["name"] = re.split(r"[()]", detail_data[3])[1]
 
                     db_sink["found_date"] = re.split(r"[<>]", str(data[1]))[2]
                     db_sink["location"] = re.split(r"[<>]", str(data[2]))[2]
-                    db_sink["keywords"] += re.split(r"[<>]", str(data[4]))[2]
+                    db_sink["keywords"] += re.split(r"[<>]", str(data[4]))[2].replace(" ", "")
 
-                    crawling_result = CrawlingResult(
+                    crawling_pet_result = CrawlingPetResult(
                         type = db_sink.get("type"),
                         site = db_sink.get("site"),
                         created_date = db_sink.get("created_date"),
@@ -80,7 +86,7 @@ def angel_crawling(db: Session = next(get_db())):
                         location = db_sink.get("location")
                     )
 
-                    db.add(crawling_result)
+                    db.add(crawling_pet_result)
 
                     print(f"[angel] ------- {index}번째 게시물 크롤링 성공 -------")
                 except:

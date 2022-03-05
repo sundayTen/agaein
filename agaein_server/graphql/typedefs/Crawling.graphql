@@ -1,3 +1,8 @@
+enum FINDING_TYPE {
+    OWNER
+    PET
+}
+
 type CrawlingResult {
     rank: Int!
     type: String!
@@ -5,11 +10,11 @@ type CrawlingResult {
     location: String
     name: String
     gender: String
-    age: String
+    age: Int
     foundDate: Date
     createdDate: Date
     site: String!
-    keywords: [String]
+    keywords: String
 }
 
 type CrawlingHistory {
