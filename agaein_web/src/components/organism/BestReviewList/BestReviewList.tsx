@@ -30,7 +30,7 @@ const BestReviewList = () => {
                         onClick={() =>
                             show({
                                 title: review.articleDetail.id + '번째 후기',
-                                children: <ReviewDetail review={review} />,
+                                children: <ReviewDetail id={review.articleDetail.id} />,
                             })
                         }
                     >
