@@ -14,7 +14,7 @@ type CrawlingResult {
     foundDate: Date
     createdDate: Date
     site: String!
-    keywords: String
+    keywords: [String]
 }
 
 type CrawlingHistory {

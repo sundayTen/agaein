@@ -15,9 +15,12 @@ const crawlingMutations = {
 
         const breed = await knex('breed').where('id', breedId).first();
 
+        // @TODO orderby date
         const results = await knex(`crawling_${type.toLowerCase()}_result`)
             .where('type', breed.type)
             .andWhere('found_date', '>=', lostDate);
+
+        
 
         const filteredResults = results.filter((result: any) => {
             let check1 = true;
@@ -40,29 +43,32 @@ const crawlingMutations = {
         });
 
         const scores = Array.from(Array(filteredResults.length).keys()).map((x) => 0);
+        const allFilteredKeywords: any = [];
 
         for (let i = 0; i < filteredResults.length; i++) {
             if (keywords == null) {
                 break;
             }
-
             let score = 0;
+            const filteredKeywords: any = [];
             keywords.forEach((keyword: any) => {
                 for (let idx = 0; idx < filteredResults[i].keywords.length - keyword.length + 1; idx++) {
                     let cnt = 0;
                     for (let idx2 = 0; idx2 < keyword.length; idx2++) {
-                        if (keyword[idx2] === filteredResults[i].keywords[idx + idx2]) {
+                        if (keyword[idx2] == filteredResults[i].keywords[idx + idx2]) {
                             cnt += 1;
                         }
                     }
 
                     if (cnt === keyword.length) {
+                        filteredKeywords.push(keyword);
                         score += 3;
                         break;
                     }
                 }
             });
 
+            allFilteredKeywords.push(filteredKeywords);
             scores[i] = score;
         }
 
@@ -89,11 +95,12 @@ const crawlingMutations = {
             scores[i] += score;
         }
 
-        // @TODO 위치기반 크롤링 점수 만들기.
+        // @TODO 위치기반 크롤링 점수 만들기. 15, 10, 5
 
-        // @TODO 품종에 대한 비교를 어떻게 할까?
+        // @TODO 품종에 대한 비교를 어떻게 할까? 5
 
         const mappedResults = filteredResults.map(function (result: any, i: number) {
+            result.keywords = allFilteredKeywords[i];
             return { score: scores[i], value: result };
         });
 
@@ -119,15 +126,3 @@ const crawlingMutations = {
 };
 
 export default crawlingMutations;
-
-// rank: Int!
-// type: String!
-// breed: String
-// location: String
-// name: String
-// gender: String
-// age: String
-// foundDate: Date
-// createdDate: Date
-// site: String!
-// keywords: [String]

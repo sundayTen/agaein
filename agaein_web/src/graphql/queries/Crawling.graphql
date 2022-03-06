@@ -1,3 +1,8 @@
+enum FINDING_TYPE {
+    OWNER
+    PET
+}
+
 mutation crawling(
     $breedId: ID
     $lostDate: Date!
@@ -6,6 +11,7 @@ mutation crawling(
     $age: Int
     $gender: GENDER
     $keywords: [String]
+    $type: FINDING_TYPE
 ) {
     crawling(
         baseInfo: {
@@ -16,7 +22,8 @@ mutation crawling(
             age: $age
             gender: $gender
             keywords: $keywords
-        }
+        },
+        type: $type
     )
 }
 
