@@ -390,11 +390,11 @@ export function initCrawlingSite() {
     });
 }
 
-export function initCrawlingResult() {
-    knex.schema.hasTable('crawling_result').then(function (exists: boolean) {
+export function initCrawlingPetResult() {
+    knex.schema.hasTable('crawling_pet_result').then(function (exists: boolean) {
         if (!exists) {
             knex.schema
-                .createTable('crawling_result', function (table: any) {
+                .createTable('crawling_pet_result', function (table: any) {
                     table.increments();
                     table.string('type').notNullable();
                     table.text('site').notNullable();
@@ -403,12 +403,65 @@ export function initCrawlingResult() {
                     table.text('keywords');
                     table.string('breed');
                     table.string('gender');
-                    table.string('age');
+                    table.integer('age');
                     table.string('location');
                     table.string('name');
                 })
                 .then(function () {
-                    console.log('[DataBase Initialized] created crawling_result table');
+                    console.log('[DataBase Initialized] created crawling_pet_result table');
+                })
+                .catch((error: String) => {
+                    console.error(error);
+                });
+        }
+    });
+}
+
+export function initCrawlingOwnerResult() {
+    knex.schema.hasTable('crawling_owner_result').then(function (exists: boolean) {
+        if (!exists) {
+            knex.schema
+                .createTable('crawling_owner_result', function (table: any) {
+                    table.increments();
+                    table.string('type').notNullable();
+                    table.text('site').notNullable();
+                    table.dateTime('found_date');
+                    table.dateTime('created_date');
+                    table.text('keywords');
+                    table.string('breed');
+                    table.string('gender');
+                    table.integer('age');
+                    table.string('location');
+                    table.string('name');
+                })
+                .then(function () {
+                    console.log('[DataBase Initialized] created crawling_owner_result table');
+                })
+                .catch((error: String) => {
+                    console.error(error);
+                });
+        }
+    });
+}
+
+export function initCrawlingHistory() {
+    knex.schema.hasTable('crawling_history').then(function (exists: boolean) {
+        if (!exists) {
+            knex.schema
+                .createTable('crawling_history', function (table: any) {
+                    table.increments();
+                    table
+                        .integer('user_id')
+                        .notNullable()
+                        .references('id')
+                        .inTable('breed')
+                        .onUpdate('CASCADE')
+                        .onDelete('CASCADE');
+                    table.json('crawling_keywords');
+                    table.json('crawling_results');
+                })
+                .then(function () {
+                    console.log('[DataBase Initialized] created crawling_history table');
                 })
                 .catch((error: String) => {
                     console.error(error);

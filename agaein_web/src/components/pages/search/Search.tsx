@@ -45,6 +45,7 @@ const Search = ({ history }: RouteComponentProps) => {
             variables: {
                 lostDate: currentInputData?.lostDate,
                 location: currentInputData?.location,
+                type: "PET",
             },
         });
 

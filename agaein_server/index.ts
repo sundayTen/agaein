@@ -13,7 +13,9 @@ import {
     initArticleKeyword,
     initReport,
     initCrawlingSite,
-    initCrawlingResult,
+    initCrawlingPetResult,
+    initCrawlingOwnerResult,
+    initCrawlingHistory,
 } from './graphql/database';
 import app from './app';
 
@@ -31,7 +33,9 @@ const initDatabase = async () => {
     await initArticleKeyword();
     await initReport();
     await initCrawlingSite();
-    await initCrawlingResult();
+    await initCrawlingPetResult();
+    await initCrawlingOwnerResult();
+    await initCrawlingHistory();
 };
 
 const start = async () => {
