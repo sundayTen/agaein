@@ -76,3 +76,63 @@ export const Step3ButtonGroup = styled.div`
         height: 58px;
     }
 `;
+
+// * 크롤링
+export const ToggleWrap = styled.div`
+    margin-top: 40px;
+    text-align: center;
+`;
+
+export const ToggleLabel = styled.label``;
+
+export const ToggleInput = styled.input`
+    display: none;
+    & + span {
+        cursor: pointer;
+        min-width: 200px;
+        &:hover {
+            background: none;
+            color: #1a1a1a;
+        }
+        &:after {
+            background: #1a1a1a;
+            content: '';
+            height: 100%;
+            position: absolute;
+            top: 0;
+            transition: left 200ms cubic-bezier(0.77, 0, 0.175, 1);
+            width: 100%;
+            z-index: -1;
+        }
+    }
+
+    &.toggle-left + span {
+        border-right: 0;
+        &:after {
+            left: 100%;
+        }
+    }
+    &.toggle-right + span {
+        margin-left: -5px;
+        &:after {
+            left: -100%;
+        }
+    }
+    &:checked + span {
+        cursor: default;
+        color: #fff;
+        transition: color 200ms;
+        &:after {
+            left: 0;
+        }
+    }
+`;
+
+export const ToggleText = styled.span`
+    border: 3px solid #1a1a1a;
+    display: inline-block;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+    transition: background 600ms ease, color 600ms ease;
+`;

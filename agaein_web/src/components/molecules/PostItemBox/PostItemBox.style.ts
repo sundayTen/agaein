@@ -6,6 +6,7 @@ interface ContentTagProps {
 
 export const ItemBox = styled.div`
     position: relative;
+    height: 225px;
     border-radius: 10px;
     overflow: hidden;
     background-color: white;

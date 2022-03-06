@@ -9,7 +9,13 @@ import {
     FormWrapper,
     FormKeyword,
 } from 'components/organism/Form';
-import { ButtonWrapper } from 'components/pages/createArticle/CreateArticle.style';
+import {
+    ButtonWrapper,
+    ToggleWrap,
+    ToggleLabel,
+    ToggleInput,
+    ToggleText,
+} from 'components/pages/createArticle/CreateArticle.style';
 import Button from 'components/molecules/Button';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { useState } from 'react';
@@ -67,6 +73,16 @@ const Search = ({ history }: RouteComponentProps) => {
     return (
         <>
             <PageTitle title="크롤링 검색 정보" subTitle="상세하게 작성할수록 발견될 확률이 올라가요" />
+            <ToggleWrap>
+                <ToggleLabel>
+                    <ToggleInput className="toggle-left" type="radio" name="toggle" checked />
+                    <ToggleText>실종동물 찾아요</ToggleText>
+                </ToggleLabel>
+                <ToggleLabel>
+                    <ToggleInput className="toggle-right" type="radio" name="toggle" />
+                    <ToggleText>주인을 찾아요</ToggleText>
+                </ToggleLabel>
+            </ToggleWrap>
             <FormWrapper formTitle={'실종 동물 정보'}>
                 <FormBreed name="breedId" onChange={inputChangeHandler} />
                 <FormDate name="lostDate" onChange={inputChangeHandler} type="LFP" />
