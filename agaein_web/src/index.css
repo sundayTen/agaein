@@ -44,6 +44,7 @@ em {
 }
 
 button {
+    font-family: NanumSquareRound, sans-serif;
     cursor: pointer;
     border: 0;
     background-color: transparent;

@@ -97,7 +97,6 @@ const colorStyles = css`
 `;
 
 export const StyledButton = styled.button<StyledButtonProps>`
-    font-family: NanumSquareRound, sans-serif;
     padding: 0 10px;
     border-radius: 4px;
     font-size: 20px;

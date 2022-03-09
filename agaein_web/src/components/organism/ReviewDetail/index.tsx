@@ -1,4 +1,4 @@
-import { Article, Review } from 'graphql/generated/generated';
+import { Review, useGetArticleQuery } from 'graphql/generated/generated';
 import {
     ReviewBody,
     ReviewHeader,
@@ -14,14 +14,35 @@ import {
 import Slider, { Settings } from 'react-slick';
 import { formattedDate } from 'utils/date';
 import penguin from 'assets/image/penguin.png';
+import { useApolloClient } from '@apollo/client';
+import { isArticle } from 'utils/typeGuards';
 
 interface ReviewDetailProps {
-    review: Article;
+    id: string;
 }
 
 const ReviewDetail = (props: ReviewDetailProps) => {
-    const { author, createdAt, images, view } = props.review;
-    const { title, content } = props.review.articleDetail as Review;
+    const client = useApolloClient();
+
+    const { data, error, loading } = useGetArticleQuery({
+        variables: {
+            id: props.id,
+        },
+        onCompleted: (data) => {
+            client.cache.modify({
+                id: `Article:${data.article?.id}`,
+                fields: {
+                    view: (prevViewCount) => prevViewCount + 1,
+                },
+            });
+        },
+    });
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error occur</p>;
+    if (data === undefined || !isArticle(data.article)) return <p>No data</p>;
+
+    const { author, createdAt, images, view } = data.article;
+    const { title, content } = data?.article?.articleDetail as Review;
 
     const settingsIntro: Settings = {
         dots: true,
