@@ -3,7 +3,11 @@ import KakaoLogin from 'react-kakao-login';
 
 import styled from 'styled-components';
 
-export const Header = styled.header`
+interface HeaderProps {
+    isBorder: boolean;
+}
+
+export const Header = styled.header<HeaderProps>`
     display: flex;
     align-items: center;
     justify-content: space-between;
