@@ -79,8 +79,9 @@ export const Step3ButtonGroup = styled.div`
 
 // * 크롤링
 export const ToggleWrap = styled.div`
-    margin-top: 40px;
-    text-align: center;
+    margin: auto;
+    width: 340px;
+    background: #eeebe3;
 `;
 
 export const ToggleLabel = styled.label``;
@@ -89,39 +90,43 @@ export const ToggleInput = styled.input`
     display: none;
     & + span {
         cursor: pointer;
-        min-width: 200px;
+        width: 150px;
+        border: none;
         &:hover {
             background: none;
-            color: #1a1a1a;
+            color: #efa03d;
         }
         &:after {
-            background: #1a1a1a;
+            border-radius: 15px;
+            background: #efa03d;
             content: '';
             height: 100%;
             position: absolute;
             top: 0;
             transition: left 200ms cubic-bezier(0.77, 0, 0.175, 1);
             width: 100%;
-            z-index: -1;
+            z-index: 0;
         }
     }
 
     &.toggle-left + span {
-        border-right: 0;
+        border-right: 0px;
         &:after {
+            width: 80%;
             left: 100%;
         }
     }
     &.toggle-right + span {
-        margin-left: -5px;
+        margin-left: 0px;
         &:after {
+            width: 100%;
             left: -100%;
         }
     }
     &:checked + span {
         cursor: default;
         color: #fff;
-        transition: color 200ms;
+        transition: color 100ms;
         &:after {
             left: 0;
         }
@@ -135,4 +140,5 @@ export const ToggleText = styled.span`
     position: relative;
     text-align: center;
     transition: background 600ms ease, color 600ms ease;
+    z-index: 10;
 `;

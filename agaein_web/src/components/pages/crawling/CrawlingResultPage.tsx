@@ -2,7 +2,7 @@ import Select from 'components/molecules/Select';
 import { Font, Pagination } from 'components/molecules';
 import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
 import PageTitle from 'components/organism/PageTitle/PageTitle';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { InfoHeader, InfoHeaderFont } from '../article/articleDetail/ArticleDetail.style';
 import {
     AgainIcon,
@@ -15,7 +15,7 @@ import {
     SortFilter,
 } from './CrawlingResult.style';
 import ResultTable from './ResultTable';
-import { useCrawlingResultsQuery } from 'graphql/generated/generated';
+import { useCrawlingResultsLazyQuery, useCrawlingResultsQuery } from 'graphql/generated/generated';
 import { RouteComponentProps } from 'react-router-dom';
 import { CrawlingResultParams } from 'router/params';
 
@@ -26,11 +26,19 @@ const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResu
     const [page, setPage] = useState(1);
     const [selectValue, setSelectValue] = useState<String>('최신순');
     const [isSelect, setIsSelect] = useState<boolean>(false);
-    const { data, loading, error } = useCrawlingResultsQuery({
-        variables: {
-            id,
-        },
-    });
+    const [get, { data, loading, error }] = useCrawlingResultsLazyQuery();
+
+    const getCrawling = useCallback(() => {
+        get({
+            variables: {
+                id,
+            },
+        });
+    }, [page]);
+
+    useEffect(() => {
+        getCrawling();
+    }, [page]);
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
 

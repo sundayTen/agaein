@@ -19,20 +19,25 @@ import {
 import Button from 'components/molecules/Button';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { useState } from 'react';
-import { useCrawlingMutation } from 'graphql/generated/generated';
+import { Finding_Type, useCrawlingMutation } from 'graphql/generated/generated';
 import { useEffect } from 'react';
 
 const Search = ({ history }: RouteComponentProps) => {
     const [crawling] = useCrawlingMutation();
     const [crawlingId, setCrawlingId] = useState<String>();
     const [currentInputData, setCurrentInputData] = useState({
-        lostDate: '',
+        breedId: '3',
+        lostDate: undefined,
         location: {
             lat: 1,
             lng: 1,
             address: '',
         },
+        name: undefined,
+        age: undefined,
+        gender: undefined,
         keyword: [],
+        type: Finding_Type.Pet,
     });
 
     const handleGoBack = () => {
@@ -49,8 +54,14 @@ const Search = ({ history }: RouteComponentProps) => {
     const getCrawlingData = async () => {
         const response = await crawling({
             variables: {
+                breedId: currentInputData?.breedId,
                 lostDate: currentInputData?.lostDate,
                 location: currentInputData?.location,
+                name: currentInputData?.name,
+                age: currentInputData?.age,
+                gender: currentInputData?.gender,
+                keywords: currentInputData?.keyword,
+                type: currentInputData?.type,
             },
         });
 
@@ -90,7 +101,7 @@ const Search = ({ history }: RouteComponentProps) => {
                 <FormInput
                     name="name"
                     onChange={inputChangeHandler}
-                    label="제목"
+                    label="이름"
                     placeholder="동물 이름을 입력해주세요"
                 />
                 <FormAge name="age" onChange={inputChangeHandler} />

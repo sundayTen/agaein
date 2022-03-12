@@ -16,6 +16,10 @@ export const Thead = styled.thead`
     font-size: 14px;
 `;
 
+export const HeadTh = styled.th`
+    min-width: 100px;
+`;
+
 export const BodyTr = styled.tr`
     height: 56px;
     border-bottom: 1px solid ${(props) => props.theme.light.DarkGrey1};

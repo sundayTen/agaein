@@ -2,7 +2,7 @@ import { Button, Font } from 'components/molecules';
 import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
 import { CrawlingResult, CrawlingResultsQuery } from 'graphql/generated/generated';
 import { useState } from 'react';
-import { BodyTr, HiddenBodyTr, Table, Thead } from './CrawlingResult.style';
+import { BodyTr, HeadTh, HiddenBodyTr, Table, Thead } from './CrawlingResult.style';
 
 interface ResultTableProps {
     crawlingData?: (CrawlingResult | null)[];
@@ -20,16 +20,16 @@ const ResultTable = ({ crawlingData }: ResultTableProps) => {
     return (
         <Table>
             <Thead>
-                <th>순위</th>
-                <th>품종</th>
-                <th>지역</th>
-                <th>이름</th>
-                <th>성별</th>
-                <th>나이</th>
-                <th>목격일</th>
-                <th>등록일</th>
-                <th>사이트</th>
-                <th>일치키워드</th>
+                <HeadTh>순위</HeadTh>
+                <HeadTh>품종</HeadTh>
+                <HeadTh>지역</HeadTh>
+                <HeadTh>이름</HeadTh>
+                <HeadTh>성별</HeadTh>
+                <HeadTh>나이</HeadTh>
+                <HeadTh>목격일</HeadTh>
+                <HeadTh>등록일</HeadTh>
+                <HeadTh>사이트</HeadTh>
+                <HeadTh>일치키워드</HeadTh>
             </Thead>
             <tbody>
                 {crawlingData?.map((data, idx) => {
@@ -57,15 +57,18 @@ const ResultTable = ({ crawlingData }: ResultTableProps) => {
                                 <HiddenBodyTr>
                                     <td colSpan={10} align="right">
                                         <div style={{ marginRight: '30px' }}>
-                                            <ContentTag type="CRAWLING">
-                                                <Font label="강아지" fontType="tag" style={{ lineHeight: '14px' }} />
-                                            </ContentTag>
-                                            <ContentTag type="CRAWLING">
-                                                <Font label="강아지" fontType="tag" style={{ lineHeight: '14px' }} />
-                                            </ContentTag>
-                                            <ContentTag type="CRAWLING">
-                                                <Font label="강아지" fontType="tag" style={{ lineHeight: '14px' }} />
-                                            </ContentTag>
+                                            {data?.keywords?.map((keyword) => {
+                                                console.log(keyword);
+                                                return (
+                                                    <ContentTag type="CRAWLING">
+                                                        <Font
+                                                            label={String(keyword)}
+                                                            fontType="tag"
+                                                            style={{ lineHeight: '14px' }}
+                                                        />
+                                                    </ContentTag>
+                                                );
+                                            })}
                                         </div>
                                     </td>
                                 </HiddenBodyTr>
