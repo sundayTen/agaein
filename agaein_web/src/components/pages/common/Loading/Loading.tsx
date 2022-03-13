@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 import {
     LoadingContainer,
     LoadingIcons,
-    LoadingInnerContainer,
     Loading1Icon,
     Loading2Icon,
     Loading3Icon,
@@ -40,10 +39,8 @@ const Loading = () => {
     if (element === null || !loading) return <></>;
     return ReactDOM.createPortal(
         <LoadingContainer>
-            <LoadingInnerContainer>
-                <LoadingIcons>{getImage()}</LoadingIcons>
-                <Font fontType="h3" label="잠시만 기다려주세요..." />
-            </LoadingInnerContainer>
+            <LoadingIcons>{getImage()}</LoadingIcons>
+            <Font fontType="h3" label="잠시만 기다려주세요..." />
         </LoadingContainer>,
         element,
     );

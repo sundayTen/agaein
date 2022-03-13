@@ -6,6 +6,7 @@ import { ReactComponent as Loading_4 } from 'assets/image/loading/loading4.svg';
 
 export const LoadingContainer = styled.div`
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 100;
@@ -15,10 +16,8 @@ export const LoadingContainer = styled.div`
     bottom: 0;
     left: 0;
 `;
-export const LoadingInnerContainer = styled.div`
-    text-align: center;
-`;
 export const LoadingIcons = styled.div`
+    margin: 0 auto 32px;
     width: 130px;
     height: 24px;
 `;
