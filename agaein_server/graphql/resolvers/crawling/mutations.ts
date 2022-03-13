@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-errors';
 import { readAccessToken } from '../../../common/auth/jwtToken';
 import { knex } from '../../database';
 
@@ -15,12 +14,10 @@ const crawlingMutations = {
 
         const breed = await knex('breed').where('id', breedId).first();
 
-        // @TODO orderby date
         const results = await knex(`crawling_${type.toLowerCase()}_result`)
             .where('type', breed.type)
-            .andWhere('found_date', '>=', lostDate);
-
-        
+            .andWhere('found_date', '>=', lostDate)
+            .orderBy('found_date', 'desc');
 
         const filteredResults = results.filter((result: any) => {
             let check1 = true;
@@ -52,19 +49,9 @@ const crawlingMutations = {
             let score = 0;
             const filteredKeywords: any = [];
             keywords.forEach((keyword: any) => {
-                for (let idx = 0; idx < filteredResults[i].keywords.length - keyword.length + 1; idx++) {
-                    let cnt = 0;
-                    for (let idx2 = 0; idx2 < keyword.length; idx2++) {
-                        if (keyword[idx2] == filteredResults[i].keywords[idx + idx2]) {
-                            cnt += 1;
-                        }
-                    }
-
-                    if (cnt === keyword.length) {
-                        filteredKeywords.push(keyword);
-                        score += 3;
-                        break;
-                    }
+                if (String(filteredResults[i].keywords).includes(keyword)) {
+                    filteredKeywords.push(keyword);
+                    score += 3;
                 }
             });
 
@@ -92,12 +79,41 @@ const crawlingMutations = {
                 }
             }
 
+            if (location != null && filteredResults[i].location != null) {
+                const resultLocationCoordinate = String(filteredResults[i].location.split('[')[1]);
+                if (resultLocationCoordinate !== 'undefined' && !resultLocationCoordinate.includes('위치정보없음')) {
+                    const resultLat: number = Number(resultLocationCoordinate.split(',')[0]);
+                    const resultLng: number = Number(String(resultLocationCoordinate.split(',')[1]).replace(']', ''));
+                    const searchLat: number = location.lat;
+                    const searchLng: number = location.lng;
+
+                    const earthRadius = 6378.135;
+                    const defaultMultiValue = (Math.PI * 2 * earthRadius) / 360;
+                    const cosLat: number = Math.cos(resultLat + searchLat);
+
+                    const distance = Math.sqrt(
+                        ((resultLat - searchLat) * cosLat * defaultMultiValue) ** 2 +
+                            ((resultLng - searchLng) * defaultMultiValue) ** 2,
+                    );
+
+                    if (distance < 5) {
+                        score += 15;
+                    } else if (distance < 10) {
+                        score += 10;
+                    } else if (distance < 20) {
+                        score += 5;
+                    }
+                }
+            }
+
+            if (filteredResults[i].breed != null) {
+                if (String(filteredResults[i].breed).includes(breed.breed)) {
+                    score += 5;
+                }
+            }
+
             scores[i] += score;
         }
-
-        // @TODO 위치기반 크롤링 점수 만들기. 15, 10, 5
-
-        // @TODO 품종에 대한 비교를 어떻게 할까? 5
 
         const mappedResults = filteredResults.map(function (result: any, i: number) {
             result.keywords = allFilteredKeywords[i];
@@ -114,6 +130,7 @@ const crawlingMutations = {
             crawling_results: {
                 results: mappedResults.map((mappedResult: any, i: number) => {
                     mappedResult.value.rank = i + 1;
+                    mappedResult.value.location = mappedResult.value.location.split('[')[0];
                     return mappedResult;
                 }),
             },
