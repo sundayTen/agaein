@@ -7,6 +7,7 @@ import requests
 # 로컬 라이브러리
 from database.database import get_db
 from database.models import CrawlingSite, CrawlingPetResult
+from sites.common.kakaomap import getCoordinate
 import re
 
 
@@ -70,7 +71,8 @@ def angel_crawling(db: Session = next(get_db())):
                         db_sink["name"] = re.split(r"[()]", detail_data[3])[1]
 
                     db_sink["found_date"] = re.split(r"[<>]", str(data[1]))[2]
-                    db_sink["location"] = re.split(r"[<>]", str(data[2]))[2]
+                    location_text = re.split(r"[<>]", str(data[2]))[2]
+                    db_sink["location"] = location_text + getCoordinate(location_text)
                     db_sink["keywords"] += re.split(r"[<>]", str(data[4]))[2].replace(" ", "")
 
                     crawling_pet_result = CrawlingPetResult(

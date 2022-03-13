@@ -1,9 +1,14 @@
+import { ApolloError } from 'apollo-server-errors';
 import { knex } from '../../database';
 import { readAccessToken } from '../../../common/auth/jwtToken';
 
 const crawlingQueries = {
     crawlingResults: async (_: any, args: any) => {
         const history = await knex('crawling_history').where('id', args.id).first();
+
+        if (history === undefined) {
+            throw new ApolloError('CrawlingResults id(50) is not Exists', 'BAD_USER_INPUT');
+        }
 
         return history.crawlingResults.results.map((result: any) => result.value);
     },
