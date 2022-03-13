@@ -20,5 +20,3 @@ def getCoordinate(keyword):
     if res_list:
         return f"[{res_list[0].get('y')},{res_list[0].get('x')}]"
     return "[위치정보없음]"
-
-getCoordinate('서울시 영중로119')
