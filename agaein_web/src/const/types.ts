@@ -1,11 +1,16 @@
 interface GLOBAL_ERROR {
     AUTHENTICATION: string;
+    NOT_FOUND: string;
+    TIME_OUT: string;
+    PERMISSION: string;
 }
 interface ARTICLE_ERROR {
-    'Wrong password': string;
+    WRONG_PASSWORD: string;
+    DELETED_ARTICLE: string;
 }
 interface COMMENT_ERROR {
-    'Wrong password': string;
+    WRONG_PASSWORD: string;
+    DELETED_COMMENT: string;
 }
 interface ERROR_TYPE {
     GLOBAL: GLOBAL_ERROR;

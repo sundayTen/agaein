@@ -3,7 +3,11 @@ import KakaoLogin from 'react-kakao-login';
 
 import styled from 'styled-components';
 
-export const Header = styled.header`
+interface HeaderProps {
+    isBorder: boolean;
+}
+
+export const Header = styled.header<HeaderProps>`
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -15,6 +19,7 @@ export const Header = styled.header`
     padding: 0 40px;
     background-color: ${(props) => props.theme.light.background};
     z-index: 1000;
+    border-bottom: ${(props) => (props.isBorder ? '1px solid #eeee' : '')};
 `;
 
 export const AgaeinIconImg = styled.img`

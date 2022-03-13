@@ -4,6 +4,7 @@ import { Article, Board_Type, useGetArticlesLazyQuery } from 'graphql/generated/
 import useBookmark from 'hooks/useBookmark';
 import { ITEM_PER_PAGE } from '.';
 import { ArticleGridContainer, ArticleItem } from './ArticleList.style';
+import Loading from 'components/pages/common/Loading';
 
 interface ListProps {
     type: Board_Type;
@@ -30,9 +31,6 @@ const ContentsList = (props: ListProps) => {
         getArticles();
     }, [getArticles]);
 
-    if (loading || !data) {
-        return <Font label="잠시만 기다려주세요" fontType="h2" />;
-    }
     if (error) {
         return <Font label="에러가 발생했습니다" fontType="h2" />;
     }
