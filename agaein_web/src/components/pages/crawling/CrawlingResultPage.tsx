@@ -2,7 +2,7 @@ import Select from 'components/molecules/Select';
 import { Font, Pagination } from 'components/molecules';
 import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
 import PageTitle from 'components/organism/PageTitle/PageTitle';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { InfoHeader, InfoHeaderFont } from '../article/articleDetail/ArticleDetail.style';
 import {
     AgainIcon,
@@ -15,7 +15,7 @@ import {
     SortFilter,
 } from './CrawlingResult.style';
 import ResultTable from './ResultTable';
-import { useCrawlingResultsLazyQuery, useCrawlingResultsQuery } from 'graphql/generated/generated';
+import { CrawlingResult, useCrawlingResultsQuery } from 'graphql/generated/generated';
 import { RouteComponentProps } from 'react-router-dom';
 import { CrawlingResultParams } from 'router/params';
 
@@ -24,21 +24,31 @@ const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResu
     const keywords = keyword?.split(',');
     const keywordsLabel = keyword ? '(' + keywords.length + ')' : '(0)';
     const [page, setPage] = useState(1);
-    const [selectValue, setSelectValue] = useState<String>('최신순');
+    const [selectValue, setSelectValue] = useState<String>('관련도순');
     const [isSelect, setIsSelect] = useState<boolean>(false);
-    const [get, { data, loading, error }] = useCrawlingResultsLazyQuery();
-
-    const getCrawling = useCallback(() => {
-        get({
-            variables: {
-                id,
-            },
-        });
-    }, [page]);
+    const { data, loading, error } = useCrawlingResultsQuery({
+        variables: {
+            id,
+        },
+    });
+    const [crawlingData, setCrawlingData] = useState<Array<CrawlingResult>>([]);
 
     useEffect(() => {
-        getCrawling();
+        let sortList = data?.crawlingResults;
+        if (selectValue === '관련도순') {
+            setCrawlingData(sortList?.slice(12 * (page - 1), 12 * page) as CrawlingResult[]);
+        } else if (selectValue === '최신순') {
+            sortList = sortList?.slice().sort((a: any, b: any) => {
+                return +new Date(b.foundDate) - +new Date(a.foundDate);
+            });
+            setCrawlingData(sortList?.slice(12 * (page - 1), 12 * page) as CrawlingResult[]);
+        }
+    }, [selectValue, data, page]);
+
+    useEffect(() => {
+        console.log(crawlingData);
     }, [page]);
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
 
@@ -48,6 +58,7 @@ const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResu
             name: '최신순',
             onClick: () => {
                 setSelectValue('최신순');
+                setPage(1);
             },
         },
         {
@@ -55,6 +66,7 @@ const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResu
             name: '관련도순',
             onClick: () => {
                 setSelectValue('관련도순');
+                setPage(1);
             },
         },
     ];
@@ -95,9 +107,13 @@ const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResu
                     </Select>
                 </SelectContainer>
             </InfoHeader>
-            <ResultTable crawlingData={data?.crawlingResults} />
+            <ResultTable crawlingData={crawlingData} />
             <PagingContainer>
-                <Pagination active={page} setActive={setPage} />
+                <Pagination
+                    active={page}
+                    setActive={setPage}
+                    lastPage={Math.ceil(data?.crawlingResults ? data?.crawlingResults.length / 12 : 1)}
+                />
             </PagingContainer>
         </>
     );

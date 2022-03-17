@@ -1,6 +1,6 @@
 import { Button, Font } from 'components/molecules';
 import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
-import { CrawlingResult, CrawlingResultsQuery } from 'graphql/generated/generated';
+import { CrawlingResult } from 'graphql/generated/generated';
 import { useState } from 'react';
 import { BodyTr, HeadTh, HiddenBodyTr, Table, Thead } from './CrawlingResult.style';
 
@@ -58,7 +58,6 @@ const ResultTable = ({ crawlingData }: ResultTableProps) => {
                                     <td colSpan={10} align="right">
                                         <div style={{ marginRight: '30px' }}>
                                             {data?.keywords?.map((keyword) => {
-                                                console.log(keyword);
                                                 return (
                                                     <ContentTag type="CRAWLING">
                                                         <Font
