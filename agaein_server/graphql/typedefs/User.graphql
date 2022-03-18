@@ -4,6 +4,7 @@ type User implements Timestamps {
     email: String
     kakaoId: String!
     phoneNumber: String
+    profileUrl: String
     createdAt: Date!
     updatedAt: Date!
 }
