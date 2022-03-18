@@ -9,7 +9,7 @@ const userMutations = {
     login: async (_: any, args: any, context: any) => {
         const authorization = context.req.headers.authorization;
         validateAuthorizationHeader(authorization);
-        validateLogin(args.kakaoId)
+        validateLogin(args.kakaoId);
 
         let user = await knex('user').where('kakao_id', args.kakaoId).first();
         if (user === undefined) {
@@ -48,6 +48,34 @@ const userMutations = {
                 .where('id', (<any>jwtToken).userId)
                 .returning('*')
         )[0];
+    },
+    updateProfile: async (_: any, args: any, context: any) => {
+        const authorization = context.req.headers.authorization;
+        validateAuthorizationHeader(authorization);
+
+        const jwtToken = readAccessToken(authorization.split(' ')[1]);
+        const userId = (<any>jwtToken).userId;
+        const { file } = args;
+
+        const { createReadStream, mimetype } = await file;
+        const stream = createReadStream();
+
+        const filename = 'profile' + '_' + userId + '_' + Date.now() + '.' + mimetype.split('/')[1];
+
+        const imageForm = {
+            userId,
+            url: 'https://www.agaein.com/file/image/' + filename,
+        };
+
+        await knex('image').insert(imageForm);
+
+        const out = require('fs').createWriteStream('image/' + filename);
+        await stream.pipe(out);
+        await stream.on('close', () => {
+            console.log(`store ${filename}`);
+        });
+
+        
     },
 };
 

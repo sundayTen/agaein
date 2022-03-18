@@ -31,6 +31,7 @@ type Mutation {
     # User
     login(kakaoId: String!): Login!
     updateUser(nickname: String, email: String, phoneNumber: String): User!
+    updateProfile(file: Upload!): String!
     # Article
     createArticle(boardType: BOARD_TYPE!, files: [Upload]!, articleDetail: ArticleDetailInput!): Article!
     updateArticle(id: ID!, files: [Upload]!, articleDetail: ArticleDetailInput!): Article!

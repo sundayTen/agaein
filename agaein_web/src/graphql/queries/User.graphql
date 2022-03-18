@@ -4,6 +4,7 @@ fragment UserFragment on User {
     email
     kakaoId
     phoneNumber
+    profileUrl
 }
 
 mutation login($kakaoId: String!) {

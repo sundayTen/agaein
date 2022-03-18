@@ -30,6 +30,11 @@ const resolvers = {
             return parent.articleType;
         },
     },
+    User: {
+        async profileUrl(parent: any) {
+            return (await knex('image').where(`user_id`, parent.id).first()) ?? null;
+        },
+    },
     Comment: {
         async author(parent: any) {
             return await knex('user').where('id', `${parent.userId}`).first();

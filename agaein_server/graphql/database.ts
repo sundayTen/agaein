@@ -172,6 +172,12 @@ export function initImage() {
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
                     table
+                        .integer('user_id')
+                        .references('id')
+                        .inTable('user')
+                        .onUpdate('CASCADE')
+                        .onDelete('CASCADE');
+                    table
                         .integer('report_id')
                         .references('id')
                         .inTable('report')
@@ -266,11 +272,7 @@ export function initReview() {
             knex.schema
                 .createTable('review', function (table: any) {
                     table.increments();
-                    table
-                        .integer('article_id')
-                        .references('id')
-                        .inTable('article')
-                        .onUpdate('CASCADE');
+                    table.integer('article_id').references('id').inTable('article').onUpdate('CASCADE');
                     table.string('title');
                     table.text('content');
                 })
