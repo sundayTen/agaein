@@ -75,7 +75,7 @@ const userMutations = {
             console.log(`store ${filename}`);
         });
 
-        
+        return imageForm.url;
     },
 };
 
