@@ -79,12 +79,16 @@ export const Step3ButtonGroup = styled.div`
 
 // * 크롤링
 export const ToggleWrap = styled.div`
-    margin: auto;
     width: 340px;
+    margin: 40px auto 0;
     background: #eeebe3;
+    border-radius: 28px;
+    padding: 4px;
 `;
 
-export const ToggleLabel = styled.label``;
+export const ToggleLabel = styled.label`
+    display: inline-block;
+`;
 
 export const ToggleInput = styled.input`
     display: none;
@@ -96,49 +100,45 @@ export const ToggleInput = styled.input`
             background: none;
             color: #efa03d;
         }
-        &:after {
-            border-radius: 15px;
-            background: #efa03d;
+    }
+
+    &.toggle-left + span {
+        border-right: 0px;
+
+        &:before {
             content: '';
+            width: 100%;
+            left: 100%;
+            border-radius: 24px;
+            background: #efa03d;
             height: 100%;
             position: absolute;
             top: 0;
             transition: left 200ms cubic-bezier(0.77, 0, 0.175, 1);
             width: 100%;
-            z-index: 0;
-        }
-    }
-
-    &.toggle-left + span {
-        border-right: 0px;
-        &:after {
-            width: 80%;
-            left: 100%;
+            z-index: -1;
         }
     }
     &.toggle-right + span {
         margin-left: 0px;
-        &:after {
-            width: 100%;
-            left: -100%;
-        }
     }
     &:checked + span {
         cursor: default;
         color: #fff;
         transition: color 100ms;
-        &:after {
+        &:before {
             left: 0;
         }
     }
 `;
 
 export const ToggleText = styled.span`
+    position: relative;
     border: 3px solid #1a1a1a;
     display: inline-block;
     padding: 10px;
     position: relative;
     text-align: center;
-    transition: background 600ms ease, color 600ms ease;
-    z-index: 10;
+    transition: all 600ms ease, color 600ms ease;
+    z-index: 1;
 `;
