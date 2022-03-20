@@ -1,5 +1,6 @@
 import { ApolloError } from 'apollo-server-errors';
 import { readAccessToken } from '../../../common/auth/jwtToken';
+import { sendEmail } from '../../../common/utils/email';
 import { knex } from '../../database';
 
 const articleMutations = {
@@ -308,7 +309,7 @@ const articleMutations = {
 
         const { id, content, password } = args;
 
-        if (content === "") {
+        if (content === '') {
             throw new ApolloError('Empty Content', 'BAD_USER_INPUT');
         }
 
@@ -375,6 +376,14 @@ const articleMutations = {
         try {
             const comments = await knex('comment').insert(commentForm).returning('*');
             const comment = comments[0];
+            const article = await knex('article').where('id', articleId).first();
+            const articleDetail = await knex(`${article.type}`).where('article_id', articleId).first();
+            const user = await knex('user').where('id', article.userId).first();
+
+            if (articleDetail.alarm && user.email != undefined) {
+                sendEmail(user.email, comment.content);
+            }
+            
             return comment;
         } catch {
             console.error('createComment에서 에러발생');
