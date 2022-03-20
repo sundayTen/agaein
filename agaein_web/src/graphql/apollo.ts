@@ -2,6 +2,7 @@ import Cookies from 'universal-cookie';
 import { ApolloClient, createHttpLink, InMemoryCache, from, NormalizedCacheObject, ApolloLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
+import moment from 'moment';
 import { createUploadLink } from 'apollo-upload-client';
 import { convertAge, convertAnimalType, convertGender, convertGratuity } from 'utils/converter';
 
@@ -80,6 +81,30 @@ export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
                     gratuity: {
                         read(gratuity) {
                             return convertGratuity(gratuity);
+                        },
+                    },
+                },
+            },
+            CrawlingResult: {
+                fields: {
+                    type: {
+                        read(type) {
+                            return convertAnimalType(type);
+                        },
+                    },
+                    gender: {
+                        read(gender) {
+                            return convertGender(gender);
+                        },
+                    },
+                    foundDate: {
+                        read(foundDate) {
+                            return moment(foundDate).format('YYYY-MM-DD');
+                        },
+                    },
+                    createdDate: {
+                        read(createdDate) {
+                            return moment(createdDate).format('YYYY-MM-DD');
                         },
                     },
                 },
