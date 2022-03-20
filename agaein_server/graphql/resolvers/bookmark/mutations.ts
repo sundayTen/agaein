@@ -38,7 +38,7 @@ const bookmarkMutations = {
         const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
         const userId = (<any>jwtToken).userId;
 
-        const bookmark = await knex('bookmark').where('id', args.article_id).first();
+        const bookmark = await knex('bookmark').where('articleId', args.id).first();
 
         if (bookmark === undefined) {
             throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');

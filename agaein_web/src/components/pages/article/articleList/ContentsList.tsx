@@ -1,10 +1,10 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { Font, PostItemBox, ReviewItem } from 'components/molecules';
 import { Article, Board_Type, useGetArticlesLazyQuery } from 'graphql/generated/generated';
 import useBookmark from 'hooks/useBookmark';
 import { ITEM_PER_PAGE } from '.';
 import { ArticleGridContainer, ArticleItem } from './ArticleList.style';
-import Loading from 'components/pages/common/Loading';
+import { ModalContext } from 'contexts';
 
 interface ListProps {
     type: Board_Type;
@@ -13,9 +13,12 @@ interface ListProps {
 }
 
 const ContentsList = (props: ListProps) => {
-    const { type, page = 1, searchText = '' } = props;
+    const { type, page = 1, searchText = undefined } = props;
     const { isBookmarked, setBookmark } = useBookmark();
-    const [get, { data, loading, error }] = useGetArticlesLazyQuery();
+    const [get, { data, loading, error }] = useGetArticlesLazyQuery({
+        onError: (e) => console.log(e),
+    });
+    const { setLoading } = useContext(ModalContext);
 
     const getArticles = useCallback(() => {
         get({
@@ -23,15 +26,18 @@ const ContentsList = (props: ListProps) => {
                 boardType: type,
                 limit: ITEM_PER_PAGE,
                 offset: (page - 1) * ITEM_PER_PAGE,
+                search: searchText,
             },
         });
-    }, [page]);
+    }, [page, searchText]);
 
     useEffect(() => {
         getArticles();
     }, [getArticles]);
 
-    if (error) {
+    setLoading(loading);
+
+    if (error || data === undefined) {
         return <Font label="에러가 발생했습니다" fontType="h2" />;
     }
     const articles = data?.articles as Article[];

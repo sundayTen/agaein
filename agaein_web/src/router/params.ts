@@ -1,3 +1,4 @@
+import { ERROR_TYPE } from 'const/types';
 import { Board_Type } from 'graphql/generated/generated';
 
 export interface CreateArticleStep1Params {
@@ -15,6 +16,10 @@ export interface ArticleListParams {
 }
 export interface ArticleDetailParams {
     id: string;
+}
+
+export interface ErrorParams {
+    code: ERROR_TYPE;
 }
 
 export interface CrawlingResultParams {

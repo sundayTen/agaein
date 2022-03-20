@@ -1,10 +1,11 @@
+import { ModalContext } from 'contexts/modalContext';
 import { UserContext } from './../contexts/userContext';
 import {
     useCreateBookmarkMutation,
     useDeleteBookmarkMutation,
     useGetBookmarksLazyQuery,
 } from 'graphql/generated/generated';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 
 /**
  * TODO : 아래 내용대로 훅 수정
@@ -18,35 +19,33 @@ const useBookmark = () => {
     const [bookmarks, setBookmarks] = useState<string[]>([]);
     const [create] = useCreateBookmarkMutation();
     const [drop] = useDeleteBookmarkMutation();
-    const [fetch, { data, loading, error }] = useGetBookmarksLazyQuery();
+    const [fetch, { loading }] = useGetBookmarksLazyQuery({
+        onCompleted: (data) => {
+            const bookmarkData = data?.bookmarks.map((bookmark) => (bookmark ? bookmark.articleId : ''));
+            setBookmarks(bookmarkData || []);
+        },
+    });
     const { isLoggedIn } = useContext(UserContext);
+    const { setLoading } = useContext(ModalContext);
 
-    const getTotalBookmarks = () => {
-        const localBookmarks = localStorage.getItem('bookmark')?.split(',') || [];
-        return Array.from(new Set([...bookmarks, ...localBookmarks]));
-    };
+    // const getTotalBookmarks = () => {
+    //     const localBookmarks = localStorage.getItem('bookmark')?.split(',') || [];
+    //     return Array.from(new Set([...bookmarks, ...localBookmarks]));
+    // };
 
-    const syncWithLocalStorage = () => {
-        localStorage.setItem('bookmark', bookmarks.join(','));
-    };
+    const fetchData = useCallback(async () => {
+        await fetch();
+        setLoading(loading);
+    }, [isLoggedIn]);
 
-    const fetchData = () => {
-        fetch();
-        if (loading || error || data === undefined) {
-            setBookmarks([]);
-            return;
-        }
-        const bookmarkData = data.bookmarks.map((bookmark) => (bookmark ? bookmark.articleId : ''));
-        setBookmarks(bookmarkData);
-    };
-
-    const initialize = () => {
+    const initialize = useCallback(() => {
         if (isLoggedIn) {
             fetchData();
             return;
         }
-    };
-    useEffect(initialize, []);
+    }, [fetchData]);
+
+    useEffect(initialize, [initialize]);
 
     const getTargetBookmarks = (article_id: string) => {
         if (isBookmarked(article_id)) {
@@ -74,12 +73,15 @@ const useBookmark = () => {
                 variables: {
                     id: articleId,
                 },
+                errorPolicy: 'ignore',
             });
+            return;
         }
         create({
             variables: {
                 articleId,
             },
+            errorPolicy: 'ignore',
         });
     };
 
