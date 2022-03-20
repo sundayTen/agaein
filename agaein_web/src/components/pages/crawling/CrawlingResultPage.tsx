@@ -31,7 +31,7 @@ const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResu
             id,
         },
     });
-    const [crawlingData, setCrawlingData] = useState<Array<CrawlingResult>>([]);
+    const [crawlingData, setCrawlingData] = useState<CrawlingResult[]>([]);
 
     useEffect(() => {
         let sortList = data?.crawlingResults;
