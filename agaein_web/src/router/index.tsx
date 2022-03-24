@@ -28,7 +28,6 @@ function Router() {
             <Route path="/reviews" component={ReviewList} />
             <Route path="/crawlingResult/:id/:keyword?" component={CrawlingResultPage} />
             <Route path="/myPage" component={MyPage} />
-            <Route path="/Error/:code" component={Error} />
             <Route path={'*'} component={NotFound} />
         </Switch>
     );

@@ -1,23 +1,40 @@
 import { Button, Font } from 'components/molecules';
-import { ERROR_TYPE } from 'const/types';
 import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 
 interface ErrorProps {
-    code: ERROR_TYPE;
+    error: Error;
+
+    resetErrorBoundary: () => void;
 }
 
-const Error = ({ code }: ErrorProps) => {
+const Error = ({ error, resetErrorBoundary }: ErrorProps) => {
     const history = useHistory();
     const goBack = () => {
         history.goBack();
     };
 
     return (
-        <div>
-            <Font fontType="h2" label={''} />
-            <Button label="뒤로가기" onClick={goBack} />
-        </div>
+        <ErrorContainer>
+            <Font fontType="h2" label={'문제가 발생했어요.'} />
+            <Buttons>
+                <Button label="뒤로가기" onClick={goBack} />
+                <Button label="리프레시" onClick={resetErrorBoundary} />
+            </Buttons>
+        </ErrorContainer>
     );
 };
 
 export default Error;
+
+const ErrorContainer = styled.div`
+    margin: 100px auto;
+    text-align: center;
+`;
+
+const Buttons = styled.div`
+    margin: 100px;
+    button + button {
+        margin-left: 10px;
+    }
+`;

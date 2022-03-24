@@ -73,7 +73,6 @@ const useBookmark = () => {
                 variables: {
                     id: articleId,
                 },
-                errorPolicy: 'ignore',
             });
             return;
         }
@@ -81,7 +80,6 @@ const useBookmark = () => {
             variables: {
                 articleId,
             },
-            errorPolicy: 'ignore',
         });
     };
 
