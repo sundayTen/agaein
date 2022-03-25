@@ -27,7 +27,6 @@ const HomeArticleList = ({ boardType, setLoading }: HomeArticleListProps) => {
         variables,
         skip: isReviewType(),
     });
-
     useEffect(() => {
         setLoading(loading);
     }, [loading]);

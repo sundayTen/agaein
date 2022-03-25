@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const HomeHeaderContainer = styled.div`
     text-align: center;
-    padding: 80px 0 120px;
+    padding: 80px 0 20px;
 `;
 
 export const HomeHeaderButtonGroup = styled.div`
@@ -16,4 +16,9 @@ export const HomeHeaderButtonGroup = styled.div`
     button + button {
         margin-left: 20px;
     }
+`;
+
+export const HomeImage = styled.img`
+    width: 892px;
+    height: 280px;
 `;

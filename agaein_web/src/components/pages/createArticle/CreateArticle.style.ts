@@ -6,8 +6,8 @@ interface BigButtonProps {
 }
 
 export const BigButton = styled.button<BigButtonProps>`
-    width: 400px;
-    height: 180px;
+    width: 460px;
+    height: 274px;
     justify-content: center;
     align-items: center;
     border-radius: 20px;
@@ -141,4 +141,9 @@ export const ToggleText = styled.span`
     text-align: center;
     transition: all 600ms ease, color 600ms ease;
     z-index: 1;
+`;
+
+export const Step1Image = styled.img`
+    width: 272px;
+    height: 190px;
 `;
