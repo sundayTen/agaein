@@ -11,7 +11,6 @@ import ReviewList from 'components/pages/review/ReviewList';
 import CrawlingResultPage from 'components/pages/crawling/CrawlingResultPage';
 import MyPage from 'components/pages/myPage/MyPage';
 import NotFound from 'components/pages/common/NotFound';
-import Error from 'components/pages/common/Error';
 
 // * 요기서 찾는 사람과 찾은 사람 화면을 분기하고, Route 목록은 다른 파일로 뺀다.
 function Router() {

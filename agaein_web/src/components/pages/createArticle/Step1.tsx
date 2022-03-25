@@ -6,7 +6,7 @@ import { Board_Type } from 'graphql/generated/generated';
 import { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { CreateArticleStep1Params } from 'router/params';
-import { BigButton, Step1ButtonGroup, Step1Container, Step1Image, UtilButtonGroup } from './CreateArticle.style';
+import { BigButton, Step1ButtonGroup, Step1Container, UtilButtonGroup } from './CreateArticle.style';
 import Step1ButtonImage from './Step1ButtonImage';
 
 const Step1 = ({ history }: RouteComponentProps<CreateArticleStep1Params>) => {
