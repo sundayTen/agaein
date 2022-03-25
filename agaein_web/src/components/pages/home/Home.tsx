@@ -44,22 +44,21 @@ const Home = (_: RouteComponentProps) => {
     const { setLoading } = useContext(ModalContext);
     const setLfgLoading = (lfg_loading: boolean) => dispatch({ type: 'SET_LFG_LOADING', lfg_loading });
     const setLfpLoading = (lfp_loading: boolean) => dispatch({ type: 'SET_LFP_LOADING', lfp_loading });
-    const setReveiwLoading = (review_loading: boolean) => dispatch({ type: 'SET_REVIEW_LOADING', review_loading });
+    const setReviewLoading = (review_loading: boolean) => dispatch({ type: 'SET_REVIEW_LOADING', review_loading });
     const isLoadOn = useMemo(() => {
-        return loadingState.lfg_loading && loadingState.lfp_loading && loadingState.review_loading;
+        return loadingState.lfg_loading || loadingState.lfp_loading || loadingState.review_loading;
     }, [loadingState.review_loading, loadingState.lfg_loading, loadingState.lfp_loading]);
 
     useEffect(() => {
         setLoading(isLoadOn);
     }, [isLoadOn]);
-    console.log('🚀 DATA :  ~ isLoadOn', isLoadOn);
 
     return (
         <Fragment>
             <HomeHeader />
             <HomeArticleList boardType={Board_Type.Lfg} setLoading={setLfgLoading} />
             <HomeArticleList boardType={Board_Type.Lfp} setLoading={setLfpLoading} />
-            <HomeArticleList boardType={Board_Type.Review} setLoading={setReveiwLoading} />
+            <HomeArticleList boardType={Board_Type.Review} setLoading={setReviewLoading} />
         </Fragment>
     );
 };

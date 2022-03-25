@@ -1,7 +1,8 @@
 import Button from 'components/molecules/Button';
 import Font from 'components/molecules/Font';
 import { useHistory } from 'react-router';
-import { HomeHeaderButtonGroup, HomeHeaderContainer } from './HomeHeader.style';
+import { HomeHeaderButtonGroup, HomeHeaderContainer, HomeImage } from './HomeHeader.style';
+import Home from 'assets/image/landing.png';
 
 const HomeHeader = () => {
     const history = useHistory();
@@ -20,6 +21,7 @@ const HomeHeader = () => {
                 <Button buttonStyle={'PAINTED'} label="게시글 작성" size="LARGE" onClick={onClickCreate} />
                 <Button label="실종동물 검색" size="LARGE" onClick={onClickSearch} />
             </HomeHeaderButtonGroup>
+            <HomeImage src={Home} />
         </HomeHeaderContainer>
     );
 };
