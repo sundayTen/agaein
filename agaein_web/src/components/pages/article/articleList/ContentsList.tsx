@@ -35,7 +35,9 @@ const ContentsList = (props: ListProps) => {
         getArticles();
     }, [getArticles]);
 
-    setLoading(loading);
+    useEffect(() => {
+        setLoading(loading);
+    }, [loading]);
 
     if (error || data === undefined) {
         return <Font label="에러가 발생했습니다" fontType="h2" />;

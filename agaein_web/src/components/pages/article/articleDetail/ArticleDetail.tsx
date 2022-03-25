@@ -11,7 +11,7 @@ import { UserContext } from 'contexts/userContext';
 import { Board_Type, Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
 import useArticle from 'graphql/hooks/useArticle';
 import useBookmark from 'hooks/useBookmark';
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
 import { formattedDate, YYYYMMDD } from 'utils/date';
@@ -50,8 +50,10 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
             readArticle(data.article?.id);
         },
     });
-    setLoading(loading);
-    if (error) return <p>Error occur</p>;
+    useEffect(() => {
+        setLoading(loading);
+    }, [loading]);
+    if (error) return <></>;
     if (data === undefined || !isArticle(data.article)) return <p>No data</p>;
 
     const { id, createdAt, articleDetail, view, author, comments = [], images = [] } = data.article;
