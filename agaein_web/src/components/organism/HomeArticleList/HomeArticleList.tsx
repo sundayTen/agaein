@@ -5,12 +5,14 @@ import useBookmark from 'hooks/useBookmark';
 import { getTitle } from 'utils/converter';
 import { ArticleList, ButtonViewAll, ListContainer, ListHeader, ListItem, TitleBox } from './HomeArticleList.style';
 import BestReviewList from '../BestReviewList/BestReviewList';
+import { useEffect } from 'react';
 
 interface HomeArticleListProps {
     boardType: Board_Type;
+    setLoading: (loading: boolean) => void;
 }
 
-const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
+const HomeArticleList = ({ boardType, setLoading }: HomeArticleListProps) => {
     const { isBookmarked, setBookmark } = useBookmark();
     const isReviewType = () => {
         return boardType === Board_Type.Review;
@@ -26,8 +28,11 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
         skip: isReviewType(),
     });
 
-    if (loading) return <p>Loading</p>;
-    if (error) return <p>{`Error : ${error}`}</p>;
+    useEffect(() => {
+        setLoading(loading);
+    }, [loading]);
+
+    if (error || loading) return <></>;
 
     const articles = data?.articles.map((article) => article) as Article[];
 
