@@ -27,6 +27,7 @@ const PostItem = (props: PostItemProps) => {
     const { item, bookmarked = false, setBookmark = () => {} } = props;
     const { id, articleDetail, createdAt, images } = item;
     const { breed, type, gender, location, age, gratuity } = articleDetail as Lfp;
+
     const isNotNull = (item: unknown) => {
         if (typeof item === 'number') {
             return item !== null && item !== undefined && item > 0;
