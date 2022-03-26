@@ -5,7 +5,7 @@ import { getTitle } from 'utils/converter';
 import { ArticleList, ButtonViewAll, ListContainer, ListHeader, ListItem, TitleBox } from './HomeArticleList.style';
 import BestReviewList from '../BestReviewList/BestReviewList';
 import { useContext, useEffect } from 'react';
-import { BookmarkContext } from 'hooks/bookmarkContext';
+import { BookmarkContext } from 'contexts';
 
 interface HomeArticleListProps {
     boardType: Board_Type;

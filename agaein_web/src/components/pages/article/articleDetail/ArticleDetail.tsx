@@ -1,3 +1,4 @@
+import { Fragment, useContext, useEffect, useState } from 'react';
 import penguin from 'assets/image/penguin.png';
 import { BookMark, Button, Chip, Font, ImageCarousel, ErrorCheckerInput } from 'components/molecules';
 import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
@@ -9,8 +10,7 @@ import { ModalContext } from 'contexts';
 import { UserContext } from 'contexts/userContext';
 import { Board_Type, Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
 import useArticle from 'graphql/hooks/useArticle';
-import { BookmarkContext } from 'hooks/bookmarkContext';
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { BookmarkContext } from 'contexts';
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
 import { formattedDate, YYYYMMDD } from 'utils/date';
