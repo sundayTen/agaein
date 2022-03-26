@@ -1,4 +1,3 @@
-import { useApolloClient } from '@apollo/client';
 import penguin from 'assets/image/penguin.png';
 import { BookMark, Button, Chip, Font, ImageCarousel, ErrorCheckerInput } from 'components/molecules';
 import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
@@ -10,7 +9,7 @@ import { ModalContext } from 'contexts';
 import { UserContext } from 'contexts/userContext';
 import { Board_Type, Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
 import useArticle from 'graphql/hooks/useArticle';
-import useBookmark from 'hooks/useBookmark';
+import { BookmarkContext } from 'hooks/bookmarkContext';
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { ArticleDetailParams } from 'router/params';
@@ -35,7 +34,7 @@ import {
 } from './ArticleDetail.style';
 
 const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
-    const { isBookmarked, setBookmark } = useBookmark();
+    const { isBookmarked, setBookmark } = useContext(BookmarkContext);
     const { deleteArticle, readArticle } = useArticle();
     const { isLoggedIn, user } = useContext(UserContext);
     const [isOpenModal, setIsOpenModal] = useState(false);

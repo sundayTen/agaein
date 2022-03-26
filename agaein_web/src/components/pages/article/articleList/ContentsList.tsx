@@ -1,10 +1,10 @@
 import { useCallback, useContext, useEffect } from 'react';
 import { Font, PostItemBox, ReviewItem } from 'components/molecules';
 import { Article, Board_Type, useGetArticlesLazyQuery } from 'graphql/generated/generated';
-import useBookmark from 'hooks/useBookmark';
 import { ITEM_PER_PAGE } from '.';
 import { ArticleGridContainer, ArticleItem } from './ArticleList.style';
 import { ModalContext } from 'contexts';
+import { BookmarkContext } from 'hooks/bookmarkContext';
 
 interface ListProps {
     type: Board_Type;
@@ -14,7 +14,7 @@ interface ListProps {
 
 const ContentsList = (props: ListProps) => {
     const { type, page = 1, searchText = undefined } = props;
-    const { isBookmarked, setBookmark } = useBookmark();
+    const { isBookmarked, setBookmark } = useContext(BookmarkContext);
     const [get, { data, loading, error }] = useGetArticlesLazyQuery({
         onError: (e) => console.log(e),
     });
