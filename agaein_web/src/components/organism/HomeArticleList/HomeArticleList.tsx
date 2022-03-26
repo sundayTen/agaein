@@ -1,11 +1,11 @@
 import Font from 'components/molecules/Font';
 import PostItem from 'components/molecules/PostItemBox/PostItemBox';
 import { Article, Board_Type, useGetArticlesQuery, GetArticlesQueryVariables } from 'graphql/generated/generated';
-import useBookmark from 'hooks/useBookmark';
 import { getTitle } from 'utils/converter';
 import { ArticleList, ButtonViewAll, ListContainer, ListHeader, ListItem, TitleBox } from './HomeArticleList.style';
 import BestReviewList from '../BestReviewList/BestReviewList';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+import { BookmarkContext } from 'hooks/bookmarkContext';
 
 interface HomeArticleListProps {
     boardType: Board_Type;
@@ -13,7 +13,7 @@ interface HomeArticleListProps {
 }
 
 const HomeArticleList = ({ boardType, setLoading }: HomeArticleListProps) => {
-    const { isBookmarked, setBookmark } = useBookmark();
+    const { isBookmarked, setBookmark } = useContext(BookmarkContext);
     const isReviewType = () => {
         return boardType === Board_Type.Review;
     };
