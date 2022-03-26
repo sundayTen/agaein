@@ -17,7 +17,7 @@ import {
     ToggleText,
 } from 'components/pages/createArticle/CreateArticle.style';
 import Button from 'components/molecules/Button';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { useState } from 'react';
 import { Finding_Type, useCrawlingMutation } from 'graphql/generated/generated';
 import { useEffect } from 'react';
