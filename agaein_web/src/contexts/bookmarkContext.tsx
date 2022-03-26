@@ -1,5 +1,5 @@
 import { ModalContext } from 'contexts/modalContext';
-import { UserContext } from '../contexts/userContext';
+import { UserContext } from './userContext';
 import {
     useCreateBookmarkMutation,
     useDeleteBookmarkMutation,
@@ -34,18 +34,12 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
     const { isLoggedIn } = useContext(UserContext);
     const { setLoading } = useContext(ModalContext);
 
-    // const getTotalBookmarks = () => {
-    //     const localBookmarks = localStorage.getItem('bookmark')?.split(',') || [];
-    //     return Array.from(new Set([...bookmarks, ...localBookmarks]));
-    // };
-
     const fetchData = useCallback(async () => {
         await fetch();
         setLoading(loading);
     }, [isLoggedIn]);
 
     const initialize = useCallback(() => {
-        console.log('Rerender');
         if (isLoggedIn) {
             fetchData();
             return;
