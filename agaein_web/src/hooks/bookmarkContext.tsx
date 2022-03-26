@@ -1,5 +1,9 @@
 import { ModalContext } from 'contexts/modalContext';
+<<<<<<< HEAD:agaein_web/src/contexts/bookmarkContext.tsx
 import { UserContext } from './userContext';
+=======
+import { UserContext } from '../contexts/userContext';
+>>>>>>> 6bd2bb9 (useBookmark -> BookmarkContext로 변경):agaein_web/src/hooks/bookmarkContext.tsx
 import {
     useCreateBookmarkMutation,
     useDeleteBookmarkMutation,
