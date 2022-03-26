@@ -4,7 +4,7 @@ import { Article, Board_Type, useGetArticlesLazyQuery } from 'graphql/generated/
 import { ITEM_PER_PAGE } from '.';
 import { ArticleGridContainer, ArticleItem } from './ArticleList.style';
 import { ModalContext } from 'contexts';
-import { BookmarkContext } from 'hooks/bookmarkContext';
+import { BookmarkContext } from 'contexts/bookmarkContext';
 
 interface ListProps {
     type: Board_Type;
