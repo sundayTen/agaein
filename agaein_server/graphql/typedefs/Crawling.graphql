@@ -11,7 +11,7 @@ type CrawlingResult {
     name: String
     gender: String
     age: Int
-    foundDate: Date
+    foundOrLostDate: Date
     createdDate: Date
     site: String!
     keywords: [String]
@@ -36,7 +36,7 @@ type CrawlingKeywords {
 
 input CrawlingInput {
     breedId: ID
-    lostDate: Date!
+    foundOrLostDate: Date!
     location: LocationInput!
     name: String
     age: Int

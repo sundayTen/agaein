@@ -381,7 +381,7 @@ const articleMutations = {
             const user = await knex('user').where('id', article.userId).first();
 
             if (articleDetail.alarm && user.email != undefined) {
-                sendEmail(user.email, comment.content);
+                sendEmail(user.email, articleId, comment.content);
             }
             
             return comment;
