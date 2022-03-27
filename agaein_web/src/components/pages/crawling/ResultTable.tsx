@@ -44,7 +44,7 @@ const ResultTable = ({ crawlingData }: ResultTableProps) => {
                                 <td>{isData(data?.name)}</td>
                                 <td>{isData(data?.gender)}</td>
                                 <td>{isData(data?.age)}</td>
-                                <td>{isData(data?.foundDate)}</td>
+                                <td>{isData(data?.foundOrLostDate)}</td>
                                 <td>{isData(data?.createdDate)}</td>
                                 <td style={{ width: '120px' }}>
                                     <a href={data?.site}>
