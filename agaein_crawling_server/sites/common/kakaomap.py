@@ -1,5 +1,6 @@
 import requests
 
+
 def getCoordinate(keyword):
     query = ""
     splited_keyword = keyword.split(" ")

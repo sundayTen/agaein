@@ -1,10 +1,7 @@
-# 표준 라이브러리
 import time
 
-# 서드 파티 라이브러리
-from sqlalchemy import Column, Integer, String, JSON, Text, Date
+from sqlalchemy import JSON, Column, Date, Integer, String, Text
 
-# 로컬
 from .database import Base
 
 
@@ -21,7 +18,22 @@ class CrawlingPetResult(Base):
     id = Column(Integer, primary_key=True)
     type = Column(String(255), index=True, nullable=False)
     site = Column(Text, nullable=False)
-    found_date = Column(Date)
+    found_or_lost_date = Column(Date)
+    created_date = Column(Date)
+    keywords = Column(Text)
+    breed = Column(String(255))
+    gender = Column(String(255))
+    age = Column(String(255))
+    location = Column(String(255))
+    name = Column(String(255))
+
+class CrawlingOwnerResult(Base):
+    __tablename__ = "crawling_owner_result"
+
+    id = Column(Integer, primary_key=True)
+    type = Column(String(255), index=True, nullable=False)
+    site = Column(Text, nullable=False)
+    found_or_lost_date = Column(Date)
     created_date = Column(Date)
     keywords = Column(Text)
     breed = Column(String(255))

@@ -1,12 +1,9 @@
-# 표준 라이브러리
 from os import getenv
 
-# 서드 파티 라이브러리
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
 
 # DB 키 습득
 load_dotenv(verbose=True)
