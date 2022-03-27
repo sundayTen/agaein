@@ -48,7 +48,7 @@ const bookmarkMutations = {
             throw new ApolloError('Wrong User', 'UNAUTHENTICATED');
         }
 
-        await knex('bookmark').where('id', args.id).del();
+        await knex('bookmark').where('article_id', args.id).del();
 
         return args.id;
     },

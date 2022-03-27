@@ -5,20 +5,20 @@ enum BOARD_TYPE {
 }
 
 enum GENDER {
-    male
-    female
-    unknown
+    MALE
+    FEMAEL
+    UNKNOWN
 }
 
 enum ARTICLE_ORDER {
-    new
-    old
-    view
+    NEW
+    OLD
+    VIEW
 }
 
 enum FINDING_STATUS {
-    finding
-    done
+    FINDING
+    DONE
 }
 
 type Location {
