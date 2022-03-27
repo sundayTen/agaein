@@ -40,7 +40,6 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
     }, [isLoggedIn]);
 
     const initialize = useCallback(() => {
-        console.log('Rerender');
         if (isLoggedIn) {
             fetchData();
             return;
