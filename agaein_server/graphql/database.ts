@@ -400,7 +400,7 @@ export function initCrawlingPetResult() {
                     table.increments();
                     table.string('type').notNullable();
                     table.text('site').notNullable();
-                    table.dateTime('found_date');
+                    table.dateTime('found_or_lost_date');
                     table.dateTime('created_date');
                     table.text('keywords');
                     table.string('breed');
@@ -427,7 +427,7 @@ export function initCrawlingOwnerResult() {
                     table.increments();
                     table.string('type').notNullable();
                     table.text('site').notNullable();
-                    table.dateTime('found_date');
+                    table.dateTime('found_or_lost_date');
                     table.dateTime('created_date');
                     table.text('keywords');
                     table.string('breed');

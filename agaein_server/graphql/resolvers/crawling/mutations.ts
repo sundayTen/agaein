@@ -16,8 +16,8 @@ const crawlingMutations = {
 
         const results = await knex(`crawling_${type.toLowerCase()}_result`)
             .where('type', breed.type)
-            .andWhere('found_date', '>=', foundOrLostDate)
-            .orderBy('found_date', 'desc');
+            .andWhere('found_or_lost_date', '>=', foundOrLostDate)
+            .orderBy('found_or_lost_date', 'desc');
 
         const filteredResults = results.filter((result: any) => {
             let check1 = true;
