@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FormRow, FormLabel } from './Form.style';
 import styled from 'styled-components';
+import { Gender } from 'graphql/generated/generated';
 
 const Form = styled.div`
     flex: 1;
@@ -81,10 +82,10 @@ export function FormGender({ name, onChange }: FormGenderProps) {
                     <input
                         type="radio"
                         name="gender"
-                        value="male"
+                        value={Gender.Male}
                         className="blind"
                         onChange={inputChangeHandler}
-                        checked={gender === 'male'}
+                        checked={gender === Gender.Male}
                     />
                     <RadioIcon />
                     수컷
@@ -93,10 +94,10 @@ export function FormGender({ name, onChange }: FormGenderProps) {
                     <input
                         type="radio"
                         name="gender"
-                        value="femail"
+                        value={Gender.Female}
                         className="blind"
                         onChange={inputChangeHandler}
-                        checked={gender === 'femail'}
+                        checked={gender === Gender.Female}
                     />
                     <RadioIcon />
                     암컷
@@ -105,10 +106,10 @@ export function FormGender({ name, onChange }: FormGenderProps) {
                     <input
                         type="radio"
                         name="gender"
-                        value="unknown"
+                        value={Gender.Unknown}
                         className="blind"
                         onChange={inputChangeHandler}
-                        checked={gender === 'unknown'}
+                        checked={gender === Gender.Unknown}
                     />
                     <RadioIcon />
                     모름
