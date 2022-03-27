@@ -1,21 +1,27 @@
 import { ModalContext } from 'contexts/modalContext';
-import { UserContext } from './../contexts/userContext';
+import { UserContext } from './userContext';
 import {
     useCreateBookmarkMutation,
     useDeleteBookmarkMutation,
     useGetBookmarksLazyQuery,
 } from 'graphql/generated/generated';
-import { useState, useContext, useEffect, useCallback } from 'react';
+import { useState, useContext, useEffect, useCallback, createContext } from 'react';
 
-/**
- * TODO : 아래 내용대로 훅 수정
- * 기본적으로 debounce & optimistic UI로 쿼리함
- * 다음의 경우의 수를 모두 커버해야함
- * 1. 회원일 경우 - 서버 데이터를 set
- * 2. 비회원일 경우 - 로컬스토리지 데이터를 set
- * 3. 비회원으로 활동하다 로그인한 경우 - 서버데이터, 로컬스토리지 데이터 비교 후 차이만큼 create / delete mutation
- */
-const useBookmark = () => {
+interface BookmarkContextProps {
+    isBookmarked: (articleId: string) => boolean;
+    setBookmark: (articleId: string) => void;
+}
+
+export const BookmarkContext = createContext<BookmarkContextProps>({
+    isBookmarked: () => false,
+    setBookmark: () => {},
+});
+
+type BookmarkProviderProps = {
+    children: JSX.Element | JSX.Element[] | undefined;
+};
+
+export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
     const [bookmarks, setBookmarks] = useState<string[]>([]);
     const [create] = useCreateBookmarkMutation();
     const [drop] = useDeleteBookmarkMutation();
@@ -27,11 +33,6 @@ const useBookmark = () => {
     });
     const { isLoggedIn } = useContext(UserContext);
     const { setLoading } = useContext(ModalContext);
-
-    // const getTotalBookmarks = () => {
-    //     const localBookmarks = localStorage.getItem('bookmark')?.split(',') || [];
-    //     return Array.from(new Set([...bookmarks, ...localBookmarks]));
-    // };
 
     const fetchData = useCallback(async () => {
         await fetch();
@@ -87,6 +88,5 @@ const useBookmark = () => {
         return !!bookmarks.find((bookmark) => bookmark === article_id);
     };
 
-    return { setBookmark, isBookmarked };
+    return <BookmarkContext.Provider value={{ isBookmarked, setBookmark }}>{children}</BookmarkContext.Provider>;
 };
-export default useBookmark;

@@ -1,17 +1,19 @@
 import Font from 'components/molecules/Font';
 import PostItem from 'components/molecules/PostItemBox/PostItemBox';
 import { Article, Board_Type, useGetArticlesQuery, GetArticlesQueryVariables } from 'graphql/generated/generated';
-import useBookmark from 'hooks/useBookmark';
 import { getTitle } from 'utils/converter';
 import { ArticleList, ButtonViewAll, ListContainer, ListHeader, ListItem, TitleBox } from './HomeArticleList.style';
 import BestReviewList from '../BestReviewList/BestReviewList';
+import { useContext, useEffect } from 'react';
+import { BookmarkContext } from 'contexts';
 
 interface HomeArticleListProps {
     boardType: Board_Type;
+    setLoading: (loading: boolean) => void;
 }
 
-const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
-    const { isBookmarked, setBookmark } = useBookmark();
+const HomeArticleList = ({ boardType, setLoading }: HomeArticleListProps) => {
+    const { isBookmarked, setBookmark } = useContext(BookmarkContext);
     const isReviewType = () => {
         return boardType === Board_Type.Review;
     };
@@ -25,9 +27,11 @@ const HomeArticleList = ({ boardType }: HomeArticleListProps) => {
         variables,
         skip: isReviewType(),
     });
+    useEffect(() => {
+        setLoading(loading);
+    }, [loading]);
 
-    if (loading) return <p>Loading</p>;
-    if (error) return <p>{`Error : ${error}`}</p>;
+    if (error || loading) return <></>;
 
     const articles = data?.articles.map((article) => article) as Article[];
 

@@ -13,6 +13,7 @@ import { ModalProvider } from 'contexts/modalContext';
 import ScrollToTop from 'components/molecules/ScrollToTop/scrollToTop';
 import { ErrorBoundary } from 'react-error-boundary';
 import Error from 'components/pages/common/Error';
+import { BookmarkProvider } from 'contexts/bookmarkContext';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -22,8 +23,10 @@ ReactDOM.render(
                     <ThemeProvider theme={theme}>
                         <UserProvider>
                             <ModalProvider>
-                                <ScrollToTop />
-                                <App />
+                                <BookmarkProvider>
+                                    <ScrollToTop />
+                                    <App />
+                                </BookmarkProvider>
                             </ModalProvider>
                         </UserProvider>
                     </ThemeProvider>
