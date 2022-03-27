@@ -3,7 +3,8 @@ import Font from 'components/molecules/Font';
 import StepIndicator from 'components/molecules/StepIndicator';
 import PageTitle from 'components/organism/PageTitle/PageTitle';
 import { Board_Type } from 'graphql/generated/generated';
-import { useState } from 'react';
+import useHover from 'hooks/useHover';
+import { useRef, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { CreateArticleStep1Params } from 'router/params';
 import { BigButton, Step1ButtonGroup, Step1Container, UtilButtonGroup } from './CreateArticle.style';
@@ -11,6 +12,10 @@ import Step1ButtonImage from './Step1ButtonImage';
 
 const Step1 = ({ history }: RouteComponentProps<CreateArticleStep1Params>) => {
     const [selectedBtnIndex, setSelectedBtnIndex] = useState(-1);
+    const button1Ref = useRef<HTMLButtonElement>(null);
+    const button2Ref = useRef<HTMLButtonElement>(null);
+    const isButton1Hover = useHover(button1Ref);
+    const isButton2Hover = useHover(button2Ref);
 
     const getBoardType = () => {
         return selectedBtnIndex === 0 ? Board_Type.Lfp : Board_Type.Lfg;
@@ -31,13 +36,12 @@ const Step1 = ({ history }: RouteComponentProps<CreateArticleStep1Params>) => {
                 <StepIndicator active={1} />
                 <PageTitle title="카테고리 선택하기" subTitle="목적에 맞는 카테고리를 선택해주세요" />
                 <Step1ButtonGroup>
-                    {/* TODO : Button 컴포넌트로 대체 */}
-                    <BigButton onClick={() => onClickSelector(0)} active={selectedBtnIndex === 0}>
-                        <Step1ButtonImage active={selectedBtnIndex === 0} type="lost" />
+                    <BigButton ref={button1Ref} onClick={() => onClickSelector(0)} active={selectedBtnIndex === 0}>
+                        <Step1ButtonImage active={isButton1Hover || selectedBtnIndex === 0} type="lost" />
                         <Font label="찾고 있어요!" fontType="h3" fontWeight="bold" status="ACTIVE" />
                     </BigButton>
-                    <BigButton onClick={() => onClickSelector(1)} active={selectedBtnIndex === 1}>
-                        <Step1ButtonImage active={selectedBtnIndex === 1} type="found" />
+                    <BigButton ref={button2Ref} onClick={() => onClickSelector(1)} active={selectedBtnIndex === 1}>
+                        <Step1ButtonImage active={isButton2Hover || selectedBtnIndex === 1} type="found" />
                         <Font label="발견 했어요!" fontType="h3" fontWeight="bold" status="ACTIVE" />
                     </BigButton>
                 </Step1ButtonGroup>
