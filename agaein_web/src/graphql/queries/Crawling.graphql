@@ -5,7 +5,7 @@ enum FINDING_TYPE {
 
 mutation crawling(
     $breedId: ID
-    $lostDate: Date!
+    $foundOrLostDate: Date!
     $location: LocationInput!
     $name: String
     $age: Int
@@ -16,7 +16,7 @@ mutation crawling(
     crawling(
         baseInfo: {
             breedId: $breedId
-            lostDate: $lostDate
+            foundOrLostDate: $foundOrLostDate
             location: $location
             name: $name
             age: $age
@@ -36,7 +36,7 @@ query crawlingResults($id: ID!) {
         name
         gender
         age
-        foundDate
+        foundOrLostDate
         createdDate
         site
         keywords

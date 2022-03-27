@@ -1,5 +1,6 @@
 import { ApolloError } from 'apollo-server-errors';
 import { readAccessToken } from '../../../common/auth/jwtToken';
+import { sendEmail } from '../../../common/utils/email';
 import { knex } from '../../database';
 
 const reportMutations = {
@@ -53,6 +54,14 @@ const reportMutations = {
                             console.log(`store ${filename}`);
                         });
                     });
+
+                    const article = await knex('article').where('id', articleId).first();
+                    const articleDetail = await knex(`${article.type}`).where('article_id', articleId).first();
+                    const user = await knex('user').where('id', article.userId).first();
+
+                    if (articleDetail.alarm && user.email != undefined) {
+                        sendEmail(user.email, articleId, report.content);
+                    }
                 })
                 .then(() => {
                     return reportResponse;
@@ -131,7 +140,7 @@ const reportMutations = {
                     return reportResponse;
                 })
                 .catch(() => {
-                    console.error('createReport에서 에러발생');
+                    console.error('updateReport에서 에러발생');
                     console.trace();
 
                     throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
