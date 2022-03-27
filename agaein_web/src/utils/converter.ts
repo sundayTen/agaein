@@ -7,20 +7,13 @@ const GRATUITY_UNIT = 10000;
  * @param { Gender } gender male | female | unknown
  * @returns { string } 수컷 | 암컷 | 모름
  */
-// TODO: any 타입으로 바꾼 이유는 파라미터 타입으로 사용하던 enum을 추후 리팩토링 한다고 결정되서 임시방편으로 돌려놓기 위함 입니다
-function convertGender(gender: any): string | null {
+function convertGender(gender: Gender): string | null {
     switch (gender) {
         case Gender.Male:
             return '수컷';
-        case 'MALE':
-            return '수컷';
         case Gender.Female:
             return '암컷';
-        case 'FEMALE':
-            return '암컷';
         case Gender.Unknown:
-            return null;
-        case 'UNKNOWN':
             return null;
         default:
             break;
@@ -33,20 +26,13 @@ function convertGender(gender: any): string | null {
  * @param { Breed_Type } type : DOG | CAT | ETC
  * @returns { string } 개 | 고양이 | 기타
  */
-// TODO: any 타입으로 바꾼 이유는 파라미터 타입으로 사용하던 enum을 추후 리팩토링 한다고 결정되서 임시방편으로 돌려놓기 위함 입니다
-function convertAnimalType(type: any): string {
+function convertAnimalType(type: Breed_Type): string {
     switch (type) {
         case Breed_Type.Dog:
             return '강아지';
-        case 'DOG':
-            return '강아지';
         case Breed_Type.Cat:
             return '고양이';
-        case 'CAT':
-            return '고양이';
         case Breed_Type.Etc:
-            return '기타';
-        case 'ETC':
             return '기타';
         default:
             break;
