@@ -18,6 +18,7 @@ const BestReviewList = () => {
 
     if (loading) return <p>Loading</p>;
     if (error) return <p>{`Error : ${error}`}</p>;
+    if (data?.articles.length === 0) return <p>등록된 게시글이 없습니다.</p>;
 
     const reviews = data?.articles.map((review) => review) as Article[];
 
