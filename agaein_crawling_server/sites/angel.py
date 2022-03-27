@@ -43,11 +43,11 @@ def angel_crawling(db: Session = next(get_db())):
                 html = response.text
                 soup = BeautifulSoup(html, "html.parser")
 
-                crawlingPageType = re.split(
-                    r"[()]", str(soup.select(".about-header")[0])
-                )[1][0:2]
-
                 try:
+                    crawlingPageType = re.split(
+                        r"[()]", str(soup.select(".about-header")[0])
+                    )[1][0:2]
+                    
                     if crawlingPageType in ["목격", "구조"]:
                         findingCheck = False
                     elif crawlingPageType == "실종":
