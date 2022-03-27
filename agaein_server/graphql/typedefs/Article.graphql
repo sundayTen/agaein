@@ -6,7 +6,7 @@ enum BOARD_TYPE {
 
 enum GENDER {
     MALE
-    FEMAEL
+    FEMALE
     UNKNOWN
 }
 
