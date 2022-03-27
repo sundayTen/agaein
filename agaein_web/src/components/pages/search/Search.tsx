@@ -27,7 +27,7 @@ const Search = ({ history }: RouteComponentProps) => {
     const [crawlingId, setCrawlingId] = useState<String>();
     const [currentInputData, setCurrentInputData] = useState({
         breedId: '3',
-        lostDate: undefined,
+        foundOrLostDate: undefined,
         location: {
             lat: 1,
             lng: 1,
@@ -55,7 +55,7 @@ const Search = ({ history }: RouteComponentProps) => {
         const response = await crawling({
             variables: {
                 breedId: currentInputData?.breedId,
-                lostDate: currentInputData?.lostDate,
+                foundOrLostDate: currentInputData?.foundOrLostDate,
                 location: currentInputData?.location,
                 name: currentInputData?.name,
                 age: currentInputData?.age,
@@ -96,7 +96,7 @@ const Search = ({ history }: RouteComponentProps) => {
             </ToggleWrap>
             <FormWrapper formTitle={'실종 동물 정보'}>
                 <FormBreed name="breedId" onChange={inputChangeHandler} />
-                <FormDate name="lostDate" onChange={inputChangeHandler} type="LFP" />
+                <FormDate name="foundOrLostDate" onChange={inputChangeHandler} type="LFP" />
                 <FormAddress name="location" onChange={inputChangeHandler} type="LFP" />
                 <FormInput
                     name="name"
@@ -116,7 +116,7 @@ const Search = ({ history }: RouteComponentProps) => {
                     onClick={() => {
                         getCrawlingData();
                     }}
-                    disabled={currentInputData.lostDate === '' || currentInputData.location.address === ''}
+                    disabled={currentInputData.foundOrLostDate === '' || currentInputData.location.address === ''}
                 />
             </ButtonWrapper>
         </>
