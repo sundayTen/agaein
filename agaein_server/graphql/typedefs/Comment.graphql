@@ -13,3 +13,11 @@ input CommentInput {
     commentId: ID
     password: String
 }
+
+type ProfileComment implements Timestamps {
+    id: ID!
+    articleId: Int!
+    content: String!
+    createdAt: Date!
+    updatedAt: Date!
+}
