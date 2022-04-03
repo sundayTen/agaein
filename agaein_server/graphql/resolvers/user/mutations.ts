@@ -1,6 +1,6 @@
 import { ApolloError } from 'apollo-server-errors';
 import { knex } from '../../database';
-import { validateLogin, validatePassword } from '../../../common/validation/user';
+import { validateLogin, validateLoginPassword } from '../../../common/validation/user';
 import { getRandomNickname } from '../../../common/utils/nickname';
 import { getAccessToken, getRefreshToken, readAccessToken } from '../../../common/auth/jwtToken';
 import { validateAuthorizationHeader } from '../../../common/validation/auth';
@@ -10,7 +10,7 @@ const userMutations = {
         const authorization = context.req.headers.authorization;
         validateAuthorizationHeader(authorization);
         validateLogin(args.kakaoId);
-        validatePassword(args.pw);
+        validateLoginPassword(args.pw);
 
         let user = await knex('user').where('kakao_id', args.kakaoId).first();
         if (user === undefined) {

@@ -67,15 +67,13 @@ export function isValidatedSignup(user: any) {
 }
 
 export function validateLogin(kakaoId: String) {
-    // @TODO 밸리데이션 변경 요망 - 로그인 바꿀 때 같이.
     if (kakaoId.length < 6) {
         throw new ApolloError('isNotValidated', 'BAD_USER_INPUT');
     }
 }
 
 
-export function validatePassword(pw: String) {
-    // @TODO 밸리데이션 변경 요망 - 로그인 바꿀 때 같이.
+export function validateLoginPassword(pw: String) {
     if (pw != process.env.LOGIN_PW) {
         throw new ApolloError('isNotValidated', 'BAD_USER_INPUT');
     }
