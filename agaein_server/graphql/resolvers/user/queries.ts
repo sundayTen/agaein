@@ -62,6 +62,9 @@ const userQueries = {
             return article;
         });
 
+        const comments = await knex('comment').where('user_id', userId);
+        profile.comments = comments;
+
         const reviews = await knex('review')
             .join('article', 'article.id', 'review.article_id')
             .where('article.user_id', userId)
