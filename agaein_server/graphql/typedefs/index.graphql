@@ -29,7 +29,7 @@ type Query {
 
 type Mutation {
     # User
-    login(kakaoId: String!): Login!
+    login(kakaoId: String!, pw: String!): Login!
     updateUser(nickname: String, email: String, phoneNumber: String): User!
     updateProfile(file: Upload!): String!
     # Article
