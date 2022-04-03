@@ -7,8 +7,8 @@ fragment UserFragment on User {
     profileUrl
 }
 
-mutation login($kakaoId: String!) {
-    login(kakaoId: $kakaoId) {
+mutation login($kakaoId: String!, pw: $String!) {
+    login(kakaoId: $kakaoId, pw: $pw ) {
         accessToken
         refreshToken
         id

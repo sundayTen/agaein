@@ -14,6 +14,8 @@ import ScrollToTop from 'components/molecules/ScrollToTop/scrollToTop';
 import { ErrorBoundary } from 'react-error-boundary';
 import Error from 'components/pages/common/Error';
 import { BookmarkProvider } from 'contexts/bookmarkContext';
+import dotenv from 'dotenv';
+dotenv.config();
 
 ReactDOM.render(
     <React.StrictMode>
