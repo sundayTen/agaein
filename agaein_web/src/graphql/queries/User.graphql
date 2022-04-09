@@ -1,9 +1,12 @@
-
-mutation login($kakaoId: String!, pw: $String!) {
+mutation login($kakaoId: String!, $pw: String!) {
     login(kakaoId: $kakaoId, pw: $pw) {
+        id
+        nickname
+        email
+        kakaoId
+        phoneNumber
         accessToken
         refreshToken
-        ...UserFragment
     }
 }
 

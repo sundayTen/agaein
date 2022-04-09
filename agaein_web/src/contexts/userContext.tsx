@@ -57,7 +57,7 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
         const loginData = await loginMutation({
             variables: {
                 kakaoId,
-                // pw: process.env.REACT_APP_PASSWORD,
+                pw: process.env.REACT_APP_PASSWORD as string,
             },
         });
         const { errors, data } = loginData;

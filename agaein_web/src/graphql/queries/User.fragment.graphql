@@ -1,0 +1,8 @@
+fragment UserFragment on User {
+    id
+    nickname
+    email
+    kakaoId
+    phoneNumber
+    profileUrl
+}
