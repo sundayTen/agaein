@@ -4,8 +4,7 @@ export const FooterContainer = styled.footer`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 114px;
-    padding: 0 80px;
+    padding: 80px 80px 120px 80px;
     background-color: ${(props) => props.theme.light.black};
 `;
 
@@ -21,23 +20,24 @@ export const FooterCopyright = styled.p`
 
 export const FooterTeam = styled.div`
     flex: 1;
-    text-align: center;
+    text-align: left;
 `;
 
-export const TeamLogo = styled.div`
+export const TeamLogo = styled.img`
     margin: 0 auto;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background-color: ${(props) => props.theme.light.DarkGrey1};
+    width: 200px;
+    height: 80px;
 `;
 
-export const TeamName = styled.div`
-    margin-top: 6px;
-    font-size: 14px;
-    line-height: 22px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+export const NotionIcon = styled.img`
+    width: 26px;
+    height: 26px;
+    resize-mode: contain;
+    margin-right: 6px;
+`;
+export const NotionFont = styled.span`
+    font-size: 16px;
+    font-weight: bold;
     color: ${(props) => props.theme.light.white};
 `;
 
@@ -47,11 +47,14 @@ export const FooterContact = styled.div`
 `;
 
 export const ContactButton = styled.button`
-    width: 80px;
+    display: flex;
+    align-self: flex-end;
+    width: 222px;
     height: 32px;
     border-radius: 4px;
     background-color: ${(props) => props.theme.light.DarkGrey2};
-    font-size: 12px;
-    font-weight: 700;
     color: ${(props) => props.theme.light.white};
+    align-items: center;
+    justify-content: center;
+    padding: 11px auto;
 `;
