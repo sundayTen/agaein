@@ -6,9 +6,7 @@ import { getAccessToken, getRefreshToken, readAccessToken } from '../../../commo
 import { validateAuthorizationHeader } from '../../../common/validation/auth';
 
 const userMutations = {
-    login: async (_: any, args: any, context: any) => {
-        const authorization = context.req.headers.authorization;
-        validateAuthorizationHeader(authorization);
+    login: async (_: any, args: any) => {
         validateLogin(args.kakaoId);
         validateLoginPassword(args.pw);
 
