@@ -1,21 +1,9 @@
-fragment UserFragment on User {
-    id
-    nickname
-    email
-    kakaoId
-    phoneNumber
-    profileUrl
-}
 
 mutation login($kakaoId: String!, pw: $String!) {
-    login(kakaoId: $kakaoId, pw: $pw ) {
+    login(kakaoId: $kakaoId, pw: $pw) {
         accessToken
         refreshToken
-        id
-        nickname
-        email
-        kakaoId
-        phoneNumber
+        ...UserFragment
     }
 }
 

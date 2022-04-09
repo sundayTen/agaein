@@ -5,8 +5,6 @@ import { onError } from '@apollo/client/link/error';
 import { createUploadLink } from 'apollo-upload-client';
 import { convertAge, convertAnimalType, convertGender, convertGratuity } from 'utils/converter';
 
-// TODO : context를 통해 쿠키를 가져오고 싶은데, Hook Rule에 걸림. 방법이 없을까?
-
 const cookies = new Cookies();
 const httpLink = createHttpLink({
     uri: 'https://www.agaein.com/graphql',

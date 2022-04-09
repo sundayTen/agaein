@@ -39,9 +39,6 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
     const getAccessToken = () => {
         return cookies.get('accessToken');
     };
-    // const getRefreshToken = () => {
-    //     return cookies.get('refreshToken');
-    // };
 
     const setAccessToken = (accessToken: string) => {
         cookies.set('accessToken', accessToken);
@@ -60,12 +57,11 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
         const loginData = await loginMutation({
             variables: {
                 kakaoId,
-                pw: process.env.REACT_APP_PASSWORD,
+                // pw: process.env.REACT_APP_PASSWORD,
             },
         });
         const { errors, data } = loginData;
         if (errors) {
-            // TODO : Login 실패 시 로직(카카오 로그인 실패와 달라야 함)
             console.warn('Login Error Occur');
             return;
         }
