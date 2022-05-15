@@ -24,11 +24,11 @@ const bookmarkMutations = {
         try {
             const bookmarks = await knex('bookmark').insert(bookmarkForm).returning('*');
             return bookmarks[0];
-        } catch {
+        } catch (err: any) {
             console.error('createBookmark에서 에러발생');
             console.trace();
 
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
         }
     },
     deleteBookmark: async (_: any, args: any, context: any) => {

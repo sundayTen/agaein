@@ -46,11 +46,11 @@ const articleQueries = {
                                   .limit(limit)
                                   .offset(offset);
                     allArticleDetails = allArticleDetails.concat([...articleDetails]);
-                } catch {
+                } catch (err: any) {
                     console.error('Articles 검색에서 에러발생');
                     console.trace();
 
-                    throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+                    throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
                 }
             }
 
@@ -96,11 +96,11 @@ const articleQueries = {
             });
 
             return articles;
-        } catch {
+        } catch (err: any) {
             console.error('Articles에서 에러발생');
             console.trace();
 
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
         }
     },
     articleLength: async (_: any, args: any) => {
@@ -108,11 +108,11 @@ const articleQueries = {
             const articleLength = await knex(`${args.boardType}`).count('*').first();
 
             return articleLength.count;
-        } catch {
+        } catch (err: any) {
             console.error('articleLength에서 에러발생');
             console.trace();
 
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
         }
     },
     article: async (_: any, args: any) => {
@@ -144,11 +144,11 @@ const articleQueries = {
                 });
 
             return article;
-        } catch {
+        } catch (err: any) {
             console.error('Article에서 에러발생');
             console.trace();
 
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
         }
     },
 };

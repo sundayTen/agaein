@@ -59,18 +59,18 @@ const reportMutations = {
                     const articleDetail = await knex(`${article.type}`).where('article_id', articleId).first();
                     const user = await knex('user').where('id', article.userId).first();
 
-                    if (articleDetail.alarm && user.email != undefined) {
-                        sendEmail(user.email, articleId, report.content);
+                    if (articleDetail.alarm) {
+                        user.email && sendEmail(user.email, articleId, report.content);
                     }
                 })
                 .then(() => {
                     return reportResponse;
                 })
-                .catch(() => {
+                .catch((err: any) => {
                     console.error('createReport에서 에러발생');
                     console.trace();
 
-                    throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+                    throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
                 });
         });
     },
@@ -139,11 +139,11 @@ const reportMutations = {
                 .then(() => {
                     return reportResponse;
                 })
-                .catch(() => {
+                .catch((err: any) => {
                     console.error('updateReport에서 에러발생');
                     console.trace();
 
-                    throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+                    throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
                 });
         });
     },

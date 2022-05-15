@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-errors';
 import { knex } from '../../database';
 import { validateLogin, validateLoginPassword } from '../../../common/validation/user';
 import { getRandomNickname } from '../../../common/utils/nickname';

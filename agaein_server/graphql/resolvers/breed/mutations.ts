@@ -11,11 +11,11 @@ const breedMutations = {
             const breeds = await knex('breed').insert(breedForm).returning('*');
             const breed = breeds[0];
             return breed;
-        } catch {
+        } catch (err: any) {
             console.error('createBreed에서 에러발생');
             console.trace();
 
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
         }
     },
     deleteBreed: async (_: any, args: any) => {

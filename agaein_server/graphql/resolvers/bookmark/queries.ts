@@ -11,11 +11,11 @@ const bookmarkQueries = {
         const userId = (<any>jwtToken).userId;
         try {
             return knex('bookmark').where('user_id', userId);
-        } catch {
+        } catch (err: any) {
             console.error("bookmarks에서 에러발생");
             console.trace();
 
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
         }
     },
 };

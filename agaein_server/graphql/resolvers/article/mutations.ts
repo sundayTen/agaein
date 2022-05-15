@@ -148,21 +148,21 @@ const articleMutations = {
                                 });
                             });
                         })
-                        .catch(() => {
+                        .catch((err: any) => {
                             console.error('createArticle articleDetail & Keyword & Image에서 에러발생');
                             console.trace();
 
-                            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+                            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
                         });
                 })
                 .then(() => {
                     return article;
                 })
-                .catch(() => {
+                .catch((err: any) => {
                     console.error('createArticle에서 에러발생');
                     console.trace();
 
-                    throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+                    throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
                 });
         });
     },
@@ -282,21 +282,21 @@ const articleMutations = {
                                 });
                             }
                         })
-                        .catch(() => {
+                        .catch((err: any) => {
                             console.error('updateArticle articleDetail & Keyword & Image에서 에러발생');
                             console.trace();
 
-                            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+                            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
                         });
                 })
                 .then(() => {
                     return article;
                 })
-                .catch(() => {
+                .catch((err: any) => {
                     console.error('updateArticle에서 에러발생');
                     console.trace();
 
-                    throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+                    throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
                 });
         });
     },
@@ -337,11 +337,11 @@ const articleMutations = {
             const comments = await knex('comment').update(commentForm).where('id', id).returning('*');
             const comment = comments[0];
             return comment;
-        } catch {
+        } catch (err: any) {
             console.error('createComment에서 에러발생');
             console.trace();
 
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
         }
     },
     createComment: async (_: any, args: any, context: any) => {
@@ -380,16 +380,16 @@ const articleMutations = {
             const articleDetail = await knex(`${article.type}`).where('article_id', articleId).first();
             const user = await knex('user').where('id', article.userId).first();
 
-            if (articleDetail.alarm && user.email != undefined) {
-                sendEmail(user.email, articleId, comment.content);
+            if (articleDetail.alarm ) {
+                user.email && sendEmail(user.email, articleId, comment.content);
             }
-            
+
             return comment;
-        } catch {
+        } catch (err: any) {
             console.error('createComment에서 에러발생');
             console.trace();
 
-            throw new ApolloError('DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
         }
     },
     deleteArticle: async (_: any, args: any, context: any) => {

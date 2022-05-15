@@ -8,8 +8,8 @@ const userQueries = {
         try {
             const user = await knex('user').where('id', args.id).first();
             return user;
-        } catch {
-            throw new ApolloError('[user] DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+        } catch (err: any) {
+            throw new ApolloError('[user] DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
         }
     },
     me: async (_: any, args: any, context: any) => {
@@ -22,8 +22,8 @@ const userQueries = {
         try {
             const user = await knex('user').where('id', userId).first();
             return user;
-        } catch {
-            throw new ApolloError('[me] DataBase Server Error', 'INTERNAL_SERVER_ERROR');
+        } catch (err: any) {
+            throw new ApolloError('[me] DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
         }
     },
     profile: async (_: any, args: any, context: any) => {
