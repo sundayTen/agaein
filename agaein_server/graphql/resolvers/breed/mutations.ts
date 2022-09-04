@@ -1,33 +1,12 @@
-import { ApolloError } from 'apollo-server-errors';
-import { knex } from '../../database';
+import { MutationCreateBreedArgs, MutationDeleteBreedArgs } from '../../types';
+import { createBreed, deleteBreed } from './services';
 
 const breedMutations = {
-    createBreed: async (_: any, args: any) => {
-        const breedForm = {
-            type: args.type,
-            breed: args.breed,
-        };
-        try {
-            const breeds = await knex('breed').insert(breedForm).returning('*');
-            const breed = breeds[0];
-            return breed;
-        } catch (err: any) {
-            console.error('createBreed에서 에러발생');
-            console.trace();
-
-            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
-        }
+    createBreed: async (_: any, breed: MutationCreateBreedArgs) => {
+        return await createBreed(breed);
     },
-    deleteBreed: async (_: any, args: any) => {
-        const breed = await knex('breed').where('id', args.id).first();
-
-        if (breed === undefined) {
-            throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
-        }
-
-        await knex('breed').where('id', args.id).del();
-
-        return args.id;
+    deleteBreed: async (_: any, breed: MutationDeleteBreedArgs) => {
+        return deleteBreed(breed.id);
     },
 };
 
