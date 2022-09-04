@@ -1,3 +1,4 @@
+import { ApolloError } from 'apollo-server-errors';
 import { MutationCreateBreedArgs, MutationDeleteBreedArgs } from '../../types';
 import { createBreed, deleteBreed } from './services';
 
@@ -6,7 +7,10 @@ const breedMutations = {
         return await createBreed(breed);
     },
     deleteBreed: async (_: any, breed: MutationDeleteBreedArgs) => {
-        return deleteBreed(breed.id);
+        if ((await deleteBreed(breed.id)) === 0) {
+            throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
+        }
+        return breed.id;
     },
 };
 

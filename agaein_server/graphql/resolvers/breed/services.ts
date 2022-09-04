@@ -11,6 +11,5 @@ export async function createBreed(breed: MutationCreateBreedArgs) {
 }
 
 export async function deleteBreed(id: String) {
-    await knex('breed').where('id', id).del()
-    return id;
+    return knex('breed').where('id', id).del();
 }
