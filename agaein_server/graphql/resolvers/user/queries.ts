@@ -2,15 +2,12 @@ import { ApolloError } from 'apollo-server-errors';
 import { knex } from '../../database';
 import { readAccessToken } from '../../../common/auth/jwtToken';
 import { validateAuthorizationHeader } from '../../../common/validation/auth';
+import { QueryUserArgs } from '../../types';
+import { getUserById } from './services';
 
 const userQueries = {
-    user: async (_: any, args: any) => {
-        try {
-            const user = await knex('user').where('id', args.id).first();
-            return user;
-        } catch (err: any) {
-            throw new ApolloError('[user] DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
-        }
+    user: async (_: any, userRequest: QueryUserArgs) => {
+        return getUserById(userRequest.id);
     },
     me: async (_: any, args: any, context: any) => {
         const authorization = context.req.headers.authorization;
