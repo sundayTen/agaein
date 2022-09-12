@@ -1,177 +1,80 @@
 import { ApolloError } from 'apollo-server-errors';
-import { readAccessToken } from '../../../common/auth/jwtToken';
-import { sendEmail } from '../../../common/utils/email';
-import { knex } from '../../database';
+import { getUserId } from '../../../common/auth/jwtToken';
+import { Date, RawReport, ReportForm, UpdateReportForm } from '../../customTypes';
+import { MutationCreateReportArgs, MutationUpdateReportArgs } from '../../types';
+import { createReport, deleteReport, getReportsById, updateReport } from './services';
 
 const reportMutations = {
-    createReport: async (_: any, args: any, context: any) => {
-        const { files, report } = args;
+    createReport: async (_: any, createReportRequest: MutationCreateReportArgs, context: any) => {
+        const { files, report } = createReportRequest;
+        const now: Date = new Date();
+        const reportForm: ReportForm = {
+            createdAt: now,
+            updatedAt: now,
+            ...report,
+        };
 
-        let reportResponse: any = {};
-        const now = new Date();
-        report.createdAt = now;
-        report.updatedAt = now;
-
+        // @TODO 패스워드 해시
+        const authorization: string = context.req.headers.authorization;
         if (report.password) {
-            report.userId = 1;
-        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
-            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
-            report.userId = (<any>jwtToken).userId;
+            reportForm.userId = 1;
+        } else if (authorization && authorization.split(' ')[1]) {
+            reportForm.userId = getUserId(authorization);
         } else {
             throw new ApolloError('Not Found AccessToken', 'UNAUTHENTICATED');
         }
 
-        return await knex.transaction(async (trx: any) => {
-            return await knex('report')
-                .transacting(trx)
-                .insert(report)
-                .returning('*')
-                .then(async (report: any) => {
-                    const { articleId, id } = report[0];
-
-                    reportResponse = report[0];
-                    reportResponse.images = [];
-
-                    files.forEach(async (file: any, idx: Number) => {
-                        const { createReadStream, mimetype } = await file;
-                        const stream = createReadStream();
-
-                        const filename =
-                            articleId + '_' + id + '_' + idx + '_' + Date.now() + '.' + mimetype.split('/')[1];
-
-                        const imageForm = {
-                            reportId: id,
-                            url: 'https://www.agaein.com/file/image/' + filename,
-                        };
-
-                        reportResponse.images.push(imageForm.url);
-
-                        await knex('image').transacting(trx).insert(imageForm);
-
-                        const out = require('fs').createWriteStream('image/' + filename);
-                        await stream.pipe(out);
-                        await stream.on('close', () => {
-                            console.log(`store ${filename}`);
-                        });
-                    });
-
-                    const article = await knex('article').where('id', articleId).first();
-                    const articleDetail = await knex(`${article.type}`).where('article_id', articleId).first();
-                    const user = await knex('user').where('id', article.userId).first();
-
-                    if (articleDetail.alarm) {
-                        user.email && sendEmail(user.email, articleId, report.content);
-                    }
-                })
-                .then(() => {
-                    return reportResponse;
-                })
-                .catch((err: any) => {
-                    console.error('createReport에서 에러발생');
-                    console.trace();
-
-                    throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
-                });
-        });
+        return await createReport(reportForm, files);
     },
-    updateReport: async (_: any, args: any, context: any) => {
-        const { id, files, report } = args;
+    updateReport: async (_: any, updateReportRequest: MutationUpdateReportArgs, context: any) => {
+        const { id, files, report } = updateReportRequest;
 
-        let reportResponse: any = {};
-        const now = new Date();
-        report.updatedAt = now;
-
-        const reportPassword = await knex('report').where('id', id).first('password');
-
-        if (reportPassword.password) {
-            if (report.password !== reportPassword.password) {
+        // @TODO 패스워드 해시
+        const currentReport = await getReportsById(id);
+        const authorization: string = context.req.headers.authorization;
+        if (currentReport.password) {
+            if (report.password !== currentReport.password) {
                 throw new ApolloError('Invaild Password', 'UNAUTHENTICATED');
             }
-        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
-            const reportUser = await knex('report').where('id', id).first('user_id');
-            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
-            if (reportUser.userId !== (<any>jwtToken).userId) {
+        } else if (authorization && authorization.split(' ')[1]) {
+            if (currentReport.userId !== getUserId(authorization)) {
                 throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
             }
         } else {
             throw new ApolloError('Not Found AccessToken', 'UNAUTHENTICATED');
         }
 
-        return await knex.transaction(async (trx: any) => {
-            return await knex('report')
-                .transacting(trx)
-                .update(report)
-                .where('id', id)
-                .returning('*')
-                .then(async (report: any) => {
-                    const { articleId } = report[0];
+        const now = new Date();
+        const reportForm: UpdateReportForm = {
+            updatedAt: now,
+            ...report,
+        };
 
-                    reportResponse = report[0];
-                    reportResponse.images = [];
-
-                    if (args.files[0]) {
-                        await knex('image').transacting(trx).where('report_id', id).del();
-
-                        files.forEach(async (file: any, idx: Number) => {
-                            const { createReadStream, mimetype } = await file;
-                            const stream = createReadStream();
-
-                            const filename =
-                                articleId + '_' + id + '_' + idx + '_' + Date.now() + '.' + mimetype.split('/')[1];
-
-                            const imageForm = {
-                                reportId: id,
-                                url: 'https://www.agaein.com/file/image/' + filename,
-                            };
-
-                            reportResponse.images.push(imageForm.url);
-
-                            await knex('image').transacting(trx).insert(imageForm);
-
-                            const out = require('fs').createWriteStream('image/' + filename);
-                            await stream.pipe(out);
-                            await stream.on('close', () => {
-                                console.log(`store ${filename}`);
-                            });
-                        });
-                    }
-                })
-                .then(() => {
-                    return reportResponse;
-                })
-                .catch((err: any) => {
-                    console.error('updateReport에서 에러발생');
-                    console.trace();
-
-                    throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
-                });
-        });
+        return await updateReport(id, reportForm, files);
     },
-    deleteReport: async (_: any, args: any, context: any) => {
-        const { id, password } = args;
-
-        const report = await knex('report').where('id', id).first();
+    deleteReport: async (_: any, deleteReportRequest: any, context: any) => {
+        const { id, password } = deleteReportRequest;
+        const report: RawReport = await getReportsById(id);
 
         if (report === undefined) {
             throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
         }
 
+        // @TODO 패스워드 해시로 만들기.
+        const authorization: string = context.req.headers.authorization;
         if (report.password) {
             if (report.password !== password) {
                 throw new ApolloError('Invaild Password', 'UNAUTHENTICATED');
             }
-        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
-            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
-            if (report.userId !== (<any>jwtToken).userId) {
+        } else if (authorization && authorization.split(' ')[1]) {
+            if (report.userId != getUserId(authorization)) {
                 throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
             }
         } else {
             throw new ApolloError('Not Found AccessToken', 'UNAUTHENTICATED');
         }
 
-        await knex('report').where('id', id).del();
-
-        return id;
+        return await deleteReport(id);
     },
 };
 
