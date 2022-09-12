@@ -10,6 +10,7 @@ const breedMutations = {
         if ((await deleteBreed(breed.id)) === 0) {
             throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
         }
+        
         return breed.id;
     },
 };

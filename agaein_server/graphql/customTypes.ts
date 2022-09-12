@@ -4,6 +4,7 @@ export type Optional<T> = Maybe<T> | undefined;
 
 export type Date = Scalars["Date"];
 export type Upload = Scalars["Upload"];
+export type ID = Scalars["Int"] | Scalars["ID"];
 
 export type UserResponse = User & {
     id?: Scalars["Int"]
@@ -31,5 +32,3 @@ export type ImageForm = {
     userId: Scalars["Int"];
     url: Scalars["String"];
 };
-
-

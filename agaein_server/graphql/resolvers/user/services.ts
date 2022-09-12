@@ -1,12 +1,12 @@
 import { getRandomNickname } from '../../../common/utils/nickname';
-import { Date, ImageForm, Optional, Upload, UserForm } from '../../customTypes';
+import { Date, ID, ImageForm, Optional, Upload, UserForm } from '../../customTypes';
 import { knex } from '../../database';
 
 export async function getUserByKakaoId(kakaoId: string) {
     return await knex('user').where('kakao_id', kakaoId).first();
 }
 
-export async function getUserById(id: string) {
+export async function getUserById(id: ID) {
     return await knex('user').where('id', id).first();
 }
 
@@ -44,7 +44,6 @@ export async function updateProfileImage(stream: Upload, userId: number, mimetyp
         userId,
         url: 'https://www.agaein.com/file/image/' + filename,
     };
-
     await knex('image').insert(imageForm);
 
     const out: Upload = require('fs').createWriteStream('image/' + filename);

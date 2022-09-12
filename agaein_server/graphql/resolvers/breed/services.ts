@@ -7,6 +7,7 @@ export function getBreeds(type: Breed_Type) {
 
 export async function createBreed(breed: MutationCreateBreedArgs) {
     const breeds = await knex('breed').insert(breed).returning('*');
+    
     return breeds[0];
 }
 
