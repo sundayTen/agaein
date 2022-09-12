@@ -23,8 +23,8 @@ function convertGender(gender: Gender): string | null {
 
 /**
  * Breed Type enum을 한글로 변환합니다.
- * @param { Breed_Type } type : DOG | CAT | ETC
- * @returns { string } 개 | 고양이 | 기타
+ * @param { Breed_Type } type : DOG | CAT
+ * @returns { string } 개 | 고양이
  */
 function convertAnimalType(type: Breed_Type): string {
     switch (type) {
@@ -32,8 +32,6 @@ function convertAnimalType(type: Breed_Type): string {
             return '강아지';
         case Breed_Type.Cat:
             return '고양이';
-        case Breed_Type.Etc:
-            return '기타';
         default:
             break;
     }
