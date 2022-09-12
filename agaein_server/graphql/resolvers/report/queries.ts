@@ -1,7 +1,8 @@
-import { knex } from '../../database';
+import { QueryReportsArgs } from '../../types';
+import { getReportsByArticleId } from './services';
 
 const reportQueries = {
-    reports: async (_: any, args: any) => knex('report').where('article_id', args.articleId),
+    reports: async (_: any, reportRequest: QueryReportsArgs) => getReportsByArticleId(reportRequest.articleId),
 };
 
 export default reportQueries;

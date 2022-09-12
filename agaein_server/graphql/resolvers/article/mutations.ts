@@ -144,7 +144,7 @@ const articleMutations = {
                                 const out = require('fs').createWriteStream('image/' + filename);
                                 await stream.pipe(out);
                                 await stream.on('close', () => {
-                                    console.log(`store ${filename}`);
+                                    console.log(`${new Date()} store ${filename}`);
                                 });
                             });
                         })
@@ -277,7 +277,7 @@ const articleMutations = {
                                     const out = require('fs').createWriteStream('image/' + filename);
                                     await stream.pipe(out);
                                     await stream.on('close', () => {
-                                        console.log(`store ${filename}`);
+                                        console.log(`${new Date()} store ${filename}`);
                                     });
                                 });
                             }

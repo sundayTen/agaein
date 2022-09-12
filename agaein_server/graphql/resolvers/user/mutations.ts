@@ -1,26 +1,17 @@
-import { knex } from '../../database';
+import { getAccessToken, getRefreshToken, getUserId } from '../../../common/auth/jwtToken';
 import { validateLogin, validateLoginPassword } from '../../../common/validation/user';
-import { getRandomNickname } from '../../../common/utils/nickname';
-import { getAccessToken, getRefreshToken, readAccessToken } from '../../../common/auth/jwtToken';
-import { validateAuthorizationHeader } from '../../../common/validation/auth';
+import { Upload, UserResponse } from '../../customTypes';
+import { MutationLoginArgs, MutationUpdateProfileArgs, MutationUpdateUserArgs } from '../../types';
+import { createUser, getUserByKakaoId, updateProfileImage, updateUser } from './services';
 
 const userMutations = {
-    login: async (_: any, args: any) => {
-        validateLogin(args.kakaoId);
-        validateLoginPassword(args.pw);
+    login: async (_: any, loginRequest: MutationLoginArgs) => {
+        validateLogin(loginRequest.kakaoId);
+        validateLoginPassword(loginRequest.pw);
 
-        let user = await knex('user').where('kakao_id', args.kakaoId).first();
+        let user: UserResponse = await getUserByKakaoId(loginRequest.kakaoId);
         if (user === undefined) {
-            const now = new Date();
-            const userForm = {
-                kakao_id: args.kakaoId,
-                created_at: now,
-                updated_at: now,
-                nickname: getRandomNickname(),
-            };
-
-            const users = await knex('user').insert(userForm).returning('*');
-            user = users[0];
+            user = await createUser(loginRequest.kakaoId);
         }
 
         user.accessToken = getAccessToken(user.id, user.kakaoId);
@@ -28,52 +19,22 @@ const userMutations = {
 
         return user;
     },
-    updateUser: async (_: any, args: any, context: any) => {
-        const authorization = context.req.headers.authorization;
-        validateAuthorizationHeader(authorization);
+    updateUser: async (_: any, userUpdateRequest: MutationUpdateUserArgs, context: any) => {
+        const userId: number = getUserId(context.req.headers.authorization);
 
-        const { email, nickname, phoneNumber } = args;
-        const userForm: any = {};
-        userForm.email = email ? email : null;
-        userForm.nickname = nickname ? nickname : null;
-        userForm.phoneNumber = phoneNumber ? phoneNumber : null;
-        userForm.updatedAt = new Date();
-
-        const jwtToken = readAccessToken(authorization.split(' ')[1]);
-        return (
-            await knex('user')
-                .update(userForm)
-                .where('id', (<any>jwtToken).userId)
-                .returning('*')
-        )[0];
-    },
-    updateProfile: async (_: any, args: any, context: any) => {
-        const authorization = context.req.headers.authorization;
-        validateAuthorizationHeader(authorization);
-
-        const jwtToken = readAccessToken(authorization.split(' ')[1]);
-        const userId = (<any>jwtToken).userId;
-        const { file } = args;
-
-        const { createReadStream, mimetype } = await file;
-        const stream = createReadStream();
-
-        const filename = 'profile' + '_' + userId + '_' + Date.now() + '.' + mimetype.split('/')[1];
-
-        const imageForm = {
+        return await updateUser(
             userId,
-            url: 'https://www.agaein.com/file/image/' + filename,
-        };
+            userUpdateRequest.email,
+            userUpdateRequest.nickname,
+            userUpdateRequest.phoneNumber,
+        );
+    },
+    updateProfile: async (_: any, profileImage: MutationUpdateProfileArgs, context: any) => {
+        const userId: number = getUserId(context.req.headers.authorization);
+        const { createReadStream, mimetype } = await profileImage.file;
+        const stream: Upload = createReadStream();
 
-        await knex('image').insert(imageForm);
-
-        const out = require('fs').createWriteStream('image/' + filename);
-        await stream.pipe(out);
-        await stream.on('close', () => {
-            console.log(`store ${filename}`);
-        });
-
-        return imageForm.url;
+        return await updateProfileImage(stream, userId, mimetype);
     },
 };
 
