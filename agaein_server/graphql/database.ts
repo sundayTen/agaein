@@ -456,7 +456,7 @@ export function initCrawlingHistory() {
                         .integer('user_id')
                         .notNullable()
                         .references('id')
-                        .inTable('breed')
+                        .inTable('user')
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
                     table.json('crawling_keywords');
