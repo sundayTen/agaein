@@ -1,22 +1,14 @@
-import { ApolloError } from 'apollo-server-errors';
-import { knex } from '../../database';
-import { readAccessToken } from '../../../common/auth/jwtToken';
+import { getUserId } from '../../../common/auth/jwtToken';
+import { validateAuthorizationHeader } from '../../../common/validation/auth';
+import { getBookmarksByUserId } from './services';
 
 const bookmarkQueries = {
-    bookmarks: async (_: any, args: any, context: any) => {
-        if (context.req.headers.authorization === undefined) {
-            throw new ApolloError('Token is not Existed', 'UNAUTHENTICATED');
-        }
-        const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
-        const userId = (<any>jwtToken).userId;
-        try {
-            return knex('bookmark').where('user_id', userId);
-        } catch (err: any) {
-            console.error("bookmarks에서 에러발생");
-            console.trace();
+    bookmarks: async (_: any, __: any, context: any) => {
+        const authorization: string = context.req.headers.authorization;
+        validateAuthorizationHeader(authorization);
+        const userId: number = getUserId(authorization);
 
-            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
-        }
+        return getBookmarksByUserId(userId);
     },
 };
 
