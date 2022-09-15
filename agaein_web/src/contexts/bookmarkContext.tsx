@@ -44,7 +44,7 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
             fetchData();
             return;
         }
-    }, [fetchData]);
+    }, [fetchData, isLoggedIn]);
 
     useEffect(initialize, [initialize]);
 

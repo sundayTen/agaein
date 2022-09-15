@@ -50,7 +50,7 @@ const Comment = (props: CommentProps) => {
             }
             setTargetCommentId(undefined);
         },
-        [commentInteractionType, targetCommentId],
+        [commentInteractionType, targetCommentId, articleId, createComment, updateComment],
     );
     const isAuthorComment = (commentAuthorId: string) => {
         if (articleWriter.kakaoId === 'anonymous') return false;

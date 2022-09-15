@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 const SelectList = styled.ul<{ optionsAbsoluteTop: string; optionsMinWidth: string }>`
     position: absolute;
