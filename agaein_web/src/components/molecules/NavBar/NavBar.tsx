@@ -53,11 +53,13 @@ const NavBar = () => {
             <Link to="/">
                 <AgaeinIconImg src={Logo} />
             </Link>
-            {isLoggedIn ? (
+            {isLoggedIn === null ? (
+                <></>
+            ) : isLoggedIn ? (
                 <UserInfo>
                     <UserTag type="button" onClick={() => setIsShowDropBox(!isShowDropBox)}>
-                        <Avatar src={'https://t1.daumcdn.net/cfile/tistory/27738433597DCB1312'} />
-                        {user.nickname ? user.nickname : '회원'}
+                        <Avatar src={user.profileUrl ?? 'https://t1.daumcdn.net/cfile/tistory/27738433597DCB1312'} />
+                        {user.nickname ?? '회원'}
                         <ChevronDown />
                     </UserTag>
                     {isShowDropBox && (
@@ -76,9 +78,8 @@ const NavBar = () => {
                     token={KAKAO_LOGIN_KEY}
                     onSuccess={onLoginComplete}
                     onFail={onLoginFailed}
-                    getProfile={true}
-                    useLoginForm={true}
-                    style={{}}
+                    getProfile
+                    useLoginForm
                     type="button"
                 >
                     <KaKaoIcon src={KakaoIcon} alt="카카오" />

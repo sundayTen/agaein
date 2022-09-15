@@ -32,6 +32,7 @@ import {
     TitleAndBookMarkContainer,
     WitnessListButton,
 } from './ArticleDetail.style';
+import NotFound from 'components/pages/common/NotFound';
 
 const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useContext(BookmarkContext);
@@ -52,7 +53,8 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
     useEffect(() => {
         setLoading(loading);
     }, [loading]);
-    if (error) return <></>;
+
+    if (error) return <NotFound />;
     if (data === undefined || !isArticle(data.article)) return <p>No data</p>;
 
     const { id, createdAt, articleDetail, view, author, comments = [], images = [] } = data.article;
@@ -77,7 +79,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
             description += ` · 이름 ${name}`;
         }
         if (!!age) {
-            description += ` · 나이 ${age}살`;
+            description += ` · 나이 ${age}`;
         }
         if (!!gender) {
             description += ` · 성별 ${gender}`;

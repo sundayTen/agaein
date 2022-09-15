@@ -18,7 +18,7 @@ export const Header = styled.header<HeaderProps>`
     height: 80px;
     padding: 0 40px;
     background-color: ${(props) => props.theme.light.background};
-    z-index: 1000;
+    z-index: 998;
     border-bottom: ${(props) => (props.isBorder ? '1px solid #eeee' : '')};
 `;
 
