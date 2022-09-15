@@ -50,8 +50,8 @@ const NavBar = () => {
 
     return (
         <Header>
-            <Link to="/">
-                <AgaeinIconImg src={Logo} />
+            <Link to="/" aria-label="홈으로 가는 링크">
+                <AgaeinIconImg src={Logo} alt="네비바 로고" />
             </Link>
             {isLoggedIn === null ? (
                 <></>
