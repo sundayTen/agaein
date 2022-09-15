@@ -3,7 +3,7 @@ import { getBreeds } from './services';
 
 const breedQueries = {
     breeds: async (_: any, args: QueryBreedsArgs) => {
-        return getBreeds(args.type);
+        return await getBreeds(args.type);
     },
 };
 

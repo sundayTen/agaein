@@ -7,7 +7,7 @@ type CrawlingResult {
     rank: Int!
     type: String!
     breed: String
-    location: String
+    location: String!
     name: String
     gender: String
     age: Int
@@ -35,7 +35,7 @@ type CrawlingKeywords {
 }
 
 input CrawlingInput {
-    breedId: ID
+    breedId: ID!
     foundOrLostDate: Date!
     location: LocationInput!
     name: String

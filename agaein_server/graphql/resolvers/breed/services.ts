@@ -1,8 +1,13 @@
+import { ID } from '../../customTypes';
 import { knex } from '../../database';
 import { Breed_Type, MutationCreateBreedArgs } from '../../types';
 
-export function getBreeds(type: Breed_Type) {
-    return knex('breed').where('type', type);
+export async function getBreedById(id: ID) {
+    return await knex('breed').where('id', id).first();
+}
+
+export async function getBreeds(type: Breed_Type) {
+    return await knex('breed').where('type', type);
 }
 
 export async function createBreed(breed: MutationCreateBreedArgs) {
@@ -12,5 +17,5 @@ export async function createBreed(breed: MutationCreateBreedArgs) {
 }
 
 export async function deleteBreed(id: String) {
-    return knex('breed').where('id', id).del();
+    return await knex('breed').where('id', id).del();
 }

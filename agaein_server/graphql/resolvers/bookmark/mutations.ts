@@ -1,44 +1,27 @@
 import { ApolloError } from 'apollo-server-errors';
-import { knex } from '../../database';
-import { readAccessToken } from '../../../common/auth/jwtToken';
+import { getUserId } from '../../../common/auth/jwtToken';
+import { validateAuthorizationHeader } from '../../../common/validation/auth';
+import { MutationCreateBookmarkArgs, MutationDeleteBookmarkArgs } from '../../types';
+import { createBookmark, deleteBookmark, getBookmark, getBookmarkByUserIdAndArticleId } from './services';
 
 const bookmarkMutations = {
-    createBookmark: async (_: any, args: any, context: any) => {
-        if (context.req.headers.authorization === undefined) {
-            throw new ApolloError('Token is not Existed', 'UNAUTHENTICATED');
-        }
-        const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
-        const userId = (<any>jwtToken).userId;
-
-        const bookmark = await knex('bookmark').where({ user_id: userId, article_id: args.articleId }).first();
+    createBookmark: async (_: any, createBookmarkRequest: MutationCreateBookmarkArgs, context: any) => {
+        const authorization: string = context.req.headers.authorization;
+        validateAuthorizationHeader(authorization);
+        const userId: number = getUserId(authorization);
+        const bookmark = await getBookmarkByUserIdAndArticleId(userId, createBookmarkRequest.articleId);
 
         if (bookmark !== undefined) {
-            throw new ApolloError('Already Exists', 'BAD_USER_INPUT');
+            throw new ApolloError('Bookmark is existed', 'BAD_USER_INPUT');
         }
 
-        const bookmarkForm = {
-            userId: userId,
-            articleId: args.articleId,
-        };
-
-        try {
-            const bookmarks = await knex('bookmark').insert(bookmarkForm).returning('*');
-            return bookmarks[0];
-        } catch (err: any) {
-            console.error('createBookmark에서 에러발생');
-            console.trace();
-
-            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
-        }
+        return createBookmark(userId, createBookmarkRequest.articleId);
     },
-    deleteBookmark: async (_: any, args: any, context: any) => {
-        if (context.req.headers.authorization === undefined) {
-            throw new ApolloError('Token is not Existed', 'UNAUTHENTICATED');
-        }
-        const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
-        const userId = (<any>jwtToken).userId;
-
-        const bookmark = await knex('bookmark').where('articleId', args.id).first();
+    deleteBookmark: async (_: any, deleteBookmarkRequest: MutationDeleteBookmarkArgs, context: any) => {
+        const authorization: string = context.req.headers.authorization;
+        validateAuthorizationHeader(authorization);
+        const userId: number = getUserId(authorization);
+        const bookmark = await getBookmark(deleteBookmarkRequest.id);
 
         if (bookmark === undefined) {
             throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
@@ -48,9 +31,7 @@ const bookmarkMutations = {
             throw new ApolloError('Wrong User', 'UNAUTHENTICATED');
         }
 
-        await knex('bookmark').where('article_id', args.id).del();
-
-        return args.id;
+        return deleteBookmark(deleteBookmarkRequest.id);
     },
 };
 

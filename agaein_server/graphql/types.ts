@@ -109,7 +109,7 @@ export type CrawlingHistory = {
 
 export type CrawlingInput = {
   age?: InputMaybe<Scalars['Int']>;
-  breedId?: InputMaybe<Scalars['ID']>;
+  breedId: Scalars['ID'];
   foundOrLostDate: Scalars['Date'];
   gender?: InputMaybe<Gender>;
   keywords?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -136,7 +136,7 @@ export type CrawlingResult = {
   foundOrLostDate?: Maybe<Scalars['Date']>;
   gender?: Maybe<Scalars['String']>;
   keywords?: Maybe<Array<Maybe<Scalars['String']>>>;
-  location?: Maybe<Scalars['String']>;
+  location: Scalars['String'];
   name?: Maybe<Scalars['String']>;
   rank: Scalars['Int'];
   site: Scalars['String'];
@@ -255,7 +255,7 @@ export type Mutation = {
 
 export type MutationCrawlingArgs = {
   baseInfo: CrawlingInput;
-  type?: InputMaybe<Finding_Type>;
+  type: Finding_Type;
 };
 
 
@@ -704,7 +704,7 @@ export type CrawlingResultResolvers<ContextType = any, ParentType extends Resolv
   foundOrLostDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   keywords?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
-  location?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  location?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   rank?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   site?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -781,7 +781,7 @@ export type LoginResolvers<ContextType = any, ParentType extends ResolversParent
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  crawling?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCrawlingArgs, 'baseInfo'>>;
+  crawling?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCrawlingArgs, 'baseInfo' | 'type'>>;
   createArticle?: Resolver<ResolversTypes['Article'], ParentType, ContextType, RequireFields<MutationCreateArticleArgs, 'articleDetail' | 'boardType' | 'files'>>;
   createBookmark?: Resolver<ResolversTypes['Bookmark'], ParentType, ContextType, RequireFields<MutationCreateBookmarkArgs, 'articleId'>>;
   createBreed?: Resolver<ResolversTypes['Breed'], ParentType, ContextType, RequireFields<MutationCreateBreedArgs, 'breed' | 'type'>>;
