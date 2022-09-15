@@ -1,17 +1,7 @@
-import React, { useState } from 'react';
-import {
-    AreaInput,
-    DateInput,
-    KindSelect,
-    SearchBarDiv,
-    SearchButton,
-    SearchInput,
-    SearchInputIcon,
-} from './SearchBar.style';
+import { AreaInput, DateInput, KindSelect, SearchBarDiv, SearchButton, SearchInput } from './SearchBar.style';
 interface SearchBarProps {}
 
 const SearchBar = (props: SearchBarProps) => {
-    const [startDate, setStartDate] = useState<Date>(new Date());
     return (
         <SearchBarDiv>
             {/* <SearchInputIcon /> */}

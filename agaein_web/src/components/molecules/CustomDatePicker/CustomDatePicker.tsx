@@ -1,10 +1,10 @@
-import { getDay, getMonth, getYear } from 'date-fns';
+import { getMonth, getYear } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useState } from 'react';
 import styled from 'styled-components';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import './CustomDatePicker.css';
-import { ChevronLeftIcon, ChevronRightIcon, CalendarIcon } from '@heroicons/react/solid';
+import { CalendarIcon } from '@heroicons/react/solid';
 import { DatePickerTitle, LeftNavigationIcon, RightNavigationIcon } from './CustomDatePicker.style';
 
 const DatePickerWrapper = styled.div`

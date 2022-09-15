@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { SearchIcon } from '@heroicons/react/solid';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export const SearchBarDiv = styled.div`

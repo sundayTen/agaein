@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, KeyboardEvent, useMemo } from 'react';
+import { useState, useRef, KeyboardEvent, useMemo } from 'react';
 import { FormRow, FormLabel } from './Form.style';
 import Input from 'components/molecules/Input';
 import Button from 'components/molecules/Button';
