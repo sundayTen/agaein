@@ -36,9 +36,9 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
     });
     const cookies = new Cookies();
 
-    const getAccessToken = useCallback(() => {
+    const getAccessToken = () => {
         return cookies.get('accessToken');
-    }, [cookies]);
+    };
 
     const setAccessToken = (accessToken: string) => {
         cookies.set('accessToken', accessToken);
@@ -82,16 +82,16 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
         setUser(NON_MEMBER);
     };
 
-    const initializeUserContext = useCallback(async () => {
+    const initializeUserContext = async () => {
         const accessToken = getAccessToken();
         if (accessToken) {
             fetchMe();
         }
-    }, [getAccessToken, fetchMe]);
+    };
 
     useEffect(() => {
         initializeUserContext();
-    }, [initializeUserContext]);
+    }, []);
 
     return (
         <UserContext.Provider
