@@ -1,7 +1,8 @@
 import { Maybe } from 'graphql/generated/generated';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { YYYYMMDD } from 'utils/date';
 import { WitnessDetailDiv } from '../WitnessModel.style';
+import imgError from 'assets/image/img_error.png';
 import {
     ChevronDown,
     ChevronUp,
@@ -38,6 +39,9 @@ interface WitnessListProps {
 }
 
 const WitnessList = ({ witness, clickIdx, setClickIdx, setType }: WitnessListProps) => {
+    useEffect(() => {
+        console.log(witness);
+    }, [witness]);
     if (witness?.length === 0)
         return (
             <NullWitness>
@@ -73,7 +77,7 @@ const WitnessList = ({ witness, clickIdx, setClickIdx, setType }: WitnessListPro
                             <td>{item.address}</td>
                             <td>{YYYYMMDD(item.date)}</td>
                             <td>
-                                <Photo isimg={!!item.img} />
+                                <Photo isimg={!!item.img?.length} />
                             </td>
                             <td>
                                 <Phone ishp={!!item.hp} />
@@ -83,15 +87,20 @@ const WitnessList = ({ witness, clickIdx, setClickIdx, setType }: WitnessListPro
                         <WitnessDetail click={idx === clickIdx}>
                             <td colSpan={7}>
                                 <WitnessDetailDiv>
-                                    <Img src={!!item.img ? String(item.img[0]) : ''} width="128" height="100" />
+                                    {item.img?.length ? (
+                                        <Img src={String(item?.img[0])} width="128" height="100" />
+                                    ) : (
+                                        ''
+                                    )}
+
                                     <Contents>
                                         {item.content}
                                         <br />
                                         <br />
                                         <b>
                                             {item.hp && <HpSpan>연락처 : {item.hp}</HpSpan>}
-                                            {item.img && <SmallPhoto isimg={!!item.img} />}
-                                            {item.img?.length}
+                                            {item.img?.length !== 0 && <SmallPhoto isimg={!!item.img} />}
+                                            {item.img?.length !== 0 && item.img?.length}
                                         </b>
                                     </Contents>
                                 </WitnessDetailDiv>
