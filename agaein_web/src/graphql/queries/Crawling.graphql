@@ -4,14 +4,14 @@ enum FINDING_TYPE {
 }
 
 mutation crawling(
-    $breedId: ID
+    $breedId: ID!
     $foundOrLostDate: Date!
     $location: LocationInput!
     $name: String
     $age: Int
     $gender: GENDER
     $keywords: [String]
-    $type: FINDING_TYPE
+    $type: FINDING_TYPE!
 ) {
     crawling(
         baseInfo: {
