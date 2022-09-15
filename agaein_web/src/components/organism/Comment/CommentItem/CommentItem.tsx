@@ -48,9 +48,9 @@ const CommentItem = (props: CommentItemProps) => {
 
     const getOption = () => {
         if (isMyComment() || isNonMemberComment()) {
-            return AUTHOR_OPTIONS;
+            return isReply ? AUTHOR_OPTIONS.filter((option) => option !== '답글') : AUTHOR_OPTIONS;
         }
-        return USER_OPTIONS;
+        return isReply ? [] : USER_OPTIONS;
     };
 
     useEffect(() => {
