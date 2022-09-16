@@ -138,7 +138,7 @@ const Comment = (props: CommentProps) => {
         return commentInteractionType !== 'delete' && commentId === targetCommentId;
     };
     const hasReply = (comment: CommentType) => {
-        return comment.reply && comment.reply !== [];
+        return comment.reply && comment.reply.length > 0;
     };
 
     const RenderComments = ({ comments }: renderCommentProps) => {

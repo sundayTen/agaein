@@ -58,7 +58,10 @@ const NavBar = () => {
             ) : isLoggedIn ? (
                 <UserInfo>
                     <UserTag type="button" onClick={() => setIsShowDropBox(!isShowDropBox)}>
-                        <Avatar src={user.profileUrl ?? 'https://t1.daumcdn.net/cfile/tistory/27738433597DCB1312'} />
+                        <Avatar
+                            src={user.profileUrl ?? 'https://t1.daumcdn.net/cfile/tistory/27738433597DCB1312'}
+                            alt="아바타 이미지"
+                        />
                         {user.nickname ?? '회원'}
                         <ChevronDown />
                     </UserTag>

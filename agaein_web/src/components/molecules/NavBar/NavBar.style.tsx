@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import KakaoLogin from 'react-kakao-login';
 
@@ -73,6 +75,7 @@ export const Avatar = styled.img`
     height: 48px;
     border-radius: 50px;
     margin-right: 14px;
+    object-fit: cover;
 `;
 
 export const KaKaoLoginButton = styled(KakaoLogin)`
