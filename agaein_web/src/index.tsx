@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -17,7 +17,10 @@ import { BookmarkProvider } from 'contexts/bookmarkContext';
 import dotenv from 'dotenv';
 dotenv.config();
 
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = createRoot(container!);
+
+root.render(
     <React.StrictMode>
         <ErrorBoundary fallbackRender={Error}>
             <BrowserRouter>
@@ -36,6 +39,5 @@ ReactDOM.render(
             </BrowserRouter>
         </ErrorBoundary>
     </React.StrictMode>,
-    document.getElementById('root'),
 );
 reportWebVitals();
