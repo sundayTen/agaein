@@ -86,7 +86,10 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
         const accessToken = getAccessToken();
         if (accessToken) {
             fetchMe();
+            return;
         }
+
+        setIsLoggedIn(false);
     };
 
     useEffect(() => {

@@ -223,6 +223,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                                 style={{ width: '85%', marginTop: 20 }}
                             />
                             <WitnessListButton
+                                aria-label="발견신고 리스트로 보기"
                                 onClick={() => {
                                     setIsOpenModal(true);
                                     setModalType('LIST');
