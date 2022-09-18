@@ -48,3 +48,7 @@ mutation updateArticle($id: ID!, $files: [Upload]!, $articleDetail: ArticleDetai
         id
     }
 }
+
+mutation done($articleId: ID!) {
+    done(articleId: $articleId)
+}

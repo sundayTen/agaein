@@ -68,7 +68,7 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
         if (!data) {
             return;
         }
-        const { accessToken, refreshToken, ...userData } = data.login;
+        const { accessToken, refreshToken } = data.login;
         setAccessToken(accessToken);
         setRefreshToken(refreshToken);
         fetchMe();

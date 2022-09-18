@@ -3,7 +3,7 @@ import { ApolloClient, createHttpLink, InMemoryCache, from, NormalizedCacheObjec
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { createUploadLink } from 'apollo-upload-client';
-import { convertAge, convertAnimalType, convertGender, convertGratuity } from 'utils/converter';
+import { convertAge, convertAnimalType, convertGender, convertGratuity, convertStatus } from 'utils/converter';
 
 const cookies = new Cookies();
 const httpLink = createHttpLink({
@@ -57,6 +57,11 @@ export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
                             return convertAge(age);
                         },
                     },
+                    status: {
+                        read(status) {
+                            return convertStatus(status);
+                        },
+                    },
                 },
             },
             LFP: {
@@ -79,6 +84,11 @@ export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
                     gratuity: {
                         read(gratuity) {
                             return convertGratuity(gratuity);
+                        },
+                    },
+                    status: {
+                        read(status) {
+                            return convertStatus(status);
                         },
                     },
                 },
