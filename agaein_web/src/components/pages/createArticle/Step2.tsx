@@ -75,11 +75,13 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
     };
 
     const onPressButton = async () => {
-        createArticle({
+        const response = await createArticle({
             boardType,
             files,
             articleDetail: currentArticleDetail,
-        }).then((response) => history.push(`/createArticle/step3/${response.data?.createArticle.id}`));
+        });
+
+        history.push(`/createArticle/step3/${response.data?.createArticle.id}`);
     };
 
     return (
