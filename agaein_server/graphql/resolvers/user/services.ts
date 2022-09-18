@@ -51,6 +51,4 @@ export async function updateProfileImage(stream: Upload, userId: number, mimetyp
     await stream.on('close', () => {
         console.log(`${new Date()} store ${filename}`);
     });
-
-    return imageForm.url;
 }

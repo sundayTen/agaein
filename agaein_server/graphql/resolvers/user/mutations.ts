@@ -30,7 +30,7 @@ const userMutations = {
             userUpdateRequest.nickname,
             userUpdateRequest.phoneNumber,
         );
-        user.profileUrl = await updateProfileImage(stream, userId, mimetype);
+        await updateProfileImage(stream, userId, mimetype);
 
         return user;
     },
