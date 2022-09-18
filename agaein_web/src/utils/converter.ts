@@ -1,3 +1,4 @@
+import { Finding_Status } from './../graphql/generated/generated';
 import { Board_Type, Breed_Type, Gender } from 'graphql/generated/generated';
 import { numberWithComma } from './number';
 const YEAR_TO_MONTH = 12;
@@ -52,6 +53,14 @@ function convertAge(age: number): string {
     return `${Math.floor(age / YEAR_TO_MONTH)}살`;
 }
 
+function convertStatus(status: Finding_Status) {
+    if (status === Finding_Status.Finding) {
+        return '진행중';
+    }
+
+    return '완료';
+}
+
 /**
  *
  * @param {number} gratuity 변환할 사례금
@@ -78,4 +87,4 @@ const getTitle = (boardType: Board_Type) => {
     }
 };
 
-export { convertGender, convertAnimalType, convertAge, convertGratuity, getTitle };
+export { convertGender, convertAnimalType, convertAge, convertGratuity, convertStatus, getTitle };

@@ -8,7 +8,7 @@ import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
 import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
 import { ModalContext } from 'contexts';
 import { UserContext } from 'contexts/userContext';
-import { Board_Type, Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
+import { Board_Type, Comment as CommentType, Finding_Status, useGetArticleQuery } from 'graphql/generated/generated';
 import useArticle from 'graphql/hooks/useArticle';
 import { BookmarkContext } from 'contexts';
 import { RouteComponentProps } from 'react-router';
@@ -36,7 +36,7 @@ import NotFound from 'components/pages/common/NotFound';
 
 const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useContext(BookmarkContext);
-    const { deleteArticle, readArticle } = useArticle();
+    const { deleteArticle, updateArticleStatus } = useArticle();
     const { isLoggedIn, user } = useContext(UserContext);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [menuVisible, setMenuVisible] = useState(false);
@@ -46,9 +46,9 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
         variables: {
             id: match.params.id,
         },
-        onCompleted: (data) => {
-            readArticle(data.article?.id);
-        },
+        // onCompleted: (data) => {
+        //     readArticle(data.article?.id);
+        // },
     });
     useEffect(() => {
         setLoading(loading);
@@ -57,13 +57,19 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
     if (error) return <NotFound />;
     if (data === undefined || !isArticle(data.article)) return <p>No data</p>;
 
-    const { id, createdAt, articleDetail, view, author, comments = [], images = [] } = data.article;
+    const { id, createdAt, articleDetail, view, author, comments = [], images = [], type: boardType } = data.article;
 
     // ? TypeGuard로 해결할 방법을 모르겠음
-    const { breed, feature, age, gender, name, location, foundDate, lostDate, type, keyword } = articleDetail as any;
+    const { breed, feature, age, gender, name, location, foundDate, lostDate, type, keyword, status } =
+        articleDetail as any;
 
     const isAuthor = () => {
         return isLoggedIn && user.id === author.id;
+    };
+
+    const notFoundYet = () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        return status === '진행중';
     };
 
     function getTitle() {
@@ -136,9 +142,14 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
             case '수정':
                 history.push(`/createArticle/step2/${isLFP(articleDetail) ? Board_Type.Lfp : Board_Type.Lfg}/${id}`);
                 break;
+            case '찾았어요':
+                updateArticleStatus({ articleId: id });
+                break;
             default:
                 break;
         }
+
+        setMenuVisible(false);
     };
     const deleteUserArticle = () => {
         deleteArticle({ id: match.params.id, password: undefined });
@@ -148,7 +159,6 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
     const toggleSelector = () => {
         setMenuVisible(!menuVisible);
     };
-
     return (
         <Fragment>
             <HorizontalContainer>
@@ -156,8 +166,8 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                 <ArticleDetailContainer>
                     <ContainerTop>
                         <ArticleDetailHeader>
-                            <Chip label="진행중" />
-                            {isAuthor() && (
+                            <Chip status={status} />
+                            {isAuthor() && notFoundYet() && (
                                 <ArticleSelectContainer>
                                     <StyledDotIcon onClick={toggleSelector} />
                                     {menuVisible && (

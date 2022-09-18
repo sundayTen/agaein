@@ -1,3 +1,10 @@
+import {
+    Finding_Status,
+    useDoneMutation,
+    MutationDoneArgs,
+    ArticleFragmentFragmentDoc,
+    Board_Type,
+} from './../generated/generated';
 import { useApolloClient } from '@apollo/client';
 import {
     GetArticlesDocument,
@@ -13,6 +20,7 @@ const useArticle = () => {
     const [create] = useCreateArticleMutation();
     const [edit] = useUpdateArticleMutation();
     const [drop] = useDeleteArticleMutation();
+    const [done] = useDoneMutation();
     const client = useApolloClient();
 
     const readArticle = (id?: string | undefined) => {
@@ -20,6 +28,38 @@ const useArticle = () => {
             id: `Article:${id}`,
             fields: {
                 view: (prevViewCount) => prevViewCount + 1,
+            },
+        });
+    };
+    const updateArticleStatus = (args: MutationDoneArgs) => {
+        const { articleId } = args;
+        let articleType: Board_Type.Lfg | Board_Type.Lfp | null = null;
+        let detailId: string | null = null;
+        try {
+            const Article = client.readFragment({
+                id: `Article:${articleId}`,
+                fragment: ArticleFragmentFragmentDoc,
+                fragmentName: 'ArticleFragment',
+            });
+            articleType = Article.articleDetail.__typename;
+            detailId = Article.articleDetail.id;
+        } catch (error) {
+            console.error(error);
+        }
+
+        done({
+            variables: args,
+            update: (cache) => {
+                try {
+                    cache.modify({
+                        id: `${articleType}:${detailId}`,
+                        fields: {
+                            status: () => Finding_Status.Done,
+                        },
+                    });
+                } catch (error) {
+                    throw new Error('캐싱 도중 에러 발생');
+                }
             },
         });
     };
@@ -68,6 +108,6 @@ const useArticle = () => {
         });
     };
 
-    return { createArticle, updateArticle, deleteArticle, readArticle };
+    return { createArticle, updateArticle, deleteArticle, readArticle, updateArticleStatus };
 };
 export default useArticle;
