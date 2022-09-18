@@ -18,8 +18,6 @@ const reportMutations = {
         reportForm.userId = 1;
         if (authorization && authorization.split(' ')[1]) {
             reportForm.userId = getUserId(authorization);
-        } else {
-            throw new ApolloError('Not Found AccessToken', 'UNAUTHENTICATED');
         }
 
         return await createReport(reportForm, files);
