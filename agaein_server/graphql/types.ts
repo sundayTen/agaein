@@ -247,7 +247,6 @@ export type Mutation = {
   login: Login;
   updateArticle: Article;
   updateComment: Comment;
-  updateProfile: Scalars['String'];
   updateReport: Report;
   updateUser: User;
 };
@@ -339,11 +338,6 @@ export type MutationUpdateCommentArgs = {
 };
 
 
-export type MutationUpdateProfileArgs = {
-  file: Scalars['Upload'];
-};
-
-
 export type MutationUpdateReportArgs = {
   files: Array<InputMaybe<Scalars['Upload']>>;
   id: Scalars['ID'];
@@ -353,6 +347,7 @@ export type MutationUpdateReportArgs = {
 
 export type MutationUpdateUserArgs = {
   email?: InputMaybe<Scalars['String']>;
+  file: Scalars['Upload'];
   nickname?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
 };
@@ -795,9 +790,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   login?: Resolver<ResolversTypes['Login'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'kakaoId' | 'pw'>>;
   updateArticle?: Resolver<ResolversTypes['Article'], ParentType, ContextType, RequireFields<MutationUpdateArticleArgs, 'articleDetail' | 'files' | 'id'>>;
   updateComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationUpdateCommentArgs, 'content' | 'id'>>;
-  updateProfile?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'file'>>;
   updateReport?: Resolver<ResolversTypes['Report'], ParentType, ContextType, RequireFields<MutationUpdateReportArgs, 'files' | 'id' | 'report'>>;
-  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<MutationUpdateUserArgs>>;
+  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'file'>>;
 }>;
 
 export type ProfileResolvers<ContextType = any, ParentType extends ResolversParentTypes['Profile'] = ResolversParentTypes['Profile']> = ResolversObject<{
