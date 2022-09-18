@@ -1,6 +1,6 @@
 import { Upload } from 'graphql-upload';
 import { sendEmail } from '../../../common/utils/email';
-import { ID, ReportForm, UpdateReportForm } from '../../customTypes';
+import { ID, ReportForm } from '../../customTypes';
 import { knex } from '../../database';
 import { Report } from '../../types';
 
@@ -62,54 +62,6 @@ export async function createReport(report: ReportForm, files: Array<Upload>) {
 
                 if (articleDetail.alarm) {
                     user.email && sendEmail(user.email, articleId, report.content);
-                }
-
-                return reportResponse;
-            })
-            .then((reportResponse: Report) => {
-                return reportResponse;
-            });
-    });
-}
-
-export async function updateReport(id: ID, report: UpdateReportForm, files: Array<Upload>) {
-    return await knex.transaction(async (trx: any) => {
-        return await knex('report')
-            .transacting(trx)
-            .update(report)
-            .where('id', id)
-            .returning('*')
-            .then(async (report: any) => {
-                const { articleId } = report[0];
-
-                let reportResponse = report[0];
-                reportResponse.images = [];
-
-                if (files[0]) {
-                    await knex('image').transacting(trx).where('report_id', id).del();
-
-                    files.forEach(async (file: any, idx: Number) => {
-                        const { createReadStream, mimetype } = await file;
-                        const stream = createReadStream();
-
-                        const filename =
-                            articleId + '_' + id + '_' + idx + '_' + Date.now() + '.' + mimetype.split('/')[1];
-
-                        const imageForm = {
-                            reportId: id,
-                            url: 'https://www.agaein.com/file/image/' + filename,
-                        };
-
-                        reportResponse.images.push(imageForm.url);
-
-                        await knex('image').transacting(trx).insert(imageForm);
-
-                        const out = require('fs').createWriteStream('image/' + filename);
-                        await stream.pipe(out);
-                        await stream.on('close', () => {
-                            console.log(`${new Date()} store ${filename}`);
-                        });
-                    });
                 }
 
                 return reportResponse;

@@ -357,7 +357,6 @@ export function initReport() {
                         .onDelete('CASCADE');
                     table.string('phone_number');
                     table.string('content');
-                    table.string('password');
                     table.json('location').notNullable().defaultTo({});
                     table.dateTime('found_date').notNullable();
                     table.dateTime('created_at').notNullable();
