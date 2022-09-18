@@ -30,7 +30,7 @@ type Query {
 type Mutation {
     # User
     login(kakaoId: String!, pw: String!): Login!
-    updateUser(nickname: String, email: String, phoneNumber: String, file: Upload!): User!
+    updateUser(nickname: String, email: String, phoneNumber: String, file: Upload): User!
     # Article
     createArticle(boardType: BOARD_TYPE!, files: [Upload]!, articleDetail: ArticleDetailInput!): Article!
     updateArticle(id: ID!, files: [Upload]!, articleDetail: ArticleDetailInput!): Article!
