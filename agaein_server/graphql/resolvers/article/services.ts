@@ -1,5 +1,6 @@
 import { ID } from '../../customTypes';
 import { knex } from '../../database';
+import { Finding_Status } from '../../types';
 
 export async function getLfpsByUserId(userId: ID) {
     const lfps: Array<any> = await knex('lfp')
@@ -50,4 +51,16 @@ export async function getReviewsByUserId(userId: ID) {
 
 export async function getCommentsByUserId(userId: ID) {
     return await knex('comment').where('user_id', userId);
+}
+
+export async function done(articleType: string, articleId: ID) {
+    await knex(articleType)
+        .update({
+            status: Finding_Status.Done,
+        })
+        .where('article_id', articleId);
+}
+
+export async function getArticleByIdAndUserId(articleId: ID, userId: ID) {
+    return await knex('article').where({ id: articleId, user_id: userId }).first();
 }

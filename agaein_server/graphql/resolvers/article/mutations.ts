@@ -1,7 +1,9 @@
 import { ApolloError } from 'apollo-server-errors';
-import { readAccessToken } from '../../../common/auth/jwtToken';
+import { getUserId, readAccessToken } from '../../../common/auth/jwtToken';
 import { sendEmail } from '../../../common/utils/email';
 import { knex } from '../../database';
+import { MutationDoneArgs } from '../../types';
+import { done, getArticleByIdAndUserId } from './services';
 
 const articleMutations = {
     createArticle: async (_: any, args: any, context: any) => {
@@ -380,7 +382,7 @@ const articleMutations = {
             const articleDetail = await knex(`${article.type}`).where('article_id', articleId).first();
             const user = await knex('user').where('id', article.userId).first();
 
-            if (articleDetail.alarm ) {
+            if (articleDetail.alarm) {
                 user.email && sendEmail(user.email, articleId, comment.content);
             }
 
@@ -446,6 +448,17 @@ const articleMutations = {
         await knex('comment').update(commentForm).where('id', args.id);
 
         return args.id;
+    },
+    done: async (_: any, doneRequest: MutationDoneArgs, context: any) => {
+        const userId: number = getUserId(context.req.headers.authorization);
+        const article: any = await getArticleByIdAndUserId(doneRequest.articleId, userId);
+        if (article === undefined) {
+            throw new ApolloError('Wrong Id Or User', 'BAD_USER_INPUT');
+        }
+
+        await done(article.type, doneRequest.articleId);
+
+        return doneRequest.articleId;
     },
 };
 

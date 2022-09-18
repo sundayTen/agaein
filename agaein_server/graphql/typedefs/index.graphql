@@ -38,6 +38,7 @@ type Mutation {
     createComment(articleId: ID!, commentId: ID, content: String!, password: String): Comment!
     updateComment(id: ID!, content: String!, password: String): Comment!
     deleteComment(id: ID!, password: String): ID!
+    done(articleId: ID!): ID!
     # Breed
     createBreed(type: BREED_TYPE!, breed: String!): Breed!
     deleteBreed(id: ID!): ID!

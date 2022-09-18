@@ -244,10 +244,10 @@ export type Mutation = {
   deleteBreed: Scalars['ID'];
   deleteComment: Scalars['ID'];
   deleteReport: Scalars['ID'];
+  done: Scalars['ID'];
   login: Login;
   updateArticle: Article;
   updateComment: Comment;
-  updateReport: Report;
   updateUser: User;
 };
 
@@ -318,6 +318,11 @@ export type MutationDeleteReportArgs = {
 };
 
 
+export type MutationDoneArgs = {
+  articleId: Scalars['ID'];
+};
+
+
 export type MutationLoginArgs = {
   kakaoId: Scalars['String'];
   pw: Scalars['String'];
@@ -338,16 +343,9 @@ export type MutationUpdateCommentArgs = {
 };
 
 
-export type MutationUpdateReportArgs = {
-  files: Array<InputMaybe<Scalars['Upload']>>;
-  id: Scalars['ID'];
-  report: UpdateReportInput;
-};
-
-
 export type MutationUpdateUserArgs = {
   email?: InputMaybe<Scalars['String']>;
-  file: Scalars['Upload'];
+  file?: InputMaybe<Scalars['Upload']>;
   nickname?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
 };
@@ -453,21 +451,12 @@ export type ReportInput = {
   content?: InputMaybe<Scalars['String']>;
   foundDate: Scalars['Date'];
   location: LocationInput;
-  password?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
 };
 
 export type Timestamps = {
   createdAt: Scalars['Date'];
   updatedAt: Scalars['Date'];
-};
-
-export type UpdateReportInput = {
-  content?: InputMaybe<Scalars['String']>;
-  foundDate?: InputMaybe<Scalars['Date']>;
-  location?: InputMaybe<LocationInput>;
-  password?: InputMaybe<Scalars['String']>;
-  phoneNumber?: InputMaybe<Scalars['String']>;
 };
 
 export type User = Timestamps & {
@@ -589,7 +578,6 @@ export type ResolversTypes = ResolversObject<{
   ReportInput: ReportInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Timestamps: ResolversTypes['Comment'] | ResolversTypes['ProfileComment'] | ResolversTypes['Report'] | ResolversTypes['User'];
-  UpdateReportInput: UpdateReportInput;
   Upload: ResolverTypeWrapper<Scalars['Upload']>;
   User: ResolverTypeWrapper<User>;
 }>;
@@ -627,7 +615,6 @@ export type ResolversParentTypes = ResolversObject<{
   ReportInput: ReportInput;
   String: Scalars['String'];
   Timestamps: ResolversParentTypes['Comment'] | ResolversParentTypes['ProfileComment'] | ResolversParentTypes['Report'] | ResolversParentTypes['User'];
-  UpdateReportInput: UpdateReportInput;
   Upload: Scalars['Upload'];
   User: User;
 }>;
@@ -787,11 +774,11 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteBreed?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteBreedArgs, 'id'>>;
   deleteComment?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'id'>>;
   deleteReport?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteReportArgs, 'id'>>;
+  done?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDoneArgs, 'articleId'>>;
   login?: Resolver<ResolversTypes['Login'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'kakaoId' | 'pw'>>;
   updateArticle?: Resolver<ResolversTypes['Article'], ParentType, ContextType, RequireFields<MutationUpdateArticleArgs, 'articleDetail' | 'files' | 'id'>>;
   updateComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationUpdateCommentArgs, 'content' | 'id'>>;
-  updateReport?: Resolver<ResolversTypes['Report'], ParentType, ContextType, RequireFields<MutationUpdateReportArgs, 'files' | 'id' | 'report'>>;
-  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'file'>>;
+  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<MutationUpdateUserArgs>>;
 }>;
 
 export type ProfileResolvers<ContextType = any, ParentType extends ResolversParentTypes['Profile'] = ResolversParentTypes['Profile']> = ResolversObject<{
