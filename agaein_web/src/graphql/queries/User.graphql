@@ -15,3 +15,15 @@ query me {
         ...UserFragment
     }
 }
+
+# query profile {
+#     profile {
+#         ...ProfileFragment
+#     }
+# }
+
+mutation updateUser($nickname: String, $email: String, $file: Upload) {
+    updateUser(nickname: $nickname, email: $email, file: $file) {
+        ...UserFragment
+    }
+}
