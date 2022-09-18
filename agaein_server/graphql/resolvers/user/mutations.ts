@@ -21,16 +21,18 @@ const userMutations = {
     },
     updateUser: async (_: any, userUpdateRequest: MutationUpdateUserArgs, context: any) => {
         const userId: number = getUserId(context.req.headers.authorization);
-        const { createReadStream, mimetype } = await userUpdateRequest.file;
-        const stream: Upload = createReadStream();
-
         const user: User = await updateUser(
             userId,
             userUpdateRequest.email,
             userUpdateRequest.nickname,
             userUpdateRequest.phoneNumber,
         );
-        await updateProfileImage(stream, userId, mimetype);
+
+        if (userUpdateRequest.file !== undefined) {
+            const { createReadStream, mimetype } = await userUpdateRequest.file;
+            const stream: Upload = createReadStream();
+            await updateProfileImage(stream, userId, mimetype);
+        }
 
         return user;
     },
