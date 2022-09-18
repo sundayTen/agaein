@@ -1,6 +1,6 @@
 import { useApolloClient } from '@apollo/client';
 import { useLoginMutation, useMeLazyQuery, User } from 'graphql/generated/generated';
-import { createContext, useCallback, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 interface UserContextProps {
     user: User;
@@ -71,8 +71,7 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
         const { accessToken, refreshToken, ...userData } = data.login;
         setAccessToken(accessToken);
         setRefreshToken(refreshToken);
-        setUser(userData as User);
-        setIsLoggedIn(true);
+        fetchMe();
     };
 
     const signOut = () => {
