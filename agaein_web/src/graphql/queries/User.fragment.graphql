@@ -6,3 +6,6 @@ fragment UserFragment on User {
     phoneNumber
     profileUrl
 }
+
+# fragment ProfileFragment on profile {
+# }

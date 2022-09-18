@@ -53,19 +53,20 @@ export const MyInfoForm = styled.div`
     padding: 40px 40px 27px;
 `;
 
-export const FormImage = styled.div`
+export const FormImage = styled.label`
     position: relative;
     width: 160px;
     height: 160px;
     border-radius: 4px;
     overflow: hidden;
+    cursor: pointer;
 `;
 
 export const MyImage = styled.img`
     object-fit: cover;
 `;
 
-export const ModifyButton = styled.button`
+export const ModifyButton = styled.span`
     position: absolute;
     right: 0;
     bottom: 0;
@@ -74,9 +75,10 @@ export const ModifyButton = styled.button`
     background-color: ${(props) => props.theme.light.DarkGrey2};
     border-radius: 4px;
     font-size: 12px;
-    line-height: 18px;
+    line-height: 24px;
     letter-spacing: -0.02em;
     color: ${(props) => props.theme.light.white};
+    text-align: center;
 `;
 
 export const FormInfo = styled.div`
