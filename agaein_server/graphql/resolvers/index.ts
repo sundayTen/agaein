@@ -32,7 +32,8 @@ const resolvers = {
     },
     User: {
         async profileUrl(parent: any) {
-            return (await knex('image').where(`user_id`, parent.id).orderBy('id', 'desc').first()).url ?? null;
+            const user = await knex('image').where(`user_id`, parent.id).orderBy('id', 'desc').first();
+            return user ? user.url : null;
         },
     },
     Comment: {
