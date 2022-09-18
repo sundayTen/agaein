@@ -21,7 +21,7 @@ const HomeHeader = () => {
                 <Button buttonStyle={'PAINTED'} label="게시글 작성" size="LARGE" onClick={onClickCreate} />
                 <Button label="실종동물 검색" size="LARGE" onClick={onClickSearch} />
             </HomeHeaderButtonGroup>
-            <HomeImage src={Home} />
+            <HomeImage src={Home} alt="메인화면 이미지" />
         </HomeHeaderContainer>
     );
 };

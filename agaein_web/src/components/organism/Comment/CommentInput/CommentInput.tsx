@@ -2,7 +2,6 @@ import { forwardRef, Fragment, InputHTMLAttributes, useCallback, useContext, use
 import { RequiredGuide, RequiredIcon } from 'components/organism/Form/Form.style';
 import { Textarea } from 'components/molecules';
 import { UserContext } from 'contexts/userContext';
-import { ReplyIcon } from '../CommentItem/CommentItem.style';
 import {
     CommentInputContainer,
     CommentInputWrapper,

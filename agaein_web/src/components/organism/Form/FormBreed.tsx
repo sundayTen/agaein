@@ -34,7 +34,7 @@ export function FormBreed({ name, onChange }: FormBreedProps) {
     const [animalSelected, setAnimalSelected] = useState(false);
     const [breedSelected, setBreedSelected] = useState(false);
 
-    const { data, loading, error } = useGetBreedsQuery({
+    const { data } = useGetBreedsQuery({
         variables: {
             type: animal.id,
         },

@@ -1,5 +1,3 @@
-import React from 'react';
-import Font from '../Font';
 import { ChipContainer } from './Chip.style';
 
 interface ChipProps {

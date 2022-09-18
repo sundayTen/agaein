@@ -17,6 +17,16 @@ import penguin from 'assets/image/penguin.png';
 import { useApolloClient } from '@apollo/client';
 import { isArticle } from 'utils/typeGuards';
 
+const settingsIntro: Settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    prevArrow: <ReviewArrowIcon direction="prev" />,
+    nextArrow: <ReviewArrowIcon direction="next" />,
+};
+
 interface ReviewDetailProps {
     id: string;
 }
@@ -36,6 +46,9 @@ const ReviewDetail = (props: ReviewDetailProps) => {
                 },
             });
         },
+        onError: (error) => {
+            console.error(error.message, error.graphQLErrors);
+        },
     });
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
@@ -43,16 +56,6 @@ const ReviewDetail = (props: ReviewDetailProps) => {
 
     const { author, createdAt, images, view } = data.article;
     const { title, content } = data?.article?.articleDetail as Review;
-
-    const settingsIntro: Settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        prevArrow: <ReviewArrowIcon direction="prev" />,
-        nextArrow: <ReviewArrowIcon direction="next" />,
-    };
 
     return (
         <ReviewBody>

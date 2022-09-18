@@ -50,14 +50,19 @@ const NavBar = () => {
 
     return (
         <Header>
-            <Link to="/">
-                <AgaeinIconImg src={Logo} />
+            <Link to="/" aria-label="홈으로 가는 링크">
+                <AgaeinIconImg src={Logo} alt="네비바 로고" />
             </Link>
-            {isLoggedIn ? (
+            {isLoggedIn === null ? (
+                <></>
+            ) : isLoggedIn ? (
                 <UserInfo>
                     <UserTag type="button" onClick={() => setIsShowDropBox(!isShowDropBox)}>
-                        <Avatar src={'https://t1.daumcdn.net/cfile/tistory/27738433597DCB1312'} />
-                        {user.nickname ? user.nickname : '회원'}
+                        <Avatar
+                            src={user.profileUrl ?? 'https://t1.daumcdn.net/cfile/tistory/27738433597DCB1312'}
+                            alt="아바타 이미지"
+                        />
+                        {user.nickname ?? '회원'}
                         <ChevronDown />
                     </UserTag>
                     {isShowDropBox && (
@@ -76,9 +81,8 @@ const NavBar = () => {
                     token={KAKAO_LOGIN_KEY}
                     onSuccess={onLoginComplete}
                     onFail={onLoginFailed}
-                    getProfile={true}
-                    useLoginForm={true}
-                    style={{}}
+                    getProfile
+                    useLoginForm
                     type="button"
                 >
                     <KaKaoIcon src={KakaoIcon} alt="카카오" />

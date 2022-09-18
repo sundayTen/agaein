@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, KeyboardEvent } from 'react';
+import { useState, useRef, KeyboardEvent, useMemo } from 'react';
 import { FormRow, FormLabel } from './Form.style';
 import Input from 'components/molecules/Input';
 import Button from 'components/molecules/Button';
@@ -88,6 +88,8 @@ export function FormKeyword({ name, onChange }: FormKeywordProps) {
         setKeywordList(keywordList?.filter((keywordList) => keywordList.id !== id));
     };
 
+    const addButtonDisabled = useMemo(() => keyword === null || keyword === undefined || keyword === '', [keyword]);
+
     return (
         <FormRow>
             <FormLabel>키워드</FormLabel>
@@ -99,7 +101,13 @@ export function FormKeyword({ name, onChange }: FormKeywordProps) {
                         onKeyPress={handleKeypress}
                         onChange={(e) => inputChangeHandler(e.target.value)}
                     />
-                    <Button label="추가" size="MEDIUM" buttonStyle="BLACK" onClick={addKeyword} />
+                    <Button
+                        label="추가"
+                        size="MEDIUM"
+                        buttonStyle="BLACK"
+                        onClick={addKeyword}
+                        disabled={addButtonDisabled}
+                    />
                 </KeywordForm>
                 <KeywordList>
                     {keywordList?.map((keyword) => {

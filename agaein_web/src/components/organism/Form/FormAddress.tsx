@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormRow, FormLabel, Form, RequiredIcon } from './Form.style';
 import styled from 'styled-components';
 import Input from 'components/molecules/Input';
