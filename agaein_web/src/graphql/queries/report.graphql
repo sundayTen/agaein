@@ -20,12 +20,6 @@ mutation createReport($files: [Upload]!, $report: ReportInput!) {
     }
 }
 
-mutation updateReport($id: ID!, $files: [Upload]!, $report: UpdateReportInput!) {
-    updateReport(id: $id, files: $files, report: $report) {
-        id
-    }
-}
-
 mutation deleteReport($id: ID!, $password: String) {
     deleteReport(id: $id, password: $password)
 }
