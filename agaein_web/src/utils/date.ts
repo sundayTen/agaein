@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const MICROSECOND_UNIT = 1000;
 const MINUIT_TO_SECOND = 60;
@@ -16,11 +16,11 @@ const MINUIT = MINUIT_TO_SECOND;
  * @returns {string } YYYY년 MM월 DD일
  */
 const YYYYMMDD = (date: string): string => {
-    return moment(date).format('YYYY년 MM월 DD일');
+    return dayjs(date).format('YYYY년 MM월 DD일');
 };
 
 const YYYY_MM_DD = (date: string): string => {
-    return moment(date).format('YYYY-MM-DD');
+    return dayjs(date).format('YYYY-MM-DD');
 };
 
 /**

@@ -24,7 +24,7 @@ const ReviewItem = (props: ReviewItemProps) => {
         <Fragment>
             <ReviewItemContainer>
                 <ReviewImageContainer>
-                    <ReviewImage src={reviewImage} />
+                    <ReviewImage src={reviewImage} alt="리뷰 아이템 썸네일" />
                 </ReviewImageContainer>
                 <ReviewInfoContainer>
                     <Title>{title}</Title>

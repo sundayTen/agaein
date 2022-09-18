@@ -18,12 +18,17 @@ const ImageCarousel = (props: ImageCarouselProps) => {
     return (
         <CarouselContainer>
             <FocusedImageWrapper>
-                <FocusedImage alt="테스트" src={images[active]} />
+                <FocusedImage alt="캐러셀 메인 사진" src={images[active]} />
             </FocusedImageWrapper>
             <CarouselList>
                 {images.map((img, index) => (
                     <SmallImgWrapper key={index.toString()}>
-                        <SmallImg src={img} active={index === active} onClick={() => setActive(index)} />
+                        <SmallImg
+                            src={img}
+                            active={index === active}
+                            onClick={() => setActive(index)}
+                            alt="미리보기 사진"
+                        />
                     </SmallImgWrapper>
                 ))}
             </CarouselList>

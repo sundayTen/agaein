@@ -1,10 +1,5 @@
-import React, { useState } from 'react';
 import { FormRow, FormLabel, Form, RequiredIcon } from './Form.style';
-
-import DatePicker, { CalendarContainer, registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { getMonth, getYear } from 'date-fns';
-import ko from 'date-fns/esm/locale/ko';
 import CustomDatePicker from 'components/molecules/CustomDatePicker/CustomDatePicker';
 
 interface FormDateProps {

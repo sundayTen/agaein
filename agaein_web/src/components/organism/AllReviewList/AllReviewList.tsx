@@ -31,11 +31,11 @@ const AllReviewList = () => {
                 order: orderType,
             },
         });
-    }, [orderType, page]);
+    }, [orderType, page, boardType, get]);
 
     useEffect(() => {
         getArticles();
-    }, [orderType, page]);
+    }, [getArticles]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;

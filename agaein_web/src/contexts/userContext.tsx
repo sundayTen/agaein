@@ -4,7 +4,7 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 interface UserContextProps {
     user: User;
-    isLoggedIn: boolean;
+    isLoggedIn: boolean | null;
     login: (kakaoAccessToken: string, kakaoId: string) => void;
     signOut: () => void;
 }
@@ -23,7 +23,7 @@ const NON_MEMBER: User = {
 export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
     const client = useApolloClient();
     const [user, setUser] = useState<User>(NON_MEMBER);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
     const [loginMutation] = useLoginMutation();
     const [fetchMe] = useMeLazyQuery({
         onCompleted: (data) => {
@@ -82,12 +82,15 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
         setUser(NON_MEMBER);
     };
 
-    const initializeUserContext = useCallback(async () => {
+    const initializeUserContext = async () => {
         const accessToken = getAccessToken();
         if (accessToken) {
             fetchMe();
+            return;
         }
-    }, []);
+
+        setIsLoggedIn(false);
+    };
 
     useEffect(() => {
         initializeUserContext();
