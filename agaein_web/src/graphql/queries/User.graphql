@@ -15,3 +15,20 @@ query me {
         ...UserFragment
     }
 }
+
+query user($id: ID!) {
+    user(id: $id) {
+        nickname
+        email
+    }
+}
+
+mutation updateUser($nickname: String, $email: String, $phoneNumber: String) {
+    updateUser(nickname: $nickname, email: $email, phoneNumber: $phoneNumber) {
+        ...UserFragment
+    }
+}
+
+mutation updateProfile($file: Upload!) {
+    updateProfile(file: $file)
+}

@@ -40,7 +40,7 @@ const NavBar = () => {
 
     const handleMyPageButton = () => {
         setIsShowDropBox(false);
-        history.push('/myPage');
+        history.push('/myPage/' + user.id);
     };
 
     const handleLogoutButton = () => {
