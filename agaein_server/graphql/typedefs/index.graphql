@@ -46,7 +46,6 @@ type Mutation {
     deleteBookmark(id: ID!): ID!
     # Report
     createReport(files: [Upload]!, report: ReportInput!): Report!
-    updateReport(id: ID!, files: [Upload]!, report: UpdateReportInput!): Report!
     deleteReport(id: ID!, password: String): ID!
     # Crawling
     crawling(baseInfo: CrawlingInput!, type: FINDING_TYPE!): ID!

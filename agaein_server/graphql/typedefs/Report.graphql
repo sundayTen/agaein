@@ -17,13 +17,4 @@ input ReportInput {
     content: String
     location: LocationInput!
     foundDate: Date!
-    password: String
-}
-
-input UpdateReportInput {
-    phoneNumber: String
-    content: String
-    location: LocationInput
-    foundDate: Date
-    password: String
 }
