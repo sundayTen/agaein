@@ -97,6 +97,7 @@ const WitnessModal = ({ open, close, type, articleId, missPosition, setType }: W
     }, [reportData.data]);
 
     const reportSave = async () => {
+        console.log('test');
         const response = await create({
             variables: {
                 files: files,
@@ -147,6 +148,11 @@ const WitnessModal = ({ open, close, type, articleId, missPosition, setType }: W
         }
     }, [listClickIdx]);
 
+    useEffect(() => {
+        setWitnessToggle('지도');
+        setListClickIdx(-1);
+    }, [open]);
+
     if (reportData.loading) return <p>reportData Loading...</p>;
     if (reportData.error) return <p>reportData Error occur</p>;
     return (
@@ -166,7 +172,7 @@ const WitnessModal = ({ open, close, type, articleId, missPosition, setType }: W
                         <ToggleButton
                             click={witnessToggle === '사진'}
                             onClick={() => setWitnessToggle('사진')}
-                            disabled={listClickIdx === -1 ? true : !witnessList[listClickIdx].img}
+                            disabled={listClickIdx === -1 ? true : !witnessList[listClickIdx].img?.length}
                         >
                             사진보기
                         </ToggleButton>
