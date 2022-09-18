@@ -1,4 +1,4 @@
-import { Maybe, Report, ReportInput, Scalars, UpdateReportInput, User } from './types';
+import { Maybe, Report, ReportInput, Scalars, User } from './types';
 
 export type Optional<T> = Maybe<T> | undefined;
 
@@ -43,9 +43,3 @@ export type ReportForm = ReportInput & {
     createdAt?: Scalars['Date'];
     updatedAt?: Scalars['Date'];
 };
-
-export type UpdateReportForm = UpdateReportInput & {
-    updatedAt?: Scalars['Date'];
-};
-
-
