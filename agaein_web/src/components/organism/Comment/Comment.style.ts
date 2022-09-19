@@ -2,14 +2,21 @@ import styled from 'styled-components';
 
 export const CommentWrapper = styled.div`
     margin: 40px 0 120px;
+
+    @media screen and (max-width: 420px){
+        margin: 20px 0 60px;
+    }
 `;
 
 export const CommentContainer = styled.div`
-    width: 100%;
     background-color: white;
     border-radius: 10px;
     margin-top: 15px;
     padding: 30px;
+
+    @media screen and (max-width: 420px){
+        padding: 15px;
+    }
 `;
 
 export const CommentHeader = styled.div`

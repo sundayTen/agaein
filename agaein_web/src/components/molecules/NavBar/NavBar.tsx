@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom';
 import { UserContext } from 'contexts/userContext';
 import KakaoIcon from 'assets/image/Kakao.png';
 import Logo from 'assets/image/agaein_long_logo.png';
+import useMobile from 'hooks/useMobile';
 
 interface KaKaoLoginResult {
     response: LoginResponse;
@@ -29,6 +30,8 @@ const NavBar = () => {
     const history = useHistory();
     const [isShowDropBox, setIsShowDropBox] = useState(false);
     const { isLoggedIn, login, user, signOut } = useContext(UserContext);
+    const isMobile = useMobile()
+
 
     const onLoginComplete = (result: KaKaoLoginResult) => {
         login(result.response.access_token, String(result.profile.id));
@@ -84,9 +87,10 @@ const NavBar = () => {
                     getProfile
                     useLoginForm
                     type="button"
+                    style={{width: isMobile ? 40 : 222, height: 40, }}
                 >
                     <KaKaoIcon src={KakaoIcon} alt="카카오" />
-                    카카오로 시작하기
+                    {isMobile ? '' :"카카오로 시작하기"}
                 </KaKaoLoginButton>
             )}
         </Header>

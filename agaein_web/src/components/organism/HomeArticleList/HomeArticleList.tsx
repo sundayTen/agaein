@@ -35,7 +35,6 @@ const HomeArticleList = ({ boardType, setLoading }: HomeArticleListProps) => {
 
     const articles = data?.articles.map((article) => article) as Article[];
 
-    // TODO : utils함수로 빼던가 lodash를 쓰던가 해야할 듯 - Refactor 필요
     const isEmpty = (items?: Array<Article>) => {
         if (!items) return true;
         return items.length === 0;

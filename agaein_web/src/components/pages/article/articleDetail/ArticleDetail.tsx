@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useMemo, useState } from 'react';
 import penguin from 'assets/image/penguin.png';
 import { BookMark, Button, Chip, Font, ImageCarousel, ErrorCheckerInput } from 'components/molecules';
 import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
@@ -8,7 +8,7 @@ import ReactKaKaoMap from 'components/organism/ReactKakaoMap/ReactKakaoMap';
 import WitnessModal from 'components/organism/WitnessModal/WitnessModal';
 import { ModalContext } from 'contexts';
 import { UserContext } from 'contexts/userContext';
-import { Board_Type, Comment as CommentType, Finding_Status, useGetArticleQuery } from 'graphql/generated/generated';
+import { Board_Type, Comment as CommentType, useGetArticleQuery } from 'graphql/generated/generated';
 import useArticle from 'graphql/hooks/useArticle';
 import { BookmarkContext } from 'contexts';
 import { RouteComponentProps } from 'react-router';
@@ -30,14 +30,17 @@ import {
     ListIcon,
     StyledDotIcon,
     TitleAndBookMarkContainer,
+    WitnessButtons,
     WitnessListButton,
 } from './ArticleDetail.style';
 import NotFound from 'components/pages/common/NotFound';
+import useMobile from 'hooks/useMobile';
 
 const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useContext(BookmarkContext);
     const { deleteArticle, updateArticleStatus } = useArticle();
     const { isLoggedIn, user } = useContext(UserContext);
+    const isMobile = useMobile()
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [menuVisible, setMenuVisible] = useState(false);
     const { show, close, setLoading } = useContext(ModalContext);
@@ -50,6 +53,8 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
         //     readArticle(data.article?.id);
         // },
     });
+    const kakaoMapSize = useMemo(() => isMobile ? {width: 280, height: 150} : { width: 480, height: 260 }, [isMobile])
+
     useEffect(() => {
         setLoading(loading);
     }, [loading]);
@@ -219,10 +224,10 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                         <ReactKaKaoMap
                             missPosition={location}
                             foundPosition={getFoundLocations()}
-                            size={{ width: 480, height: 260 }}
+                            size={kakaoMapSize}
                             noClick
                         />
-                        <div>
+                        <WitnessButtons>
                             <Button
                                 label="발견 신고 하기"
                                 onClick={() => {
@@ -230,7 +235,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                                     setModalType('REPORT');
                                 }}
                                 buttonStyle="BLACK"
-                                style={{ width: '85%', marginTop: 20 }}
+                                style={{ width: '80%' }}
                             />
                             <WitnessListButton
                                 aria-label="발견신고 리스트로 보기"
@@ -241,7 +246,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
                             >
                                 <ListIcon />
                             </WitnessListButton>
-                        </div>
+                        </WitnessButtons>
                     </ArticleMapContainer>
                 </ArticleDetailContainer>
             </HorizontalContainer>

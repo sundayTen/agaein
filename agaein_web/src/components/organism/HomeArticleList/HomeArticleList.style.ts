@@ -27,6 +27,13 @@ export const ListContainer = styled.ul`
     display: flex;
     flex-wrap: wrap;
     margin: 20px -20px 0;
+
+    @media screen and (max-width: 420px){
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        white-space: nowrap;
+
+    }
 `;
 
 export const ListItem = styled.li`
