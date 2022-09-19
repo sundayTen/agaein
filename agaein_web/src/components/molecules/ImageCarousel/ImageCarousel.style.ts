@@ -3,6 +3,13 @@ import styled from 'styled-components';
 export const CarouselContainer = styled.div`
     width: 720px;
     margin-right: 30px;
+
+    @media screen and (max-width: 420px){
+        width: 300px;
+        margin-right: 0px;
+        align-self: center;
+        margin-bottom: 30px;
+    }
 `;
 
 export const FocusedImageWrapper = styled.div`
@@ -14,6 +21,11 @@ export const FocusedImageWrapper = styled.div`
     margin-right: 30px;
     border-radius: 10px;
     overflow: hidden;
+
+    @media screen and (max-width: 420px){
+        width: 300px;
+        height: 200px;
+    }
 `;
 
 export const FocusedImage = styled.img`

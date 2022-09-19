@@ -16,9 +16,22 @@ export const HomeHeaderButtonGroup = styled.div`
     button + button {
         margin-left: 20px;
     }
+
+    @media screen and (max-width: 420px){
+        button {
+        width: 150px;
+        padding: 10px;
+    }
+    }
 `;
 
 export const HomeImage = styled.img`
     width: 892px;
     height: 280px;
+
+    @media screen and (max-width: 420px){
+        width: 380px;
+        height: 122px;
+        margin-top: 10px;
+    }
 `;

@@ -6,6 +6,10 @@ export const HorizontalContainer = styled.div`
     justify-content: space-around;
     margin: 0 auto;
     padding-top: 30px;
+
+    @media screen and (max-width: 420px){
+        flex-direction: column;
+    }
 `;
 
 export const ArticleDetailContainer = styled.div`
@@ -13,6 +17,10 @@ export const ArticleDetailContainer = styled.div`
     background-color: ${(props) => props.theme.light.white};
     border-radius: 4px;
     margin: 0 auto;
+
+    @media screen and (max-width: 420px){
+        width: 340px;
+    }
 `;
 
 export const ContainerTop = styled.div`
@@ -83,12 +91,23 @@ export const ArticleSelectContainer = styled.div`
     position: relative;
 `;
 
+export const WitnessButtons = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+`
+
 export const WitnessListButton = styled.button`
     background: ${(props) => props.theme.light.primary};
     border-radius: 6px;
-    width: 60px;
-    margin-left: 10px;
-    line-height: 40px;
+    width: 10%;
+    padding: 10px 10px;
+
+    @media screen and (max-width: 420px){
+        width: 15%;
+    }
+    
 `
 export const ListIcon = styled(ViewListIcon)`
     vertical-align: middle;

@@ -79,15 +79,13 @@ export const Avatar = styled.img`
 `;
 
 export const KaKaoLoginButton = styled(KakaoLogin)`
-    height: 40px;
-    padding: 0 14px;
     box-sizing: border-box;
     background: #fee500;
     border-radius: 6px;
+
     font-family: NanumSquareRound, sans-serif;
     font-size: 14px;
     font-weight: 700;
-    line-height: 22px;
     letter-spacing: -0.02em;
     color: #191919;
 `;
@@ -96,4 +94,8 @@ export const KaKaoIcon = styled.img`
     width: 18px;
     vertical-align: -4px;
     margin-right: 6px;
+
+    @media screen and (max-width: 420px){
+        margin-right: 0px;
+    }
 `;
