@@ -1,11 +1,12 @@
 import { GraphQLUpload } from 'graphql-upload';
-import { articleQueries, articleMutations } from './article';
-import { breedQueries, breedMutations } from './breed';
-import { crawlingQueries, crawlingMutations } from './crawling';
-import { reportQueries, reportMutations } from './report';
-import { bookmarkQueries, bookmarkMutations } from './bookmark';
-import { userQueries, userMutations } from './user';
 import { knex } from '../database';
+import { articleMutations, articleQueries } from './article';
+import { bookmarkMutations, bookmarkQueries } from './bookmark';
+import { breedMutations, breedQueries } from './breed';
+import { contactMutations } from './contact';
+import { crawlingMutations, crawlingQueries } from './crawling';
+import { reportMutations, reportQueries } from './report';
+import { userMutations, userQueries } from './user';
 
 const resolvers = {
     Query: {
@@ -23,6 +24,7 @@ const resolvers = {
         ...reportMutations,
         ...bookmarkMutations,
         ...crawlingMutations,
+        ...contactMutations,
     },
     Upload: GraphQLUpload,
     ArticleDetail: {
