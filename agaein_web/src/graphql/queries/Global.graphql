@@ -5,3 +5,8 @@ query getBreeds($type: BREED_TYPE!) {
         breed
     }
 }
+
+mutation contactUs($sender: String, $subject: String!, $content: String!){
+    contactUs(sender: $sender, subject: $subject, content: $content)
+}
+
