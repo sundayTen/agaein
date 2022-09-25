@@ -233,6 +233,7 @@ export type Login = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  contactUs: Scalars['String'];
   crawling: Scalars['ID'];
   createArticle: Article;
   createBookmark: Bookmark;
@@ -249,6 +250,13 @@ export type Mutation = {
   updateArticle: Article;
   updateComment: Comment;
   updateUser: User;
+};
+
+
+export type MutationContactUsArgs = {
+  content: Scalars['String'];
+  sender?: InputMaybe<Scalars['String']>;
+  subject: Scalars['String'];
 };
 
 
@@ -763,6 +771,7 @@ export type LoginResolvers<ContextType = any, ParentType extends ResolversParent
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  contactUs?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationContactUsArgs, 'content' | 'subject'>>;
   crawling?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationCrawlingArgs, 'baseInfo' | 'type'>>;
   createArticle?: Resolver<ResolversTypes['Article'], ParentType, ContextType, RequireFields<MutationCreateArticleArgs, 'articleDetail' | 'boardType' | 'files'>>;
   createBookmark?: Resolver<ResolversTypes['Bookmark'], ParentType, ContextType, RequireFields<MutationCreateBookmarkArgs, 'articleId'>>;

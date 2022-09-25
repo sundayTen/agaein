@@ -50,4 +50,6 @@ type Mutation {
     deleteReport(id: ID!, password: String): ID!
     # Crawling
     crawling(baseInfo: CrawlingInput!, type: FINDING_TYPE!): ID!
+    # Contact
+    contactUs(sender: String, subject: String! content: String!): String!
 }
