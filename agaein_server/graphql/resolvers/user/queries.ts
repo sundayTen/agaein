@@ -1,6 +1,6 @@
 import { getUserId } from '../../../common/auth/jwtToken';
 import { Profile, QueryUserArgs } from '../../types';
-import { getCommentsByUserId, getLfgsByUserId, getLfpsByUserId, getReviewsByUserId } from '../article/services';
+import { getCommentsByUserId, getLfgsByUserId, getLfpsByUserId, getReviewsByUserId } from '../article/queryServices';
 import { getBookmarkArticlesByUserId } from '../bookmark/services';
 import { getReportsByUserId } from '../report/services';
 import { getUserById } from './services';
