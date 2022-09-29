@@ -1,4 +1,4 @@
-import { Article, Maybe, ProfileReport, Report, ReportInput, Scalars, User } from './types';
+import { Article, Comment, Maybe, ProfileReport, Report, ReportInput, Scalars, User } from './types';
 
 export type Optional<T> = Maybe<T> | undefined;
 
