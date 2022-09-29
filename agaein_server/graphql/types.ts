@@ -364,7 +364,7 @@ export type Profile = {
   comments?: Maybe<Array<Maybe<ProfileComment>>>;
   lfgs: Array<Maybe<Article>>;
   lfps: Array<Maybe<Article>>;
-  reports: Array<Maybe<Report>>;
+  reports: Array<Maybe<ProfileReport>>;
   reviews: Array<Maybe<Article>>;
   user: User;
 };
@@ -375,6 +375,21 @@ export type ProfileComment = Timestamps & {
   content: Scalars['String'];
   createdAt: Scalars['Date'];
   id: Scalars['ID'];
+  updatedAt: Scalars['Date'];
+};
+
+export type ProfileReport = Timestamps & {
+  __typename?: 'ProfileReport';
+  articleDetail: ArticleDetail;
+  articleId: Scalars['ID'];
+  author: User;
+  content?: Maybe<Scalars['String']>;
+  createdAt: Scalars['Date'];
+  foundDate: Scalars['Date'];
+  id: Scalars['ID'];
+  images: Array<Maybe<Scalars['String']>>;
+  location: Location;
+  phoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Date'];
 };
 
@@ -580,12 +595,13 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<{}>;
   Profile: ResolverTypeWrapper<Profile>;
   ProfileComment: ResolverTypeWrapper<ProfileComment>;
+  ProfileReport: ResolverTypeWrapper<Omit<ProfileReport, 'articleDetail'> & { articleDetail: ResolversTypes['ArticleDetail'] }>;
   Query: ResolverTypeWrapper<{}>;
   REVIEW: ResolverTypeWrapper<Review>;
   Report: ResolverTypeWrapper<Report>;
   ReportInput: ReportInput;
   String: ResolverTypeWrapper<Scalars['String']>;
-  Timestamps: ResolversTypes['Comment'] | ResolversTypes['ProfileComment'] | ResolversTypes['Report'] | ResolversTypes['User'];
+  Timestamps: ResolversTypes['Comment'] | ResolversTypes['ProfileComment'] | ResolversTypes['ProfileReport'] | ResolversTypes['Report'] | ResolversTypes['User'];
   Upload: ResolverTypeWrapper<Scalars['Upload']>;
   User: ResolverTypeWrapper<User>;
 }>;
@@ -617,12 +633,13 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: {};
   Profile: Profile;
   ProfileComment: ProfileComment;
+  ProfileReport: Omit<ProfileReport, 'articleDetail'> & { articleDetail: ResolversParentTypes['ArticleDetail'] };
   Query: {};
   REVIEW: Review;
   Report: Report;
   ReportInput: ReportInput;
   String: Scalars['String'];
-  Timestamps: ResolversParentTypes['Comment'] | ResolversParentTypes['ProfileComment'] | ResolversParentTypes['Report'] | ResolversParentTypes['User'];
+  Timestamps: ResolversParentTypes['Comment'] | ResolversParentTypes['ProfileComment'] | ResolversParentTypes['ProfileReport'] | ResolversParentTypes['Report'] | ResolversParentTypes['User'];
   Upload: Scalars['Upload'];
   User: User;
 }>;
@@ -795,7 +812,7 @@ export type ProfileResolvers<ContextType = any, ParentType extends ResolversPare
   comments?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProfileComment']>>>, ParentType, ContextType>;
   lfgs?: Resolver<Array<Maybe<ResolversTypes['Article']>>, ParentType, ContextType>;
   lfps?: Resolver<Array<Maybe<ResolversTypes['Article']>>, ParentType, ContextType>;
-  reports?: Resolver<Array<Maybe<ResolversTypes['Report']>>, ParentType, ContextType>;
+  reports?: Resolver<Array<Maybe<ResolversTypes['ProfileReport']>>, ParentType, ContextType>;
   reviews?: Resolver<Array<Maybe<ResolversTypes['Article']>>, ParentType, ContextType>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -806,6 +823,21 @@ export type ProfileCommentResolvers<ContextType = any, ParentType extends Resolv
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ProfileReportResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProfileReport'] = ResolversParentTypes['ProfileReport']> = ResolversObject<{
+  articleDetail?: Resolver<ResolversTypes['ArticleDetail'], ParentType, ContextType>;
+  articleId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  foundDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  images?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>;
+  location?: Resolver<ResolversTypes['Location'], ParentType, ContextType>;
+  phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -847,7 +879,7 @@ export type ReportResolvers<ContextType = any, ParentType extends ResolversParen
 }>;
 
 export type TimestampsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Timestamps'] = ResolversParentTypes['Timestamps']> = ResolversObject<{
-  __resolveType: TypeResolveFn<'Comment' | 'ProfileComment' | 'Report' | 'User', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Comment' | 'ProfileComment' | 'ProfileReport' | 'Report' | 'User', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
 }>;
@@ -886,6 +918,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Mutation?: MutationResolvers<ContextType>;
   Profile?: ProfileResolvers<ContextType>;
   ProfileComment?: ProfileCommentResolvers<ContextType>;
+  ProfileReport?: ProfileReportResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   REVIEW?: ReviewResolvers<ContextType>;
   Report?: ReportResolvers<ContextType>;

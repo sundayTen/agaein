@@ -1,4 +1,4 @@
-import { Maybe, Report, ReportInput, Scalars, User } from './types';
+import { Article, Maybe, ProfileReport, Report, ReportInput, Scalars, User } from './types';
 
 export type Optional<T> = Maybe<T> | undefined;
 
@@ -43,3 +43,19 @@ export type ReportForm = ReportInput & {
     createdAt?: Scalars['Date'];
     updatedAt?: Scalars['Date'];
 };
+
+export type UserId = {
+    userId?: Scalars['Int'];
+};
+
+export type ObjectId = {
+    id?: Scalars['Int'];
+};
+
+export type ProfileReportWithUserId = UserId & ProfileReport;
+
+export type ReportWithUserId = UserId & Report;
+
+export type ArticleWithUserId = UserId & Article;
+
+export type CommentWithUserId = UserId & Comment & ObjectId;
