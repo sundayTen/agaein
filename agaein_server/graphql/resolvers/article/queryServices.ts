@@ -102,8 +102,6 @@ async function getPagingLfpgsWithSearch(
     return await knex(`${boardType}`)
         .join('article', 'article.id', `${boardType}.article_id`)
         .join('breed', `${boardType}.breed_id`, 'breed.id')
-        .join('article_keyword', 'article.id', 'article_keyword.article_id')
-        .join('keyword', 'article_keyword.keyword_id', 'keyword.id')
         .where(`${boardType}.name`, search)
         .orWhere(`${boardType}.feature`, 'like', `%${search}%`)
         .orWhere(
@@ -111,19 +109,17 @@ async function getPagingLfpgsWithSearch(
             search === '강아지' || search === '개' ? 'DOG' : search === '고양이' || search === '냥이' ? 'CAT' : 'X',
         )
         .orWhere('breed.breed', search)
-        .orWhere('keyword.keyword', search)
         .select('*', `${boardType}.id as id`)
         .orderBy(order === Article_Order.View ? 'view' : 'created_at', order === Article_Order.Old ? 'asc' : 'desc')
         .limit(limit)
         .offset(offset);
+    // @TODO 키워드 로직 다시 추가.
 }
 
 async function getPagingLfpgs(boardType: Board_Type, order: Article_Order, limit: number, offset: number) {
     return await knex(`${boardType}`)
         .join('article', 'article.id', `${boardType}.article_id`)
         .join('breed', `${boardType}.breed_id`, 'breed.id')
-        .join('article_keyword', 'article.id', 'article_keyword.article_id')
-        .join('keyword', 'article_keyword.keyword_id', 'keyword.id')
         .select('*', `${boardType}.id as id`)
         .orderBy(order === Article_Order.View ? 'view' : 'created_at', order === Article_Order.Old ? 'asc' : 'desc')
         .limit(limit)
