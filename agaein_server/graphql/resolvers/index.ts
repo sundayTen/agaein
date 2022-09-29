@@ -1,5 +1,13 @@
 import { GraphQLUpload } from 'graphql-upload';
+import {
+    ArticleWithUserId,
+    CommentWithUserId,
+    ProfileReportWithUserId,
+    ReportWithUserId,
+    Upload,
+} from '../customTypes';
 import { knex } from '../database';
+import { User } from '../types';
 import { articleMutations, articleQueries } from './article';
 import { bookmarkMutations, bookmarkQueries } from './bookmark';
 import { breedMutations, breedQueries } from './breed';
@@ -33,29 +41,29 @@ const resolvers = {
         },
     },
     User: {
-        async profileUrl(parent: any) {
+        async profileUrl(parent: User) {
             const user = await knex('image').where(`user_id`, parent.id).orderBy('id', 'desc').first();
             return user ? user.url : null;
         },
     },
     Comment: {
-        async author(parent: any) {
+        async author(parent: CommentWithUserId) {
             return await knex('user').where('id', `${parent.userId}`).first();
         },
-        async reply(parent: any) {
+        async reply(parent: CommentWithUserId) {
             return (await knex('comment').where('commentId', `${parent.id}`)) ?? [];
         },
     },
     Article: {
-        async author(parent: any) {
+        async author(parent: ArticleWithUserId) {
             return await knex('user').where('id', `${parent.userId}`).first();
         },
-        async comments(parent: any) {
+        async comments(parent: ArticleWithUserId) {
             return await knex('comment').where('articleId', `${parent.id}`).whereNull('commentId');
         },
-        async images(parent: any) {
-            const rawImages = await knex('image').where(`article_id`, parent.id);
-            const images = rawImages.map((image: any) => {
+        async images(parent: ArticleWithUserId) {
+            const rawImages: Array<Upload> = await knex('image').where(`article_id`, parent.id);
+            const images: Array<string> = rawImages.map((image: any) => {
                 return image.url;
             });
 
@@ -63,16 +71,35 @@ const resolvers = {
         },
     },
     Report: {
-        async images(parent: any) {
-            const rawImages = await knex('image').where('report_id', parent.id);
-            const images = rawImages.map((image: any) => {
+        async images(parent: ReportWithUserId) {
+            const rawImages: Array<Upload> = await knex('image').where('report_id', parent.id);
+            const images: Array<string> = rawImages.map((image: any) => {
                 return image.url;
             });
 
             return images || [];
         },
-        async author(parent: any) {
+        async author(parent: ReportWithUserId) {
             return await knex('user').where('id', `${parent.userId}`).first();
+        },
+    },
+    ProfileReport: {
+        async images(parent: ProfileReportWithUserId) {
+            const rawImages: Array<Upload> = await knex('image').where('report_id', parent.id);
+            const images: Array<string> = rawImages.map((image: Upload) => {
+                return image.url;
+            });
+
+            return images || [];
+        },
+        async author(parent: ProfileReportWithUserId) {
+            return await knex('user').where('id', `${parent.userId}`).first();
+        },
+        async articleDetail(parent: ProfileReportWithUserId) {
+            const articleType: string = (await knex('article').where('id', `${parent.articleId}`).first('type')).type;
+            const articleDetail: any = await knex(articleType).where('article_id', `${parent.articleId}`).first();
+            articleDetail.articleType = articleType;
+            return articleDetail;
         },
     },
 };

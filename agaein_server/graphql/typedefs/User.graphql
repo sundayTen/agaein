@@ -27,6 +27,6 @@ type Profile {
     lfgs: [Article]!
     reviews: [Article]!
     bookmarks: [Article]!
-    reports: [Report]!
+    reports: [ProfileReport]!
     comments: [ProfileComment]
 }

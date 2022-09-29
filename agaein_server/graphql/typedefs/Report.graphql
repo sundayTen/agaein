@@ -18,3 +18,17 @@ input ReportInput {
     location: LocationInput!
     foundDate: Date!
 }
+
+type ProfileReport implements Timestamps {
+    id: ID!
+    articleId: ID!
+    author: User!
+    images: [String]!
+    phoneNumber: String
+    content: String
+    location: Location!
+    foundDate: Date!
+    createdAt: Date!
+    updatedAt: Date!
+    articleDetail: ArticleDetail!
+}
