@@ -1,16 +1,25 @@
 import { ApolloError } from 'apollo-server-errors';
-import { getUserId, readAccessToken } from '../../../common/auth/jwtToken';
-import { sendEmail } from '../../../common/utils/email';
+import { getUserId } from '../../../common/auth/jwtToken';
 import { Date } from '../../customTypes';
-import { knex } from '../../database';
 import {
     MutationCreateArticleArgs,
+    MutationCreateCommentArgs,
     MutationDeleteArticleArgs,
+    MutationDeleteCommentArgs,
     MutationDoneArgs,
     MutationUpdateArticleArgs,
+    MutationUpdateCommentArgs
 } from '../../types';
-import { createArticle, deleteArticle, done, updateArticle } from './mutationServices';
-import { getArticleById, getArticleByIdAndUserId } from './queryServices';
+import {
+    createArticle,
+    createComment,
+    deleteArticle,
+    done,
+    sendAlarmByComment,
+    updateArticle,
+    updateComment
+} from './mutationServices';
+import { getArticleById, getArticleByIdAndUserId, getCommentById } from './queryServices';
 
 const articleMutations = {
     createArticle: async (_: any, createArticleRequest: MutationCreateArticleArgs, context: any) => {
@@ -83,10 +92,10 @@ const articleMutations = {
 
         return await deleteArticle(deleteArticleRequest.id);
     },
-    createComment: async (_: any, args: any, context: any) => {
-        const now = new Date();
-        const { articleId, commentId, content, password } = args;
-        const commentForm = {
+    createComment: async (_: any, createCommentRequest: MutationCreateCommentArgs, context: any) => {
+        const { articleId, commentId, content, password } = createCommentRequest;
+        const now: Date = new Date();
+        const commentForm: any = {
             userId: 1,
             articleId,
             commentId,
@@ -97,48 +106,28 @@ const articleMutations = {
         };
 
         if (commentId) {
-            const comment = await knex('comment').where('id', commentId).first();
+            const comment: any = await getCommentById(commentId);
             if (comment.commentId) {
                 throw new ApolloError('Comment Depth Error', 'INTERNAL_SERVER_ERROR');
             }
         }
 
-        if (
-            password === undefined &&
-            context.req.headers.authorization &&
-            context.req.headers.authorization.split(' ')[1]
-        ) {
-            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
-            commentForm.userId = (<any>jwtToken).userId;
+        if (password === undefined) {
+            commentForm.userId = getUserId(context.req.headers.authorization);
         }
 
-        try {
-            const comments = await knex('comment').insert(commentForm).returning('*');
-            const comment = comments[0];
-            const article = await knex('article').where('id', articleId).first();
-            const articleDetail = await knex(`${article.type}`).where('article_id', articleId).first();
-            const user = await knex('user').where('id', article.userId).first();
+        const comment: any = await createComment(commentForm);
+        sendAlarmByComment(articleId, comment.content);
 
-            if (articleDetail.alarm) {
-                user.email && sendEmail(user.email, articleId, comment.content);
-            }
-
-            return comment;
-        } catch (err: any) {
-            console.error('createComment에서 에러발생');
-            console.trace();
-
-            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
-        }
+        return comment;
     },
-    updateComment: async (_: any, args: any, context: any) => {
-        const comment = await knex('comment').where('id', args.id).first();
+    updateComment: async (_: any, updateCommentRequest: MutationUpdateCommentArgs, context: any) => {
+        const { id, content, password } = updateCommentRequest;
+        const comment: any = await getCommentById(id);
 
-        if (comment === undefined || comment.content === '') {
+        if (comment === undefined) {
             throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
         }
-
-        const { id, content, password } = args;
 
         if (content === '') {
             throw new ApolloError('Empty Content', 'BAD_USER_INPUT');
@@ -148,10 +137,8 @@ const articleMutations = {
             if (password !== comment.password) {
                 throw new ApolloError('Invaild Password', 'UNAUTHENTICATED');
             }
-        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
-            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
-            const commentUser = await knex('comment').where('id', id).first('userId');
-            if (commentUser.userId !== (<any>jwtToken).userId) {
+        } else if (context.req.headers.authorization) {
+            if (comment.userId != getUserId(context.req.headers.authorization)) {
                 throw new ApolloError('Invaild AccessToken', 'UNAUTHENTICATED');
             }
         } else {
@@ -164,31 +151,22 @@ const articleMutations = {
             updatedAt: now,
         };
 
-        try {
-            const comments = await knex('comment').update(commentForm).where('id', id).returning('*');
-            const comment = comments[0];
-            return comment;
-        } catch (err: any) {
-            console.error('createComment에서 에러발생');
-            console.trace();
-
-            throw new ApolloError('DataBase Server Error: ' + err.message, 'INTERNAL_SERVER_ERROR');
-        }
+        return await updateComment(commentForm, id);
     },
-    deleteComment: async (_: any, args: any, context: any) => {
-        const comment = await knex('comment').where('id', args.id).first();
+    deleteComment: async (_: any, deleteCommentRequest: MutationDeleteCommentArgs, context: any) => {
+        const { id, password } = deleteCommentRequest;
+        const comment = await getCommentById(id);
 
         if (comment === undefined || comment.content === '') {
             throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
         }
 
-        if (args.password) {
-            if (args.password !== comment.password) {
+        if (password) {
+            if (password != comment.password) {
                 throw new ApolloError('Wrong Password', 'UNAUTHENTICATED');
             }
-        } else if (context.req.headers.authorization && context.req.headers.authorization.split(' ')[1]) {
-            const jwtToken = readAccessToken(context.req.headers.authorization.split(' ')[1]);
-            if (comment.userId !== (<any>jwtToken).userId) {
+        } else if (context.req.headers.authorization) {
+            if (comment.userId != getUserId(context.req.headers.authorization)) {
                 throw new ApolloError('Unautorized Token', 'UNAUTHENTICATED');
             }
         } else {
@@ -201,9 +179,9 @@ const articleMutations = {
             updatedAt: now,
         };
 
-        await knex('comment').update(commentForm).where('id', args.id);
+        await updateComment(commentForm, id);
 
-        return args.id;
+        return id;
     },
     done: async (_: any, doneRequest: MutationDoneArgs, context: any) => {
         const userId: number = getUserId(context.req.headers.authorization);

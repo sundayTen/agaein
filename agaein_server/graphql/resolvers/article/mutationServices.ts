@@ -1,4 +1,5 @@
 import { Upload } from 'graphql-upload';
+import { sendEmail } from '../../../common/utils/email';
 import { ID } from '../../customTypes';
 import { knex } from '../../database';
 import { ArticleDetailInput, Board_Type, Finding_Status, Maybe } from '../../types';
@@ -192,4 +193,22 @@ export async function deleteArticle(id: ID) {
     await knex('article').where('id', id).del();
 
     return id;
+}
+
+export async function createComment(comment: any) {
+    return (await knex('comment').insert(comment).returning('*'))[0];
+}
+
+export async function sendAlarmByComment(articleId: ID, commentContent: any) {
+    const article = await knex('article').where('id', articleId).first();
+    const articleDetail = await knex(`${article.type}`).where('article_id', articleId).first();
+    const user = await knex('user').where('id', article.userId).first();
+
+    if (articleDetail.alarm) {
+        user.email && sendEmail(user.email, Number(articleId), commentContent);
+    }
+}
+
+export async function updateComment(commentForm: any, id: ID) {
+    return (await knex('comment').update(commentForm).where('id', id).returning('*'))[0];
 }
