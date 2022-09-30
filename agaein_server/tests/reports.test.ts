@@ -1,4 +1,4 @@
-import { getAccessToken, testServer } from './index.test';
+import { getAccessToken, testServer } from './config';
 
 test('get reports', async () => {
     const result = await testServer.executeOperation(

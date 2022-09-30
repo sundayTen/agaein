@@ -29,6 +29,7 @@ export function initUser() {
                     table.string('phone_number');
                     table.dateTime('created_at').notNullable();
                     table.dateTime('updated_at').notNullable();
+                    table.unique('kakao_id');
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created user table');
@@ -171,12 +172,7 @@ export function initImage() {
                         .inTable('article')
                         .onUpdate('CASCADE')
                         .onDelete('CASCADE');
-                    table
-                        .integer('user_id')
-                        .references('id')
-                        .inTable('user')
-                        .onUpdate('CASCADE')
-                        .onDelete('CASCADE');
+                    table.integer('user_id').references('id').inTable('user').onUpdate('CASCADE').onDelete('CASCADE');
                     table
                         .integer('report_id')
                         .references('id')

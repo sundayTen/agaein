@@ -1,4 +1,4 @@
-import { getAccessToken, testServer } from './index.test';
+import { getAccessToken, testServer } from './config';
 
 test('get user', async () => {
     const result = await testServer.executeOperation(
@@ -53,4 +53,13 @@ test('get me', async () => {
 
     const expected: any = { id: '17' };
     expect(JSON.stringify(result.data?.me)).toStrictEqual(JSON.stringify(expected));
+});
+
+test('login test', async () => {
+    const result = await testServer.executeOperation({
+        query: 'mutation login($kakaoId: String!, $pw: String!) { login(kakaoId: $kakaoId, pw: $pw) { accessToken } }',
+        variables: { kakaoId: '1234567890', pw: process.env.LOGIN_PW },
+    });
+
+    expect(result.data?.login.accessToken !== undefined).toBe(true);
 });
