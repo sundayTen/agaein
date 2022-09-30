@@ -1,6 +1,6 @@
 import { ID } from '../../customTypes';
 import { knex } from '../../database';
-import { Article_Order, Board_Type, Finding_Status, Maybe } from '../../types';
+import { Article_Order, Board_Type, Maybe } from '../../types';
 import { getBreedById } from '../breed/services';
 
 export async function getLfpsByUserId(userId: ID) {
@@ -99,9 +99,11 @@ async function getPagingLfpgsWithSearch(
     limit: number,
     offset: number,
 ) {
-    return await knex(`${boardType}`)
+    const distinctArticleIds: Array<any> = await knex(`${boardType}`)
         .join('article', 'article.id', `${boardType}.article_id`)
         .join('breed', `${boardType}.breed_id`, 'breed.id')
+        .leftJoin('article_keyword', 'article.id', 'article_keyword.article_id')
+        .leftJoin('keyword', 'keyword.id', 'article_keyword.keyword_id')
         .where(`${boardType}.name`, search)
         .orWhere(`${boardType}.feature`, 'like', `%${search}%`)
         .orWhere(
@@ -109,18 +111,29 @@ async function getPagingLfpgsWithSearch(
             search === '강아지' || search === '개' ? 'DOG' : search === '고양이' || search === '냥이' ? 'CAT' : 'X',
         )
         .orWhere('breed.breed', search)
-        .select('*', `${boardType}.id as id`)
+        .orWhere('keyword.keyword', search)
+        .distinct(`${boardType}.article_id`)
+        .select(`article.view`, `article.created_at`)
         .orderBy(order === Article_Order.View ? 'view' : 'created_at', order === Article_Order.Old ? 'asc' : 'desc')
         .limit(limit)
         .offset(offset);
-    // @TODO 키워드 로직 다시 추가.
+
+    return await knex(`${boardType}`)
+        .join('article', 'article.id', `${boardType}.article_id`)
+        .join('breed', `${boardType}.breed_id`, 'breed.id')
+        .whereIn(
+            `${boardType}.article_id`,
+            distinctArticleIds.map((article) => article.articleId),
+        )
+        .select('*', `${boardType}.id as id`, `${boardType}.article_id as article_id`)
+        .orderBy(order === Article_Order.View ? 'view' : 'created_at', order === Article_Order.Old ? 'asc' : 'desc');
 }
 
 async function getPagingLfpgs(boardType: Board_Type, order: Article_Order, limit: number, offset: number) {
     return await knex(`${boardType}`)
         .join('article', 'article.id', `${boardType}.article_id`)
         .join('breed', `${boardType}.breed_id`, 'breed.id')
-        .select('*', `${boardType}.id as id`)
+        .select('*', `${boardType}.id as id`, `${boardType}.article_id as article_id`)
         .orderBy(order === Article_Order.View ? 'view' : 'created_at', order === Article_Order.Old ? 'asc' : 'desc')
         .limit(limit)
         .offset(offset);
@@ -186,4 +199,8 @@ async function increaseViewCount(article: any) {
 
 export async function getArticleById(id: ID) {
     return await knex('article').where(`id`, id).first();
+}
+
+export async function getCommentById(id: ID) {
+    return await knex('comment').where('id', id).first();
 }
