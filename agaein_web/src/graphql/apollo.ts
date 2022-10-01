@@ -34,7 +34,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     name: 'agaein',
-    version: '0.0.1',
+    version: '1.0.0',
     link: from([authLink, errorLink, uploadLink as unknown as ApolloLink, httpLink]),
     cache: new InMemoryCache({
         addTypename: true,

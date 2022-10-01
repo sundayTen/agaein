@@ -16,6 +16,8 @@ import { formattedDate } from 'utils/date';
 import penguin from 'assets/image/penguin.png';
 import { useApolloClient } from '@apollo/client';
 import { isArticle } from 'utils/typeGuards';
+import { useContext } from 'react';
+import { ModalContext } from 'contexts';
 
 const settingsIntro: Settings = {
     dots: true,
@@ -32,27 +34,22 @@ interface ReviewDetailProps {
 }
 
 const ReviewDetail = (props: ReviewDetailProps) => {
-    const client = useApolloClient();
-
+    const { update } = useContext(ModalContext);
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: props.id,
         },
-        onCompleted: (data) => {
-            client.cache.modify({
-                id: `Article:${data.article?.id}`,
-                fields: {
-                    view: (prevViewCount) => prevViewCount + 1,
-                },
-            });
-        },
         onError: (error) => {
+            update({
+                title:"에러가 발생했어요",
+                content:"조금 뒤에 다시 시도해주세요"
+            })
             console.error(error.message, error.graphQLErrors);
         },
+        fetchPolicy:"cache-and-network"
     });
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error occur</p>;
-    if (data === undefined || !isArticle(data.article)) return <p>No data</p>;
+    if (data === undefined||error || !isArticle(data.article)) return <p>No data</p>;
 
     const { author, createdAt, images, view } = data.article;
     const { title, content } = data?.article?.articleDetail as Review;
@@ -70,15 +67,15 @@ const ReviewDetail = (props: ReviewDetailProps) => {
             <ReviewImages>
                 {images.length !== 0 ? (
                     <Slider {...settingsIntro}>
-                        {images.map((image) => (
-                            <ReviewImage>
-                                <img src={image ? image : ''} />
+                        {images.map((image, index) => (
+                        <ReviewImage key={(JSON.stringify(image)+index).toString()}>
+                                <img src={image ? image : ''} alt="리뷰 사진들"/>
                             </ReviewImage>
                         ))}
                     </Slider>
                 ) : (
                     <ReviewImage>
-                        <img src={penguin} />
+                        <img src={penguin} alt="리뷰 사진"/>
                     </ReviewImage>
                 )}
             </ReviewImages>

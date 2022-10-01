@@ -97,7 +97,6 @@ const WitnessModal = ({ open, close, type, articleId, missPosition, setType }: W
     }, [reportData.data]);
 
     const reportSave = async () => {
-        console.log('test');
         const response = await create({
             variables: {
                 files: files,
