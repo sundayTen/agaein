@@ -30,9 +30,6 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
             setIsLoggedIn(true);
             setUser(data.me as User);
         },
-        onError: (error) => {
-            console.warn(error);
-        },
     });
     const cookies = new Cookies();
 
@@ -71,21 +68,31 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
         const { accessToken, refreshToken } = data.login;
         setAccessToken(accessToken);
         setRefreshToken(refreshToken);
+        
         fetchMe();
     };
 
     const signOut = () => {
-        client.resetStore();
-        resetToken();
-        setIsLoggedIn(false);
-        setUser(NON_MEMBER);
+        
+        try {
+            setIsLoggedIn(false);
+            resetToken();
+            setUser(NON_MEMBER);
+        } catch (error) {
+            console.error("로그아웃 중 에러",error)
+        }
     };
 
     const initializeUserContext = async () => {
         const accessToken = getAccessToken();
-        if (accessToken) {
-            fetchMe();
-            return;
+        try {
+            if (accessToken) {
+                fetchMe();
+                return 
+            }
+            
+        } catch (error) {
+            
         }
 
         setIsLoggedIn(false);

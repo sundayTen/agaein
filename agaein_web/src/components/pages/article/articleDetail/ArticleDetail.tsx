@@ -35,32 +35,38 @@ import {
 } from './ArticleDetail.style';
 import NotFound from 'components/pages/common/NotFound';
 import useMobile from 'hooks/useMobile';
+import { useApolloClient } from '@apollo/client';
 
 const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useContext(BookmarkContext);
-    const { deleteArticle, updateArticleStatus } = useArticle();
+    const { deleteArticle, updateArticleStatus  } = useArticle();
     const { isLoggedIn, user } = useContext(UserContext);
     const isMobile = useMobile()
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [menuVisible, setMenuVisible] = useState(false);
     const { show, close, setLoading } = useContext(ModalContext);
     const [modalType, setModalType] = useState<'LIST' | 'REPORT'>('REPORT');
+
     const { data, error, loading } = useGetArticleQuery({
         variables: {
             id: match.params.id,
         },
-        // onCompleted: (data) => {
-        //     readArticle(data.article?.id);
-        // },
+        fetchPolicy: "cache-and-network"
     });
     const kakaoMapSize = useMemo(() => isMobile ? {width: 280, height: 150} : { width: 480, height: 260 }, [isMobile])
+
+    useEffect(() => {
+        document.documentElement.scrollTo({
+            top: 0
+        })
+    }, [])
+    
 
     useEffect(() => {
         setLoading(loading);
     }, [loading]);
 
-    if (error) return <NotFound />;
-    if (data === undefined || !isArticle(data.article)) return <p>No data</p>;
+    if (error || data === undefined || !isArticle(data.article)) return <NotFound />;
 
     const { id, createdAt, articleDetail, view, author, comments = [], images = [], type: boardType } = data.article;
 

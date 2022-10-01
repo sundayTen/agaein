@@ -73,11 +73,6 @@ export function FormBreed({ name, onChange }: FormBreedProps) {
             name: '고양이',
             onClick: SelectHandler,
         },
-        {
-            id: 'ECT',
-            name: '기타',
-            onClick: SelectHandler,
-        },
     ];
     const breedOptions = data?.breeds.map((item) => {
         return { id: item.id, name: item.breed, onClick: setBreedId };

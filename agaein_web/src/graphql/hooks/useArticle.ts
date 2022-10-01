@@ -17,20 +17,12 @@ import {
 } from 'graphql/generated/generated';
 
 const useArticle = () => {
+    const client = useApolloClient();
     const [create] = useCreateArticleMutation();
     const [edit] = useUpdateArticleMutation();
     const [drop] = useDeleteArticleMutation();
     const [done] = useDoneMutation();
-    const client = useApolloClient();
 
-    const readArticle = (id?: string | undefined) => {
-        client.cache.modify({
-            id: `Article:${id}`,
-            fields: {
-                view: (prevViewCount) => prevViewCount + 1,
-            },
-        });
-    };
     const updateArticleStatus = (args: MutationDoneArgs) => {
         const { articleId } = args;
         let articleType: Board_Type.Lfg | Board_Type.Lfp | null = null;
@@ -108,6 +100,6 @@ const useArticle = () => {
         });
     };
 
-    return { createArticle, updateArticle, deleteArticle, readArticle, updateArticleStatus };
+    return { createArticle, updateArticle, deleteArticle, updateArticleStatus };
 };
 export default useArticle;

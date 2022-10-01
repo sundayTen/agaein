@@ -22,6 +22,7 @@ type BookmarkProviderProps = {
 };
 
 export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
+    const { show, close } = useContext(ModalContext);
     const [bookmarks, setBookmarks] = useState<string[]>([]);
     const [create] = useCreateBookmarkMutation();
     const [drop] = useDeleteBookmarkMutation();
@@ -35,9 +36,16 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
     const { setLoading } = useContext(ModalContext);
 
     const fetchData = useCallback(async () => {
-        await fetch();
-        setLoading(loading);
-    }, [isLoggedIn]);
+        try {
+            if(isLoggedIn){
+                console.log("여기가 불리는거냐");
+                await fetch();
+                setLoading(loading);
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }, [fetch, isLoggedIn, loading, setLoading]);
 
     const initialize = useCallback(() => {
         if (isLoggedIn) {
@@ -74,6 +82,14 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
                 variables: {
                     id: articleId,
                 },
+                onError:(error) => {
+                    show({
+                        title:"오류",
+                        content: "없는 북마크입니다",
+                        cancelButtonLabel:"닫기",
+                        cancelButtonPressed: close
+                    })
+                }
             });
             return;
         }

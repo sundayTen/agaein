@@ -45,10 +45,6 @@ const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResu
         }
     }, [selectValue, data, page]);
 
-    useEffect(() => {
-        console.log(crawlingData);
-    }, [page]);
-
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
 
