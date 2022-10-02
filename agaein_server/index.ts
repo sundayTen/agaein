@@ -42,6 +42,7 @@ const start = async () => {
     try {
         await app.listen(port);
         console.log(`🚀  GraphQL server running at port: ${port}`);
+        console.log(`✅  ${process.env.NODE_ENV} mode start`);
     } catch {
         console.log('Not able to run GraphQL server');
     }

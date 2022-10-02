@@ -8,7 +8,7 @@ const bookmarkQueries = {
         validateAuthorizationHeader(authorization);
         const userId: number = getUserId(authorization);
 
-        return getBookmarksByUserId(userId);
+        return await getBookmarksByUserId(userId);
     },
 };
 
