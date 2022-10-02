@@ -4,7 +4,6 @@ generates:
   ./graphql/types.ts:
     config:
       useIndexSignature: true
-      noSchemaStitching: true
     plugins:
       - typescript
       - typescript-resolvers
