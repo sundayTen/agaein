@@ -15,7 +15,7 @@ const bookmarkMutations = {
             throw new ApolloError('Bookmark is existed', 'BAD_USER_INPUT');
         }
 
-        return createBookmark(userId, createBookmarkRequest.articleId);
+        return await createBookmark(userId, createBookmarkRequest.articleId);
     },
     deleteBookmark: async (_: any, deleteBookmarkRequest: MutationDeleteBookmarkArgs, context: any) => {
         const authorization: string = context.req.headers.authorization;
@@ -31,7 +31,7 @@ const bookmarkMutations = {
             throw new ApolloError('Wrong User', 'UNAUTHENTICATED');
         }
 
-        return deleteBookmark(deleteBookmarkRequest.id);
+        return await deleteBookmark(deleteBookmarkRequest.id);
     },
 };
 
