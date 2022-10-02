@@ -1,38 +1,70 @@
+import { ID } from '../graphql/customTypes';
 import { getAccessToken, testServer } from './config';
 
-test('get reports', async () => {
-    const result = await testServer.executeOperation(
+test('report CRD', async () => {
+    const token: string | undefined = getAccessToken();
+    const reportId: ID = (
+        await testServer.executeOperation(
+            {
+                query: `
+                mutation createReport { 
+                    createReport (
+                          files: [], report: {
+                        articleId: "1",
+                        phoneNumber: "1534623",
+                        content: "asd",
+                        location: {
+                          lat: 12.1,
+                          lng: 12.1,
+                          address: "asdfas",
+                          detail: "123asd"
+                        },
+                        foundDate: "2020-12-12",
+                      } ) { id
+                  } }
+    `,
+            },
+            {
+                req: {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
+                },
+            },
+        )
+    ).data?.createReport.id;
+
+    const report = await testServer.executeOperation(
         {
             query: 'query reports ($articleId: ID!) { reports (articleId: $articleId) { id } }',
-            variables: { articleId: '0' },
+            variables: { articleId: '1' },
         },
         {
             req: {
                 headers: {
-                    authorization: `Bearer ${getAccessToken()}`,
+                    authorization: `Bearer ${token}`,
                 },
             },
         },
     );
 
-    const expected: any = [];
-    expect(result.data?.reports).toStrictEqual(expected);
-});
+    expect(report.data?.reports[0].id).toStrictEqual(reportId);
 
-test('delete report', async () => {
-    const result = await testServer.executeOperation(
-        {
-            query: 'mutation deleteReport ($id: ID!) { deleteReport (id: $id) }',
-            variables: { id: '0' },
-        },
-        {
-            req: {
-                headers: {
-                    authorization: `Bearer ${getAccessToken()}`,
+    const deletedId: ID = (
+        await testServer.executeOperation(
+            {
+                query: 'mutation deleteReport ($id: ID!) { deleteReport (id: $id) }',
+                variables: { id: reportId },
+            },
+            {
+                req: {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
                 },
             },
-        },
-    );
+        )
+    ).data?.deleteReport;
 
-    expect(result.data === null).toStrictEqual(true);
+    expect(deletedId).toStrictEqual(reportId);
 });

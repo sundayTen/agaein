@@ -5,7 +5,7 @@ import { knex } from '../../database';
 import { Report } from '../../types';
 
 export async function getReportsById(id: ID) {
-    return await knex('report').where('id', id);
+    return await knex('report').where('id', id).first();
 }
 
 export async function getReportsByUserId(userId: ID) {

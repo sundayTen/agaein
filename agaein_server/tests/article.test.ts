@@ -1,73 +1,95 @@
+import { ID } from '../graphql/customTypes';
 import { getAccessToken, testServer } from './config';
 
-test('get article', async () => {
-    const result = await testServer.executeOperation(
+test('article CRD + Length', async () => {
+    const token: string | undefined = getAccessToken();
+    const articleId: ID = (
+        await testServer.executeOperation(
+            {
+                query: `
+        mutation createArticle { createArticle (
+            boardType: LFP, files: [], articleDetail: {
+                breedId: 1,
+                name: "123",
+                feature: "123",
+                gender: MALE,
+                location: {
+                    lat: 12.1,
+                    lng: 12.1,
+                    address: "asdfas",
+                    detail: "123asd"
+                },
+                keyword: ["asdd", "asd", "dasd"]
+                lostDate: "2020-12-12",
+                gratuity: 1234,
+                alarm: false,
+                age: 1,
+            } ) { 
+                id
+            }
+        }
+      `,
+            },
+            {
+                req: {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
+                },
+            },
+        )
+    ).data?.createArticle.id;
+
+    const article: any = await testServer.executeOperation(
         {
-            query: 'query article ($id: ID!) { article (id: $id) { age } }',
-            variables: { id: '0' },
+            query: 'query article ($id: ID!) { article (id: $id) { articleDetail { ... on LFP { age gratuity } } } }',
+            variables: { id: articleId },
         },
         {
             req: {
                 headers: {
-                    authorization: `Bearer ${getAccessToken()}`,
+                    authorization: `Bearer ${token}`,
                 },
             },
         },
     );
 
-    expect(result.data === undefined).toStrictEqual(true);
-});
+    expect(article.data?.article.articleDetail.age).toStrictEqual(1);
+    expect(article.data?.article.articleDetail.gratuity).toStrictEqual(1234);
 
-test('get articleLength', async () => {
-    const result = await testServer.executeOperation(
-        {
-            query: 'query articleLength ($boardType: BOARD_TYPE!) { articleLength (boardType: $boardType) }',
-            variables: { boardType: 'ANANYMOUS' },
-        },
-        {
-            req: {
-                headers: {
-                    authorization: `Bearer ${getAccessToken()}`,
+    const articleLength: number = (
+        await testServer.executeOperation(
+            {
+                query: 'query articleLength ($boardType: BOARD_TYPE!) { articleLength (boardType: $boardType) }',
+                variables: { boardType: 'LFP' },
+            },
+            {
+                req: {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
                 },
             },
-        },
-    );
+        )
+    ).data?.articleLength;
 
-    expect(result.data === undefined).toStrictEqual(true);
-});
+    expect(articleLength).toStrictEqual(2);
 
-test('delete article', async () => {
-    const result = await testServer.executeOperation(
-        {
-            query: 'mutation deleteArticle ($id: ID!) { deleteArticle (id: $id) }',
-            variables: { id: '0' },
-        },
-        {
-            req: {
-                headers: {
-                    authorization: `Bearer ${getAccessToken()}`,
+    const deletedId: ID = (
+        await testServer.executeOperation(
+            {
+                query: 'mutation deleteArticle ($id: ID!) { deleteArticle (id: $id) }',
+                variables: { id: articleId },
+            },
+            {
+                req: {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
                 },
             },
-        },
-    );
+        )
+    ).data?.deleteArticle;
 
-    expect(result.data === null).toStrictEqual(true);
-});
-
-test('delete comment', async () => {
-    const result = await testServer.executeOperation(
-        {
-            query: 'mutation deleteComment ($id: ID!) { deleteComment (id: $id) }',
-            variables: { id: '0' },
-        },
-        {
-            req: {
-                headers: {
-                    authorization: `Bearer ${getAccessToken()}`,
-                },
-            },
-        },
-    );
-
-    expect(result.data === null).toStrictEqual(true);
+    expect(deletedId).toStrictEqual(articleId);
 });

@@ -1,37 +1,60 @@
+import { ID } from '../graphql/customTypes';
 import { getAccessToken, testServer } from './config';
 
-test('get breeds', async () => {
-    const result = await testServer.executeOperation(
+test('breed CRD', async () => {
+    const token: string | undefined = getAccessToken();
+    const breedId: ID = (
+        await testServer.executeOperation(
+            {
+                query: `
+    mutation {
+        createBreed(type: DOG, breed: "테스트") {
+        id
+      }
+    }
+    `,
+            },
+            {
+                req: {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
+                },
+            },
+        )
+    ).data?.createBreed.id;
+
+    const breeds = await testServer.executeOperation(
         {
             query: 'query breeds ($type: BREED_TYPE!) { breeds (type: $type) { id } }',
-            variables: { type: 'ETC' },
+            variables: { type: 'DOG' },
         },
         {
             req: {
                 headers: {
-                    authorization: `Bearer ${getAccessToken()}`,
+                    authorization: `Bearer ${token}`,
                 },
             },
         },
     );
 
-    expect(result.data === undefined).toStrictEqual(true);
-});
+    expect(breeds.data?.breeds[0].id).toStrictEqual(breedId);
 
-test('delete breed', async () => {
-    const result = await testServer.executeOperation(
-        {
-            query: 'mutation deleteBreed ($id: ID!) { deleteBreed (id: $id) }',
-            variables: { id: '0' },
-        },
-        {
-            req: {
-                headers: {
-                    authorization: `Bearer ${getAccessToken()}`,
+    const deletedId = (
+        await testServer.executeOperation(
+            {
+                query: 'mutation deleteBreed ($id: ID!) { deleteBreed (id: $id) }',
+                variables: { id: breedId },
+            },
+            {
+                req: {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
                 },
             },
-        },
-    );
+        )
+    ).data?.deleteBreed;
 
-    expect(result.data === null).toStrictEqual(true);
+    expect(deletedId).toStrictEqual(breedId);
 });
