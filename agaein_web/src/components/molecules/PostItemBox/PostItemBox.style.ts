@@ -47,6 +47,7 @@ export const InfoCategory = styled.em`
     letter-spacing: -0.02em;
     font-weight: 700;
     color: ${(props) => props.theme.light.DarkGrey2};
+    white-space: nowrap;
 `;
 
 export const InfoText = styled.span`
@@ -65,6 +66,7 @@ export const BookMarkBox = styled.div`
 export const TagList = styled.div`
     display: flex;
     padding: 0 12px 8px;
+    overflow-x: auto;
 `;
 
 export const ContentTag = styled.div<ContentTagProps>`
@@ -74,6 +76,7 @@ export const ContentTag = styled.div<ContentTagProps>`
     background-color: ${(props) =>
         props.type === 'CRAWLING' ? props.theme.light.white : props.theme.light.lightGrey2};
     display: inline-block;
+    white-space: nowrap;
 
     & + & {
         margin-left: 6px;

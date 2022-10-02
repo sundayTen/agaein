@@ -1,90 +1,64 @@
-import {
-    MyPageSection,
-    SectionHeader,
-    HeaderItem,
-    SectionBox,
-    MyArticleButtons,
-    MyArticleTableArea,
-    MyArticleButton,
-    StatusIcon,
-} from 'components/pages/myPage/MyPage.style';
-import { Button } from 'components/molecules';
+import { useState } from 'react';
+import { MyPageSection, SectionHeader, HeaderItem } from 'components/pages/myPage/MyPage.style';
+import { ArticlesTable } from './ArticlesTable';
+import { Article, ProfileComment, ProfileReport } from 'graphql/generated/generated';
+import { ArticleTab } from './type';
 
-const MyArticles = () => {
+interface Props {
+    lfgs?: Article[];
+    lfps?: Article[];
+    reviews?: Article[];
+    comments?: ProfileComment[];
+    reports?: ProfileReport[];
+}
+
+const MyArticles = (props: Props) => {
+    const { lfgs, lfps, reviews, comments, reports } = props;
+    const [currentTab, setCurrentTab] = useState<ArticleTab>(ArticleTab.MY);
+
+    const headerItems = [
+        {
+            type: ArticleTab.MY,
+            label: '내가 쓴 게시글',
+        },
+        {
+            type: ArticleTab.COMMENTS,
+            label: '내가 쓴 댓글',
+        },
+        {
+            type: ArticleTab.REPORTS,
+            label: '내 발견 내역',
+        },
+        {
+            type: ArticleTab.REVIEWS,
+            label: '나의 후기',
+        },
+    ];
+
     return (
         <MyPageSection>
             <SectionHeader>
-                <HeaderItem className="active" type="button">
-                    내가 쓴 게시글
-                </HeaderItem>
-                <HeaderItem type="button">내가 쓴 댓글</HeaderItem>
-                <HeaderItem type="button">내 발견 내역</HeaderItem>
-                <HeaderItem type="button">나의 후기</HeaderItem>
+                {headerItems.map((item, idx) => {
+                    return (
+                        <HeaderItem
+                            key={idx}
+                            type="button"
+                            className={item.type === currentTab ? 'active' : ''}
+                            onClick={() => setCurrentTab(item.type)}
+                        >
+                            {item.label}
+                        </HeaderItem>
+                    );
+                })}
             </SectionHeader>
-            <SectionBox>
-                <MyArticleButtons>
-                    <MyArticleButton type="button" active={false}>
-                        찾고 있어요
-                    </MyArticleButton>
-                    <MyArticleButton type="button" active={true}>
-                        발견 했어요
-                    </MyArticleButton>
-                </MyArticleButtons>
-                <MyArticleTableArea>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>상태</th>
-                                <th>제목</th>
-                                <th>후기</th>
-                                <th>조회수</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <StatusIcon status="active">진행중</StatusIcon>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        서울 송파구에서 강아지(치와와)를 찾고있어요 <span className="count">(3)</span>
-                                    </a>
-                                </td>
-                                <td></td>
-                                <td>162</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <StatusIcon status="stop">중단</StatusIcon>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        서울 송파구에서 강아지(치와와)를 찾고있어요 <span className="count">(3)</span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <Button label="후기 작성" onClick={() => {}} buttonStyle="BLACK" size="SMALL" />
-                                </td>
-                                <td>162</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <StatusIcon status="complete">완료</StatusIcon>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        서울 송파구에서 강아지(치와와)를 찾고있어요 <span className="count">(3)</span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <Button label="후기 작성" onClick={() => {}} buttonStyle="BLACK" size="SMALL" />
-                                </td>
-                                <td>162</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </MyArticleTableArea>
-            </SectionBox>
+            <ArticlesTable
+                currentTab={currentTab}
+                lfgs={lfgs}
+                lfps={lfps}
+                comments={comments}
+                reviews={reviews}
+                reports={reports}
+            />
         </MyPageSection>
     );
 };

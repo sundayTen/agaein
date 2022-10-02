@@ -20,7 +20,11 @@ import { ModalContext } from 'contexts';
 import { User, useUpdateUserMutation, useMeQuery } from 'graphql/generated/generated';
 import defaultImage from 'assets/image/notFound.png';
 
-const MyInfo = () => {
+interface Props {
+    user?: User;
+}
+
+const MyInfo = (props: Props) => {
     const { user } = useContext(UserContext);
     const [myInfo, setMyInfo] = useState<User>(user);
     const [myImageFile, setMyImageFile] = useState<File>();
