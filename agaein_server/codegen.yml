@@ -7,3 +7,6 @@ generates:
     plugins:
       - typescript
       - typescript-resolvers
+    config:
+      noSchemaStitching: true
+      useIndexSignature: true
