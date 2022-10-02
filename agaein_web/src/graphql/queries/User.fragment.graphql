@@ -7,5 +7,60 @@ fragment UserFragment on User {
     profileUrl
 }
 
-# fragment ProfileFragment on profile {
-# }
+fragment ProfileCommentFragment on ProfileComment {
+    id
+    articleId
+    content
+    createdAt
+    updatedAt
+}
+
+fragment ProfileReportFragment on ProfileReport {
+    id
+    articleId
+    author {
+        ...UserFragment
+    }
+    images
+    phoneNumber
+    content
+    location {
+        ...LocationFragment
+    }
+    foundDate
+    createdAt
+    updatedAt
+    articleDetail {
+        # ... on LFG {
+        #     ...LFGDetail
+        # }
+
+        ... on LFP {
+            ...LFPDetail
+        }
+    }
+}
+
+fragment ProfileFragment on Profile {
+    user {
+        ...UserFragment
+    }
+    lfps {
+        ...ArticleFragment
+    }
+    lfgs {
+        ...ArticleFragment
+    }
+    reviews {
+        ...ArticleFragment
+    }
+    bookmarks {
+        ...ArticleFragment
+    }
+    comments {
+        ...ProfileCommentFragment
+    }
+    reports {
+        ...ProfileReportFragment
+    }
+}

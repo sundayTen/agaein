@@ -206,5 +206,6 @@ export const BookmarkList = styled.ul`
 `;
 
 export const BookmarkItem = styled.li`
+    width: 180px;
     margin: 0 20px 33px;
 `;
