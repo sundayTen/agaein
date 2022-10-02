@@ -21,7 +21,7 @@ import { resolvers, typeDefs } from '../graphql/schema';
 
 const schema = makeExecutableSchema({
     typeDefs,
-    resolvers,
+    resolvers: resolvers as any,
     resolverValidationOptions: {
         requireResolversForResolveType: false,
     },
