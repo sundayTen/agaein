@@ -5,6 +5,9 @@ import { Article, Bookmark, Comment, Lfg, Lfp, Review, ArticleDetailInput, Repor
 function isArticle(target: unknown): target is Article {
     return (target as Article).__typename === 'Article' && !!(target as Article).articleDetail.id;
 }
+function isArticles(target: unknown[]): target is Article[] {
+    return (target as Article[])?.every(isArticle);
+}
 function isComment(target: unknown): target is Comment {
     return (target as Comment).__typename === 'Comment' && (target as Comment).content !== null;
 }
@@ -40,4 +43,4 @@ function isArticleDetail(target: unknown, dateType: 'lostDate' | 'foundDate'): t
     );
 }
 
-export { isArticle, isComment, isLFP, isLFG, isReview, isBookmark, isComments, isArticleDetail, isReports };
+export { isArticle, isArticles, isComment, isLFP, isLFG, isReview, isBookmark, isComments, isArticleDetail, isReports };

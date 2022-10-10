@@ -37,13 +37,12 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
 
     const fetchData = useCallback(async () => {
         try {
-            if(isLoggedIn){
-                console.log("여기가 불리는거냐");
+            if (isLoggedIn) {
                 await fetch();
                 setLoading(loading);
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }, [fetch, isLoggedIn, loading, setLoading]);
 
@@ -80,16 +79,16 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
         if (isBookmarked(articleId)) {
             drop({
                 variables: {
-                    id: articleId,
+                    articleId,
                 },
-                onError:(error) => {
+                onError: (error) => {
                     show({
-                        title:"오류",
-                        content: "없는 북마크입니다",
-                        cancelButtonLabel:"닫기",
-                        cancelButtonPressed: close
-                    })
-                }
+                        title: '오류',
+                        content: '없는 북마크입니다',
+                        cancelButtonLabel: '닫기',
+                        cancelButtonPressed: close,
+                    });
+                },
             });
             return;
         }
