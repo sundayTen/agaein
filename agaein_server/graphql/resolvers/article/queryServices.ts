@@ -242,9 +242,9 @@ export async function getArticleLength(boardType: Board_Type) {
     return (await knex(`${boardType}`).count('*').first()).count;
 }
 
-export async function getArticleWithDetailById(id: ID) {
+export async function getArticleWithDetailById(id: ID, view: Boolean) {
     const article = await knex('article').where(`id`, id).first();
-    const articleDetail = await knex(article.type).where('articleId', `${id}`).first();
+    const articleDetail = await knex(article.type).where('articleId', id).first();
     articleDetail.articleType = article.type;
 
     if (article.type !== 'REVIEW') {
@@ -256,7 +256,9 @@ export async function getArticleWithDetailById(id: ID) {
     }
 
     article.articleDetail = articleDetail;
-    increaseViewCount(article);
+    if (view) {
+        increaseViewCount(article);
+    }
 
     return article;
 }
@@ -283,4 +285,13 @@ export async function getArticleById(id: ID) {
 
 export async function getCommentById(id: ID) {
     return await knex('comment').where('id', id).first();
+}
+
+export async function getArticleDetailByIdAndType(id: ID, type: Board_Type) {
+    const articleDetail: any = await knex(`${type}`)
+        .join('article', 'article.id', `${type}.article_id`)
+        .join('breed', `${type}.breed_id`, 'breed.id')
+        .where('article.id', id)
+        .select('*', `${type}.id as id`, `${type}.article_id as article_id`)
+        .first();
 }

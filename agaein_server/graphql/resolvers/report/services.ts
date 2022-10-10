@@ -3,13 +3,20 @@ import { sendEmail } from '../../../common/utils/email';
 import { ID, ReportForm } from '../../customTypes';
 import { knex } from '../../database';
 import { Report } from '../../types';
+import { getArticleWithDetailById } from '../article/queryServices';
 
 export async function getReportsById(id: ID) {
     return await knex('report').where('id', id).first();
 }
 
-export async function getReportsByUserId(userId: ID) {
-    return await knex('report').where('user_id', userId);
+export async function getProfileReportsByUserId(userId: ID) {
+    const reports: any = await knex('report').where('user_id', userId);
+    for (const report of reports) {
+        const article: any = await getArticleWithDetailById(report.articleId, false);
+        report.articleDetail = article.articleDetail;
+    }
+
+    return reports;
 }
 
 export async function getReportsByArticleId(articleId: ID) {

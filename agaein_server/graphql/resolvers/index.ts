@@ -95,12 +95,6 @@ const resolvers = {
         async author(parent: ProfileReportWithUserId) {
             return await knex('user').where('id', `${parent.userId}`).first();
         },
-        async articleDetail(parent: ProfileReportWithUserId) {
-            const articleType: string = (await knex('article').where('id', `${parent.articleId}`).first('type')).type;
-            const articleDetail: any = await knex(articleType).where('article_id', `${parent.articleId}`).first();
-            articleDetail.articleType = articleType;
-            return articleDetail;
-        },
     },
 };
 

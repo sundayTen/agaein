@@ -1,7 +1,13 @@
 import { ApolloError } from 'apollo-server-express';
 import { ID, PagingArticleDetail } from '../../customTypes';
 import { Article_Order, QueryArticleArgs, QueryArticleLengthArgs, QueryArticlesArgs } from '../../types';
-import { mappingArticles, getArticleLength, getArticleWithDetailById, getPagingArticleDetails, getArticleById } from './queryServices';
+import {
+    getArticleById,
+    getArticleLength,
+    getArticleWithDetailById,
+    getPagingArticleDetails,
+    mappingArticles,
+} from './queryServices';
 
 const DEFAULT_PAGE_LIMIT: number = 6;
 const DEFAULT_PAGE_OFFSET: number = 0;
@@ -36,10 +42,10 @@ const articleQueries = {
     article: async (_: any, articleRequest: QueryArticleArgs) => {
         const id: ID = articleRequest.id;
         if ((await getArticleById(id)) === undefined) {
-            throw new ApolloError('Wrong Id', 'BAD_USER_INPUT')
+            throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
         }
 
-        return await getArticleWithDetailById(id);
+        return await getArticleWithDetailById(id, true);
     },
 };
 
