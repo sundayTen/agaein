@@ -2,7 +2,7 @@ import { getUserId } from '../../../common/auth/jwtToken';
 import { Profile, QueryUserArgs } from '../../types';
 import { getCommentsByUserId, getLfgsByUserId, getLfpsByUserId, getReviewsByUserId } from '../article/queryServices';
 import { getBookmarkArticlesByUserId } from '../bookmark/services';
-import { getReportsByUserId } from '../report/services';
+import { getProfileReportsByUserId } from '../report/services';
 import { getUserById } from './services';
 
 const userQueries = {
@@ -22,7 +22,7 @@ const userQueries = {
             lfgs: await getLfgsByUserId(userId),
             comments: await getCommentsByUserId(userId),
             reviews: await getReviewsByUserId(userId),
-            reports: await getReportsByUserId(userId),
+            reports: await getProfileReportsByUserId(userId),
             bookmarks: await getBookmarkArticlesByUserId(userId),
         };
 

@@ -27,13 +27,14 @@ const HomeArticleList = ({ boardType, setLoading }: HomeArticleListProps) => {
         variables,
         skip: isReviewType(),
     });
+
     useEffect(() => {
         setLoading(loading);
     }, [loading]);
 
     if (error || loading) return <></>;
 
-    const articles = data?.articles.map((article) => article) as Article[];
+    const articlesData = data?.articles?.articles.map((article) => article) as Article[];
 
     const isEmpty = (items?: Array<Article>) => {
         if (!items) return true;
@@ -57,11 +58,11 @@ const HomeArticleList = ({ boardType, setLoading }: HomeArticleListProps) => {
                 <BestReviewList />
             ) : (
                 <ListContainer>
-                    {isEmpty(articles) ? (
+                    {isEmpty(articlesData) ? (
                         // TODO : 디자인 요청해서 컴포넌트로 만들어야 할 듯
                         <p>등록된 게시글이 없습니다</p>
                     ) : (
-                        articles?.map((article) => {
+                        articlesData.map((article) => {
                             return (
                                 <ListItem key={article.id}>
                                     <PostItem

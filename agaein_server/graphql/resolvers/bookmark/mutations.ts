@@ -2,7 +2,7 @@ import { ApolloError } from 'apollo-server-errors';
 import { getUserId } from '../../../common/auth/jwtToken';
 import { validateAuthorizationHeader } from '../../../common/validation/auth';
 import { MutationCreateBookmarkArgs, MutationDeleteBookmarkArgs } from '../../types';
-import { createBookmark, deleteBookmark, getBookmark, getBookmarkByUserIdAndArticleId } from './services';
+import { createBookmark, deleteBookmark, getBookmarkByUserIdAndArticleId } from './services';
 
 const bookmarkMutations = {
     createBookmark: async (_: any, createBookmarkRequest: MutationCreateBookmarkArgs, context: any) => {
@@ -21,17 +21,17 @@ const bookmarkMutations = {
         const authorization: string = context.req.headers.authorization;
         validateAuthorizationHeader(authorization);
         const userId: number = getUserId(authorization);
-        const bookmark = await getBookmark(deleteBookmarkRequest.id);
+        const bookmark = await getBookmarkByUserIdAndArticleId(userId, deleteBookmarkRequest.articleId);
 
         if (bookmark === undefined) {
-            throw new ApolloError('Wrong Id', 'BAD_USER_INPUT');
+            throw new ApolloError('Wrong articleId', 'BAD_USER_INPUT');
         }
 
         if (bookmark.userId !== userId) {
             throw new ApolloError('Wrong User', 'UNAUTHENTICATED');
         }
 
-        return await deleteBookmark(deleteBookmarkRequest.id);
+        return await deleteBookmark(bookmark.id);
     },
 };
 

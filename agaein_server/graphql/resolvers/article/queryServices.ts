@@ -1,4 +1,4 @@
-import { ID } from '../../customTypes';
+import { ID, PagingArticleDetail } from '../../customTypes';
 import { knex } from '../../database';
 import { Article_Order, Board_Type, Maybe } from '../../types';
 import { getBreedById } from '../breed/services';
@@ -75,21 +75,55 @@ export async function getPagingArticleDetails(
 }
 
 async function getPagingReviewsWithSearch(search: string, order: Article_Order, limit: number, offset: number) {
-    return await knex('review')
+    const pagingArticles: PagingArticleDetail = {
+        totalPage: 0,
+        currentPage: 0,
+        articles: [],
+    };
+
+    pagingArticles.articles = await knex('review')
         .join('article', 'article.id', 'review.article_id')
         .where(`review.content`, 'like', `%${search}%`)
         .orWhere(`review.title`, 'like', `%${search}%`)
         .orderBy(order === Article_Order.View ? 'view' : 'created_at', order === Article_Order.Old ? 'asc' : 'desc')
         .limit(limit)
         .offset(offset);
+
+    const totalCount: number = (
+        await knex('review')
+            .join('article', 'article.id', 'review.article_id')
+            .where(`review.content`, 'like', `%${search}%`)
+            .orWhere(`review.title`, 'like', `%${search}%`)
+            .count('review.article_id')
+    )[0].count;
+
+    pagingArticles.totalPage = Math.floor(totalCount / limit) + (totalCount % limit == 0 ? 0 : 1);
+    pagingArticles.currentPage = totalCount == 0 ? 0 : Math.floor(offset / limit) + 1;
+
+    return pagingArticles;
 }
 
 async function getPagingReviews(order: Article_Order, limit: number, offset: number) {
-    return await knex('review')
+    const pagingArticles: PagingArticleDetail = {
+        totalPage: 0,
+        currentPage: 0,
+        articles: [],
+    };
+
+    pagingArticles.articles = await knex('review')
         .join('article', 'article.id', 'review.article_id')
         .orderBy(order === Article_Order.View ? 'view' : 'created_at', order === Article_Order.Old ? 'asc' : 'desc')
         .limit(limit)
         .offset(offset);
+
+    const totalCount: number = (
+        await knex('review').join('article', 'article.id', 'review.article_id').count('review.article_id')
+    )[0].count;
+
+    pagingArticles.totalPage = Math.floor(totalCount / limit) + (totalCount % limit == 0 ? 0 : 1);
+    pagingArticles.currentPage = totalCount == 0 ? 0 : Math.floor(offset / limit) + 1;
+
+    return pagingArticles;
 }
 
 async function getPagingLfpgsWithSearch(
@@ -99,6 +133,12 @@ async function getPagingLfpgsWithSearch(
     limit: number,
     offset: number,
 ) {
+    const pagingArticles: PagingArticleDetail = {
+        totalPage: 0,
+        currentPage: 0,
+        articles: [],
+    };
+
     const distinctArticleIds: Array<any> = await knex(`${boardType}`)
         .join('article', 'article.id', `${boardType}.article_id`)
         .join('breed', `${boardType}.breed_id`, 'breed.id')
@@ -118,7 +158,7 @@ async function getPagingLfpgsWithSearch(
         .limit(limit)
         .offset(offset);
 
-    return await knex(`${boardType}`)
+    pagingArticles.articles = await knex(`${boardType}`)
         .join('article', 'article.id', `${boardType}.article_id`)
         .join('breed', `${boardType}.breed_id`, 'breed.id')
         .whereIn(
@@ -127,44 +167,84 @@ async function getPagingLfpgsWithSearch(
         )
         .select('*', `${boardType}.id as id`, `${boardType}.article_id as article_id`)
         .orderBy(order === Article_Order.View ? 'view' : 'created_at', order === Article_Order.Old ? 'asc' : 'desc');
+
+    const totalCount: number = (
+        await knex(`${boardType}`)
+            .join('article', 'article.id', `${boardType}.article_id`)
+            .join('breed', `${boardType}.breed_id`, 'breed.id')
+            .leftJoin('article_keyword', 'article.id', 'article_keyword.article_id')
+            .leftJoin('keyword', 'keyword.id', 'article_keyword.keyword_id')
+            .where(`${boardType}.name`, search)
+            .orWhere(`${boardType}.feature`, 'like', `%${search}%`)
+            .orWhere(
+                'breed.type',
+                search === '강아지' || search === '개' ? 'DOG' : search === '고양이' || search === '냥이' ? 'CAT' : 'X',
+            )
+            .orWhere('breed.breed', search)
+            .orWhere('keyword.keyword', search)
+            .countDistinct(`${boardType}.article_id`)
+    )[0].count;
+
+    pagingArticles.totalPage = Math.floor(totalCount / limit) + (totalCount % limit == 0 ? 0 : 1);
+    pagingArticles.currentPage = totalCount == 0 ? 0 : Math.floor(offset / limit) + 1;
+
+    return pagingArticles;
 }
 
 async function getPagingLfpgs(boardType: Board_Type, order: Article_Order, limit: number, offset: number) {
-    return await knex(`${boardType}`)
+    const pagingArticles: PagingArticleDetail = {
+        totalPage: 0,
+        currentPage: 0,
+        articles: [],
+    };
+
+    pagingArticles.articles = await knex(`${boardType}`)
         .join('article', 'article.id', `${boardType}.article_id`)
         .join('breed', `${boardType}.breed_id`, 'breed.id')
         .select('*', `${boardType}.id as id`, `${boardType}.article_id as article_id`)
         .orderBy(order === Article_Order.View ? 'view' : 'created_at', order === Article_Order.Old ? 'asc' : 'desc')
         .limit(limit)
         .offset(offset);
+
+    const totalCount: number = (
+        await knex(`${boardType}`)
+            .join('article', 'article.id', `${boardType}.article_id`)
+            .join('breed', `${boardType}.breed_id`, 'breed.id')
+            .count(`${boardType}.article_id`)
+    )[0].count;
+
+    pagingArticles.totalPage = Math.floor(totalCount / limit) + (totalCount % limit == 0 ? 0 : 1);
+    pagingArticles.currentPage = totalCount == 0 ? 0 : Math.floor(offset / limit) + 1;
+
+    return pagingArticles;
 }
 
-export async function distinctArticles(boardType: Board_Type, articleDetails: Array<any>) {
-    const distinct: any = {};
-    const articles = articleDetails.reduce((res: any, detail: any) => {
+export async function mappingArticles(boardType: Board_Type, articleDetails: PagingArticleDetail) {
+    const articles = articleDetails.articles.reduce((res: any, detail: any) => {
         const { articleId, ...detailData } = detail;
 
-        if (distinct[detail.articleId] === undefined) {
-            distinct[detail.articleId] = true;
-            detail.id = articleId;
-            detail.articleDetail = { articleType: boardType, articleId, ...detailData };
-            detail.articleDetail.keyword = null;
-            res.push(detail);
-        }
+        detail.id = articleId;
+        detail.articleDetail = { articleType: boardType, articleId, ...detailData };
+        detail.articleDetail.keyword = null;
+        res.push(detail);
 
         return res;
     }, []);
 
-    return articles;
+    return {
+        totalPage: articleDetails.totalPage,
+        currentPage: articleDetails.currentPage,
+        articles,
+    };
 }
 
 export async function getArticleLength(boardType: Board_Type) {
     return (await knex(`${boardType}`).count('*').first()).count;
 }
 
-export async function getArticleWithDetailById(id: ID) {
+export async function getArticleWithDetailById(id: ID, view: Boolean) {
     const article = await knex('article').where(`id`, id).first();
-    const articleDetail = await knex(article.type).where('articleId', `${id}`).first();
+    const articleDetail = await knex(article.type).where('articleId', id).first();
     articleDetail.articleType = article.type;
 
     if (article.type !== 'REVIEW') {
@@ -176,7 +256,9 @@ export async function getArticleWithDetailById(id: ID) {
     }
 
     article.articleDetail = articleDetail;
-    increaseViewCount(article);
+    if (view) {
+        increaseViewCount(article);
+    }
 
     return article;
 }
@@ -203,4 +285,13 @@ export async function getArticleById(id: ID) {
 
 export async function getCommentById(id: ID) {
     return await knex('comment').where('id', id).first();
+}
+
+export async function getArticleDetailByIdAndType(id: ID, type: Board_Type) {
+    const articleDetail: any = await knex(`${type}`)
+        .join('article', 'article.id', `${type}.article_id`)
+        .join('breed', `${type}.breed_id`, 'breed.id')
+        .where('article.id', id)
+        .select('*', `${type}.id as id`, `${type}.article_id as article_id`)
+        .first();
 }

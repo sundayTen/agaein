@@ -14,7 +14,7 @@ type Query {
     me: User!
     profile: Profile!
     # Article
-    articles(boardType: BOARD_TYPE!, offset: Int, limit: Int, order: ARTICLE_ORDER, search: String): [Article]!
+    articles(boardType: BOARD_TYPE!, offset: Int, limit: Int, order: ARTICLE_ORDER, search: String): PagingArticle!
     article(id: ID!): Article
     articleLength(boardType: BOARD_TYPE!): Int!
     # Breed
@@ -44,12 +44,12 @@ type Mutation {
     deleteBreed(id: ID!): ID!
     # Bookmark
     createBookmark(articleId: ID!): Bookmark!
-    deleteBookmark(id: ID!): ID!
+    deleteBookmark(articleId: ID!): ID!
     # Report
     createReport(files: [Upload]!, report: ReportInput!): Report!
     deleteReport(id: ID!, password: String): ID!
     # Crawling
     crawling(baseInfo: CrawlingInput!, type: FINDING_TYPE!): ID!
     # Contact
-    contactUs(sender: String, subject: String! content: String!): String!
+    contactUs(sender: String, subject: String!, content: String!): String!
 }
