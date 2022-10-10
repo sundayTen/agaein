@@ -35,7 +35,7 @@ const articleQueries = {
         getArticleLength(articleLengthRequest.boardType),
     article: async (_: any, articleRequest: QueryArticleArgs) => {
         const id: ID = articleRequest.id;
-        if ((await getArticleById(id)) !== undefined) {
+        if ((await getArticleById(id)) === undefined) {
             throw new ApolloError('Wrong Id', 'BAD_USER_INPUT')
         }
 
