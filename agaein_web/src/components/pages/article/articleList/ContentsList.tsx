@@ -1,10 +1,11 @@
 import { useCallback, useContext, useEffect } from 'react';
 import { Font, PostItemBox, ReviewItem } from 'components/molecules';
-import { Article, Board_Type, useGetArticlesLazyQuery } from 'graphql/generated/generated';
+import { Board_Type, useGetArticlesLazyQuery } from 'graphql/generated/generated';
 import { ITEM_PER_PAGE } from '.';
 import { ArticleGridContainer, ArticleItem } from './ArticleList.style';
 import { ModalContext } from 'contexts';
 import { BookmarkContext } from 'contexts/bookmarkContext';
+import { isArticles } from 'utils/typeGuards';
 
 interface ListProps {
     type: Board_Type;
@@ -39,10 +40,16 @@ const ContentsList = (props: ListProps) => {
         setLoading(loading);
     }, [loading]);
 
-    if (error || data === undefined) {
+    if (error || loading || !data) {
         return <Font label="에러가 발생했습니다" fontType="h2" />;
     }
-    const articles = data?.articles as Article[];
+
+    const { articles } = data.articles;
+
+    if (!isArticles(articles)) {
+        return <></>;
+    }
+
     return (
         <ArticleGridContainer>
             {articles.map((item) => (

@@ -10,6 +10,6 @@ mutation createBookmark($articleId: ID!) {
     }
 }
 
-mutation deleteBookmark($id: ID!) {
-    deleteBookmark(id: $id)
+mutation deleteBookmark($articleId: ID!) {
+    deleteBookmark(articleId: $articleId)
 }

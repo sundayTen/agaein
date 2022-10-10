@@ -7,7 +7,14 @@ import {
     ReviewTable,
     ReviewPagination,
 } from 'components/pages/review/ReviewList.style';
-import { Board_Type, useGetArticlesLazyQuery, Review, Article, Article_Order } from 'graphql/generated/generated';
+import {
+    Board_Type,
+    useGetArticlesLazyQuery,
+    Review,
+    Article,
+    Article_Order,
+    PagingArticle,
+} from 'graphql/generated/generated';
 import { YYYY_MM_DD } from 'utils/date';
 import { Pagination } from 'components/molecules';
 import { ModalContext } from 'contexts';
@@ -39,8 +46,11 @@ const AllReviewList = () => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error occur</p>;
+    if (!data) return <></>;
 
-    const reviews = data?.articles.map((review) => review) as Article[];
+    const { totalPage, articles, currentPage } = data?.articles as PagingArticle;
+
+    const reviews = articles.map((review) => review) as Article[];
 
     const selectHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectValue = e.target.value as Article_Order;
@@ -51,7 +61,7 @@ const AllReviewList = () => {
         <>
             <ReviewInfo>
                 <ReviewCount>
-                    총 <Count>146</Count>건
+                    총 <Count>{totalPage}</Count>건
                 </ReviewCount>
                 {/* TODO: 셀렉트 컴포넌트 완성되면 변경예정 */}
                 <select onChange={selectHandler} value={orderType}>
