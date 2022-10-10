@@ -11,10 +11,9 @@ import { theme } from 'theme/theme';
 import { UserProvider } from 'contexts/userContext';
 import { ModalProvider } from 'contexts/modalContext';
 import ScrollToTop from 'components/molecules/ScrollToTop/scrollToTop';
-import { ErrorBoundary } from 'react-error-boundary';
-import Error from 'components/pages/common/Error';
 import { BookmarkProvider } from 'contexts/bookmarkContext';
 import dotenv from 'dotenv';
+import ErrorBoundary from 'components/pages/common/Error/ErrorBoundary';
 dotenv.config();
 
 const container = document.getElementById('root');
@@ -22,7 +21,7 @@ const root = createRoot(container!);
 
 root.render(
     <React.StrictMode>
-        <ErrorBoundary fallbackRender={Error}>
+        <ErrorBoundary>
             <BrowserRouter>
                 <ApolloProvider client={client}>
                     <ThemeProvider theme={theme}>
