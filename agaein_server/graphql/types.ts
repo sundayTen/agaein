@@ -305,7 +305,7 @@ export type MutationDeleteArticleArgs = {
 
 
 export type MutationDeleteBookmarkArgs = {
-  id: Scalars['ID'];
+  articleId: Scalars['ID'];
 };
 
 
@@ -358,6 +358,13 @@ export type MutationUpdateUserArgs = {
   phoneNumber?: InputMaybe<Scalars['String']>;
 };
 
+export type PagingArticle = {
+  __typename?: 'PagingArticle';
+  articles: Array<Maybe<Article>>;
+  currentPage: Scalars['Int'];
+  totalPage: Scalars['Int'];
+};
+
 export type Profile = {
   __typename?: 'Profile';
   bookmarks: Array<Maybe<Article>>;
@@ -397,7 +404,7 @@ export type Query = {
   __typename?: 'Query';
   article?: Maybe<Article>;
   articleLength: Scalars['Int'];
-  articles: Array<Maybe<Article>>;
+  articles: PagingArticle;
   bookmarks: Array<Maybe<Bookmark>>;
   breeds: Array<Maybe<Breed>>;
   crawlingHistory: Array<Maybe<CrawlingHistory>>;
@@ -593,6 +600,7 @@ export type ResolversTypes = ResolversObject<{
   LocationInput: LocationInput;
   Login: ResolverTypeWrapper<Login>;
   Mutation: ResolverTypeWrapper<{}>;
+  PagingArticle: ResolverTypeWrapper<PagingArticle>;
   Profile: ResolverTypeWrapper<Profile>;
   ProfileComment: ResolverTypeWrapper<ProfileComment>;
   ProfileReport: ResolverTypeWrapper<Omit<ProfileReport, 'articleDetail'> & { articleDetail: ResolversTypes['ArticleDetail'] }>;
@@ -631,6 +639,7 @@ export type ResolversParentTypes = ResolversObject<{
   LocationInput: LocationInput;
   Login: Login;
   Mutation: {};
+  PagingArticle: PagingArticle;
   Profile: Profile;
   ProfileComment: ProfileComment;
   ProfileReport: Omit<ProfileReport, 'articleDetail'> & { articleDetail: ResolversParentTypes['ArticleDetail'] };
@@ -796,7 +805,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'articleId' | 'content'>>;
   createReport?: Resolver<ResolversTypes['Report'], ParentType, ContextType, RequireFields<MutationCreateReportArgs, 'files' | 'report'>>;
   deleteArticle?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteArticleArgs, 'id'>>;
-  deleteBookmark?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteBookmarkArgs, 'id'>>;
+  deleteBookmark?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteBookmarkArgs, 'articleId'>>;
   deleteBreed?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteBreedArgs, 'id'>>;
   deleteComment?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'id'>>;
   deleteReport?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteReportArgs, 'id'>>;
@@ -805,6 +814,13 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateArticle?: Resolver<ResolversTypes['Article'], ParentType, ContextType, RequireFields<MutationUpdateArticleArgs, 'articleDetail' | 'files' | 'id'>>;
   updateComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationUpdateCommentArgs, 'content' | 'id'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<MutationUpdateUserArgs>>;
+}>;
+
+export type PagingArticleResolvers<ContextType = any, ParentType extends ResolversParentTypes['PagingArticle'] = ResolversParentTypes['PagingArticle']> = ResolversObject<{
+  articles?: Resolver<Array<Maybe<ResolversTypes['Article']>>, ParentType, ContextType>;
+  currentPage?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalPage?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type ProfileResolvers<ContextType = any, ParentType extends ResolversParentTypes['Profile'] = ResolversParentTypes['Profile']> = ResolversObject<{
@@ -845,7 +861,7 @@ export type ProfileReportResolvers<ContextType = any, ParentType extends Resolve
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   article?: Resolver<Maybe<ResolversTypes['Article']>, ParentType, ContextType, RequireFields<QueryArticleArgs, 'id'>>;
   articleLength?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<QueryArticleLengthArgs, 'boardType'>>;
-  articles?: Resolver<Array<Maybe<ResolversTypes['Article']>>, ParentType, ContextType, RequireFields<QueryArticlesArgs, 'boardType'>>;
+  articles?: Resolver<ResolversTypes['PagingArticle'], ParentType, ContextType, RequireFields<QueryArticlesArgs, 'boardType'>>;
   bookmarks?: Resolver<Array<Maybe<ResolversTypes['Bookmark']>>, ParentType, ContextType>;
   breeds?: Resolver<Array<Maybe<ResolversTypes['Breed']>>, ParentType, ContextType, RequireFields<QueryBreedsArgs, 'type'>>;
   crawlingHistory?: Resolver<Array<Maybe<ResolversTypes['CrawlingHistory']>>, ParentType, ContextType>;
@@ -916,6 +932,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Location?: LocationResolvers<ContextType>;
   Login?: LoginResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  PagingArticle?: PagingArticleResolvers<ContextType>;
   Profile?: ProfileResolvers<ContextType>;
   ProfileComment?: ProfileCommentResolvers<ContextType>;
   ProfileReport?: ProfileReportResolvers<ContextType>;

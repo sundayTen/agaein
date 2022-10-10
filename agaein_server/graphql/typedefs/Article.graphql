@@ -83,6 +83,12 @@ type Article {
     updatedAt: Date!
 }
 
+type PagingArticle {
+    totalPage: Int!
+    currentPage: Int!
+    articles: [Article]!
+}
+
 input LocationInput {
     lat: Float!
     lng: Float!

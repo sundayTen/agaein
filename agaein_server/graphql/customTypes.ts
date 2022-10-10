@@ -59,3 +59,9 @@ export type ReportWithUserId = UserId & Report;
 export type ArticleWithUserId = UserId & Article;
 
 export type CommentWithUserId = UserId & Comment & ObjectId;
+
+export type PagingArticleDetail = {
+    totalPage: Scalars['Int'];
+    currentPage: Scalars['Int'];
+    articles: Array<any>;
+}

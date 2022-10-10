@@ -1,10 +1,6 @@
 import { ID } from '../../customTypes';
 import { knex } from '../../database';
 
-export async function getBookmark(id: ID) {
-    return await knex('bookmark').where('id', id).first();
-}
-
 export async function getBookmarksByUserId(userId: ID) {
     return await knex('bookmark').where('user_id', userId);
 }
