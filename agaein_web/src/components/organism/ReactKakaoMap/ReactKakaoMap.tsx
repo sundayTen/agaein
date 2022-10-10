@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Active from 'assets/image/Active.png';
 import Default from 'assets/image/Default.png';
 import Lost from 'assets/image/Lost.png';
