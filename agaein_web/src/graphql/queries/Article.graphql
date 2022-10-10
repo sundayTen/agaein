@@ -1,23 +1,27 @@
 query getArticles($boardType: BOARD_TYPE!, $limit: Int, $offset: Int, $order: ARTICLE_ORDER, $search: String) {
     articles(boardType: $boardType, limit: $limit, offset: $offset, order: $order, search: $search) {
-        id
-        images
-        view
-        author {
-            nickname
-        }
-        createdAt
-        articleDetail {
-            ... on LFG {
-                ...LFGDetail
+        totalPage
+        currentPage
+        articles {
+            id
+            images
+            view
+            author {
+                nickname
             }
+            createdAt
+            articleDetail {
+                ... on LFG {
+                    ...LFGDetail
+                }
 
-            ... on LFP {
-                ...LFPDetail
-            }
+                ... on LFP {
+                    ...LFPDetail
+                }
 
-            ... on REVIEW {
-                ...ReviewDetail
+                ... on REVIEW {
+                    ...ReviewDetail
+                }
             }
         }
     }

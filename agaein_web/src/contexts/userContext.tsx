@@ -21,7 +21,6 @@ const NON_MEMBER: User = {
 } as unknown as User;
 
 export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
-    const client = useApolloClient();
     const [user, setUser] = useState<User>(NON_MEMBER);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
     const [loginMutation] = useLoginMutation();
@@ -57,6 +56,7 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
                 pw: process.env.REACT_APP_PASSWORD as string,
             },
         });
+        console.log('🚀 DATA :  ~ loginData', loginData);
         const { errors, data } = loginData;
         if (errors) {
             console.warn('Login Error Occur');
@@ -68,18 +68,17 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
         const { accessToken, refreshToken } = data.login;
         setAccessToken(accessToken);
         setRefreshToken(refreshToken);
-        
+
         fetchMe();
     };
 
     const signOut = () => {
-        
         try {
             setIsLoggedIn(false);
             resetToken();
             setUser(NON_MEMBER);
         } catch (error) {
-            console.error("로그아웃 중 에러",error)
+            console.error('로그아웃 중 에러', error);
         }
     };
 
@@ -88,12 +87,9 @@ export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
         try {
             if (accessToken) {
                 fetchMe();
-                return 
+                return;
             }
-            
-        } catch (error) {
-            
-        }
+        } catch (error) {}
 
         setIsLoggedIn(false);
     };
