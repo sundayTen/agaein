@@ -8,10 +8,10 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_modified
 
 from sites.common.kakaomap import getCoordinate
+from sites.common.counting import crawling_counting
 
 
 def angel_crawling(db: Session = next(get_db())):
-
     angel = db.query(CrawlingSite).filter(CrawlingSite.site == "angel").first()
     codes = ["cat", "dog"]
 
@@ -47,7 +47,7 @@ def angel_crawling(db: Session = next(get_db())):
                     crawlingPageType = re.split(
                         r"[()]", str(soup.select(".about-header")[0])
                     )[1][0:2]
-                    
+
                     if crawlingPageType in ["목격", "구조"]:
                         findingCheck = False
                     elif crawlingPageType == "실종":
@@ -139,3 +139,5 @@ def angel_crawling(db: Session = next(get_db())):
         angel.info[f"{code}_index"] = index
         flag_modified(angel, "info")
         db.commit()
+
+    crawling_counting()
