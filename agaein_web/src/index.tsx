@@ -14,7 +14,9 @@ import ScrollToTop from 'components/molecules/ScrollToTop/scrollToTop';
 import { BookmarkProvider } from 'contexts/bookmarkContext';
 import dotenv from 'dotenv';
 import ErrorBoundary from 'components/pages/common/Error/ErrorBoundary';
+
 dotenv.config();
+reportWebVitals();
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
@@ -39,4 +41,3 @@ root.render(
         </ErrorBoundary>
     </React.StrictMode>,
 );
-reportWebVitals();
