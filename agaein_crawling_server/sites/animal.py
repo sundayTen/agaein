@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_modified
 
 from sites.common.kakaomap import getCoordinate
+from sites.common.counting import crawling_counting
 
 region_codes = {
     "411": "서울특별시",
@@ -43,7 +44,7 @@ def animal_crawling(db: Session = next(get_db())):
     for region in animal.info.keys():
         found_idx = animal.info[region]
         idx = found_idx + 1
-        end = idx + 30
+        end = idx + 20
         fail_cnt = 0
         while idx < end:
             si = str(idx)
@@ -78,7 +79,11 @@ def animal_crawling(db: Session = next(get_db())):
                     db_sink["breed"] = type_and_breed[1]
                     db_sink["found_or_lost_date"] = data[6]
                     db_sink["created_date"] = data[6]
-                    db_sink["keywords"] = data[8].replace(" ", "") if data[7].replace(" ", "") in ["예", "아니오"] else data[7].replace(" ", "")
+                    db_sink["keywords"] = (
+                        data[8].replace(" ", "")
+                        if data[7].replace(" ", "") in ["예", "아니오"]
+                        else data[7].replace(" ", "")
+                    )
                     location = region_codes.get(region[:3]) + " " + data[5]
                     db_sink["location"] = location + getCoordinate(location + " ")
                     born_year = data[4].split("(년생)")[0]
@@ -106,7 +111,6 @@ def animal_crawling(db: Session = next(get_db())):
                     )
 
                     db.add(crawling_result)
-
                     print(
                         f"[animal] ------- {region}{year}{str_idx} 게시물 크롤링 성공 -------"
                     )
@@ -123,3 +127,5 @@ def animal_crawling(db: Session = next(get_db())):
             animal.info[region] = found_idx
             flag_modified(animal, "info")
             db.commit()
+
+    crawling_counting()
