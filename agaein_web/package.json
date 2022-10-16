@@ -6,19 +6,20 @@
         "react-error-overlay": "6.0.9"
     },
     "dependencies": {
-        "@heroicons/react": "^1.0.4",
-        "@craco/craco": "^6.2.0",
-        "craco-alias": "^3.0.1",
-        "apollo-upload-client": "15.0.0",
         "@apollo/client": "^3.4.10",
-        "graphql": "^15.5.1",
-        "graphql-upload": "^12.0.0",
+        "@craco/craco": "^6.2.0",
+        "@heroicons/react": "^1.0.4",
+        "apollo-upload-client": "15.0.0",
+        "craco-alias": "^3.0.1",
         "date-fns": "^2.25.0",
         "dayjs": "^1.11.5",
         "dotenv": "^16.0.0",
+        "graphql": "^15.5.1",
+        "graphql-upload": "^12.0.0",
         "react": "^18.2.0",
         "react-datepicker": "^4.2.1",
         "react-dom": "^18.2.0",
+        "react-ga": "^3.3.1",
         "react-kakao-login": "^2.1.0",
         "react-kakao-maps-sdk": "^1.0.3",
         "react-router-dom": "^5.2.1",
@@ -61,7 +62,6 @@
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.10",
-        "typescript": "^4.8.3",
         "@types/apollo-upload-client": "^14.1.0",
         "@types/jest": "^26.0.15",
         "@types/node": "^12.0.0",
@@ -72,6 +72,7 @@
         "@types/react-slick": "^0.23.8",
         "@types/styled-components": "^5.1.13",
         "kakao.maps.d.ts": "^0.1.23",
-        "prettier": "2.7.1"
+        "prettier": "2.7.1",
+        "typescript": "^4.8.3"
     }
 }
