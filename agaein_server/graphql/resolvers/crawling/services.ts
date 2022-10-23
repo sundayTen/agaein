@@ -171,26 +171,30 @@ export async function processCrawling(userId: ID, baseInfo: CrawlingInput, type:
 }
 
 export async function getCrawlingDashboard() {
-    const date: Date = new Date();
+    const utc: Date = new Date();
+    const diffTime: number = utc.getTimezoneOffset() * 60 * 1000;
+    const date: Date = new Date(utc.getTime() - diffTime);
     const searchTotalCount: number = (await knex('crawling_history').count())[0].count;
-    const searchTodayCount: any = (await knex('crawling_history').where('created_at', '>=', date.toISOString().slice(0,10)).count())[0].count;
+    const searchTodayCount: any = (
+        await knex('crawling_history').where('created_at', '>=', date.toISOString().slice(0, 10)).count()
+    )[0].count;
     const summary: CrawlingSummary = {
-        "animalTotalCount": 0,
-        "animalTodayCount": 0,
-        "searchTotalCount": searchTotalCount,
-        "searchTodayCount": searchTodayCount,
-    }
-    
+        animalTotalCount: 0,
+        animalTodayCount: 0,
+        searchTotalCount: searchTotalCount,
+        searchTodayCount: searchTodayCount,
+    };
+
     const crawlingCounts: any = (await knex('crawling_site').where('site', 'total').first('info')).info;
-    const todayCount: number = crawlingCounts[date.toISOString().slice(0,10)];
-    date.setDate(date.getDate() - 1)
-    const yesterdayCount: number = crawlingCounts[date.toISOString().slice(0,10)];
+    const todayCount: number = crawlingCounts[date.toISOString().slice(0, 10)];
+    date.setDate(date.getDate() - 1);
+    const yesterdayCount: number = crawlingCounts[date.toISOString().slice(0, 10)];
 
     if (todayCount === undefined) {
-        summary["animalTotalCount"] = yesterdayCount;
+        summary['animalTotalCount'] = yesterdayCount;
     } else if (yesterdayCount !== undefined) {
-        summary["animalTotalCount"] = todayCount;
-        summary["animalTodayCount"] = todayCount - yesterdayCount;
+        summary['animalTotalCount'] = todayCount;
+        summary['animalTodayCount'] = todayCount - yesterdayCount;
     }
 
     return summary;
