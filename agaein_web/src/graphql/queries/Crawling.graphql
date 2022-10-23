@@ -3,6 +3,15 @@ enum FINDING_TYPE {
     PET
 }
 
+query getSummary {
+    crawlingDashboard {
+        animalTotalCount
+        animalTodayCount
+        searchTotalCount
+        searchTodayCount
+    }
+}
+
 mutation crawling(
     $breedId: ID!
     $foundOrLostDate: Date!
@@ -22,7 +31,7 @@ mutation crawling(
             age: $age
             gender: $gender
             keywords: $keywords
-        },
+        }
         type: $type
     )
 }

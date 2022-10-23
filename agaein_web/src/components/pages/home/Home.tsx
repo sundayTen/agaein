@@ -4,6 +4,7 @@ import HomeArticleList from 'components/organism/HomeArticleList';
 import { Board_Type } from 'graphql/generated/generated';
 import { Fragment, useContext, useEffect, useMemo, useReducer } from 'react';
 import { ModalContext } from 'contexts';
+import Billboard from 'components/organism/Billboard';
 
 type STATE = {
     lfg_loading: boolean;
@@ -61,6 +62,7 @@ const Home = (_: RouteComponentProps) => {
     return (
         <Fragment>
             <HomeHeader />
+            <Billboard />
             <HomeArticleList boardType={Board_Type.Lfg} setLoading={setLfgLoading} />
             <HomeArticleList boardType={Board_Type.Lfp} setLoading={setLfpLoading} />
             <HomeArticleList boardType={Board_Type.Review} setLoading={setReviewLoading} />

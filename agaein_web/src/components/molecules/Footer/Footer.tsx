@@ -3,9 +3,7 @@ import { useContext } from 'react';
 import CustomerServiceContents from './CustomerServiceContents';
 import { FooterContainer, FooterCopyright, TeamLogo, LogoRow, ContactButton } from './Footer.style';
 
-interface FooterProps {}
-
-const Footer = (props: FooterProps) => {
+const Footer = () => {
     const { show } = useContext(ModalContext);
     const onClickContact = () => {
         show({
@@ -24,7 +22,6 @@ const Footer = (props: FooterProps) => {
                     문의하기
                 </ContactButton>
             </LogoRow>
-            <br />
             <FooterCopyright>ⓒ Copyright 2022 썬데이텐(SunDay10) All Rights Reserved.</FooterCopyright>
         </FooterContainer>
     );
