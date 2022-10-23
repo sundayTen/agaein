@@ -11,11 +11,16 @@ interface BillboardSectionProps {
 const BillboardSection = ({ today, total, type }: BillboardSectionProps) => {
     return (
         <BillboardSectionContainer>
-            <Font label="등록된 동물 집계" fontType="h4" fontWeight="bold" style={{ whiteSpace: 'nowrap' }} />
+            <Font
+                label={type === 'animal' ? '등록된 동물 집계' : '검색한 횟수 집계'}
+                fontType="h4"
+                fontWeight="bold"
+                style={{ whiteSpace: 'nowrap' }}
+            />
 
             <CountUnitContainer>
-                <CountUnit title="Today:" count={today} type={type} />
-                <CountUnit title="Total:" count={total} type={type} />
+                <CountUnit title="Today: " count={today} type={type} />
+                <CountUnit title="Total: " count={total} type={type} />
             </CountUnitContainer>
         </BillboardSectionContainer>
     );
