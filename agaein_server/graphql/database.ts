@@ -456,6 +456,7 @@ export function initCrawlingHistory() {
                         .onDelete('CASCADE');
                     table.json('crawling_keywords');
                     table.json('crawling_results');
+                    table.dateTime('created_at').notNullable();
                 })
                 .then(function () {
                     console.log('[DataBase Initialized] created crawling_history table');

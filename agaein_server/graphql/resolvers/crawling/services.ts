@@ -1,6 +1,6 @@
 import { Date, ID } from '../../customTypes';
 import { knex } from '../../database';
-import { Breed, CrawlingInput, CrawlingResult, Finding_Type, Gender, InputMaybe } from '../../types';
+import { Breed, CrawlingInput, CrawlingResult, CrawlingSummary, Finding_Type, Gender, InputMaybe } from '../../types';
 import { getBreedById } from '../breed/services';
 
 export async function getCrawlingResults(id: ID) {
@@ -171,33 +171,27 @@ export async function processCrawling(userId: ID, baseInfo: CrawlingInput, type:
 }
 
 export async function getCrawlingDashboard() {
-    const searchTotalCount: number = (await knex('crawling_history').count())[0].count;
-    const crawlingCounts: any = (await knex('crawling_site').where('site', 'total').first('info')).info;
     const date: Date = new Date();
+    const searchTotalCount: number = (await knex('crawling_history').count())[0].count;
+    const searchTodayCount: any = (await knex('crawling_history').where('created_at', '>=', date.toISOString().slice(0,10)).count())[0].count;
+    const summary: CrawlingSummary = {
+        "animalTotalCount": 0,
+        "animalTodayCount": 0,
+        "searchTotalCount": searchTotalCount,
+        "searchTodayCount": searchTodayCount,
+    }
+    
+    const crawlingCounts: any = (await knex('crawling_site').where('site', 'total').first('info')).info;
     const todayCount: number = crawlingCounts[date.toISOString().slice(0,10)];
     date.setDate(date.getDate() - 1)
     const yesterdayCount: number = crawlingCounts[date.toISOString().slice(0,10)];
 
-    if (yesterdayCount === undefined) {
-        return {
-            "animalTotalCount": 0,
-            "animalTodayCount": 0,
-            "searchTotalCount": searchTotalCount,
-            "searchTodayCount": searchTotalCount,
-        }
-    } else if (todayCount === undefined) {
-        return {
-            "animalTotalCount": yesterdayCount,
-            "animalTodayCount": 0,
-            "searchTotalCount": searchTotalCount,
-            "searchTodayCount": searchTotalCount,
-        }
+    if (todayCount === undefined) {
+        summary["animalTotalCount"] = yesterdayCount;
+    } else if (yesterdayCount !== undefined) {
+        summary["animalTotalCount"] = todayCount;
+        summary["animalTodayCount"] = todayCount - yesterdayCount;
     }
 
-    return {
-        "animalTotalCount": todayCount,
-        "animalTodayCount": todayCount - yesterdayCount,
-        "searchTotalCount": searchTotalCount,
-        "searchTodayCount": searchTotalCount,
-    }
+    return summary;
 }
