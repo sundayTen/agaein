@@ -25,6 +25,7 @@ type Query {
     # Crawling
     crawlingResults(id: ID!): [CrawlingResult]!
     crawlingHistory: [CrawlingHistory]!
+    crawlingDashboard: CrawlingSummary!
 }
 
 type Mutation {

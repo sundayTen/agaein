@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-server-express';
 import { getUserId } from '../../../common/auth/jwtToken';
 import { QueryCrawlingResultsArgs } from '../../types';
-import { getCrawlingHistory, getCrawlingResults } from './services';
+import { getCrawlingHistory, getCrawlingResults, getCrawlingDashboard } from './services';
 
 const crawlingQueries = {
     crawlingResults: async (_: any, crawlingRequest: QueryCrawlingResultsArgs) =>
@@ -16,6 +16,9 @@ const crawlingQueries = {
         }
 
         return await getCrawlingHistory(userId);
+    },
+    crawlingDashboard: async (_: any, __: any) => {
+        return await getCrawlingDashboard();
     },
 };
 

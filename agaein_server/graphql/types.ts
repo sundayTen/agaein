@@ -143,6 +143,14 @@ export type CrawlingResult = {
   type: Scalars['String'];
 };
 
+export type CrawlingSummary = {
+  __typename?: 'CrawlingSummary';
+  animalTodayCount?: Maybe<Scalars['Int']>;
+  animalTotalCount?: Maybe<Scalars['Int']>;
+  searchTodayCount?: Maybe<Scalars['Int']>;
+  searchTotalCount?: Maybe<Scalars['Int']>;
+};
+
 export enum Finding_Status {
   Done = 'DONE',
   Finding = 'FINDING'
@@ -407,6 +415,7 @@ export type Query = {
   articles: PagingArticle;
   bookmarks: Array<Maybe<Bookmark>>;
   breeds: Array<Maybe<Breed>>;
+  crawlingDashboard: CrawlingSummary;
   crawlingHistory: Array<Maybe<CrawlingHistory>>;
   crawlingResults: Array<Maybe<CrawlingResult>>;
   me: User;
@@ -586,6 +595,7 @@ export type ResolversTypes = ResolversObject<{
   CrawlingInput: CrawlingInput;
   CrawlingKeywords: ResolverTypeWrapper<CrawlingKeywords>;
   CrawlingResult: ResolverTypeWrapper<CrawlingResult>;
+  CrawlingSummary: ResolverTypeWrapper<CrawlingSummary>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   FINDING_STATUS: Finding_Status;
   FINDING_TYPE: Finding_Type;
@@ -628,6 +638,7 @@ export type ResolversParentTypes = ResolversObject<{
   CrawlingInput: CrawlingInput;
   CrawlingKeywords: CrawlingKeywords;
   CrawlingResult: CrawlingResult;
+  CrawlingSummary: CrawlingSummary;
   Date: Scalars['Date'];
   File: File;
   Float: Scalars['Float'];
@@ -725,6 +736,14 @@ export type CrawlingResultResolvers<ContextType = any, ParentType extends Resolv
   rank?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   site?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CrawlingSummaryResolvers<ContextType = any, ParentType extends ResolversParentTypes['CrawlingSummary'] = ResolversParentTypes['CrawlingSummary']> = ResolversObject<{
+  animalTodayCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  animalTotalCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  searchTodayCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  searchTotalCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -864,6 +883,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   articles?: Resolver<ResolversTypes['PagingArticle'], ParentType, ContextType, RequireFields<QueryArticlesArgs, 'boardType'>>;
   bookmarks?: Resolver<Array<Maybe<ResolversTypes['Bookmark']>>, ParentType, ContextType>;
   breeds?: Resolver<Array<Maybe<ResolversTypes['Breed']>>, ParentType, ContextType, RequireFields<QueryBreedsArgs, 'type'>>;
+  crawlingDashboard?: Resolver<ResolversTypes['CrawlingSummary'], ParentType, ContextType>;
   crawlingHistory?: Resolver<Array<Maybe<ResolversTypes['CrawlingHistory']>>, ParentType, ContextType>;
   crawlingResults?: Resolver<Array<Maybe<ResolversTypes['CrawlingResult']>>, ParentType, ContextType, RequireFields<QueryCrawlingResultsArgs, 'id'>>;
   me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
@@ -925,6 +945,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   CrawlingHistory?: CrawlingHistoryResolvers<ContextType>;
   CrawlingKeywords?: CrawlingKeywordsResolvers<ContextType>;
   CrawlingResult?: CrawlingResultResolvers<ContextType>;
+  CrawlingSummary?: CrawlingSummaryResolvers<ContextType>;
   Date?: GraphQLScalarType;
   File?: FileResolvers<ContextType>;
   LFG?: LfgResolvers<ContextType>;

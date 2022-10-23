@@ -34,6 +34,13 @@ type CrawlingKeywords {
     keywords: [String]
 }
 
+type CrawlingSummary {
+    animalTotalCount: Int
+    animalTodayCount: Int
+    searchTotalCount: Int
+    searchTodayCount: Int
+}
+
 input CrawlingInput {
     breedId: ID!
     foundOrLostDate: Date!

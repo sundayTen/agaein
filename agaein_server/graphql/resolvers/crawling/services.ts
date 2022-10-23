@@ -169,3 +169,35 @@ export async function processCrawling(userId: ID, baseInfo: CrawlingInput, type:
 
     return (await knex('crawling_history').insert(history).returning('*'))[0].id;
 }
+
+export async function getCrawlingDashboard() {
+    const searchTotalCount: number = (await knex('crawling_history').count())[0].count;
+    const crawlingCounts: any = (await knex('crawling_site').where('site', 'total').first('info')).info;
+    const date: Date = new Date();
+    const todayCount: number = crawlingCounts[date.toISOString().slice(0,10)];
+    date.setDate(date.getDate() - 1)
+    const yesterdayCount: number = crawlingCounts[date.toISOString().slice(0,10)];
+
+    if (yesterdayCount === undefined) {
+        return {
+            "animalTotalCount": 0,
+            "animalTodayCount": 0,
+            "searchTotalCount": searchTotalCount,
+            "searchTodayCount": searchTotalCount,
+        }
+    } else if (todayCount === undefined) {
+        return {
+            "animalTotalCount": yesterdayCount,
+            "animalTodayCount": 0,
+            "searchTotalCount": searchTotalCount,
+            "searchTodayCount": searchTotalCount,
+        }
+    }
+
+    return {
+        "animalTotalCount": todayCount,
+        "animalTodayCount": todayCount - yesterdayCount,
+        "searchTotalCount": searchTotalCount,
+        "searchTodayCount": searchTotalCount,
+    }
+}
