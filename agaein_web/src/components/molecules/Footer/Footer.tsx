@@ -22,7 +22,7 @@ const Footer = () => {
                     문의하기
                 </ContactButton>
             </LogoRow>
-            <FooterCopyright>ⓒ Copyright 2022 썬데이텐(SunDay10) All Rights Reserved.</FooterCopyright>
+            <FooterCopyright>ⓒ Copyright 2022 썬데이텐(SunDayTen) All Rights Reserved.</FooterCopyright>
         </FooterContainer>
     );
 };
