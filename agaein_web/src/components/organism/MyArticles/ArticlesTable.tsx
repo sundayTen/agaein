@@ -5,18 +5,19 @@ import {
     MyArticleTableArea,
     MyArticleButton,
     StatusIcon,
+    ReviewLink,
 } from 'components/pages/myPage/MyPage.style';
-import { Button } from 'components/molecules';
 import { ArticleTab, ArticleSubTab } from './type';
 import {
     Article,
     ArticleDetailInput,
     ProfileComment,
     ProfileReport,
-    Report,
     Lfp,
     Lfg,
     Review,
+    ArticleDetail,
+    Finding_Status,
 } from 'graphql/generated/generated';
 import { formattedDate } from 'utils/date';
 
@@ -52,10 +53,12 @@ export function ArticlesTable(props: Props) {
         return headlabels;
     };
 
-    const getArticleTitle = (article: Article) => {
-        const { location } = article.articleDetail as ArticleDetailInput;
-        const { type } = article;
-        return { location } + '에서' + { type } + '를 찾고있어요';
+    const unConvertStatus = (status: string) => {
+        if (status === '진행중') {
+            return Finding_Status.Finding;
+        }
+
+        return Finding_Status.Done;
     };
 
     return (
@@ -91,29 +94,26 @@ export function ArticlesTable(props: Props) {
                         <>
                             {currentSubTab === ArticleSubTab.LFP && (
                                 <tbody>
-                                    {lfps?.map((lfp) => {
-                                        const { type, status, location } = lfp.articleDetail as Lfp;
-                                        const comments = lfp.comments;
+                                    {lfps?.map((lfp, index) => {
+                                        const { type, status, location, breed } = lfp.articleDetail as Lfp;
+                                        const { comments, id } = lfp;
                                         return (
-                                            <tr>
+                                            <tr key={index}>
                                                 <td>
-                                                    <StatusIcon status="stop">{status}</StatusIcon>
+                                                    <StatusIcon status={unConvertStatus(status)}>{status}</StatusIcon>
                                                 </td>
                                                 <td>
-                                                    <a href="">
-                                                        {location.address}에서 {type}(치와와)를 찾고있어요{' '}
+                                                    <a href={'/articleDetail/' + id}>
+                                                        {location.address}에서 {type}({breed})를 찾고있어요{' '}
                                                         {comments && comments.length > 0 && (
                                                             <span className="count">({comments.length})</span>
                                                         )}
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <Button
-                                                        label="후기 작성"
-                                                        onClick={() => {}}
-                                                        buttonStyle="BLACK"
-                                                        size="SMALL"
-                                                    />
+                                                    {unConvertStatus(status) === Finding_Status.Done && (
+                                                        <ReviewLink href={'/createReview' + id}>후기 작성</ReviewLink>
+                                                    )}
                                                 </td>
                                                 <td>{lfp.view}</td>
                                             </tr>
@@ -123,29 +123,26 @@ export function ArticlesTable(props: Props) {
                             )}
                             {currentSubTab === ArticleSubTab.LFG && (
                                 <tbody>
-                                    {lfgs?.map((lfg) => {
-                                        const { type, status, location } = lfg.articleDetail as Lfg;
-                                        const comments = lfg.comments;
+                                    {lfgs?.map((lfg, index) => {
+                                        const { type, status, location, breed } = lfg.articleDetail as Lfg;
+                                        const { comments, id } = lfg;
                                         return (
-                                            <tr>
+                                            <tr key={index}>
                                                 <td>
-                                                    <StatusIcon status="stop">{status}</StatusIcon>
+                                                    <StatusIcon status={unConvertStatus(status)}>{status}</StatusIcon>
                                                 </td>
                                                 <td>
-                                                    <a href="">
-                                                        {location.address}에서 {type}(치와와)를 찾고있어요{' '}
+                                                    <a href={'/articleDetail/' + id}>
+                                                        {location.address}에서 {type}({breed})를 찾고있어요{' '}
                                                         {comments && comments.length > 0 && (
                                                             <span className="count">({comments.length})</span>
                                                         )}
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <Button
-                                                        label="후기 작성"
-                                                        onClick={() => {}}
-                                                        buttonStyle="BLACK"
-                                                        size="SMALL"
-                                                    />
+                                                    {unConvertStatus(status) === Finding_Status.Done && (
+                                                        <ReviewLink href={'/createReview/' + id}>후기 작성</ReviewLink>
+                                                    )}
                                                 </td>
                                                 <td>{lfg.view}</td>
                                             </tr>
@@ -157,9 +154,9 @@ export function ArticlesTable(props: Props) {
                     )}
                     {currentTab === ArticleTab.COMMENTS && (
                         <tbody>
-                            {comments?.map((comment) => {
+                            {comments?.map((comment, index) => {
                                 return (
-                                    <tr>
+                                    <tr key={index}>
                                         <td>{comment.content}</td>
                                         <td>{formattedDate(comment.createdAt)}</td>
                                     </tr>
@@ -167,49 +164,38 @@ export function ArticlesTable(props: Props) {
                             })}
                         </tbody>
                     )}
-                    {/* TODO: 서버단에서 데이터 변경되면 작업 예정 */}
                     {currentTab === ArticleTab.REPORTS && (
                         <tbody>
-                            <tr>
-                                <td>
-                                    <StatusIcon status="active">진행중</StatusIcon>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        서울 송파구에서 강아지(치와와)를 찾고있어요 <span className="count">(3)</span>
-                                    </a>
-                                </td>
-                                <td></td>
-                                <td>162</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <StatusIcon status="stop">중단</StatusIcon>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        서울 송파구에서 강아지(치와와)를 찾고있어요 <span className="count">(3)</span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <Button label="후기 작성" onClick={() => {}} buttonStyle="BLACK" size="SMALL" />
-                                </td>
-                                <td>162</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <StatusIcon status="complete">완료</StatusIcon>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        서울 송파구에서 강아지(치와와)를 찾고있어요 <span className="count">(3)</span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <Button label="후기 작성" onClick={() => {}} buttonStyle="BLACK" size="SMALL" />
-                                </td>
-                                <td>162</td>
-                            </tr>
+                            {reports?.map((report, index) => {
+                                const { articleDetail, articleId } = report as ProfileReport;
+                                const { __typename } = articleDetail as ArticleDetail;
+                                const { location, status, breed, name } =
+                                    __typename === 'LFG' ? (articleDetail as Lfg) : (articleDetail as Lfp);
+                                const { foundDate } = articleDetail as Lfg;
+                                const { lostDate } = articleDetail as Lfp;
+
+                                if (__typename === currentSubTab) {
+                                    return (
+                                        <tr key={index}>
+                                            <td>
+                                                <StatusIcon status={unConvertStatus(status)}>{status}</StatusIcon>
+                                            </td>
+                                            <td>
+                                                <a href={'/articleDetail/' + articleId}>
+                                                    {location.address}에서 {name}({breed})를 찾고있어요{' '}
+                                                    <span className="count">(3)</span>
+                                                </a>
+                                            </td>
+                                            <td>{report.location.address}</td>
+                                            {currentSubTab === ArticleSubTab.LFG ? (
+                                                <td>{formattedDate(foundDate)}</td>
+                                            ) : (
+                                                <td>{formattedDate(lostDate)}</td>
+                                            )}
+                                        </tr>
+                                    );
+                                }
+                            })}
                         </tbody>
                     )}
                     {currentTab === ArticleTab.REVIEWS && (

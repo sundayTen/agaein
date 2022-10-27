@@ -23,7 +23,7 @@ function Router() {
             <Route path="/createArticle/step3/:id" component={CreateArticleStep3} />
             <Route path="/articleDetail/:id" component={ArticleDetail} />
             <Route path="/search" component={Search} />
-            <Route path="/createReview" component={Review} />
+            <Route path="/createReview/:id" component={Review} />
             <Route path="/reviews" component={ReviewList} />
             <Route path="/crawlingResult/:id/:keyword?" component={CrawlingResultPage} />
             <Route path="/myPage" component={MyPage} />

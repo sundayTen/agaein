@@ -31,9 +31,9 @@ fragment ProfileReportFragment on ProfileReport {
     createdAt
     updatedAt
     articleDetail {
-        # ... on LFG {
-        #     ...LFGDetail
-        # }
+        ... on LFG {
+            ...LFGDetail
+        }
 
         ... on LFP {
             ...LFPDetail

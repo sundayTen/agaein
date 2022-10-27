@@ -6,6 +6,6 @@ export enum ArticleTab {
 }
 
 export enum ArticleSubTab {
-    LFP,
-    LFG,
+    LFP = 'LFP',
+    LFG = 'LFG',
 }

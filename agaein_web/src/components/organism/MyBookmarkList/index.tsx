@@ -26,9 +26,9 @@ const MyBookmarkList = (props: Props) => {
                 </HeaderItem>
             </SectionHeader>
             <BookmarkList>
-                {bookmarks?.map((bookmark) => {
+                {bookmarks?.map((bookmark, index) => {
                     return (
-                        <BookmarkItem>
+                        <BookmarkItem key={index}>
                             <PostItem
                                 item={bookmark}
                                 bookmarked={isBookmarked(bookmark.id)}
