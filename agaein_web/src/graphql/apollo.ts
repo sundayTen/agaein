@@ -93,6 +93,20 @@ export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
                     },
                 },
             },
+            CrawlingResult: {
+                fields: {
+                    gender: {
+                        read(gender) {
+                            return convertGender(gender);
+                        },
+                    },
+                    type: {
+                        read(type) {
+                            return convertAnimalType(type);
+                        },
+                    },
+                },
+            },
         },
     }),
 });
