@@ -1,7 +1,7 @@
 import { Button, Font } from 'components/molecules';
 import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
 import { CrawlingResult } from 'graphql/generated/generated';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { BodyTr, HeadTh, HiddenBodyTr, Table, Thead } from './CrawlingResult.style';
 import { YYYY_MM_DD, YYYYMMDD } from '../../../utils/date';
 
@@ -37,7 +37,7 @@ const ResultTable = ({ crawlingData }: ResultTableProps) => {
             <tbody>
                 {crawlingData?.map((data, idx) => {
                     return (
-                        <>
+                        <Fragment key={data?.site}>
                             <BodyTr key={idx} onClick={() => (clickIdx === idx ? setClickIdx(-1) : setClickIdx(idx))}>
                                 <td>{isData(data?.rank)}</td>
                                 <td>
@@ -75,7 +75,7 @@ const ResultTable = ({ crawlingData }: ResultTableProps) => {
                                     </td>
                                 </HiddenBodyTr>
                             ) : null}
-                        </>
+                        </Fragment>
                     );
                 })}
             </tbody>
