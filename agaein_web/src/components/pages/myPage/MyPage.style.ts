@@ -1,11 +1,8 @@
 import styled, { css } from 'styled-components';
+import { Finding_Status } from 'graphql/generated/generated';
 
 interface ButtonProps {
     active: boolean;
-}
-
-interface StatusProps {
-    status: 'active' | 'stop' | 'complete';
 }
 
 export const MyPageWrap = styled.div`
@@ -170,7 +167,7 @@ export const MyArticleTableArea = styled.div`
     }
 `;
 
-export const StatusIcon = styled.span<StatusProps>`
+export const StatusIcon = styled.span<{ status: Finding_Status }>`
     display: inline-block;
     width: 56px;
     height: 24px;
@@ -180,23 +177,38 @@ export const StatusIcon = styled.span<StatusProps>`
     color: ${(props) => props.theme.light.white};
     text-align: center;
 
-    ${(props: StatusProps) =>
-        props.status === 'active' &&
+    ${(props) =>
+        props.status === Finding_Status.Finding &&
         css`
             background-color: ${(props) => props.theme.light.primary};
         `}
 
-    ${(props: StatusProps) =>
-        props.status === 'stop' &&
+    ${(props) =>
+        props.status === Finding_Status.Done &&
         css`
             background-color: ${(props) => props.theme.light.negative};
         `}
 
-    ${(props: StatusProps) =>
-        props.status === 'complete' &&
+    ${(props) =>
+        props.status === Finding_Status.Done &&
         css`
             background-color: ${(props) => props.theme.light.positive};
         `}
+`;
+
+export const ReviewLink = styled.a`
+    display: block;
+    width: 72px;
+    height: 24px;
+    margin: 0 auto;
+    background-color: ${(props) => props.theme.light.DarkGrey2};
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 24px;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: ${(props) => props.theme.light.white};
 `;
 
 export const BookmarkList = styled.ul`
