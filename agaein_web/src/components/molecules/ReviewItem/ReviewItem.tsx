@@ -1,4 +1,4 @@
-import penguin from 'assets/image/penguin.png';
+import penguin from 'assets/image/img_error.png';
 import { Article, Review } from 'graphql/generated/generated';
 import { Fragment } from 'react';
 import {

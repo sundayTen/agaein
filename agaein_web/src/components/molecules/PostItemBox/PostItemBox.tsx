@@ -10,9 +10,9 @@ import {
     BookMarkBox,
     TagList,
 } from './PostItemBox.style';
-import penguin from 'assets/image/penguin.png';
+import penguin from 'assets/image/img_error.png';
 import { Link } from 'react-router-dom';
-import { Article, Lfp } from 'graphql/generated/generated';
+import { Article, ArticleDetail, Lfg, Lfp } from 'graphql/generated/generated';
 import Font from '../Font';
 import BookMark from '../BookMark';
 import { YYYYMMDD } from 'utils/date';
@@ -25,7 +25,7 @@ interface PostItemProps {
 
 const PostItem = (props: PostItemProps) => {
     const { item, bookmarked = false, setBookmark = () => {} } = props;
-    const { id, articleDetail, createdAt, images } = item;
+    const { id, articleDetail, images } = item;
     const { breed, type, gender, location, age, gratuity } = articleDetail as Lfp;
 
     const isNotNull = (item: unknown) => {
@@ -34,6 +34,16 @@ const PostItem = (props: PostItemProps) => {
         }
         return item !== null && item !== undefined;
     };
+
+    const getDate = (articleDetail: ArticleDetail) => {
+        if (articleDetail.__typename === 'LFG') {
+            return articleDetail.foundDate;
+        }
+        if (articleDetail.__typename === 'LFP') {
+            return articleDetail.lostDate;
+        }
+    };
+
     return (
         <>
             <Link to={`/articleDetail/${id}`}>
@@ -51,7 +61,7 @@ const PostItem = (props: PostItemProps) => {
                         </InfoItem>
                         <InfoItem>
                             <InfoCategory>실종일</InfoCategory>
-                            <InfoText>{YYYYMMDD(createdAt)}</InfoText>
+                            <InfoText>{YYYYMMDD(getDate(articleDetail))}</InfoText>
                         </InfoItem>
                         <InfoItem>
                             <InfoCategory>지역</InfoCategory>
