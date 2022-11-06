@@ -112,7 +112,7 @@ export function ArticlesTable(props: Props) {
                                                 </td>
                                                 <td>
                                                     {unConvertStatus(status) === Finding_Status.Done && (
-                                                        <ReviewLink href={'/createReview' + id}>후기 작성</ReviewLink>
+                                                        <ReviewLink href={'/createReview/' + id}>후기 작성</ReviewLink>
                                                     )}
                                                 </td>
                                                 <td>{lfp.view}</td>

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { ArticleDetailInput, File, Board_Type } from 'graphql/generated/generated';
 import PageTitle from 'components/organism/PageTitle/PageTitle';
 import { FormPhoto, FormInput, FormTextarea, FormWrapper } from 'components/organism/Form';
@@ -7,9 +7,9 @@ import Button from 'components/molecules/Button';
 import Modal from 'components/molecules/Modal';
 import { RouteComponentProps } from 'react-router-dom';
 import useArticle from 'graphql/hooks/useArticle';
+import { ReviewParams } from 'router/params';
 
-// TODO: 게시글 id 를 가져와서 작성할 지 논의
-const Review = ({ history, match }: RouteComponentProps) => {
+const Review = ({ history, match }: RouteComponentProps<ReviewParams>) => {
     const [files, setFiles] = useState<File[]>([]);
     const [currentReview, setCurrentReview] = useState<ArticleDetailInput>({});
     const { createArticle } = useArticle();
@@ -42,6 +42,12 @@ const Review = ({ history, match }: RouteComponentProps) => {
     const goHome = () => {
         history.push('/');
     };
+
+    useEffect(() => {
+        setCurrentReview({
+            articleId: match.params.id,
+        });
+    }, [match]);
 
     return (
         <>
