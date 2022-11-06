@@ -26,3 +26,7 @@ export interface CrawlingResultParams {
     id: string;
     keyword: string;
 }
+
+export interface ReviewParams {
+    id: string;
+}
