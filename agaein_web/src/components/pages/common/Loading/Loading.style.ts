@@ -8,6 +8,7 @@ export const LoadingContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: ${({ theme }) => theme.light.background};
     justify-content: center;
     z-index: 100;
     position: fixed;
