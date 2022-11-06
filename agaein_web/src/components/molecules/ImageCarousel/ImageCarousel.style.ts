@@ -4,7 +4,7 @@ export const CarouselContainer = styled.div`
     width: 720px;
     margin-right: 30px;
 
-    @media screen and (max-width: 420px){
+    @media screen and (max-width: 420px) {
         width: 300px;
         margin-right: 0px;
         align-self: center;
@@ -22,7 +22,7 @@ export const FocusedImageWrapper = styled.div`
     border-radius: 10px;
     overflow: hidden;
 
-    @media screen and (max-width: 420px){
+    @media screen and (max-width: 420px) {
         width: 300px;
         height: 200px;
     }
@@ -31,6 +31,7 @@ export const FocusedImageWrapper = styled.div`
 export const FocusedImage = styled.img`
     width: 100%;
     min-height: 100%;
+    object-fit: cover;
 `;
 
 export const CarouselList = styled.div`

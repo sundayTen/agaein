@@ -1,5 +1,5 @@
 import { Fragment, useContext, useEffect, useMemo, useState } from 'react';
-import penguin from 'assets/image/penguin.png';
+import penguin from 'assets/image/img_error.png';
 import { BookMark, Button, Chip, Font, ImageCarousel, ErrorCheckerInput } from 'components/molecules';
 import { ContentTag } from 'components/molecules/PostItemBox/PostItemBox.style';
 import Comment, { calculateCommentsCount } from 'components/organism/Comment';
@@ -88,14 +88,14 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
         return status === '진행중';
     };
 
-    function getTitle() {
+    const getTitle = () => {
         if (isLFP(articleDetail)) {
-            return `${location.address}에서 ${type}(${breed})를 발견했어요`;
+            return `${location.address}에서 ${type}(${breed})를 찾고있어요`;
         }
-        return `${location.address}에서 ${type}(${breed})를 찾고있어요`;
-    }
+        return `${location.address}에서 ${type}(${breed})를 발견했어요`;
+    };
 
-    function getDescription() {
+    const getDescription = () => {
         let description = isLFP(articleDetail) ? `실종일 ${YYYYMMDD(lostDate)}` : `발견일 ${YYYYMMDD(foundDate)}`;
         if (!!name) {
             description += ` · 이름 ${name}`;
@@ -108,7 +108,7 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
         }
 
         return description;
-    }
+    };
 
     const closeModal = () => {
         setIsOpenModal(false);
