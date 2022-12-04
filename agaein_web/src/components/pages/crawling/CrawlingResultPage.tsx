@@ -18,6 +18,7 @@ import ResultTable from './ResultTable';
 import { CrawlingResult, useCrawlingResultsQuery } from 'graphql/generated/generated';
 import { RouteComponentProps } from 'react-router-dom';
 import { CrawlingResultParams } from 'router/params';
+import SEO from 'components/molecules/SEO';
 
 const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResultParams>) => {
     const { id, keyword } = match.params;
@@ -69,6 +70,12 @@ const CrawlingResultPage = ({ match, history }: RouteComponentProps<CrawlingResu
 
     return (
         <>
+            <SEO
+                title="크롤링 결과"
+                description="어개인 홈"
+                keywords="동물, 유기동물 찾기, 유기동물"
+                url="https://www.agaein.com/createArticle/step1"
+            />
             <PageTitle title="크롤링 검색 완료" subTitle="입력하신 정보와 관련도가 높은 실종 동물 리스트예요." />
             <SearchFilter>
                 <Font label="검색 필터" fontType="label" fontWeight="bold" />

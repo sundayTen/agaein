@@ -5,6 +5,7 @@ import { Board_Type } from 'graphql/generated/generated';
 import { Fragment, useContext, useEffect, useMemo, useReducer } from 'react';
 import { ModalContext } from 'contexts';
 import Billboard from 'components/organism/Billboard';
+import SEO from 'components/molecules/SEO';
 
 type STATE = {
     lfg_loading: boolean;
@@ -61,6 +62,7 @@ const Home = (_: RouteComponentProps) => {
 
     return (
         <Fragment>
+            <SEO title="홈" description="어개인 홈" keywords="동물 찾기 유기동물" url="https://www.agaein.com" />
             <HomeHeader />
             <Billboard />
             <HomeArticleList boardType={Board_Type.Lfg} setLoading={setLfgLoading} />

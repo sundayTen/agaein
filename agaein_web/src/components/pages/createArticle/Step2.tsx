@@ -25,6 +25,7 @@ import { ArticleDetailInput, File } from 'graphql/generated/generated';
 import { UserContext } from 'contexts/userContext';
 import { isArticleDetail } from 'utils/typeGuards';
 import useArticle from 'graphql/hooks/useArticle';
+import SEO from 'components/molecules/SEO';
 
 const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>) => {
     const { isLoggedIn } = useContext(UserContext);
@@ -86,6 +87,12 @@ const Step2 = ({ history, match }: RouteComponentProps<CreateArticleStep2Params>
 
     return (
         <>
+            <SEO
+                title="게시글 작성하기"
+                description="어개인 홈"
+                keywords="동물, 유기동물 찾기, 유기동물"
+                url="https://www.agaein.com/createArticle/step2"
+            />
             <StepIndicator active={2} styles={{ marginTop: 100 }} />
             <PageTitle title="게시글 작성하기" subTitle="상세하게 작성할수록 발견될 확률이 올라가요" />
             <FormWrapper formTitle={boardTitle + '동물 정보'}>

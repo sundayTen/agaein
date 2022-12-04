@@ -1,5 +1,6 @@
 import Button from 'components/molecules/Button';
 import Font from 'components/molecules/Font';
+import SEO from 'components/molecules/SEO';
 import StepIndicator from 'components/molecules/StepIndicator';
 import PageTitle from 'components/organism/PageTitle/PageTitle';
 import { Board_Type } from 'graphql/generated/generated';
@@ -32,6 +33,12 @@ const Step1 = ({ history }: RouteComponentProps<CreateArticleStep1Params>) => {
 
     return (
         <>
+            <SEO
+                title="게시글 작성하기"
+                description="어개인 홈"
+                keywords="동물, 유기동물 찾기, 유기동물"
+                url="https://www.agaein.com/createArticle/step1"
+            />
             <Step1Container>
                 <StepIndicator active={1} />
                 <PageTitle title="카테고리 선택하기" subTitle="목적에 맞는 카테고리를 선택해주세요" />

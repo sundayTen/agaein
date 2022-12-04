@@ -35,6 +35,7 @@ import {
 } from './ArticleDetail.style';
 import NotFound from 'components/pages/common/NotFound';
 import useMobile from 'hooks/useMobile';
+import SEO from 'components/molecules/SEO';
 
 const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailParams>) => {
     const { isBookmarked, setBookmark } = useContext(BookmarkContext);
@@ -177,6 +178,12 @@ const ArticleDetail = ({ match, history }: RouteComponentProps<ArticleDetailPara
     };
     return (
         <Fragment>
+            <SEO
+                title={getTitle()}
+                description={getTitle()}
+                keywords="동물, 유기동물 찾기, 유기동물"
+                url="https://www.agaein.com/createArticle/step1"
+            />
             <HorizontalContainer>
                 <ImageCarousel images={targetImages() as string[]} />
                 <ArticleDetailContainer>

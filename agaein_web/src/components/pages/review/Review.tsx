@@ -8,6 +8,7 @@ import Modal from 'components/molecules/Modal';
 import { RouteComponentProps } from 'react-router-dom';
 import useArticle from 'graphql/hooks/useArticle';
 import { ReviewParams } from 'router/params';
+import SEO from 'components/molecules/SEO';
 
 const Review = ({ history, match }: RouteComponentProps<ReviewParams>) => {
     const [files, setFiles] = useState<File[]>([]);
@@ -51,6 +52,12 @@ const Review = ({ history, match }: RouteComponentProps<ReviewParams>) => {
 
     return (
         <>
+            <SEO
+                title="리뷰"
+                description="어개인 리뷰 페이지"
+                keywords="동물, 유기동물 찾기, 유기동물"
+                url="https://www.agaein.com/reviews"
+            />
             <PageTitle title="후기 작성하기" subTitle="감사의 마음을 담은 따뜻한 후기를 남겨주세요" />
             <FormWrapper formTitle={'후기 작성'}>
                 <FormPhoto onChange={inputFilesHandler} />
