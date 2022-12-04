@@ -33,7 +33,8 @@
     "scripts": {
         "start": "set PORT=3000 && craco start",
         "build": "craco build",
-        "codegen": "graphql-codegen --config codegen.yml"
+        "codegen": "graphql-codegen --config codegen.yml",
+        "sitemap": "cd public && node updateSitemap"
     },
     "eslintConfig": {
         "extends": [

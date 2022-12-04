@@ -1,0 +1,26 @@
+name: update sitemap
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.14.0
+      - name: update sitemap
+        run: |
+          git config --global user.email "dlsghwns@naver.com"
+          git config --global user.name "hojunin"
+          git remote update -p
+          git checkout develop
+          git pull origin develop
+          cd agaein_web
+          npm run sitemap
+          git add .
+          git commit -m "cron: 사이트맵 생성"
+          git push

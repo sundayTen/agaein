@@ -1,3 +1,23 @@
-# https://www.robotstxt.org/robotstxt.html
+User-agent: Googlebot
+User-agent: yeti
+User-agent: daumoa
+User-agent: bingbot
+Allow: /
+Allow: /reviews/
+Disallow: /mypage
+
 User-agent: *
-Disallow:
+Allow: /
+Allow: /reviews/
+Allow: /articles/
+Allow: /articleDetail/
+Allow: /search/
+
+Sitemap:https://www.agaein.kr/sitemap.xml
+
+
+
+
+
+
+
